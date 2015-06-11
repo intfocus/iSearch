@@ -50,6 +50,7 @@
 #define BTN_REMOVE @"移除"
 #define BTN_BACK   @"返回"
 #define BTN_SURE   @"确定"
+#define BTN_RESTORE @"恢复"
 
 // 公告通知
 #define NOTIFICATION_I18N_CREATEDDATE @"今天"

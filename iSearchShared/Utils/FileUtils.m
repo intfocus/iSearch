@@ -98,8 +98,8 @@
  *
  *  @return 存在即true, 否则false
  */
-+ (BOOL) checkSlideExist: (NSString *) fid {
-    NSString *pathName = [FileUtils getPathName:FILE_DIRNAME FileName:fid];
++ (BOOL) checkSlideExist: (NSString *) fileID {
+    NSString *pathName = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
     
     return [FileUtils checkFileExist:pathName isDir:true];
 }
@@ -161,7 +161,7 @@
  *  @return 文档配置档路径
  */
 + (NSString *) fileDescPath:(NSString *) fileID
-                      Klass: (NSString*) klass {
+                      Klass:(NSString *) klass {
     NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
     NSString *descPath = [filePath stringByAppendingPathComponent:klass];
     

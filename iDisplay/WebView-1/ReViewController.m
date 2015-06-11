@@ -54,8 +54,8 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *structureView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 @property (nonatomic, assign) BOOL selectState;   // 编辑状态
-@property (nonatomic, strong) NSString  *fileID;
-@property (nonatomic, strong) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
+@property (nonatomic, nonatomic) NSString  *fileID;
+@property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
 @property (nonatomic, nonatomic) UIBarButtonItem *editBarItem; // 是否切换至编辑状态
 @property (nonatomic, nonatomic) UIBarButtonItem *restoreBarItem; // 恢复至初始状态，desc.json覆盖desc.json.swp
 @property (nonatomic, nonatomic) UIBarButtonItem *saveBarItem;   // 编辑状态下至少选择一个页面时激活
@@ -80,6 +80,9 @@
     
     // 任何@property对象都需要初始化,否则直接赋值失败
     self.tmpPageInfo = [[NSMutableDictionary alloc] init];
+    // 通过REORGANIZE_CONFIG_FILENAME配置档传递fileID/pageID
+    // 放前排 for 后面一些设置需要用到fileID/pageID
+    [self loadConfigInfo];
     
     self.selectState = false;
     NSLog(@"structureView: %@",NSStringFromCGRect(self.structureView.bounds));
@@ -100,24 +103,24 @@
     
     // 导航右侧按钮区
     [array removeAllObjects];
-
-    // 恢复按钮 - desc.json覆盖desc.json.swp
-    self.restoreBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
-                                                      style:UIBarButtonItemStylePlain
-                                                     target:nil
-                                                     action:@selector(actionRestorePages:)];
-    // 对比是否有修改，以此设置[恢复]状态
-    [self checkDescSwpContent];
-    [array addObject:self.restoreBarItem];
     
     
     // 编辑状态-切换
-    self.editBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
+    self.editBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
                                                        style:UIBarButtonItemStylePlain
                                                       target:nil
                                                       action:@selector(actionEditPages:)];
     self.editBarItem.possibleTitles = [NSSet setWithObjects:BTN_SELECT, BTN_CANCEL, nil];
     [array addObject:self.editBarItem];
+    
+    // 恢复按钮 - desc.json覆盖desc.json.swp
+    self.restoreBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:nil
+                                                         action:@selector(actionRestorePages:)];
+    // 对比是否有修改，以此设置[恢复]状态
+    [self checkDescSwpContent];
+    [array addObject:self.restoreBarItem];
     
     // 保存 - 编辑状态下，至少选择一页面时，激活
     self.saveBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
@@ -170,10 +173,6 @@
     self.view.backgroundColor = [UIColor purpleColor];
     _select = [[NSMutableArray alloc] init];
     
-    // 由文件演示界面，[编辑]进入文档页面编辑界面
-    // 通过REORGANIZE_CONFIG_FILENAME配置档传递fileID/pageID
-    [self loadConfigInfo];
-    
     // 加载文件各页面
     _data = [self loadFilePages];;
     [_gmGridView reloadData];
@@ -186,9 +185,10 @@
 - (void) loadConfigInfo {
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-
-    self.pageID = config[@"PageID"];
+    
+    NSLog(@"reorganize:\n%@", config);
     self.fileID = config[@"FileID"];
+    self.pageID = config[@"PageID"];
 }
 
 //////////////////////////////////////////////////////////////
@@ -231,18 +231,55 @@
  *  @param gesture UIGestureRecognizer
  */
 - (void)actionDismiss:(UIGestureRecognizer *)gesture {
+    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:descSwpPath error:nil];
+    
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
-    NSString *descPath = [FileUtils fileDescPath:self.FileID Klass:FILE_CONFIG_FILENAME];
+/**
+ *  对比desc.json与desc.json.swp是否一致
+ *  TODO: 转成NSMutableDirectory对比
+ *
+ */
+- (void)checkDescSwpContent {
+    NSError *error;
+    NSString *descPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_FILENAME];
     NSString *descContent = [NSString stringWithContentsOfFile:descPath];
-    NSString *descSwpPath = [FileUtils fileDescPath:self.FileID Klass:FILE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath];
-
-    self.restoreBarItem.enabled = ![descContent isEqualToString:descSwpContent];
-
+//    id descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+//                                               options:NSJSONReadingMutableContainers
+//                                                 error:&error];
+//    NSData *descJSON = [NSJSONSerialization dataWithJSONObject:descData
+//                                                       options:NSJSONWritingPrettyPrinted
+//                                                         error:&error];
+//    NSString *descStr = [[NSString alloc] initWithData:descJSON encoding:NSUTF8StringEncoding];
+    NSMutableDictionary *descDict = [NSMutableDictionary alloc];
+    descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     
+    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath];
+    NSMutableDictionary *descSwpDict = [NSMutableDictionary alloc];
+    descSwpDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+    BOOL  isSame = [descDict isEqualToDictionary:descSwpDict];
+
+    self.restoreBarItem.enabled = !isSame;
+}
+
+/**
+ *  导航栏按钮[恢复], desc.json -> desc.json.swp -> reload view
+ *
+ *  @param sender UIBarButtonItem
+ */
+- (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
+    NSString *descPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_FILENAME];
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath];
+    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+
+    NSError *error;
+    [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
+    if(error)
+        NSLog(@"<writeJSON#%d config write failed: %@>", __LINE__, [error localizedDescription]);
 }
 
 /**
@@ -558,7 +595,11 @@
         NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         if(!error) {
             [jsonStr writeToFile:filePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-            if(error) NSLog(@"<# config write failed: %@>", [error localizedDescription]);
+            if(error) {
+                NSLog(@"<writeJSON#%d config write failed: %@>", __LINE__, [error localizedDescription]);
+            } else {
+                [self checkDescSwpContent];
+            }
         } else {
             NSLog(@"<# parse data into json failed: %@>", [error localizedDescription]);
         }
@@ -602,8 +643,7 @@
         
         // FILE_DIRNAME/fileId/{fileId_pageId.html, fileId_pageId.gif, desc.json}
         // _data数组来自desc.json字段order
-        
-        NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:self.fileID];
+
         // imageName与pageName相同，命名格式为fileId_pageId
         
         
@@ -612,7 +652,18 @@
         // 此操作为了减少重复扫描本地信息
         NSString *keyName = [NSString stringWithFormat:@"page-%@", self.fileID];
         if(![[self.tmpPageInfo allKeys] containsObject:keyName]) {
-            [self.tmpPageInfo setObject:[self readFileDesc:filePath] forKey:keyName];
+            
+            NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+            NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
+            NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
+            
+            [self.tmpPageInfo setObject:descSwpDict forKey:keyName];
+            
+            if([[descSwpDict[@"order"] objectAtIndex: index] isEqualToString: self.pageID]) {
+                filePage.layer.borderWidth = 10;
+                filePage.layer.borderColor = [UIColor redColor].CGColor;
+            }
+                
         }
         filePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", self.tmpPageInfo[keyName][@"name"]];
         filePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)index];
@@ -620,6 +671,8 @@
         NSString *currentPageID = [self.tmpPageInfo[keyName][@"order"] objectAtIndex:index];
         NSString *thumbnailPath = [self fileThumbnail:self.fileID pageID:currentPageID];
         [filePage loadThumbnail: thumbnailPath];
+        
+        
         
         [cell setContentView: filePage];
     }

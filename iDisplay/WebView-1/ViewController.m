@@ -88,9 +88,6 @@
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    
-    
-    
     [self demoExtract];
     [self extractResource];
     
