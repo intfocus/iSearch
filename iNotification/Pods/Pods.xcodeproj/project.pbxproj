@@ -1,0 +1,652 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		018A3056D5ED65255F405C35 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1C7B88B1EF35B09ACA3EBC8 /* Foundation.framework */; };
+		1594546F45B551260E6CE6D3 /* JTCalendarDayView.h in Headers */ = {isa = PBXBuildFile; fileRef = 78557F173ED669966A9AF67B /* JTCalendarDayView.h */; };
+		19940A365019AA233F0E5ACC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1C7B88B1EF35B09ACA3EBC8 /* Foundation.framework */; };
+		3223788B76A8BF100A22879A /* JTCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = A681FE2061E774DF240C1673 /* JTCircleView.m */; };
+		32B886D1695C45F9EE754510 /* JTCalendarMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2F861739CAB165C0AFD7674E /* JTCalendarMonthView.h */; };
+		436DACEDCA2298B17F9FD8F2 /* JTCalendarAppearance.h in Headers */ = {isa = PBXBuildFile; fileRef = 72A695A392D6FEF19D899B57 /* JTCalendarAppearance.h */; };
+		5360BDEBAD020FC3EB97AD49 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4452023F03E87385945BF4D5 /* Pods-dummy.m */; };
+		5B47B21AFC0C1F05E5317D8E /* JTCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA9F384E81202DE9AD5E9AF /* JTCalendarDayView.m */; };
+		5C4641D0D1A4B8B7CEBEE398 /* JTCalendarMenuMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 327097C773DA7151EEBA9985 /* JTCalendarMenuMonthView.h */; };
+		64C936B1F15123D7FAF6EE8D /* JTCalendarMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EB5815D84C73C0C75C2EDD /* JTCalendarMenuView.h */; };
+		7413545E982C38C5831D31DB /* JTCalendarWeekView.h in Headers */ = {isa = PBXBuildFile; fileRef = 986567D4676439A2330E9BD5 /* JTCalendarWeekView.h */; };
+		7A8AC67E5C4ED37C0C7F0700 /* JTCircleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 99B8C25C36F26CFB31FA1517 /* JTCircleView.h */; };
+		7EBC95C2975024BB0D3CD383 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B50E5D8C736F663C35D5743E /* Reachability.m */; };
+		7F01EB44B1927CA167A92751 /* JTCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F10605B5AB5C067EE8150FF /* JTCalendar.m */; };
+		821BE067BC5D54220EA2969D /* JTCalendarContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = F5BE006A0B72705BEA0D8253 /* JTCalendarContentView.m */; };
+		86A264A701D625C098EFFA24 /* JTCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CD8C1B6F102CF7130A5CFCC /* JTCalendarMonthView.m */; };
+		923B7DCC5B82BD6715A3D8E5 /* JTCalendarMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45CEB5153EA4C8658099D526 /* JTCalendarMenuView.m */; };
+		987B7F2DFCDAE6334188AE2E /* JTCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 135D056016985607B77548D6 /* JTCalendarAppearance.m */; };
+		9BB4B6F144FA80F2DC3A3780 /* JTCalendarDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 219D80FDFA9D49CB06E01E2E /* JTCalendarDataCache.h */; };
+		A0EF1453C1F20F5848FB9643 /* JTCalendarContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = 32C5BD30CD7F49529AE1BB51 /* JTCalendarContentView.h */; };
+		A574DD5E81A944283AB11FD3 /* JTCalendarMonthWeekDaysView.h in Headers */ = {isa = PBXBuildFile; fileRef = 054B17E7A9A636AF13CFB3A9 /* JTCalendarMonthWeekDaysView.h */; };
+		AC0AF5444B79F4663906AC9D /* Pods-JTCalendar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEC25FF2C6736B0FF6591BC /* Pods-JTCalendar-dummy.m */; };
+		B2A539FB77FEAE562ED604D2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5492E34D253E8682DBE394D /* SystemConfiguration.framework */; };
+		C094AE5FDFB0E00F74165E78 /* Pods-Reachability-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB5D48E7ABA818A5C716E7E /* Pods-Reachability-dummy.m */; };
+		C0BEF904266FF113BF5B7E3F /* JTCalendarMenuMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 812D73E5AB1CA06150E9912B /* JTCalendarMenuMonthView.m */; };
+		CAE5D52B38F622ACB06BF1C3 /* JTCalendarViewDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = F729E99862548B3D024B9C51 /* JTCalendarViewDataSource.h */; };
+		DAD37DE50AB3355B216E5B85 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 3428A805D7097C664670154C /* Reachability.h */; };
+		DB39A9E1F69567FDB183D81C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1C7B88B1EF35B09ACA3EBC8 /* Foundation.framework */; };
+		E580FA5C96E888459E3AF1E5 /* JTCalendarDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 0975432670E246C73B35A426 /* JTCalendarDataCache.m */; };
+		E5CEE8D345EBD5D5F4797BAF /* JTCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = F37200B1A8346D785ECB29A0 /* JTCalendar.h */; };
+		E6D9E72F63CFF635BD0B65C3 /* JTCalendarWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 966F10CA894DCFE09C5B2B52 /* JTCalendarWeekView.m */; };
+		FD649816EF33C1ED63DE4B70 /* JTCalendarMonthWeekDaysView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CD4FC279C975698269F479 /* JTCalendarMonthWeekDaysView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6095F88C6E65A0DB93882AF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADE1B6A6E86245303BEB97DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4FA167A2C18AC9EBA716C8C;
+			remoteInfo = "Pods-JTCalendar";
+		};
+		62F2BAE69FE9256C3BDC27BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ADE1B6A6E86245303BEB97DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E039EE810B72F4CB3AC65DC8;
+			remoteInfo = "Pods-Reachability";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		054B17E7A9A636AF13CFB3A9 /* JTCalendarMonthWeekDaysView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMonthWeekDaysView.h; path = JTCalendar/JTCalendarMonthWeekDaysView.h; sourceTree = "<group>"; };
+		08A220CF27B1F203230270C0 /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		0975432670E246C73B35A426 /* JTCalendarDataCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarDataCache.m; path = JTCalendar/JTCalendarDataCache.m; sourceTree = "<group>"; };
+		135D056016985607B77548D6 /* JTCalendarAppearance.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarAppearance.m; path = JTCalendar/JTCalendarAppearance.m; sourceTree = "<group>"; };
+		219D80FDFA9D49CB06E01E2E /* JTCalendarDataCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarDataCache.h; path = JTCalendar/JTCalendarDataCache.h; sourceTree = "<group>"; };
+		2496462FD24B3A71EBE130F0 /* Pods-Reachability-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Reachability-Private.xcconfig"; sourceTree = "<group>"; };
+		2AA9B9DD8AC5D76D0AA0D304 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		2F10605B5AB5C067EE8150FF /* JTCalendar.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendar.m; path = JTCalendar/JTCalendar.m; sourceTree = "<group>"; };
+		2F861739CAB165C0AFD7674E /* JTCalendarMonthView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMonthView.h; path = JTCalendar/JTCalendarMonthView.h; sourceTree = "<group>"; };
+		327097C773DA7151EEBA9985 /* JTCalendarMenuMonthView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMenuMonthView.h; path = JTCalendar/JTCalendarMenuMonthView.h; sourceTree = "<group>"; };
+		32C5BD30CD7F49529AE1BB51 /* JTCalendarContentView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarContentView.h; path = JTCalendar/JTCalendarContentView.h; sourceTree = "<group>"; };
+		3428A805D7097C664670154C /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		4452023F03E87385945BF4D5 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		45CEB5153EA4C8658099D526 /* JTCalendarMenuView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMenuView.m; path = JTCalendar/JTCalendarMenuView.m; sourceTree = "<group>"; };
+		59EDEC206C013158A4993981 /* Pods-Reachability.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Reachability.xcconfig"; sourceTree = "<group>"; };
+		72A695A392D6FEF19D899B57 /* JTCalendarAppearance.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarAppearance.h; path = JTCalendar/JTCalendarAppearance.h; sourceTree = "<group>"; };
+		74EB5815D84C73C0C75C2EDD /* JTCalendarMenuView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMenuView.h; path = JTCalendar/JTCalendarMenuView.h; sourceTree = "<group>"; };
+		78557F173ED669966A9AF67B /* JTCalendarDayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarDayView.h; path = JTCalendar/JTCalendarDayView.h; sourceTree = "<group>"; };
+		7C6A99C96970EDC205C86C59 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		7CD8C1B6F102CF7130A5CFCC /* JTCalendarMonthView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMonthView.m; path = JTCalendar/JTCalendarMonthView.m; sourceTree = "<group>"; };
+		812D73E5AB1CA06150E9912B /* JTCalendarMenuMonthView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMenuMonthView.m; path = JTCalendar/JTCalendarMenuMonthView.m; sourceTree = "<group>"; };
+		8D8DB56653513A5008F89B2E /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		92F4033B45C2917E8CC28063 /* libPods-JTCalendar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JTCalendar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		966F10CA894DCFE09C5B2B52 /* JTCalendarWeekView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarWeekView.m; path = JTCalendar/JTCalendarWeekView.m; sourceTree = "<group>"; };
+		9740E59D115DF02A7DE861FD /* Pods-JTCalendar-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JTCalendar-Private.xcconfig"; sourceTree = "<group>"; };
+		986567D4676439A2330E9BD5 /* JTCalendarWeekView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarWeekView.h; path = JTCalendar/JTCalendarWeekView.h; sourceTree = "<group>"; };
+		992D3990301B547CFE33DA48 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		99B8C25C36F26CFB31FA1517 /* JTCircleView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCircleView.h; path = JTCalendar/JTCircleView.h; sourceTree = "<group>"; };
+		9D18223D5481E51B657D8672 /* Pods-Reachability-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Reachability-prefix.pch"; sourceTree = "<group>"; };
+		9EC8979BCD3033DBCA41EC22 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		A681FE2061E774DF240C1673 /* JTCircleView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCircleView.m; path = JTCalendar/JTCircleView.m; sourceTree = "<group>"; };
+		AAEC25FF2C6736B0FF6591BC /* Pods-JTCalendar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JTCalendar-dummy.m"; sourceTree = "<group>"; };
+		B020C06736639438869E5E21 /* libPods-Reachability.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Reachability.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2FB6BF628C82661391B0CBB /* Pods-JTCalendar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JTCalendar-prefix.pch"; sourceTree = "<group>"; };
+		B4CD4FC279C975698269F479 /* JTCalendarMonthWeekDaysView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMonthWeekDaysView.m; path = JTCalendar/JTCalendarMonthWeekDaysView.m; sourceTree = "<group>"; };
+		B50E5D8C736F663C35D5743E /* Reachability.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		BA7DD59FC29745A1A51B44E8 /* Pods-JTCalendar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JTCalendar.xcconfig"; sourceTree = "<group>"; };
+		BCA01808D6B5FC25350310B7 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		D1C7B88B1EF35B09ACA3EBC8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		DBB5D48E7ABA818A5C716E7E /* Pods-Reachability-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Reachability-dummy.m"; sourceTree = "<group>"; };
+		EC3EE5C531D3C7BD52B9941D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
+		F37200B1A8346D785ECB29A0 /* JTCalendar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendar.h; path = JTCalendar/JTCalendar.h; sourceTree = "<group>"; };
+		F5492E34D253E8682DBE394D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		F5BE006A0B72705BEA0D8253 /* JTCalendarContentView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarContentView.m; path = JTCalendar/JTCalendarContentView.m; sourceTree = "<group>"; };
+		F729E99862548B3D024B9C51 /* JTCalendarViewDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarViewDataSource.h; path = JTCalendar/JTCalendarViewDataSource.h; sourceTree = "<group>"; };
+		FDA9F384E81202DE9AD5E9AF /* JTCalendarDayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarDayView.m; path = JTCalendar/JTCalendarDayView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04F6FCC079470CEF02532133 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19940A365019AA233F0E5ACC /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		178FA1EA34D263BCB8C6A63E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB39A9E1F69567FDB183D81C /* Foundation.framework in Frameworks */,
+				B2A539FB77FEAE562ED604D2 /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A18F432CBEB30E93E405ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				018A3056D5ED65255F405C35 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00D7CE8B62D1303F7474BAF0 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				59EDEC206C013158A4993981 /* Pods-Reachability.xcconfig */,
+				2496462FD24B3A71EBE130F0 /* Pods-Reachability-Private.xcconfig */,
+				DBB5D48E7ABA818A5C716E7E /* Pods-Reachability-dummy.m */,
+				9D18223D5481E51B657D8672 /* Pods-Reachability-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-Reachability";
+			sourceTree = "<group>";
+		};
+		0E487A92F83F78E74592122F /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				3428A805D7097C664670154C /* Reachability.h */,
+				B50E5D8C736F663C35D5743E /* Reachability.m */,
+				00D7CE8B62D1303F7474BAF0 /* Support Files */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		11297CAC703E3C025FF16782 /* JTCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				F37200B1A8346D785ECB29A0 /* JTCalendar.h */,
+				2F10605B5AB5C067EE8150FF /* JTCalendar.m */,
+				72A695A392D6FEF19D899B57 /* JTCalendarAppearance.h */,
+				135D056016985607B77548D6 /* JTCalendarAppearance.m */,
+				32C5BD30CD7F49529AE1BB51 /* JTCalendarContentView.h */,
+				F5BE006A0B72705BEA0D8253 /* JTCalendarContentView.m */,
+				219D80FDFA9D49CB06E01E2E /* JTCalendarDataCache.h */,
+				0975432670E246C73B35A426 /* JTCalendarDataCache.m */,
+				78557F173ED669966A9AF67B /* JTCalendarDayView.h */,
+				FDA9F384E81202DE9AD5E9AF /* JTCalendarDayView.m */,
+				327097C773DA7151EEBA9985 /* JTCalendarMenuMonthView.h */,
+				812D73E5AB1CA06150E9912B /* JTCalendarMenuMonthView.m */,
+				74EB5815D84C73C0C75C2EDD /* JTCalendarMenuView.h */,
+				45CEB5153EA4C8658099D526 /* JTCalendarMenuView.m */,
+				2F861739CAB165C0AFD7674E /* JTCalendarMonthView.h */,
+				7CD8C1B6F102CF7130A5CFCC /* JTCalendarMonthView.m */,
+				054B17E7A9A636AF13CFB3A9 /* JTCalendarMonthWeekDaysView.h */,
+				B4CD4FC279C975698269F479 /* JTCalendarMonthWeekDaysView.m */,
+				F729E99862548B3D024B9C51 /* JTCalendarViewDataSource.h */,
+				986567D4676439A2330E9BD5 /* JTCalendarWeekView.h */,
+				966F10CA894DCFE09C5B2B52 /* JTCalendarWeekView.m */,
+				99B8C25C36F26CFB31FA1517 /* JTCircleView.h */,
+				A681FE2061E774DF240C1673 /* JTCircleView.m */,
+				CCA2212021886CC855076F7B /* Support Files */,
+			);
+			path = JTCalendar;
+			sourceTree = "<group>";
+		};
+		19BEF3B52F75A208F82E674A = {
+			isa = PBXGroup;
+			children = (
+				8D8DB56653513A5008F89B2E /* Podfile */,
+				81B509EAEF51506684A5959E /* Frameworks */,
+				9CB31BF8E12AA11CF4CDAC40 /* Pods */,
+				C9E71CDEC9EEE0928669C9DD /* Products */,
+				DC23103651F35AA7BB411535 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		808C1155D462609E9AE4DF8E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7C6A99C96970EDC205C86C59 /* Pods-acknowledgements.markdown */,
+				2AA9B9DD8AC5D76D0AA0D304 /* Pods-acknowledgements.plist */,
+				4452023F03E87385945BF4D5 /* Pods-dummy.m */,
+				08A220CF27B1F203230270C0 /* Pods-environment.h */,
+				9EC8979BCD3033DBCA41EC22 /* Pods-resources.sh */,
+				EC3EE5C531D3C7BD52B9941D /* Pods.debug.xcconfig */,
+				BCA01808D6B5FC25350310B7 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			path = "Target Support Files/Pods";
+			sourceTree = "<group>";
+		};
+		81B509EAEF51506684A5959E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD63F0E713A1A63D7A9FEB32 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9CB31BF8E12AA11CF4CDAC40 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				11297CAC703E3C025FF16782 /* JTCalendar */,
+				0E487A92F83F78E74592122F /* Reachability */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BD63F0E713A1A63D7A9FEB32 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D1C7B88B1EF35B09ACA3EBC8 /* Foundation.framework */,
+				F5492E34D253E8682DBE394D /* SystemConfiguration.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		C9E71CDEC9EEE0928669C9DD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				992D3990301B547CFE33DA48 /* libPods.a */,
+				92F4033B45C2917E8CC28063 /* libPods-JTCalendar.a */,
+				B020C06736639438869E5E21 /* libPods-Reachability.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CCA2212021886CC855076F7B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				BA7DD59FC29745A1A51B44E8 /* Pods-JTCalendar.xcconfig */,
+				9740E59D115DF02A7DE861FD /* Pods-JTCalendar-Private.xcconfig */,
+				AAEC25FF2C6736B0FF6591BC /* Pods-JTCalendar-dummy.m */,
+				B2FB6BF628C82661391B0CBB /* Pods-JTCalendar-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-JTCalendar";
+			sourceTree = "<group>";
+		};
+		DC23103651F35AA7BB411535 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				808C1155D462609E9AE4DF8E /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		08C31F199DB6695E25B054F6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DAD37DE50AB3355B216E5B85 /* Reachability.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC2F0C9666BCD60E80BF1F68 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5CEE8D345EBD5D5F4797BAF /* JTCalendar.h in Headers */,
+				436DACEDCA2298B17F9FD8F2 /* JTCalendarAppearance.h in Headers */,
+				A0EF1453C1F20F5848FB9643 /* JTCalendarContentView.h in Headers */,
+				9BB4B6F144FA80F2DC3A3780 /* JTCalendarDataCache.h in Headers */,
+				1594546F45B551260E6CE6D3 /* JTCalendarDayView.h in Headers */,
+				5C4641D0D1A4B8B7CEBEE398 /* JTCalendarMenuMonthView.h in Headers */,
+				64C936B1F15123D7FAF6EE8D /* JTCalendarMenuView.h in Headers */,
+				32B886D1695C45F9EE754510 /* JTCalendarMonthView.h in Headers */,
+				A574DD5E81A944283AB11FD3 /* JTCalendarMonthWeekDaysView.h in Headers */,
+				CAE5D52B38F622ACB06BF1C3 /* JTCalendarViewDataSource.h in Headers */,
+				7413545E982C38C5831D31DB /* JTCalendarWeekView.h in Headers */,
+				7A8AC67E5C4ED37C0C7F0700 /* JTCircleView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		322FAA6901E4E61E65DEE339 /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DBC473947B9CB5B21565744 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				2730FCAEEF3236449D933D56 /* Sources */,
+				E9A18F432CBEB30E93E405ED /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C606C6F0124CDDE7809F0C43 /* PBXTargetDependency */,
+				24E6BEE2CE13C71308F2758E /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = 992D3990301B547CFE33DA48 /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D4FA167A2C18AC9EBA716C8C /* Pods-JTCalendar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39F6C28AC6E8C4CA83267BEB /* Build configuration list for PBXNativeTarget "Pods-JTCalendar" */;
+			buildPhases = (
+				21C846F11BD91787719BBC67 /* Sources */,
+				04F6FCC079470CEF02532133 /* Frameworks */,
+				FC2F0C9666BCD60E80BF1F68 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-JTCalendar";
+			productName = "Pods-JTCalendar";
+			productReference = 92F4033B45C2917E8CC28063 /* libPods-JTCalendar.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E039EE810B72F4CB3AC65DC8 /* Pods-Reachability */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E295467CBBFFE4EE4940E1EE /* Build configuration list for PBXNativeTarget "Pods-Reachability" */;
+			buildPhases = (
+				D4968ADA6D7B2482E7383FFF /* Sources */,
+				178FA1EA34D263BCB8C6A63E /* Frameworks */,
+				08C31F199DB6695E25B054F6 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Reachability";
+			productName = "Pods-Reachability";
+			productReference = B020C06736639438869E5E21 /* libPods-Reachability.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ADE1B6A6E86245303BEB97DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+			};
+			buildConfigurationList = DB5BDBB3CD68D48A04456BE5 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 19BEF3B52F75A208F82E674A;
+			productRefGroup = C9E71CDEC9EEE0928669C9DD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				322FAA6901E4E61E65DEE339 /* Pods */,
+				D4FA167A2C18AC9EBA716C8C /* Pods-JTCalendar */,
+				E039EE810B72F4CB3AC65DC8 /* Pods-Reachability */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		21C846F11BD91787719BBC67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F01EB44B1927CA167A92751 /* JTCalendar.m in Sources */,
+				987B7F2DFCDAE6334188AE2E /* JTCalendarAppearance.m in Sources */,
+				821BE067BC5D54220EA2969D /* JTCalendarContentView.m in Sources */,
+				E580FA5C96E888459E3AF1E5 /* JTCalendarDataCache.m in Sources */,
+				5B47B21AFC0C1F05E5317D8E /* JTCalendarDayView.m in Sources */,
+				C0BEF904266FF113BF5B7E3F /* JTCalendarMenuMonthView.m in Sources */,
+				923B7DCC5B82BD6715A3D8E5 /* JTCalendarMenuView.m in Sources */,
+				86A264A701D625C098EFFA24 /* JTCalendarMonthView.m in Sources */,
+				FD649816EF33C1ED63DE4B70 /* JTCalendarMonthWeekDaysView.m in Sources */,
+				E6D9E72F63CFF635BD0B65C3 /* JTCalendarWeekView.m in Sources */,
+				3223788B76A8BF100A22879A /* JTCircleView.m in Sources */,
+				AC0AF5444B79F4663906AC9D /* Pods-JTCalendar-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2730FCAEEF3236449D933D56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5360BDEBAD020FC3EB97AD49 /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4968ADA6D7B2482E7383FFF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C094AE5FDFB0E00F74165E78 /* Pods-Reachability-dummy.m in Sources */,
+				7EBC95C2975024BB0D3CD383 /* Reachability.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		24E6BEE2CE13C71308F2758E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-Reachability";
+			target = E039EE810B72F4CB3AC65DC8 /* Pods-Reachability */;
+			targetProxy = 62F2BAE69FE9256C3BDC27BF /* PBXContainerItemProxy */;
+		};
+		C606C6F0124CDDE7809F0C43 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-JTCalendar";
+			target = D4FA167A2C18AC9EBA716C8C /* Pods-JTCalendar */;
+			targetProxy = 6095F88C6E65A0DB93882AF0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1948903C37E2C633FCA5C011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2496462FD24B3A71EBE130F0 /* Pods-Reachability-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-Reachability/Pods-Reachability-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		35851C775A9277BE5F9D4D5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		573970EA81F3AF30B4A626D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2496462FD24B3A71EBE130F0 /* Pods-Reachability-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-Reachability/Pods-Reachability-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		ABEBE03F09E79974FCCDC710 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC3EE5C531D3C7BD52B9941D /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		BBF4C18C15E73777A666B32A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9740E59D115DF02A7DE861FD /* Pods-JTCalendar-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-JTCalendar/Pods-JTCalendar-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D31A7BEC69A3B4628F9EF778 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BCA01808D6B5FC25350310B7 /* Pods.release.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E66C95037A1DEDD8F6B18CDA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E92C1CD73A351406F21E755F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9740E59D115DF02A7DE861FD /* Pods-JTCalendar-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-JTCalendar/Pods-JTCalendar-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		39F6C28AC6E8C4CA83267BEB /* Build configuration list for PBXNativeTarget "Pods-JTCalendar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBF4C18C15E73777A666B32A /* Debug */,
+				E92C1CD73A351406F21E755F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6DBC473947B9CB5B21565744 /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ABEBE03F09E79974FCCDC710 /* Debug */,
+				D31A7BEC69A3B4628F9EF778 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB5BDBB3CD68D48A04456BE5 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35851C775A9277BE5F9D4D5F /* Debug */,
+				E66C95037A1DEDD8F6B18CDA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E295467CBBFFE4EE4940E1EE /* Build configuration list for PBXNativeTarget "Pods-Reachability" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1948903C37E2C633FCA5C011 /* Debug */,
+				573970EA81F3AF30B4A626D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ADE1B6A6E86245303BEB97DA /* Project object */;
+}

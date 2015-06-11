@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>CF3380F9-11D7-4588-9CAF-AB16912F4EB3</string>
+	<key>IDESourceControlProjectName</key>
+	<string>iLogin</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>EAD987426866357D121376213F953D626BB786D8</key>
+		<string>github.com:jay16/iSearch.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iLogin/iLogin.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>EAD987426866357D121376213F953D626BB786D8</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:jay16/iSearch.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>EAD987426866357D121376213F953D626BB786D8</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EAD987426866357D121376213F953D626BB786D8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ISearch</string>
+		</dict>
+	</array>
+</dict>
+</plist>

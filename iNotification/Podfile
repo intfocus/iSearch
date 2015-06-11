@@ -1,0 +1,6 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '7.0'
+
+pod 'JTCalendar', "~>1.2.3"
+pod 'Reachability', "~>3.2"

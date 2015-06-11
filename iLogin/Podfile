@@ -1,0 +1,9 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '7.0'
+
+# 判断网络环境
+pod 'Reachability', '~>3.2'
+pod 'M13Checkbox', '~>1.1.2'
+pod 'SKSplashView', '~>0.1.0'
+pod 'MMMaterialDesignSpinner', '~>0.2.0'

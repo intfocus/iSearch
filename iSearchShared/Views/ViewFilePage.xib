@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ViewFilePage">
+            <rect key="frame" x="0.0" y="0.0" width="213" height="234"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="第一页" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKf-Hm-vx5">
+                    <rect key="frame" x="0.0" y="187" width="213" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="来自: 2015产品DA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K8D-qI-Vxh">
+                    <rect key="frame" x="0.0" y="208" width="213" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgA-Qa-PiF">
+                    <rect key="frame" x="0.0" y="0.0" width="213" height="187"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="213" id="LZj-Un-x3b"/>
+                        <constraint firstAttribute="height" constant="187" id="hrp-fq-BqG"/>
+                    </constraints>
+                </webView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="TKf-Hm-vx5" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="61z-yg-XjD"/>
+                <constraint firstAttribute="trailing" secondItem="K8D-qI-Vxh" secondAttribute="trailing" id="Ekt-q2-gJA"/>
+                <constraint firstItem="K8D-qI-Vxh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NxM-cI-Yy8"/>
+                <constraint firstAttribute="trailing" secondItem="TKf-Hm-vx5" secondAttribute="trailing" id="RYl-La-BPA"/>
+                <constraint firstAttribute="trailing" secondItem="mgA-Qa-PiF" secondAttribute="trailing" id="SVQ-eS-A2T"/>
+                <constraint firstItem="mgA-Qa-PiF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nZb-Ch-VTl"/>
+                <constraint firstItem="mgA-Qa-PiF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nfY-ga-VpN"/>
+                <constraint firstItem="TKf-Hm-vx5" firstAttribute="top" secondItem="mgA-Qa-PiF" secondAttribute="bottom" id="o8j-QZ-GOn"/>
+                <constraint firstAttribute="bottom" secondItem="K8D-qI-Vxh" secondAttribute="bottom" constant="5" id="uwu-jS-ggE"/>
+                <constraint firstItem="K8D-qI-Vxh" firstAttribute="top" secondItem="TKf-Hm-vx5" secondAttribute="bottom" id="zJo-gx-pTF"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="labelFrom" destination="K8D-qI-Vxh" id="z33-pt-IvO"/>
+                <outlet property="labelPageNum" destination="TKf-Hm-vx5" id="7DM-o6-9hn"/>
+                <outlet property="webViewThumbnail" destination="mgA-Qa-PiF" id="4Gd-Qv-Pwm"/>
+            </connections>
+            <point key="canvasLocation" x="260.5" y="380"/>
+        </view>
+    </objects>
+</document>
