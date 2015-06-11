@@ -178,13 +178,15 @@
 				C42EC7FA1B27D47C000F84EF /* iSearchShared */,
 				C4713AA41B26D87C002BB727 /* TempZip */,
 				C4713AD41B26F67E002BB727 /* Images */,
-				C4713AD01B26D8E0002BB727 /* 页面编辑 */,
 				C4713ACF1B26D8D0002BB727 /* PaintView */,
 				C41EC8E11ACB8A89008EDF7B /* AppDelegate.h */,
 				C41EC8E21ACB8A89008EDF7B /* AppDelegate.m */,
 				C41EC8E41ACB8A89008EDF7B /* ViewController.h */,
 				C41EC8E51ACB8A89008EDF7B /* ViewController.m */,
 				C41EC9401ACB9651008EDF7B /* ViewController.xib */,
+				C4713A9D1B26D5EA002BB727 /* ReViewController.xib */,
+				C4713A9E1B26D5EA002BB727 /* ReViewController.m */,
+				C4713A9F1B26D5EA002BB727 /* ReViewController.h */,
 				C41EC9471ACBF85F008EDF7B /* Main.storyboard */,
 				C41EC8EA1ACB8A89008EDF7B /* Images.xcassets */,
 				C41EC8EC1ACB8A89008EDF7B /* LaunchScreen.xib */,
@@ -301,16 +303,6 @@
 				C41EC9451ACBCAE9008EDF7B /* PaintView.m */,
 			);
 			name = PaintView;
-			sourceTree = "<group>";
-		};
-		C4713AD01B26D8E0002BB727 /* 页面编辑 */ = {
-			isa = PBXGroup;
-			children = (
-				C4713A9D1B26D5EA002BB727 /* ReViewController.xib */,
-				C4713A9E1B26D5EA002BB727 /* ReViewController.m */,
-				C4713A9F1B26D5EA002BB727 /* ReViewController.h */,
-			);
-			name = "页面编辑";
 			sourceTree = "<group>";
 		};
 		C4713AD41B26F67E002BB727 /* Images */ = {

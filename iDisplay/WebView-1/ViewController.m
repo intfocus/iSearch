@@ -76,11 +76,6 @@
     [self.webView addGestureRecognizer:gestureLeft];
     // webView按手势放大或缩小
     self.webView.scalesPageToFit = YES;
-
-    // 长按界面，处于激光笔状态
-    //UILongPressGestureRecognizer *gestureLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(changeLaserSwitch:)];
-    //gestureLongPress.minimumPressDuration = .2; //seconds
-    //[self.webView addGestureRecognizer:gestureLongPress];
     
     
     // 作笔记的入口，可切换笔记颜色
@@ -92,6 +87,8 @@
     
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     
     
     [self demoExtract];
@@ -290,8 +287,12 @@
 }
 
 /**
- *  ViewSlide的SLIDE_DOWNLOAD_BTN被下载时，会触发该函数。
- *  只有文件已经下载时，才会真正有动作。
+ *  只有文档已经下载; 文档演示过程中，可以直接进入编辑文档页面界面；
+ *  当前演示页，应该在编辑文档页面界面高亮。
+ *  如果已经存在desc.json.swp说明上次crash了，不需要再拷贝
+ *  在编辑文档页面时
+ *      情况一: 把当前演示页给移除了，则跳至第一页。
+ *      情况二；把当前演示页调换顺序，则跳至对应位置
  *
  *  @param sender 无返回
  */
@@ -299,18 +300,24 @@
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:self.fileID]) {
-        // 界面跳转需要传递fileId，通过写入配置文件来实现交互
+        // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
+        
         NSString *pageID = [[self.fileDesc objectForKey:@"order"] objectAtIndex:self.htmlCurrentIndex];
         [config setObject:self.fileID forKey:@"FileID"];
         [config setObject:pageID forKey:@"PageID"];
         [config writeToFile:pathName atomically:YES];
         
-        config = [FileUtils readConfigFile:pathName];
+        NSString *fileDescSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+        if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
+            NSLog(@"Config SWP file Exist! last time must be CRASH!");
+        } else {
+            // 拷贝一份文档描述配置
+            [FileUtils copyFileDescContent:self.fileID];
+        }
         
-        // 界面跳转
-        // TODO 跳转实现方式不太合适
+        // 界面跳转至文档页面编辑界面
         ReViewController *showVC = [[ReViewController alloc] init];
         [self presentViewController:showVC animated:NO completion:nil];
         NSLog(@"Come back from pages.");

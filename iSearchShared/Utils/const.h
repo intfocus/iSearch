@@ -53,11 +53,11 @@
 #define REORGANIZE_DIRNAME         @"save" // 内容重组后，放置些文件夹中
 #define FAVORITE_DIRNAME           @"favorite"
 #define FILE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
-// FILE_DIRNAME/fileId/{fileId_pageId.html, fileId_pageId.gif, desc.json}
+#define FILE_CONFIG_SWP_FILENAME  @"desc.json.swp" // 文件页面编辑时的配置档拷贝
+// FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"
 #define PAGE_IMAGE_FORMAT          @"gif"
 #define PAGE_IMAGE_NOT_FOUND       @"not_found.png"
-
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/demo/isearch/notifications"

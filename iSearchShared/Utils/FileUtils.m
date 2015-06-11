@@ -80,11 +80,11 @@
  *
  *  @return 返回配置信息NSMutableDictionary
  */
-+ (NSMutableDictionary*) readConfigFile: (NSString*) pathname {
++ (NSMutableDictionary*) readConfigFile: (NSString*) pathName {
     NSMutableDictionary *dict = [NSMutableDictionary alloc];
     //NSLog(@"pathname: %@", pathname);
-    if([self checkFileExist:pathname isDir:false]) {
-        dict = [dict initWithContentsOfFile:pathname];
+    if([self checkFileExist:pathName isDir:false]) {
+        dict = [dict initWithContentsOfFile:pathName];
     } else {
         dict = [dict init];
     }
@@ -133,5 +133,57 @@
         NSLog(@"<# remove file %@ failed: %@", filePath, [error localizedDescription]);
     
     return removed;
+}
+
+/**
+ *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
+ *
+ *  @param fileID fileID
+ *
+ *  @return 文档配置档内容;str
+ */
++ (NSString *) fileDescContent:(NSString *) fileID {
+    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSError *error;
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    
+    if(error) NSLog(@"fileDescContent# read %@ failed for %@", descPath, [error localizedDescription]);
+    return descContent;
+}
+
+/**
+ *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json(.swp)
+ *  klass为FILE_CONFIG_FILENAME、FILE_DISPLAY_CONFIG_FILENAME
+ *
+ *  @param fileID fileID
+ *
+ *  @return 文档配置档路径
+ */
++ (NSString *) fileDescPath:(NSString *) fileID
+                      Klass: (NSString*) klass {
+    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *descPath = [filePath stringByAppendingPathComponent:klass];
+    
+    return descPath;
+}
+
+/**
+ *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
+ *
+ *  @param fileID fileID
+ *
+ *  @return 文档配置档内容;jsonStr
+ */
++ (NSString *) copyFileDescContent:(NSString *) fileID {
+    NSString *descContent = [FileUtils fileDescContent:fileID];
+    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
+    
+    NSError *error;
+    [descContent writeToFile:displayDescPath atomically:true encoding:NSUTF8StringEncoding error:&error];
+    if(error) NSLog(@"fileDescContent# read %@ failed for %@", displayDescPath, [error localizedDescription]);
+    
+    return descContent;
 }
 @end

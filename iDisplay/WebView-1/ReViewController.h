@@ -10,14 +10,15 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GMGridView.h"
 #import "ViewFilePage.h"
+#import "common.h"
 
 
 @interface ReViewController : UIViewController
 
-- (void)addMoreItem;
-- (void)removeItem;
-- (void)refreshItem;
-- (void)presentInfo;
-- (void)presentOptions:(UIBarButtonItem *)barButton;
+//- (void)addMoreItem;
+//- (void)removeItem;
+//- (void)refreshItem;
+//- (void)presentInfo;
+//- (void)presentOptions:(UIBarButtonItem *)barButton;
 @end
 

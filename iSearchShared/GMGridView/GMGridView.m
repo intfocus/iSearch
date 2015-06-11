@@ -1124,12 +1124,12 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     cell.selectBlock = ^(GMGridViewCell *aCell) {
         NSInteger index = [weakSelf positionForItemSubview:aCell];
         if (index != GMGV_INVALID_POSITION) {
-            NSLog(@"%@", [NSString stringWithFormat:@"GMGridView#selectBlock#1129 lineNum: %ld, selectState: %d seleted: %d", (long)index, self.selectState, !aCell.selected]);
+            //NSLog(@"%@", [NSString stringWithFormat:@"GMGridView#selectBlock#1129 lineNum: %ld, selectState: %d seleted: %d", (long)index, self.selectState, !aCell.selected]);
             [weakSelf.dataSource GMGridView:weakSelf selectItemAtIndex:index];
             if(self.selectState) {
                 aCell.selected = !aCell.selected;
             }
-            NSLog(@"GMGridView#selectBlock#1129 End!");
+            //NSLog(@"GMGridView#selectBlock#1129 End!");
             //[weakSelf removeObjectAtIndex:index];
         }
     };

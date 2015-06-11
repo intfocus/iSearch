@@ -80,6 +80,34 @@
  */
 + (BOOL) removeFile:(NSString *)filePath;
 
+/**
+ *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
+ *
+ *  @param fileID fileID
+ *
+ *  @return 文档配置档内容;jsonStr
+ */
++ (NSString *) fileDescContent:(NSString *) fileID;
+
+/**
+ *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json(.swp)
+ *  klass为FILE_CONFIG_FILENAME、FILE_DISPLAY_CONFIG_FILENAME
+ *
+ *  @param fileID fileID
+ *
+ *  @return 文档配置档内容;json
+ */
++ (NSString *) fileDescPath:(NSString *) fileID
+                      Klass: (NSString*) klass;
+
+/**
+ *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
+ *
+ *  @param fileID fileID
+ *
+ *  @return 文档配置档内容;jsonStr
+ */
++ (NSString *) copyFileDescContent:(NSString *) fileID;
 
 @end
 

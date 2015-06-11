@@ -10,45 +10,42 @@
 //  功能：
 //      1. 排序
 //      2. 删除
-//      3. 重组 -> 另存为
+//      3. 重组
+//      4. 恢复 -> 上述操作
 //
 //  已下载文件的目录结构:
-//      FILE_DIRNAME/fileId/{fileId_pageId.html, fileId_pageId.gif, desc.json}
+//      FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileId_pageId/fileId_pageId{.pdf,.gif}}
 //
 //  界面初始化:
 //      扫描FILE_DIRNAME，如果存在配置档fileId/desc.json，则显示该文件信息
-//      点击文件[详情]进入文件页面界面
+//      点击文件[编辑]进入文档页面界面，拷贝desc.json一份，命名为desc.json.swp，同时把fileId/pageId写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME中
 //
-//  文件页面详情:
-//      从文件界面跳转至页面界面时，文件id写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME
-//      读取配置档desc.json[@"order"] 并按该顺序加载界面
+//  文档页面详情:
+//      从文档界面跳转至页面界面时
+//      读取配置档desc.json.swp[@"order"] 并按该顺序加载界面
 //
 //  文件页面功能:
-//      交换顺序: 长按拖拉
-//      移除页面: 移除状态，点击页面移除按钮
-//      选择页面另存在: 选择状态，选择页面，[保存]为新文件或合并至已存在文件（已存在的页面不会复制）
+//      交换顺序: 长按拖拉, 实时写回desc.json.swp
+//      编辑状态: 点击导航栏[编辑]
+//          至少选择一个页面时，可以操作[保存][移除]
+//          选择页面另存在: 选择状态，选择页面，[保存]为新文件或合并至已存在文件（已存在的页面不会复制）
 //
-//  ===============================
-//  B 文件页面 - 内容重组
-//      B1 点击文件[详细]时，该文件ID写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME[@"FileID"]
-//      B2 读取FileID/desc.json[@"order"]并按该顺序写入_data
-//      B3 GridView样式展示，并读取_data，显示<fileId_pageId.gif>
-//      B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
-//      B5 页面移除 - 点击导航栏中的[移除], 各页面左上角出现[x]按钮，点击[x]则会移除fileId_pageId.{html,gif}，并修改desc.json[@"order"]
-//      B6 内容重组 - 点击导航栏中的[选择], 点击指定页面，页面会出现[V]表示选中，选择想要的页面后，再点击导航栏中的[保存] ->
-//          弹出选择框有已经重组文件名称，选择指定文件名称，则会把页面拷贝至选择的fileId/下并修改desc.json[@"order"]
-//          如果新建内容重组文件，则输入文件名称、文件描述，然后生成新的fileId(ryyMMddHHmmSS), 把页面拷贝至新的fileId/下，并创建desc.json
+//          移除: desc.json.swp[@"order"] 数组操作，并写回
+//          保存: 选择已选择的标签文件，则直接复制过去；新创建标签，先创建文件夹，再复制文件
+//      恢复: 比较desc.json与desc.json.swp若不相同则处于激活状态，使用desc.json覆盖desc.json.swp并刷新界面
 //
-//  w:427  h:375 间距:20
+//      返回: 对比desc.json.swp[@order]物理删除文档页面，并写回desc.json, 最后删除desc.json.swp配置档
+//
+//   **重点**
+//   1. 当前viewController功能代码中操作的配档为desc.json.swp
+//   2.
+//
+//  w:427  h:375 margin:20
 //  w:2048 h:1536
-//    1024, 768
+//  w:1024 h:768
 #import "ReViewController.h"
-#import "common.h"
 
-@interface ReViewController ()   <GMGridViewDataSource,
-                                GMGridViewSortingDelegate,
-                                GMGridViewTransformationDelegate,
-                                GMGridViewActionDelegate> {
+@interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
     UIImageView          *changeBigImageView;
     NSMutableArray       *_data; // 文件的页面信息
@@ -56,10 +53,11 @@
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *structureView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
-@property (nonatomic, assign) BOOL selectState;   // 内容重组
-@property (nonatomic, strong) NSString  *fileID; // 本界面展示该fileId的页面
-@property (nonatomic, strong) NSString  *pageID; // 由展示页跳至本页时需要使用
+@property (nonatomic, assign) BOOL selectState;   // 编辑状态
+@property (nonatomic, strong) NSString  *fileID;
+@property (nonatomic, strong) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
 @property (nonatomic, nonatomic) UIBarButtonItem *editBarItem; // 是否切换至编辑状态
+@property (nonatomic, nonatomic) UIBarButtonItem *restoreBarItem; // 恢复至初始状态，desc.json覆盖desc.json.swp
 @property (nonatomic, nonatomic) UIBarButtonItem *saveBarItem;   // 编辑状态下至少选择一个页面时激活
 @property (nonatomic, nonatomic) UIBarButtonItem *removeBarItem; // 编辑状态下至少选择一个页面时激活
 @property (nonatomic, nonatomic) NSMutableDictionary *tmpPageInfo;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
@@ -69,6 +67,7 @@
 @implementation ReViewController
 @synthesize fileID;
 @synthesize pageID;
+@synthesize restoreBarItem;
 @synthesize editBarItem;
 @synthesize saveBarItem;
 @synthesize removeBarItem;
@@ -79,7 +78,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    // 任何对象都需要初始化
+    // 任何@property对象都需要初始化,否则直接赋值失败
     self.tmpPageInfo = [[NSMutableDictionary alloc] init];
     
     self.selectState = false;
@@ -102,11 +101,21 @@
     // 导航右侧按钮区
     [array removeAllObjects];
 
-    // 编辑状态-切换
-    self.editBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SELECT]
+    // 恢复按钮 - desc.json覆盖desc.json.swp
+    self.restoreBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
                                                       style:UIBarButtonItemStylePlain
                                                      target:nil
-                                                     action:@selector(actionEditPages:)];
+                                                     action:@selector(actionRestorePages:)];
+    // 对比是否有修改，以此设置[恢复]状态
+    [self checkDescSwpContent];
+    [array addObject:self.restoreBarItem];
+    
+    
+    // 编辑状态-切换
+    self.editBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:nil
+                                                      action:@selector(actionEditPages:)];
     self.editBarItem.possibleTitles = [NSSet setWithObjects:BTN_SELECT, BTN_CANCEL, nil];
     [array addObject:self.editBarItem];
     
@@ -161,9 +170,9 @@
     self.view.backgroundColor = [UIColor purpleColor];
     _select = [[NSMutableArray alloc] init];
     
-    // 由文件界面点击[详细]进入该界面
-    // 通过REORGANIZE_CONFIG_FILENAME配置档传递文件ID
-    self.fileID = [self currentFileId];
+    // 由文件演示界面，[编辑]进入文档页面编辑界面
+    // 通过REORGANIZE_CONFIG_FILENAME配置档传递fileID/pageID
+    [self loadConfigInfo];
     
     // 加载文件各页面
     _data = [self loadFilePages];;
@@ -171,14 +180,15 @@
 }
 
 /**
- *  B1 点击文件[详细]时，该文件ID写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME[@"DetailID"]
+ *  B1 点击文件[编辑]时，该fileID写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME[@"FileID"]
  *
- *  @return fileId
  */
-- (NSString *) currentFileId {
+- (void) loadConfigInfo {
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-    return config[@"FileID"];
+
+    self.pageID = config[@"PageID"];
+    self.fileID = config[@"FileID"];
 }
 
 //////////////////////////////////////////////////////////////
@@ -186,33 +196,29 @@
 //////////////////////////////////////////////////////////////
 
 /**
- *  B2 读取DetailId/desc.json[@"order"]并按该顺序写入_data
+ *  B2 读取fileID/desc.json.swp[@"order"]并按该顺序写入_data
  *
- *  @return <#return value description#>
+ *  @return @[{pageName: fileID_pageID}]
  */
 - (NSMutableArray*) loadFilePages {
-    NSString *fileName = [FileUtils getPathName:FILE_DIRNAME FileName:self.fileID];
-    NSString *descPath = [fileName stringByAppendingPathComponent:@"desc.json"];
-    
     NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSMutableDictionary *descJSON = [[NSMutableDictionary alloc]init];
     
-    if([FileUtils checkFileExist:descPath isDir:false]) {
-        NSMutableDictionary *descJSON = [[NSMutableDictionary alloc]init];
-        
-        NSString *descContent = [NSString stringWithContentsOfFile:descPath usedEncoding:NULL error:NULL];
-        descJSON = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:NULL];
-        NSMutableArray *pagesOrder = descJSON[@"order"];
+    // 此处必须读取swp文件
+    // 如果在编辑文档页面界面，移动页面顺序、移除页面时，把app关闭，则再次进入编辑页面界面时是与原配置信息不一样的
+    // 用户可以通过[恢复]实现还原最原始的状态
+    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass: FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath];
+    descJSON = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
+                                               options:NSJSONReadingMutableContainers
+                                                 error:NULL];
+    NSMutableArray *pagesOrder = descJSON[@"order"];
 
-        NSString *pageName;
-        for(pageName in pagesOrder) {
-            NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
-            [tmpDict setObject:[NSString stringWithFormat:@"%@", pageName] forKey:@"pageName"];
-            [array addObject:tmpDict];
-        }
-    } else {
-        NSLog(@"%s#%d <#fileNotFound: %@>", __FILE__, __LINE__, descPath);
+    NSString *pageName = [[NSString alloc] init];
+    for(pageName in pagesOrder) {
+        NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
+        [tmpDict setObject:[NSString stringWithFormat:@"%@", pageName] forKey:@"pageName"];
+        [array addObject:tmpDict];
     }
     
     return array;
@@ -220,6 +226,7 @@
 
 /**
  *  导航栏按钮[返回], 关闭当前文档编辑界面。
+ *  对比desc.json.swp[@order]物理删除文档页面，并写回desc.json, 最后删除desc.json.swp配置档
  *
  *  @param gesture UIGestureRecognizer
  */
@@ -227,12 +234,23 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
+- (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
+    NSString *descPath = [FileUtils fileDescPath:self.FileID Klass:FILE_CONFIG_FILENAME];
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath];
+    NSString *descSwpPath = [FileUtils fileDescPath:self.FileID Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath];
+
+    self.restoreBarItem.enabled = ![descContent isEqualToString:descSwpContent];
+
+    
+}
+
 /**
  *  导航栏按钮[编辑], 编辑状态切换。
  *
  *  @param sender UIBarButtonItem
  */
-- (IBAction)actionEditPages: (UIBarButtonItem*)sender {
+- (IBAction)actionEditPages:(UIBarButtonItem*)sender {
     if(!self.selectState) {
         self.selectState = true;
         _gmGridView.selectState = self.selectState;
@@ -246,6 +264,10 @@
         _gmGridView.selectState = self.selectState;
         
         [self.editBarItem setTitle: BTN_SELECT];
+        // 在有选择多个页面情况下，[保存][移除]是激活的，
+        // 但直接[取消]编辑状态时, 就需要手工禁用
+        self.saveBarItem.enabled = false;
+        self.removeBarItem.enabled = false;
     }
     
 }
@@ -478,12 +500,10 @@
                   ToIndex:(NSInteger)index2 {
     
     NSError *error;
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
-    NSString *filePath = [filesPath stringByAppendingPathComponent:fileId];
-    NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSString *descSwpPath = [FileUtils fileDescPath:fileID Klass:FILE_CONFIG_SWP_FILENAME];
     
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath usedEncoding:NULL error:NULL];
-    id descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath usedEncoding:NULL error:NULL];
+    id descData = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
                                                options:NSJSONReadingMutableContainers
                                                  error:&error];
     if(error) NSLog(@"<# parse json error: %@>", [error localizedDescription]);
@@ -493,7 +513,7 @@
     
     // 重置order内容并写入配置档
     [descData setObject:pageOrder forKey:@"order"];
-    [self writeJSON:descData Into:descPath];
+    [self writeJSON:descData Into:descSwpPath];
 }
 
 /**
@@ -504,14 +524,11 @@
  */
 - (void) removePage:(NSString *)fileId
               Index:(NSInteger)index {
-    
     NSError *error;
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
-    NSString *filePath = [filesPath stringByAppendingPathComponent:fileId];
-    NSString *descPath = [filePath stringByAppendingPathComponent:@"desc.json"];
+    NSString *descSwpPath = [FileUtils fileDescPath:fileID Klass:FILE_CONFIG_SWP_FILENAME];
     
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath usedEncoding:NULL error:NULL];
-    id descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
+    id descData = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
                                                   options:NSJSONReadingMutableContainers
                                                     error:&error];
     if(error) NSLog(@"<# parse json error: %@>", [error localizedDescription]);
@@ -521,7 +538,7 @@
     
     // 重置order内容并写入配置档
     [descData setObject:pageOrder forKey:@"order"];
-    [self writeJSON:descData Into:descPath];
+    [self writeJSON:descData Into:descSwpPath];
 }
 
 /**
@@ -656,8 +673,8 @@
 
 // B5 页面移除 - 点击导航栏中的[移除], 各页面左上角出现[x]按钮，点击[x]则会移除fileId_pageId.{html,gif}，并修改desc.json[@"order"]
 - (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {
-    [self removePage:[self currentFileId] Index:index];
-    [_data removeObjectAtIndex:index];
+//    [self removePage:[self currentFileId] Index:index];
+//    [_data removeObjectAtIndex:index];
 }
 
 // B6 内容重组 - 点击导航栏中的[选择], 点击指定页面，页面会出现[V]表示选中，选择想要的页面后，再点击导航栏中的[保存] ->
@@ -772,8 +789,8 @@
 // 页面位置互换
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
-    NSLog(@"%s#%d <# %ld => %ld in %@>", __FILE__, __LINE__, (long)index1, (long)index2, [self currentFileId]);
-    [self excangePageOrder:[self currentFileId] FromIndex:index1 ToIndex:index2];
+    NSLog(@"%s#%d <# %ld => %ld>", __FILE__, __LINE__, (long)index1, (long)index2);
+    [self excangePageOrder:self.fileID FromIndex:index1 ToIndex:index2];
     [_data exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
 }
 
@@ -834,14 +851,14 @@
 
 - (void)GMGridView:(GMGridView *)gridView didEnterFullSizeForCell:(UIView *)cell { }
 
-//////////////////////////////////////////////////////////////
-#pragma mark private methods
-//////////////////////////////////////////////////////////////
-
-- (void)addMoreItem {}
-- (void)removeItem {}
-- (void)refreshItem {}
-- (void)presentInfo {}
-- (void)presentOptions:(UIBarButtonItem *)barButton {}
+////////////////////////////////////////////////////////////////
+//#pragma mark private methods
+////////////////////////////////////////////////////////////////
+//
+//- (void)addMoreItem {}
+//- (void)removeItem {}
+//- (void)refreshItem {}
+//- (void)presentInfo {}
+//- (void)presentOptions:(UIBarButtonItem *)barButton {}
 @end
 
