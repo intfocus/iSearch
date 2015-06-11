@@ -142,7 +142,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 @synthesize minEdgeInsets = _minEdgeInsets;
 @synthesize showFullSizeViewWithAlphaWhenTransforming;
 @synthesize editing = _editing;
-@synthesize selecting = _selecting;
+@synthesize selectState = _selectState;
 @synthesize selected = _selected;
 @synthesize scrollView = _scrollView;
 
@@ -369,29 +369,32 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 }
 
 // add by junjie.li
-- (void)setSelecting:(BOOL)selecting {
+// GridView是否编辑状态，关联至其Cell.
+- (void)setSelectState:(BOOL)selectState {
     if ([self.dataSource respondsToSelector:@selector(GMGridView:selectItemAtIndex:)]
         &&![self isInTransformingState]
-        && ((self.isSelecting && !selecting) || (!self.isSelecting && selecting))) {
+        && ((self.isSelectState && !selectState) || (!self.isSelectState && selectState))) {
+        
+        NSLog(@"GridView#387 setSelectState Begin");
         for (GMGridViewCell *cell in [self itemSubviews]) {
-            [cell setSelecting:selecting];
+            [cell setSelectState:selectState];
         }
         
-        _selecting = selecting;
-        NSLog(@"set selecting.");
+        _selectState = selectState;
+        NSLog(@"GridView#387 setSelectState End");
     }
 }
 
 - (void)setSelected:(BOOL)selected {
-    if ([self.dataSource respondsToSelector:@selector(GMGridView:selectItemAtIndex:)]
+    if ([self.dataSource respondsToSelector:@selector(GMGridView:selectedItemAtIndex:)]
         &&![self isInTransformingState]
-        && ((self.isSelecting && !selected) || (!self.isSelecting && selected))) {
+        && ((self.isSelectState && !selected) || (!self.isSelectState && selected))) {
         //for (GMGridViewCell *cell in [self itemSubviews]) {
             //[cell setSelecting:selected];
         //}
         
-        _selected = selected;
-        NSLog(@"set selected.");
+        //_selected = selected;
+        NSLog(@"GridView#394 set selected.");
     }
 }
 - (void)setShowsVerticalScrollIndicator:(BOOL)showsVerticalScroll 
@@ -1102,7 +1105,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     
     cell.tag = position + kTagOffset;
     cell.editing = self.editing;
-    cell.selecting = self.selecting;
+    cell.selectState = self.selectState;
     cell.selected = self.selected;
     
     __gm_weak GMGridView *weakSelf = self; 
@@ -1121,9 +1124,12 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     cell.selectBlock = ^(GMGridViewCell *aCell) {
         NSInteger index = [weakSelf positionForItemSubview:aCell];
         if (index != GMGV_INVALID_POSITION) {
-            NSLog(@"%@", [NSString stringWithFormat:@"GMGridView#selectBlock lineNum: %ld", (long)index]);
+            NSLog(@"%@", [NSString stringWithFormat:@"GMGridView#selectBlock#1129 lineNum: %ld, selectState: %d seleted: %d", (long)index, self.selectState, !aCell.selected]);
             [weakSelf.dataSource GMGridView:weakSelf selectItemAtIndex:index];
-            aCell.selected = !aCell.selected;
+            if(self.selectState) {
+                aCell.selected = !aCell.selected;
+            }
+            NSLog(@"GMGridView#selectBlock#1129 End!");
             //[weakSelf removeObjectAtIndex:index];
         }
     };
@@ -1304,7 +1310,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
                 cell = [self cellForItemAtIndex:i];
                 if(cell)
                 {
-                    NSLog(@"Removing item at position %d", i);
+                    //NSLog(@"%s#%d cleanupUnseenItems %d", __FILE__, __LINE__, i);
                     [self queueReusableCell:cell];
                     [cell removeFromSuperview];
                 }

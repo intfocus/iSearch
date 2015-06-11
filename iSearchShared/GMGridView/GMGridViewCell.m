@@ -85,10 +85,7 @@
     {
         self.autoresizesSubviews = !YES;
         self.editing = NO;
-        self.selecting = NO;
-        // add by junjie.li
-        // 该变量自己控制自己: self.selectState = !self.selectState;
-        self.selectState = YES;
+        self.selectState = NO;
         
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.deleteButton = deleteButton;
@@ -252,23 +249,31 @@
 }
 
 // add by junjie.li
-
-- (void)setSelecting:(BOOL)selecting {
-    //NSLog(@"click Cell#SetSelecting %d", selecting);
-    _selecting = selecting;
+- (void)setSelectState:(BOOL)selectState {
+    // 在设置_selectState前把selected处理掉。
+    // 设置为非编辑状态时，所有cell的selected都要设置为false
+    // 再进入编辑状态时，重新选择
+    if(!selectState) {
+        [self setSelected: false];
+    }
+    _selectState = selectState;
     
-    self.selectButton.alpha = selecting ? 1 : 0;
-    [self.selectButton setImage:_selectingButtonIcon forState:UIControlStateNormal];
+    self.selectButton.alpha = selectState ? 1 : 0;
+    [self.selectButton setImage:(selectState ? _selectingButtonIcon : nil) forState:UIControlStateNormal];
 
-    self.contentView.userInteractionEnabled = !selecting;
-    NSLog(@"setSelecting: %d", self.selectState);
+    self.contentView.userInteractionEnabled = !selectState;
+    NSLog(@"GridViewCell#264 - selectState: %d", selectState);
 }
 
 - (void)setSelected:(BOOL)selected {
-    self.selectState = !self.selectState;
+    // 仅处理编辑状态时的情况
+    if(!self.selectState) return;
     
-    [self.selectButton setImage:_selectedButtonIcon forState:UIControlStateNormal];
-    NSLog(@"setSelected: %d", self.selectState);
+    _selected = selected;
+    [self.selectButton setImage:(selected ? _selectedButtonIcon : _selectingButtonIcon) forState:UIControlStateNormal];
+
+    self.contentView.userInteractionEnabled = !selected;
+    NSLog(@"GridViewCell#271 - setSelected: %d", selected);
 }
 
 - (void)setSelectButtonOffset:(CGPoint)offset {

@@ -66,7 +66,7 @@ typedef enum
 
 // add by junjie.li
 // Selecting Mode
-@property (nonatomic, getter=isSelecting) BOOL selecting;
+@property (nonatomic, getter=isSelectState) BOOL selectState;
 @property (nonatomic, getter=isSelected) BOOL selected;
 // Default is NO - When set to YES, all gestures are disabled and select buttons shows up on cells
 

@@ -32,6 +32,7 @@
 #import "GMGridViewCell.h"
 
 typedef void (^GMGridViewCellDeleteBlock)(GMGridViewCell*);
+typedef void (^GMGridViewCellSelectBlock)(GMGridViewCell*);
 
 //////////////////////////////////////////////////////////////
 #pragma mark -
@@ -50,11 +51,11 @@ typedef void (^GMGridViewCellDeleteBlock)(GMGridViewCell*);
 @property (nonatomic, readonly, getter=isInFullSizeMode) BOOL inFullSizeMode;
 
 // add by junjie.li
-@property (nonatomic, getter=isSelecting) BOOL selecting;
+@property (nonatomic, getter=isSelectState) BOOL selectState;
 @property (nonatomic, getter=isSelected) BOOL selected;
 @property (nonatomic, getter=isEditing) BOOL editing;
 @property (nonatomic, copy) GMGridViewCellDeleteBlock deleteBlock;
-@property (nonatomic, copy) GMGridViewCellDeleteBlock selectBlock;
+@property (nonatomic, copy) GMGridViewCellSelectBlock selectBlock;
 
 @property (nonatomic, assign) UIViewAutoresizing defaultFullsizeViewResizingMask;
 @property (nonatomic, gm_weak) UIButton *deleteButton;

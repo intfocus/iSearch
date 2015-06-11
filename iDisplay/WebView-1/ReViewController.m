@@ -56,23 +56,24 @@
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *structureView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
-@property (nonatomic, assign) BOOL editabled;    // 移除页面
-@property (nonatomic, assign) BOOL selectable;   // 内容重组
+@property (nonatomic, assign) BOOL selectState;   // 内容重组
 @property (nonatomic, strong) NSString  *fileID; // 本界面展示该fileId的页面
 @property (nonatomic, strong) NSString  *pageID; // 由展示页跳至本页时需要使用
-@property (nonatomic, strong) UIBarButtonItem *editItem;
-@property (nonatomic, strong) UIBarButtonItem *selectItem;
-
-@property (nonatomic, nonatomic) NSMutableDictionary *tmpPageInfo;   // 文档页面信息: 自来那个文档
+@property (nonatomic, nonatomic) UIBarButtonItem *editBarItem; // 是否切换至编辑状态
+@property (nonatomic, nonatomic) UIBarButtonItem *saveBarItem;   // 编辑状态下至少选择一个页面时激活
+@property (nonatomic, nonatomic) UIBarButtonItem *removeBarItem; // 编辑状态下至少选择一个页面时激活
+@property (nonatomic, nonatomic) NSMutableDictionary *tmpPageInfo;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
 
 @end
-
 
 @implementation ReViewController
 @synthesize fileID;
 @synthesize pageID;
-@synthesize editItem;
-@synthesize selectItem;
+@synthesize editBarItem;
+@synthesize saveBarItem;
+@synthesize removeBarItem;
+@synthesize tmpPageInfo;
+@synthesize selectState;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -81,9 +82,7 @@
     // 任何对象都需要初始化
     self.tmpPageInfo = [[NSMutableDictionary alloc] init];
     
-    
-    self.editabled = false;
-    self.selectable = false;
+    self.selectState = false;
     NSLog(@"structureView: %@",NSStringFromCGRect(self.structureView.bounds));
     
     // 顶部导航 按钮控件
@@ -96,27 +95,36 @@
     UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"< 返回"]
                                                             style:UIBarButtonItemStylePlain
                                                            target:nil
-                                                           action:@selector(viewTapped:)];
+                                                           action:@selector(actionDismiss:)];
     [array addObject:item];
     self.navigation.leftBarButtonItems = array;
     
     // 导航右侧按钮区
     [array removeAllObjects];
-    // 编辑 - 移除页面
-    self.editItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
-                                                    style:UIBarButtonItemStylePlain
-                                                    target:nil
-                                                   action:@selector(switchEditable)];
-    self.editItem.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_SAVE, BTN_CANCEL, nil];
-    [array addObject:self.editItem];
-    // 选择 - 内容重组
-    self.selectItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SELECT]
+
+    // 编辑状态-切换
+    self.editBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SELECT]
                                                       style:UIBarButtonItemStylePlain
                                                      target:nil
-                                                     action:@selector(switchSelectable:)];
-    self.selectItem.possibleTitles = [NSSet setWithObjects:BTN_SELECT, BTN_CANCEL, nil];
-    [array addObject:self.selectItem];
-    self.navigation.rightBarButtonItems = array;
+                                                     action:@selector(actionEditPages:)];
+    self.editBarItem.possibleTitles = [NSSet setWithObjects:BTN_SELECT, BTN_CANCEL, nil];
+    [array addObject:self.editBarItem];
+    
+    // 保存 - 编辑状态下，至少选择一页面时，激活
+    self.saveBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:nil
+                                                  action:@selector(actionSavePages:)];
+    [array addObject:self.saveBarItem];
+    
+    // 移除 - 编辑状态下，至少选择一页面时，激活
+    self.removeBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_REMOVE]
+                                                    style:UIBarButtonItemStylePlain
+                                                   target:nil
+                                                   action:@selector(actionRemovePages:)];
+    [array addObject:self.removeBarItem];
+    
+    self.navigation.rightBarButtonItems = [[array reverseObjectEnumerator] allObjects];
     
     // 配置创建 GMGridView
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.structureView.bounds];
@@ -210,46 +218,181 @@
     return array;
 }
 
-- (void)viewTapped:(UIGestureRecognizer *)gesture {
+/**
+ *  导航栏按钮[返回], 关闭当前文档编辑界面。
+ *
+ *  @param gesture UIGestureRecognizer
+ */
+- (void)actionDismiss:(UIGestureRecognizer *)gesture {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (void) switchSelectable: (UIBarButtonItem*) sender {
-    if(!self.selectable) {
-        NSLog(@"TODO#switchSelect DealWith %@", _select);
-        sender.title = BTN_CANCEL;
-        self.selectable = !self.selectable;
-        self.editItem.enabled = !self.selectable;
-        NSLog(@"1 _gmGridView.selecting = %d", self.selectable);
-        _gmGridView.selecting = self.selectable;
-    }
-    if([[self.selectItem title] isEqualToString:BTN_SAVE]) {
-        NSString *message = @"已存在内容重组文件:\n";
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        for(dict in [self reorganizeNames])
-            message = [message stringByAppendingString:[NSString stringWithFormat:@"%@\n", dict[@"fileName"]]];
+/**
+ *  导航栏按钮[编辑], 编辑状态切换。
+ *
+ *  @param sender UIBarButtonItem
+ */
+- (IBAction)actionEditPages: (UIBarButtonItem*)sender {
+    if(!self.selectState) {
+        self.selectState = true;
+        _gmGridView.selectState = self.selectState;
         
-        message = [message stringByAppendingString:@"\n请输入内容重组后文件名称"];
+        // 导航栏按钮样式
+        [self.editBarItem setTitle: BTN_CANCEL];
+        self.saveBarItem.enabled = false;
+        self.removeBarItem.enabled = false;
+    } else {
+        self.selectState = false;
+        _gmGridView.selectState = self.selectState;
         
-        UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"收藏" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        [alert show];
+        [self.editBarItem setTitle: BTN_SELECT];
     }
-    if([[self.selectItem title] isEqualToString:BTN_CANCEL]) {
-        [self.selectItem setTitle:BTN_SELECT];
-        self.editItem.enabled = !self.selectable;
-        _gmGridView.selecting = self.selectable;
-        NSLog(@"2 _gmGridView.selecting = %d", self.selectable);
-    }
-    NSLog(@"selectable: %d", self.selectable);
+    
 }
 
-- (void) switchEditable {
-    self.editabled = !self.editabled;
+- (IBAction)actionSavePages:(UIBarButtonItem*)sender {
+    NSString *message = @"已存在内容重组文件:\n";
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    for(dict in [self reorganizeNames])
+        message = [message stringByAppendingString:[NSString stringWithFormat:@"%@\n", dict[@"fileName"]]];
     
-    self.selectItem.enabled = !self.editabled;
-    _gmGridView.editing = self.editabled;
+    message = [message stringByAppendingString:@"\n请输入内容重组后文件名称"];
+    
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"添加标签"
+                                                         message:message
+                                                        delegate:self
+                                               cancelButtonTitle:BTN_CANCEL
+                                               otherButtonTitles:BTN_SURE, nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alertView.tag = 100; // 区分alwrtView, for 所有alertView共用同一个回调函数
+    
+    [alertView show];
 }
+
+- (IBAction)actionRemovePages:(UIBarButtonItem*)sender {
+    NSString *message = @"确认移除以下页面:\n";
+    NSNumber *i = [[NSNumber alloc] init];
+    for(i in _select)
+        message = [message stringByAppendingString:[NSString stringWithFormat:@"第%d页 ", i]];
+    
+    message = [message stringByAppendingString:@"\n未关闭当前界面时，可选择[恢复]此操作。"];
+    
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"移除"
+                                                         message:message
+                                                        delegate:self
+                                               cancelButtonTitle:BTN_CANCEL
+                                               otherButtonTitles:BTN_SURE, nil];
+    alertView.alertViewStyle = UIAlertViewStyleDefault;
+    alertView.tag = 101; // 区分alwrtView, for 所有alertView共用同一个回调函数
+    
+    [alertView show];
+}
+
+// TODO 已经创建重组夹列表
+// 名称、描述
+/**
+ *  选择页面后，点击[保存]按钮后，弹出对话框选择内容重组文件名称列表，或新建文件名称及描述
+ *
+ *  @param alertView   弹出框实现
+ *  @param buttonIndex 弹出框按钮序号
+ */
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    NSLog(@"alertView.tag=%d; buttonIndex: %d", alertView.tag, buttonIndex);
+    return;
+    NSString *searchFileName = [[alertView textFieldAtIndex:0] text];
+    searchFileName = [searchFileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    // 输入文件名称为空，不做操作
+    if(!searchFileName.length) return;
+    
+    // step1: 判断name=text是否存在
+    // 重组内容文件名称格式: r150501
+    NSError *error;
+    NSString *searchFileID;
+    NSMutableArray *reorganizeNames = [self reorganizeNames];
+    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // 检测已经内容重组的文件名称
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
+    for(dict in reorganizeNames) {
+        if([dict[@"fileName"] isEqualToString:searchFileName]) {
+            searchFileID = dict[@"fileId"];
+            break;
+        }
+    }
+    
+    // 重组内容文件的配置档
+    NSMutableDictionary *descData = [NSMutableDictionary dictionaryWithCapacity:0];
+    
+    // step2.1 若不存在,则创建
+    NSString *descPath;
+    
+    NSNumber *pageIndex;
+    NSString *pageName;
+    NSMutableArray *pages = [[NSMutableArray alloc] init];
+    
+    if(![searchFileID length]) {
+        // 内容重组文件新名称，名称格式: r150501010101
+        NSString *newFileID = [NSString stringWithFormat:@"r%@", [ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
+        NSString *newFilePath = [filesPath stringByAppendingPathComponent:newFileID];
+        descPath = [newFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        
+        // 创建前文件路径前，测试是否不存在
+        if(![FileUtils checkFileExist:newFilePath isDir:true])
+            [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+        
+        // 创建配置档内容
+        [descData setObject:newFileID forKey:@"id"];
+        [descData setObject:searchFileName forKey:@"name"];
+        [descData setObject:searchFileName forKey:@"desc"];
+        
+        // 把选中的页面复制到内容重组文件中
+        // _select存放的为GridView序号
+        for(pageIndex in _select) {
+            pageName = [_data objectAtIndex:[pageIndex intValue]][@"pageName"];
+            // 拷贝文件page/image
+            [self copyFilePage:pageName FromFileId:self.fileID ToFileId:newFileID];
+            
+            [pages addObject:pageName];
+        }
+        [descData setObject:pages forKey:@"order"];
+        
+        // step2.2 收藏夹中原已存在，修改原配置档，复制页面
+    } else {
+        // 读取原有配置档信息
+        NSString *searchFilePath = [filesPath stringByAppendingPathComponent:searchFileID];
+        descPath = [searchFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        
+        NSString *descContent = [NSString stringWithContentsOfFile:descPath usedEncoding:NULL error:NULL];
+        descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                   options:NSJSONReadingMutableContainers
+                                                     error:&error];
+        if(error) NSLog(@"<# parse json data failed: %@>", [error localizedDescription]);
+        
+        pages = descData[@"order"];
+        for(pageIndex in _select) {
+            pageName = [_data objectAtIndex:[pageIndex intValue]][@"pageName"];
+            
+            // 如果该页面已经存在，则跳过。
+            // pageName格式: fileId_pageId
+            if([pages containsObject:pageName])
+                continue;
+            
+            // 拷贝文件page/image
+            [self copyFilePage:pageName FromFileId:self.fileID ToFileId:searchFileID];
+            
+            [pages addObject:pageName];
+        }
+        // 重新赋值order
+        [descData setObject:pages forKey:@"order"];
+    }
+    
+    // 配置信息写入文件
+    [self writeJSON:descData Into:descPath];
+}
+
 
 /**
  *  内容重组的文件列表
@@ -405,108 +548,6 @@
     }
 }
 
-// TODO 已经创建重组夹列表
-// 名称、描述
-/**
- *  选择页面后，点击[保存]按钮后，弹出对话框选择内容重组文件名称列表，或新建文件名称及描述
- *
- *  @param alertView   弹出框实现
- *  @param buttonIndex 弹出框按钮序号
- */
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSString *searchFileName = [[alertView textFieldAtIndex:0] text];
-    searchFileName = [searchFileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-    // 输入文件名称为空，不做操作
-    if(!searchFileName.length) return;
-    
-    // step1: 判断name=text是否存在
-    // 重组内容文件名称格式: r150501
-    NSError *error;
-    NSString *searchFileID;
-    NSMutableArray *reorganizeNames = [self reorganizeNames];
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    // 检测已经内容重组的文件名称
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
-    for(dict in reorganizeNames) {
-        if([dict[@"fileName"] isEqualToString:searchFileName]) {
-            searchFileID = dict[@"fileId"];
-            break;
-        }
-    }
-    
-    // 重组内容文件的配置档
-    NSMutableDictionary *descData = [NSMutableDictionary dictionaryWithCapacity:0];
-    
-    // step2.1 若不存在,则创建
-    NSString *descPath;
-    
-    NSNumber *pageIndex;
-    NSString *pageName;
-    NSMutableArray *pages = [[NSMutableArray alloc] init];
-    
-    if(![searchFileID length]) {
-        // 内容重组文件新名称，名称格式: r150501010101
-        NSString *newFileID = [NSString stringWithFormat:@"r%@", [ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
-        NSString *newFilePath = [filesPath stringByAppendingPathComponent:newFileID];
-        descPath = [newFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
-        
-        // 创建前文件路径前，测试是否不存在
-        if(![FileUtils checkFileExist:newFilePath isDir:true])
-            [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
-        
-        // 创建配置档内容
-        [descData setObject:newFileID forKey:@"id"];
-        [descData setObject:searchFileName forKey:@"name"];
-        [descData setObject:searchFileName forKey:@"desc"];
-        
-        // 把选中的页面复制到内容重组文件中
-        // _select存放的为GridView序号
-        for(pageIndex in _select) {
-            pageName = [_data objectAtIndex:[pageIndex intValue]][@"pageName"];
-            // 拷贝文件page/image
-            [self copyFilePage:pageName FromFileId:self.fileID ToFileId:newFileID];
-            
-            [pages addObject:pageName];
-        }
-        [descData setObject:pages forKey:@"order"];
-        
-    // step2.2 收藏夹中原已存在，修改原配置档，复制页面
-    } else {
-        // 读取原有配置档信息
-        NSString *searchFilePath = [filesPath stringByAppendingPathComponent:searchFileID];
-        descPath = [searchFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
-        
-        NSString *descContent = [NSString stringWithContentsOfFile:descPath usedEncoding:NULL error:NULL];
-        descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:&error];
-        if(error) NSLog(@"<# parse json data failed: %@>", [error localizedDescription]);
-
-        pages = descData[@"order"];
-        for(pageIndex in _select) {
-            pageName = [_data objectAtIndex:[pageIndex intValue]][@"pageName"];
-            
-            // 如果该页面已经存在，则跳过。
-            // pageName格式: fileId_pageId
-            if([pages containsObject:pageName])
-                continue;
-            
-            // 拷贝文件page/image
-            [self copyFilePage:pageName FromFileId:self.fileID ToFileId:searchFileID];
-            
-            [pages addObject:pageName];
-        }
-        // 重新赋值order
-        [descData setObject:pages forKey:@"order"];
-    }
-    
-    // 配置信息写入文件
-    [self writeJSON:descData Into:descPath];
-}
-
 //////////////////////////////////////////////////////////////
 #pragma mark memory management
 //////////////////////////////////////////////////////////////
@@ -622,7 +663,16 @@
 // B6 内容重组 - 点击导航栏中的[选择], 点击指定页面，页面会出现[V]表示选中，选择想要的页面后，再点击导航栏中的[保存] ->
 //   弹出选择框有已经重组文件名称，选择指定文件名称，则会把页面拷贝至选择的fileId/下并修改desc.json[@"order"]
 //   如果新建内容重组文件，则输入文件名称、文件描述，然后生成新的fileId(ryyMMddHHmmSS), 把页面拷贝至新的fileId/下，并创建desc.json
+/**
+ *  编辑状态下，选择页面时回调函数。
+ *
+ *  @param gridView GridView
+ *  @param index    选择的页面序号
+ */
 - (void)GMGridView:(GMGridView *)gridView selectItemAtIndex:(NSInteger)index {
+    // 仅处理编辑状态下
+    if(!self.selectState) return;
+    
     NSNumber *i = [NSNumber numberWithInteger:index];
     // 未记录该cell的状态，只能过判断_select是否包含i
     if([_select containsObject:i])
@@ -630,11 +680,14 @@
     else
         [_select addObject:i];
     
-    if([_select count])
-        [self.selectItem setTitle:BTN_SAVE];
-    else
-        [self.selectItem setTitle:BTN_CANCEL];
-    
+    // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
+    if([_select count]) {
+        self.saveBarItem.enabled = true;
+        self.removeBarItem.enabled = true;
+    } else {
+        self.saveBarItem.enabled = false;
+        self.removeBarItem.enabled = false;
+    }
 }
 
 //////////////////////////////////////////////////////////////
@@ -663,8 +716,13 @@
 #pragma mark GMGridViewSortingDelegate
 //////////////////////////////////////////////////////////////
 
-- (void)GMGridView:(GMGridView *)gridView didStartMovingCell:(GMGridViewCell *)cell
-{
+/**
+ *  长按后，cell开始移动
+ *
+ *  @param gridView <#gridView description#>
+ *  @param cell     <#cell description#>
+ */
+- (void)GMGridView:(GMGridView *)gridView didStartMovingCell:(GMGridViewCell *)cell {
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
@@ -676,24 +734,35 @@
      ];
 }
 
-- (void)GMGridView:(GMGridView *)gridView didEndMovingCell:(GMGridViewCell *)cell
-{
+/**
+ *  长按后，cell结束移动
+ *
+ *  @param gridView <#gridView description#>
+ *  @param cell     <#cell description#>
+ */
+- (void)GMGridView:(GMGridView *)gridView didEndMovingCell:(GMGridViewCell *)cell {
     [UIView animateWithDuration:0.3
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         cell.contentView.backgroundColor = [UIColor redColor];
+                         cell.contentView.backgroundColor = [UIColor greenColor];
                          cell.contentView.layer.shadowOpacity = 0;
                      }
                      completion:nil
      ];
 }
 
-- (BOOL)GMGridView:(GMGridView *)gridView shouldAllowShakingBehaviorWhenMovingCell:(GMGridViewCell *)cell atIndex:(NSInteger)index
-{
+- (BOOL)GMGridView:(GMGridView *)gridView shouldAllowShakingBehaviorWhenMovingCell:(GMGridViewCell *)cell atIndex:(NSInteger)index {
     return YES;
 }
 
+/**
+ *  长按结束后，cell的移动信息
+ *
+ *  @param gridView <#gridView description#>
+ *  @param oldIndex 原始位置
+ *  @param newIndex 称动后位置
+ */
 - (void)GMGridView:(GMGridView *)gridView moveItemAtIndex:(NSInteger)oldIndex toIndex:(NSInteger)newIndex {
     NSObject *object = [_data objectAtIndex:oldIndex];
     [_data removeObject:object];
@@ -757,7 +826,7 @@
                           delay:0
                         options:UIViewAnimationOptionAllowUserInteraction
                      animations:^{
-                         cell.contentView.backgroundColor = [UIColor redColor];
+                         cell.contentView.backgroundColor = [UIColor purpleColor];
                          cell.contentView.layer.shadowOpacity = 0;
                      }
                      completion:nil];
@@ -769,65 +838,10 @@
 #pragma mark private methods
 //////////////////////////////////////////////////////////////
 
-- (void)addMoreItem
-{
-    // Example: adding object at the last position
-    NSString *newItem = [NSString stringWithFormat:@"%d", (int)(arc4random() % 1000)];
-    
-    [_data addObject:newItem];
-    [_gmGridView insertObjectAtIndex:[_data count] - 1];
-}
-
-- (void)removeItem
-{
-    // Example: removing last item
-    if ([_data count] > 0)
-    {
-        NSInteger index = [_data count] - 1;
-        
-        [_gmGridView removeObjectAtIndex:index];
-        [_data removeObjectAtIndex:index];
-    }
-}
-
-- (void)refreshItem
-{
-    // Example: reloading last item
-    if ([_data count] > 0) {
-        NSInteger index = [_data count] - 1;
-        NSLog(@"iam infoBtn");
-        NSString *newMessage = [NSString stringWithFormat:@"%d", (arc4random() % 1000)];
-        
-        [_data replaceObjectAtIndex:index withObject:newMessage];
-        [_gmGridView reloadObjectAtIndex:index];
-    }
-}
-
-- (void)presentInfo
-{
-    NSString *info = @"长按一个项目，可以移动它。 \n\n 使用两个手指捏/拖/旋转一个项目;变焦足够，进入全尺寸模式 \n\n";
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info"
-                                                        message:info
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-    
-    [alertView show];
-}
-
-- (void)presentOptions:(UIBarButtonItem *)barButton
-{
-    if (_gmGridView.editing) {
-        _gmGridView.editing = NO;
-    }else {
-        _gmGridView.editing = YES;
-    }
-}
-
-
-
-
-
+- (void)addMoreItem {}
+- (void)removeItem {}
+- (void)refreshItem {}
+- (void)presentInfo {}
+- (void)presentOptions:(UIBarButtonItem *)barButton {}
 @end
 

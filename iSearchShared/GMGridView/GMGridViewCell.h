@@ -49,7 +49,6 @@
 @property (nonatomic) CGPoint deleteButtonOffset;          // Delete button offset relative to the origin
 @property (nonatomic) CGPoint selectingButtonOffset;       // 把整个Cell撑满
 @property (nonatomic) CGPoint selectedButtonOffset;        // 把整个Cell撑满
-@property (nonatomic) BOOL selectState;          // Delete button offset relative to the origin
 
 - (void)prepareForReuse;
 
