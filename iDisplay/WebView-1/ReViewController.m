@@ -143,8 +143,8 @@
     _gmGridView = gmGridView;
     
     _gmGridView.style = GMGridViewStyleSwap;
-    _gmGridView.itemSpacing = 30;  // 页面垂直间隔
-    _gmGridView.itemHSpacing = 40; // 页面横向间隔
+    _gmGridView.itemSpacing = 50;  // 页面横向间隔
+    _gmGridView.itemHSpacing = 20; // 页面垂直间隔
     _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
     _gmGridView.centerGrid = YES;
     _gmGridView.actionDelegate = self;
@@ -898,7 +898,7 @@
 // 页面位置互换
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
-    NSLog(@"%s#%d <# %ld => %ld>", __FILE__, __LINE__, (long)index1, (long)index2);
+    NSLog(@"%ld => %ld",(long)index1, (long)index2);
     [self excangePageOrder:self.fileID FromIndex:index1 ToIndex:index2];
     [_data exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
 }
@@ -960,16 +960,5 @@
 
 - (void)GMGridView:(GMGridView *)gridView didEnterFullSizeForCell:(UIView *)cell { }
 
-////////////////////////////////////////////////////////////////
-//#pragma mark private methods
-////////////////////////////////////////////////////////////////
-
-
-//
-//- (void)addMoreItem {}
-//- (void)removeItem {}
-//- (void)refreshItem {}
-//- (void)presentInfo {}
-//- (void)presentOptions:(UIBarButtonItem *)barButton {}
 @end
 

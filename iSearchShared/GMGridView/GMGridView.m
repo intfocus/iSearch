@@ -1273,13 +1273,13 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
         {
             if (![self cellForItemAtIndex:positionToLoad]) 
             {
-                if (i % 3 == 0) {
-                    CGPoint origin = [self.layoutStrategy originForItemAtPosition:positionToLoad];
-                    
-                    UIImageView *shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf.png"]];
-                    [shelfView setFrame:CGRectMake(0, origin.y-30 , 320,143)];
-                    [_scrollView addSubview:shelfView];
-                }
+//                if (i % 3 == 0) {
+//                    CGPoint origin = [self.layoutStrategy originForItemAtPosition:positionToLoad];
+//                    
+//                    UIImageView *shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf.png"]];
+//                    [shelfView setFrame:CGRectMake(0, origin.y-30 , 320,143)];
+//                    [_scrollView addSubview:shelfView];
+//                }
                 
                 GMGridViewCell *cell = [self newItemSubViewForPosition:positionToLoad];
                 [_scrollView addSubview:cell];
