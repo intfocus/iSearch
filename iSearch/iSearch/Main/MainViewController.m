@@ -10,6 +10,7 @@
 #import "LoginViewCOntroller.h"
 #import "NotificationViewController.h"
 #import "OfflineViewController.h"
+#import "ContentViewController.h"
 
 @interface MainViewController ()
 
@@ -29,7 +30,7 @@
     // Do any additional setup after loading the view from its nib.
     
     //NSActionLogger(@"主界面加载", @"successfully");
-    NotificationViewController *right=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
+    ContentViewController *right=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
     self.right=right;
 }
 

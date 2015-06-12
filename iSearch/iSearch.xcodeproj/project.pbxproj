@@ -21,8 +21,6 @@
 		C42EC8681B28867F000F84EF /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8561B28867F000F84EF /* ViewUtils.m */; };
 		C42EC8691B28867F000F84EF /* ViewFilePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8591B28867F000F84EF /* ViewFilePage.m */; };
 		C42EC86A1B28867F000F84EF /* ViewFilePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC85A1B28867F000F84EF /* ViewFilePage.xib */; };
-		C42EC86B1B28867F000F84EF /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC85C1B28867F000F84EF /* ViewSlide.m */; };
-		C42EC86C1B28867F000F84EF /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC85D1B28867F000F84EF /* ViewSlide.xib */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8791B289082000F84EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8771B289082000F84EF /* LoginViewController.m */; };
 		C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8781B289082000F84EF /* LoginViewController.xib */; };
@@ -36,6 +34,18 @@
 		C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC88F1B289392000F84EF /* OfflineViewController.xib */; };
 		C42EC8941B289417000F84EF /* DatabaseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8931B289417000F84EF /* DatabaseUtils.m */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
+		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
+		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
+		C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */; };
+		C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */; };
+		C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF031B2B067D00A12170 /* ViewSlide.m */; };
+		C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF041B2B067D00A12170 /* ViewSlide.xib */; };
+		C4A3AF0E1B2B0CCB00A12170 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */; };
+		C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */; };
+		C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */; };
+		C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */; };
+		C4A3AF141B2B0CDE00A12170 /* PaintView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF131B2B0CDE00A12170 /* PaintView.m */; };
+		C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF161B2B0EF500A12170 /* pdfJS.zip */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
@@ -87,9 +97,6 @@
 		C42EC8581B28867F000F84EF /* ViewFilePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFilePage.h; sourceTree = "<group>"; };
 		C42EC8591B28867F000F84EF /* ViewFilePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFilePage.m; sourceTree = "<group>"; };
 		C42EC85A1B28867F000F84EF /* ViewFilePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFilePage.xib; sourceTree = "<group>"; };
-		C42EC85B1B28867F000F84EF /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
-		C42EC85C1B28867F000F84EF /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
-		C42EC85D1B28867F000F84EF /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8761B289082000F84EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C42EC8771B289082000F84EF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -109,6 +116,24 @@
 		C42EC8921B289417000F84EF /* DatabaseUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseUtils.h; sourceTree = "<group>"; };
 		C42EC8931B289417000F84EF /* DatabaseUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseUtils.m; sourceTree = "<group>"; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
+		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
+		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
+		C4A3AEFD1B2AFC4A00A12170 /* ViewFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFolder.h; sourceTree = "<group>"; };
+		C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFolder.m; sourceTree = "<group>"; };
+		C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFolder.xib; sourceTree = "<group>"; };
+		C4A3AF021B2B067D00A12170 /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
+		C4A3AF031B2B067D00A12170 /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
+		C4A3AF041B2B067D00A12170 /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
+		C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
+		C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
+		C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
+		C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReViewController.h; sourceTree = "<group>"; };
+		C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReViewController.m; sourceTree = "<group>"; };
+		C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReViewController.xib; sourceTree = "<group>"; };
+		C4A3AF121B2B0CDE00A12170 /* PaintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintView.h; sourceTree = "<group>"; };
+		C4A3AF131B2B0CDE00A12170 /* PaintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintView.m; sourceTree = "<group>"; };
+		C4A3AF161B2B0EF500A12170 /* pdfJS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = pdfJS.zip; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCDD1B184E530067B762 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -218,12 +243,11 @@
 		C42EC8571B28867F000F84EF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C4A3AF121B2B0CDE00A12170 /* PaintView.h */,
+				C4A3AF131B2B0CDE00A12170 /* PaintView.m */,
 				C42EC8581B28867F000F84EF /* ViewFilePage.h */,
 				C42EC8591B28867F000F84EF /* ViewFilePage.m */,
 				C42EC85A1B28867F000F84EF /* ViewFilePage.xib */,
-				C42EC85B1B28867F000F84EF /* ViewSlide.h */,
-				C42EC85C1B28867F000F84EF /* ViewSlide.m */,
-				C42EC85D1B28867F000F84EF /* ViewSlide.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -271,6 +295,43 @@
 			path = Offline;
 			sourceTree = "<group>";
 		};
+		C44923561B2AF72900E3BB65 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				C4A3AF021B2B067D00A12170 /* ViewSlide.h */,
+				C4A3AF031B2B067D00A12170 /* ViewSlide.m */,
+				C4A3AF041B2B067D00A12170 /* ViewSlide.xib */,
+				C4A3AEFD1B2AFC4A00A12170 /* ViewFolder.h */,
+				C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */,
+				C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */,
+				C44923571B2AF72900E3BB65 /* ContentViewController.h */,
+				C44923581B2AF72900E3BB65 /* ContentViewController.m */,
+				C44923591B2AF72900E3BB65 /* ContentViewController.xib */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		C4A3AF071B2B0CCB00A12170 /* Display */ = {
+			isa = PBXGroup;
+			children = (
+				C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */,
+				C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */,
+				C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */,
+				C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */,
+				C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */,
+				C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */,
+			);
+			path = Display;
+			sourceTree = "<group>";
+		};
+		C4A3AF151B2B0EF500A12170 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C4A3AF161B2B0EF500A12170 /* pdfJS.zip */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C4E3CCCF1B184E520067B762 = {
 			isa = PBXGroup;
 			children = (
@@ -294,6 +355,9 @@
 		C4E3CCDA1B184E520067B762 /* iSearch */ = {
 			isa = PBXGroup;
 			children = (
+				C4A3AF151B2B0EF500A12170 /* Resources */,
+				C4A3AF071B2B0CCB00A12170 /* Display */,
+				C44923561B2AF72900E3BB65 /* Content */,
 				C42EC88C1B289392000F84EF /* Offline */,
 				C42EC8861B289107000F84EF /* Main */,
 				C42EC87B1B28908B000F84EF /* Notification */,
@@ -416,15 +480,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
+				C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */,
 				C42EC86A1B28867F000F84EF /* ViewFilePage.xib in Resources */,
 				C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */,
+				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
+				C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
+				C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */,
+				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
 				C42EC88B1B289107000F84EF /* MainViewController.xib in Resources */,
 				C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */,
 				C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
-				C42EC86C1B28867F000F84EF /* ViewSlide.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,7 +544,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C42EC86B1B28867F000F84EF /* ViewSlide.m in Sources */,
 				C42EC85F1B28867F000F84EF /* GMGridViewCell.m in Sources */,
 				C42EC85E1B28867F000F84EF /* GMGridView.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
@@ -483,14 +551,20 @@
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
 				C42EC88A1B289107000F84EF /* MainViewController.m in Sources */,
 				C42EC8661B28867F000F84EF /* HttpUtils.m in Sources */,
+				C4A3AF0E1B2B0CCB00A12170 /* DisplayViewController.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
+				C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */,
 				C4E3CCDE1B184E530067B762 /* main.m in Sources */,
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
+				C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */,
+				C4A3AF141B2B0CDE00A12170 /* PaintView.m in Sources */,
 				C42EC8641B28867F000F84EF /* ExtendNSLogFunctionality.m in Sources */,
+				C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */,
 				C42EC8901B289392000F84EF /* OfflineViewController.m in Sources */,
 				C42EC8631B28867F000F84EF /* DateUtils.m in Sources */,
 				C42EC8601B28867F000F84EF /* GMGridViewLayoutStrategies.m in Sources */,
 				C42EC8671B28867F000F84EF /* PopupView.m in Sources */,
+				C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */,
 				C42EC8651B28867F000F84EF /* FileUtils.m in Sources */,
 				C42EC8691B28867F000F84EF /* ViewFilePage.m in Sources */,
 				C42EC8621B28867F000F84EF /* UIView+GMGridViewAdditions.m in Sources */,

@@ -40,23 +40,40 @@
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define LOGIN_LAST_DEFAULT     @"1970/01/01 00:00:00" // 用户登陆前的默认登陆成功时间
 
-// 目录相关
-#define CONTENT_URL_PATH        @"/demo/isearch/content" // 请求目录的url路径
-#define CONTENT_DIRNAME         @"content" // [目录]成功取得后，写入本地缓存文件夹
-#define DOWNLOAD_DIRNAME        @"download"// [目录]中[文件]压缩包下载文件夹
-#define FILE_DIRNAME            @"files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
-#define CONTENT_CONFIG_FILENAME @"content" // 目录同步功能中，界面切换传递参数使用plist配置档
+// 目录相关(_FILE与获取文件相关，默认获取分类)
+#define CONTENT_URL_PATH        @"/uat/api/Categories_Api.php" // 请求目录的url路径
+#define CONTENT_FILE_URL_PATH   @"/uat/api/Files_Api.php" // 请求目录的url路径
+#define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
+#define CONTENT_DIRNAME         @"Content" // [目录]成功取得后，写入本地缓存文件夹
+#define DOWNLOAD_DIRNAME        @"Download"// [目录]中[文件]压缩包下载文件夹
+#define FILE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
+#define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
+#define FILE_DISPLAY_FILENAME   @"display.json" // 目录中文件已经下载，点击[演示];
+// 目录API参数
+#define CONTENT_TYPE_FILE       @"File"
+#define CONTENT_TYPE_CATEGORY   @"Category"
+#define CONTENT_PARAM_DEPTID    @"did" // 部门ID
+#define CONTENT_PARAM_PARENTID  @"pid" // 分类父ID
+#define CONTENT_PARAM_FILE_CATEGORYID @"cid" // 待加载分类ID
+#define CONTENT_PARAM_FILE_DWONLOADID @"fid" // 下载文件ID
+// 目录API字段
+#define CONTENT_FIELD_DATA      @"data" // 数据数组
+#define CONTENT_FIELD_ID        @"Id" // 分类ID
+#define CONTENT_FIELD_NAME      @"Name" // 分类名称
+#define CONTENT_FIELD_CREATEDATE @"EditTime" // 创建时间
+#define CONTENT_FIELD_TYPE      @"Type" // 类型: 0为目录，1为文件
+#define CONTENT_FIELD_URL       @"DownloadUrl" // 文件下载链接，代码拼接而成
 
 // 离线搜索
-#define DATABASE_DIRNAME         @"database" // 数据库文件存放的文件夹名称
+#define DATABASE_DIRNAME         @"Database" // 数据库文件存放的文件夹名称
 #define DATABASE_FILEAME         @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 #define OFFLINE_SEARCH_TABLENAME @"offline_search" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_URL_PATH         @"/demo/isearch/offline" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
 
 // 内容重组
-#define REORGANIZE_CONFIG_FILENAME @"reorganize"
-#define REORGANIZE_DIRNAME         @"save" // 内容重组后，放置些文件夹中
-#define FAVORITE_DIRNAME           @"favorite"
+#define REORGANIZE_CONFIG_FILENAME @"reorganize.json"
+#define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
+#define FAVORITE_DIRNAME           @"Favorite"
 #define FILE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
 #define FILE_CONFIG_SWP_FILENAME  @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
@@ -72,7 +89,6 @@
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
 #define NOTIFICATION_DATE_FONT    14.0f // 公告日期字体大小
-
 // 公告API参数
 #define NOTIFICATION_PARAM_DEPTID     @"did" // 部门ID
 #define NOTIFICATION_PARAM_DATESTR    @"strdate" // 当前日期

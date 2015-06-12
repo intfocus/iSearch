@@ -13,26 +13,36 @@
 		C44567601AFB310D004480C6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C445675F1AFB310D004480C6 /* Images.xcassets */; };
 		C44567631AFB310D004480C6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44567611AFB310D004480C6 /* LaunchScreen.xib */; };
 		C445676F1AFB310D004480C6 /* iContentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C445676E1AFB310D004480C6 /* iContentTests.m */; };
-		C44567821AFB32EB004480C6 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C445677E1AFB32EB004480C6 /* ViewUtils.m */; };
-		C44567831AFB32EB004480C6 /* HttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44567801AFB32EB004480C6 /* HttpUtils.m */; };
-		C44567861AFB4B57004480C6 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C44567841AFB4B57004480C6 /* Reachability.m */; };
 		C44567881AFB4B87004480C6 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44567871AFB4B87004480C6 /* ViewController.xib */; };
 		C44567961AFB4DD1004480C6 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C445678C1AFB4DD1004480C6 /* GMGridView.m */; };
 		C44567971AFB4DD1004480C6 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C445678F1AFB4DD1004480C6 /* GMGridViewCell.m */; };
 		C44567981AFB4DD1004480C6 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = C44567911AFB4DD1004480C6 /* GMGridViewLayoutStrategies.m */; };
 		C44567991AFB4DD1004480C6 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C44567931AFB4DD1004480C6 /* UIGestureRecognizer+GMGridViewAdditions.m */; };
 		C445679A1AFB4DD1004480C6 /* UIView+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C44567951AFB4DD1004480C6 /* UIView+GMGridViewAdditions.m */; };
-		C44567A31AFB4DFC004480C6 /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C445679B1AFB4DFC004480C6 /* ViewSlide.xib */; };
-		C44567A41AFB4DFC004480C6 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C445679C1AFB4DFC004480C6 /* ViewSlide.m */; };
-		C44567A51AFB4DFC004480C6 /* ViewFolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = C445679E1AFB4DFC004480C6 /* ViewFolder.xib */; };
-		C44567A61AFB4DFC004480C6 /* ViewFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = C445679F1AFB4DFC004480C6 /* ViewFolder.m */; };
-		C44567A71AFB4DFC004480C6 /* UIRequestButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C44567A11AFB4DFC004480C6 /* UIRequestButton.m */; };
-		C4C609731B007C2000FACEA0 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C609721B007C2000FACEA0 /* FileUtils.m */; };
-		C4C609851B009B8C00FACEA0 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = C4C6097B1B009B8C00FACEA0 /* ioapi.c */; };
-		C4C609861B009B8C00FACEA0 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = C4C6097D1B009B8C00FACEA0 /* mztools.c */; };
-		C4C609871B009B8C00FACEA0 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = C4C6097F1B009B8C00FACEA0 /* unzip.c */; };
-		C4C609881B009B8C00FACEA0 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = C4C609811B009B8C00FACEA0 /* zip.c */; };
-		C4C609891B009B8C00FACEA0 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C609841B009B8C00FACEA0 /* SSZipArchive.m */; };
+		C449232E1B2AF5A200E3BB65 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923091B2AF5A200E3BB65 /* GMGridView.m */; };
+		C449232F1B2AF5A200E3BB65 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C449230C1B2AF5A200E3BB65 /* GMGridViewCell.m */; };
+		C44923301B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = C449230E1B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.m */; };
+		C44923311B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923101B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m */; };
+		C44923321B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923121B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.m */; };
+		C44923331B2AF5A200E3BB65 /* DatabaseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923171B2AF5A200E3BB65 /* DatabaseUtils.m */; };
+		C44923341B2AF5A200E3BB65 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923191B2AF5A200E3BB65 /* DateUtils.m */; };
+		C44923351B2AF5A200E3BB65 /* ExtendNSLogFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = C449231B1B2AF5A200E3BB65 /* ExtendNSLogFunctionality.m */; };
+		C44923361B2AF5A200E3BB65 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C449231D1B2AF5A200E3BB65 /* FileUtils.m */; };
+		C44923371B2AF5A200E3BB65 /* HttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C449231F1B2AF5A200E3BB65 /* HttpUtils.m */; };
+		C44923381B2AF5A200E3BB65 /* LogUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923211B2AF5A200E3BB65 /* LogUtils.m */; };
+		C44923391B2AF5A200E3BB65 /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923241B2AF5A200E3BB65 /* PopupView.m */; };
+		C449233A1B2AF5A200E3BB65 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923261B2AF5A200E3BB65 /* ViewUtils.m */; };
+		C449233B1B2AF5A200E3BB65 /* ViewFilePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923291B2AF5A200E3BB65 /* ViewFilePage.m */; };
+		C449233C1B2AF5A200E3BB65 /* ViewFilePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C449232A1B2AF5A200E3BB65 /* ViewFilePage.xib */; };
+		C449233D1B2AF5A200E3BB65 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C449232C1B2AF5A200E3BB65 /* ViewSlide.m */; };
+		C449233E1B2AF5A200E3BB65 /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C449232D1B2AF5A200E3BB65 /* ViewSlide.xib */; };
+		C449234F1B2AF69000E3BB65 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C44923401B2AF69000E3BB65 /* LICENSE */; };
+		C44923501B2AF69000E3BB65 /* Readme.markdown in Sources */ = {isa = PBXBuildFile; fileRef = C44923411B2AF69000E3BB65 /* Readme.markdown */; };
+		C44923511B2AF69000E3BB65 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = C44923451B2AF69000E3BB65 /* ioapi.c */; };
+		C44923521B2AF69000E3BB65 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = C44923471B2AF69000E3BB65 /* mztools.c */; };
+		C44923531B2AF69000E3BB65 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = C44923491B2AF69000E3BB65 /* unzip.c */; };
+		C44923541B2AF69000E3BB65 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = C449234B1B2AF69000E3BB65 /* zip.c */; };
+		C44923551B2AF69000E3BB65 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = C449234E1B2AF69000E3BB65 /* SSZipArchive.m */; };
 		C4C6098B1B009BB900FACEA0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C4C6098A1B009BB900FACEA0 /* libz.dylib */; };
 		C4C6098D1B00ACAB00FACEA0 /* ShowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4C6098C1B00ACAB00FACEA0 /* ShowViewController.xib */; };
 		C4C609901B00AD8800FACEA0 /* ShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C6098F1B00AD8800FACEA0 /* ShowViewController.m */; };
@@ -61,14 +71,6 @@
 		C44567681AFB310D004480C6 /* iContentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iContentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C445676D1AFB310D004480C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C445676E1AFB310D004480C6 /* iContentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iContentTests.m; sourceTree = "<group>"; };
-		C445677B1AFB3289004480C6 /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
-		C445677C1AFB3289004480C6 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
-		C445677E1AFB32EB004480C6 /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
-		C445677F1AFB32EB004480C6 /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
-		C44567801AFB32EB004480C6 /* HttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtils.m; sourceTree = "<group>"; };
-		C44567811AFB32EB004480C6 /* HttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpUtils.h; sourceTree = "<group>"; };
-		C44567841AFB4B57004480C6 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		C44567851AFB4B57004480C6 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		C44567871AFB4B87004480C6 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		C445678A1AFB4DD1004480C6 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
 		C445678B1AFB4DD1004480C6 /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
@@ -82,27 +84,56 @@
 		C44567931AFB4DD1004480C6 /* UIGestureRecognizer+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+GMGridViewAdditions.m"; sourceTree = "<group>"; };
 		C44567941AFB4DD1004480C6 /* UIView+GMGridViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GMGridViewAdditions.h"; sourceTree = "<group>"; };
 		C44567951AFB4DD1004480C6 /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GMGridViewAdditions.m"; sourceTree = "<group>"; };
-		C445679B1AFB4DFC004480C6 /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
-		C445679C1AFB4DFC004480C6 /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
-		C445679D1AFB4DFC004480C6 /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
-		C445679E1AFB4DFC004480C6 /* ViewFolder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFolder.xib; sourceTree = "<group>"; };
-		C445679F1AFB4DFC004480C6 /* ViewFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFolder.m; sourceTree = "<group>"; };
-		C44567A01AFB4DFC004480C6 /* ViewFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFolder.h; sourceTree = "<group>"; };
-		C44567A11AFB4DFC004480C6 /* UIRequestButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIRequestButton.m; sourceTree = "<group>"; };
-		C44567A21AFB4DFC004480C6 /* UIRequestButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIRequestButton.h; sourceTree = "<group>"; };
-		C4C609721B007C2000FACEA0 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
-		C4C609741B007C2B00FACEA0 /* FileUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
-		C4C6097A1B009B8C00FACEA0 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
-		C4C6097B1B009B8C00FACEA0 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
-		C4C6097C1B009B8C00FACEA0 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
-		C4C6097D1B009B8C00FACEA0 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
-		C4C6097E1B009B8C00FACEA0 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
-		C4C6097F1B009B8C00FACEA0 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
-		C4C609801B009B8C00FACEA0 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
-		C4C609811B009B8C00FACEA0 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
-		C4C609821B009B8C00FACEA0 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		C4C609831B009B8C00FACEA0 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
-		C4C609841B009B8C00FACEA0 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		C44923071B2AF5A200E3BB65 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
+		C44923081B2AF5A200E3BB65 /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
+		C44923091B2AF5A200E3BB65 /* GMGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridView.m; sourceTree = "<group>"; };
+		C449230A1B2AF5A200E3BB65 /* GMGridViewCell+Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridViewCell+Extended.h"; sourceTree = "<group>"; };
+		C449230B1B2AF5A200E3BB65 /* GMGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridViewCell.h; sourceTree = "<group>"; };
+		C449230C1B2AF5A200E3BB65 /* GMGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridViewCell.m; sourceTree = "<group>"; };
+		C449230D1B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridViewLayoutStrategies.h; sourceTree = "<group>"; };
+		C449230E1B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridViewLayoutStrategies.m; sourceTree = "<group>"; };
+		C449230F1B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+GMGridViewAdditions.h"; sourceTree = "<group>"; };
+		C44923101B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+GMGridViewAdditions.m"; sourceTree = "<group>"; };
+		C44923111B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GMGridViewAdditions.h"; sourceTree = "<group>"; };
+		C44923121B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GMGridViewAdditions.m"; sourceTree = "<group>"; };
+		C44923141B2AF5A200E3BB65 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		C44923151B2AF5A200E3BB65 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
+		C44923161B2AF5A200E3BB65 /* DatabaseUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseUtils.h; sourceTree = "<group>"; };
+		C44923171B2AF5A200E3BB65 /* DatabaseUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseUtils.m; sourceTree = "<group>"; };
+		C44923181B2AF5A200E3BB65 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		C44923191B2AF5A200E3BB65 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		C449231A1B2AF5A200E3BB65 /* ExtendNSLogFunctionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNSLogFunctionality.h; sourceTree = "<group>"; };
+		C449231B1B2AF5A200E3BB65 /* ExtendNSLogFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNSLogFunctionality.m; sourceTree = "<group>"; };
+		C449231C1B2AF5A200E3BB65 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
+		C449231D1B2AF5A200E3BB65 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
+		C449231E1B2AF5A200E3BB65 /* HttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpUtils.h; sourceTree = "<group>"; };
+		C449231F1B2AF5A200E3BB65 /* HttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtils.m; sourceTree = "<group>"; };
+		C44923201B2AF5A200E3BB65 /* LogUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogUtils.h; sourceTree = "<group>"; };
+		C44923211B2AF5A200E3BB65 /* LogUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogUtils.m; sourceTree = "<group>"; };
+		C44923221B2AF5A200E3BB65 /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
+		C44923231B2AF5A200E3BB65 /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
+		C44923241B2AF5A200E3BB65 /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
+		C44923251B2AF5A200E3BB65 /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
+		C44923261B2AF5A200E3BB65 /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
+		C44923281B2AF5A200E3BB65 /* ViewFilePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFilePage.h; sourceTree = "<group>"; };
+		C44923291B2AF5A200E3BB65 /* ViewFilePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFilePage.m; sourceTree = "<group>"; };
+		C449232A1B2AF5A200E3BB65 /* ViewFilePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFilePage.xib; sourceTree = "<group>"; };
+		C449232B1B2AF5A200E3BB65 /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
+		C449232C1B2AF5A200E3BB65 /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
+		C449232D1B2AF5A200E3BB65 /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
+		C44923401B2AF69000E3BB65 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		C44923411B2AF69000E3BB65 /* Readme.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.markdown; sourceTree = "<group>"; };
+		C44923441B2AF69000E3BB65 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		C44923451B2AF69000E3BB65 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		C44923461B2AF69000E3BB65 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		C44923471B2AF69000E3BB65 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		C44923481B2AF69000E3BB65 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		C44923491B2AF69000E3BB65 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		C449234A1B2AF69000E3BB65 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		C449234B1B2AF69000E3BB65 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		C449234C1B2AF69000E3BB65 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		C449234D1B2AF69000E3BB65 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		C449234E1B2AF69000E3BB65 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		C4C6098A1B009BB900FACEA0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C4C6098C1B00ACAB00FACEA0 /* ShowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowViewController.xib; sourceTree = "<group>"; };
 		C4C6098E1B00AD7900FACEA0 /* ShowViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowViewController.h; sourceTree = "<group>"; };
@@ -150,10 +181,8 @@
 		C44567511AFB310D004480C6 /* iContent */ = {
 			isa = PBXGroup;
 			children = (
-				C4C609781B009B8C00FACEA0 /* SSZipArchive */,
+				C44923051B2AF5A200E3BB65 /* iSearchShared */,
 				C44567891AFB4DD1004480C6 /* API */,
-				C445677D1AFB32E0004480C6 /* Utils */,
-				C445677A1AFB327C004480C6 /* Shared */,
 				C44567561AFB310D004480C6 /* AppDelegate.h */,
 				C44567571AFB310D004480C6 /* AppDelegate.m */,
 				C44567591AFB310D004480C6 /* ViewController.h */,
@@ -195,38 +224,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C445677A1AFB327C004480C6 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				C445677B1AFB3289004480C6 /* message.h */,
-				C445677C1AFB3289004480C6 /* const.h */,
-			);
-			name = Shared;
-			sourceTree = "<group>";
-		};
-		C445677D1AFB32E0004480C6 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				C445679B1AFB4DFC004480C6 /* ViewSlide.xib */,
-				C445679C1AFB4DFC004480C6 /* ViewSlide.m */,
-				C445679D1AFB4DFC004480C6 /* ViewSlide.h */,
-				C445679E1AFB4DFC004480C6 /* ViewFolder.xib */,
-				C445679F1AFB4DFC004480C6 /* ViewFolder.m */,
-				C44567A01AFB4DFC004480C6 /* ViewFolder.h */,
-				C44567A11AFB4DFC004480C6 /* UIRequestButton.m */,
-				C44567A21AFB4DFC004480C6 /* UIRequestButton.h */,
-				C44567841AFB4B57004480C6 /* Reachability.m */,
-				C44567851AFB4B57004480C6 /* Reachability.h */,
-				C445677E1AFB32EB004480C6 /* ViewUtils.m */,
-				C445677F1AFB32EB004480C6 /* ViewUtils.h */,
-				C44567801AFB32EB004480C6 /* HttpUtils.m */,
-				C44567811AFB32EB004480C6 /* HttpUtils.h */,
-				C4C609721B007C2000FACEA0 /* FileUtils.m */,
-				C4C609741B007C2B00FACEA0 /* FileUtils.h */,
-			);
-			name = Utils;
-			sourceTree = "<group>";
-		};
 		C44567891AFB4DD1004480C6 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -246,28 +243,108 @@
 			path = API;
 			sourceTree = "<group>";
 		};
-		C4C609781B009B8C00FACEA0 /* SSZipArchive */ = {
+		C44923051B2AF5A200E3BB65 /* iSearchShared */ = {
 			isa = PBXGroup;
 			children = (
-				C4C609791B009B8C00FACEA0 /* minizip */,
-				C4C609831B009B8C00FACEA0 /* SSZipArchive.h */,
-				C4C609841B009B8C00FACEA0 /* SSZipArchive.m */,
+				C449233F1B2AF69000E3BB65 /* SSZipArchive */,
+				C44923061B2AF5A200E3BB65 /* GMGridView */,
+				C44923131B2AF5A200E3BB65 /* Utils */,
+				C44923271B2AF5A200E3BB65 /* Views */,
+			);
+			name = iSearchShared;
+			path = ../../iSearchShared;
+			sourceTree = "<group>";
+		};
+		C44923061B2AF5A200E3BB65 /* GMGridView */ = {
+			isa = PBXGroup;
+			children = (
+				C44923071B2AF5A200E3BB65 /* GMGridView-Constants.h */,
+				C44923081B2AF5A200E3BB65 /* GMGridView.h */,
+				C44923091B2AF5A200E3BB65 /* GMGridView.m */,
+				C449230A1B2AF5A200E3BB65 /* GMGridViewCell+Extended.h */,
+				C449230B1B2AF5A200E3BB65 /* GMGridViewCell.h */,
+				C449230C1B2AF5A200E3BB65 /* GMGridViewCell.m */,
+				C449230D1B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.h */,
+				C449230E1B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.m */,
+				C449230F1B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.h */,
+				C44923101B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m */,
+				C44923111B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.h */,
+				C44923121B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.m */,
+			);
+			path = GMGridView;
+			sourceTree = "<group>";
+		};
+		C44923131B2AF5A200E3BB65 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C44923141B2AF5A200E3BB65 /* common.h */,
+				C44923151B2AF5A200E3BB65 /* const.h */,
+				C44923161B2AF5A200E3BB65 /* DatabaseUtils.h */,
+				C44923171B2AF5A200E3BB65 /* DatabaseUtils.m */,
+				C44923181B2AF5A200E3BB65 /* DateUtils.h */,
+				C44923191B2AF5A200E3BB65 /* DateUtils.m */,
+				C449231A1B2AF5A200E3BB65 /* ExtendNSLogFunctionality.h */,
+				C449231B1B2AF5A200E3BB65 /* ExtendNSLogFunctionality.m */,
+				C449231C1B2AF5A200E3BB65 /* FileUtils.h */,
+				C449231D1B2AF5A200E3BB65 /* FileUtils.m */,
+				C449231E1B2AF5A200E3BB65 /* HttpUtils.h */,
+				C449231F1B2AF5A200E3BB65 /* HttpUtils.m */,
+				C44923201B2AF5A200E3BB65 /* LogUtils.h */,
+				C44923211B2AF5A200E3BB65 /* LogUtils.m */,
+				C44923221B2AF5A200E3BB65 /* message.h */,
+				C44923231B2AF5A200E3BB65 /* PopupView.h */,
+				C44923241B2AF5A200E3BB65 /* PopupView.m */,
+				C44923251B2AF5A200E3BB65 /* ViewUtils.h */,
+				C44923261B2AF5A200E3BB65 /* ViewUtils.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C44923271B2AF5A200E3BB65 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C44923281B2AF5A200E3BB65 /* ViewFilePage.h */,
+				C44923291B2AF5A200E3BB65 /* ViewFilePage.m */,
+				C449232A1B2AF5A200E3BB65 /* ViewFilePage.xib */,
+				C449232B1B2AF5A200E3BB65 /* ViewSlide.h */,
+				C449232C1B2AF5A200E3BB65 /* ViewSlide.m */,
+				C449232D1B2AF5A200E3BB65 /* ViewSlide.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C449233F1B2AF69000E3BB65 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				C44923401B2AF69000E3BB65 /* LICENSE */,
+				C44923411B2AF69000E3BB65 /* Readme.markdown */,
+				C44923421B2AF69000E3BB65 /* SSZipArchive */,
 			);
 			path = SSZipArchive;
 			sourceTree = "<group>";
 		};
-		C4C609791B009B8C00FACEA0 /* minizip */ = {
+		C44923421B2AF69000E3BB65 /* SSZipArchive */ = {
 			isa = PBXGroup;
 			children = (
-				C4C6097A1B009B8C00FACEA0 /* crypt.h */,
-				C4C6097B1B009B8C00FACEA0 /* ioapi.c */,
-				C4C6097C1B009B8C00FACEA0 /* ioapi.h */,
-				C4C6097D1B009B8C00FACEA0 /* mztools.c */,
-				C4C6097E1B009B8C00FACEA0 /* mztools.h */,
-				C4C6097F1B009B8C00FACEA0 /* unzip.c */,
-				C4C609801B009B8C00FACEA0 /* unzip.h */,
-				C4C609811B009B8C00FACEA0 /* zip.c */,
-				C4C609821B009B8C00FACEA0 /* zip.h */,
+				C44923431B2AF69000E3BB65 /* minizip */,
+				C449234D1B2AF69000E3BB65 /* SSZipArchive.h */,
+				C449234E1B2AF69000E3BB65 /* SSZipArchive.m */,
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		C44923431B2AF69000E3BB65 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				C44923441B2AF69000E3BB65 /* crypt.h */,
+				C44923451B2AF69000E3BB65 /* ioapi.c */,
+				C44923461B2AF69000E3BB65 /* ioapi.h */,
+				C44923471B2AF69000E3BB65 /* mztools.c */,
+				C44923481B2AF69000E3BB65 /* mztools.h */,
+				C44923491B2AF69000E3BB65 /* unzip.c */,
+				C449234A1B2AF69000E3BB65 /* unzip.h */,
+				C449234B1B2AF69000E3BB65 /* zip.c */,
+				C449234C1B2AF69000E3BB65 /* zip.h */,
 			);
 			path = minizip;
 			sourceTree = "<group>";
@@ -353,8 +430,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C44567631AFB310D004480C6 /* LaunchScreen.xib in Resources */,
-				C44567A51AFB4DFC004480C6 /* ViewFolder.xib in Resources */,
-				C44567A31AFB4DFC004480C6 /* ViewSlide.xib in Resources */,
+				C449233E1B2AF5A200E3BB65 /* ViewSlide.xib in Resources */,
+				C449233C1B2AF5A200E3BB65 /* ViewFilePage.xib in Resources */,
+				C449234F1B2AF69000E3BB65 /* LICENSE in Resources */,
 				C44567881AFB4B87004480C6 /* ViewController.xib in Resources */,
 				C44567601AFB310D004480C6 /* Images.xcassets in Resources */,
 				C4C6098D1B00ACAB00FACEA0 /* ShowViewController.xib in Resources */,
@@ -375,27 +453,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4C609871B009B8C00FACEA0 /* unzip.c in Sources */,
-				C4C609731B007C2000FACEA0 /* FileUtils.m in Sources */,
 				C44567991AFB4DD1004480C6 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
 				C44567981AFB4DD1004480C6 /* GMGridViewLayoutStrategies.m in Sources */,
+				C44923521B2AF69000E3BB65 /* mztools.c in Sources */,
+				C44923331B2AF5A200E3BB65 /* DatabaseUtils.m in Sources */,
+				C449232F1B2AF5A200E3BB65 /* GMGridViewCell.m in Sources */,
 				C44567971AFB4DD1004480C6 /* GMGridViewCell.m in Sources */,
 				C445675B1AFB310D004480C6 /* ViewController.m in Sources */,
-				C4C609881B009B8C00FACEA0 /* zip.c in Sources */,
 				C44567961AFB4DD1004480C6 /* GMGridView.m in Sources */,
-				C44567831AFB32EB004480C6 /* HttpUtils.m in Sources */,
-				C4C609861B009B8C00FACEA0 /* mztools.c in Sources */,
-				C44567A41AFB4DFC004480C6 /* ViewSlide.m in Sources */,
+				C44923311B2AF5A200E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
+				C44923371B2AF5A200E3BB65 /* HttpUtils.m in Sources */,
+				C44923541B2AF69000E3BB65 /* zip.c in Sources */,
 				C44567581AFB310D004480C6 /* AppDelegate.m in Sources */,
+				C44923361B2AF5A200E3BB65 /* FileUtils.m in Sources */,
 				C445679A1AFB4DD1004480C6 /* UIView+GMGridViewAdditions.m in Sources */,
-				C4C609851B009B8C00FACEA0 /* ioapi.c in Sources */,
-				C44567821AFB32EB004480C6 /* ViewUtils.m in Sources */,
-				C44567861AFB4B57004480C6 /* Reachability.m in Sources */,
-				C4C609891B009B8C00FACEA0 /* SSZipArchive.m in Sources */,
+				C449233D1B2AF5A200E3BB65 /* ViewSlide.m in Sources */,
+				C449233A1B2AF5A200E3BB65 /* ViewUtils.m in Sources */,
+				C44923511B2AF69000E3BB65 /* ioapi.c in Sources */,
+				C449232E1B2AF5A200E3BB65 /* GMGridView.m in Sources */,
+				C44923351B2AF5A200E3BB65 /* ExtendNSLogFunctionality.m in Sources */,
+				C44923321B2AF5A200E3BB65 /* UIView+GMGridViewAdditions.m in Sources */,
+				C44923501B2AF69000E3BB65 /* Readme.markdown in Sources */,
+				C44923381B2AF5A200E3BB65 /* LogUtils.m in Sources */,
 				C4C609901B00AD8800FACEA0 /* ShowViewController.m in Sources */,
+				C44923531B2AF69000E3BB65 /* unzip.c in Sources */,
+				C44923391B2AF5A200E3BB65 /* PopupView.m in Sources */,
 				C44567551AFB310D004480C6 /* main.m in Sources */,
-				C44567A61AFB4DFC004480C6 /* ViewFolder.m in Sources */,
-				C44567A71AFB4DFC004480C6 /* UIRequestButton.m in Sources */,
+				C44923551B2AF69000E3BB65 /* SSZipArchive.m in Sources */,
+				C44923301B2AF5A200E3BB65 /* GMGridViewLayoutStrategies.m in Sources */,
+				C44923341B2AF5A200E3BB65 /* DateUtils.m in Sources */,
+				C449233B1B2AF5A200E3BB65 /* ViewFilePage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

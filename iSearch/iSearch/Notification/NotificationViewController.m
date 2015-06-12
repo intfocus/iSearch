@@ -40,6 +40,8 @@
 //          occur_date: 发生时间
 //          type: 通告类型isearch/ilearn
 //      }
+//  TODO: 任何服务器响应result不为空时，则popupVIew
+
 
 #import "NotificationViewController.h"
 

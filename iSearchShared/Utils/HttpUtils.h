@@ -14,8 +14,8 @@
 #import <UIKit/UIKit.h>
 #import "sys/utsname.h"
 
-//https://github.com/tonymillion/Reachability
-#import "Reachability.h"
+////https://github.com/tonymillion/Reachability
+//#import "Reachability.h"
 
 
 @interface HttpUtils : NSObject

@@ -87,16 +87,16 @@
  */
 + (BOOL) isNetworkAvailable {
     BOOL isExistenceNetwork = NO;
-    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
-    switch ([reach currentReachabilityStatus]) {
-        case NotReachable:
-            break;
-        case ReachableViaWiFi:
-        case ReachableViaWWAN:
-            isExistenceNetwork = YES;
-            break;
-    }
-    
+//    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
+//    switch ([reach currentReachabilityStatus]) {
+//        case NotReachable:
+//            break;
+//        case ReachableViaWiFi:
+//        case ReachableViaWWAN:
+//            isExistenceNetwork = YES;
+//            break;
+//    }
+//    
     return isExistenceNetwork;
 }
 /**
@@ -106,18 +106,18 @@
  */
 + (NSString *) networkType {
     NSString *_netWorkType = @"无";
-    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
-    switch ([reach currentReachabilityStatus]) {
-        case NotReachable:
-            break;
-        case ReachableViaWiFi:
-            _netWorkType = @"wifi";
-            break;
-        case ReachableViaWWAN:
-            _netWorkType = @"3g";
-            break;
-    }
-    
+//    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
+//    switch ([reach currentReachabilityStatus]) {
+//        case NotReachable:
+//            break;
+//        case ReachableViaWiFi:
+//            _netWorkType = @"wifi";
+//            break;
+//        case ReachableViaWWAN:
+//            _netWorkType = @"3g";
+//            break;
+//    }
+//    
     return _netWorkType;
 }
 

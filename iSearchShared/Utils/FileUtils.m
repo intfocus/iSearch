@@ -101,6 +101,7 @@
 + (BOOL) checkSlideExist: (NSString *) fileID {
     NSString *pathName = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
     
+    NSLog(@"%@", pathName);
     return [FileUtils checkFileExist:pathName isDir:true];
 }
 
