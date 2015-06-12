@@ -25,9 +25,14 @@
  *  @return Http#Get 响应的字符串内容
  */
 + (NSString *) httpGet: (NSString *) path {
-    NSString *str         = [BASE_URL stringByAppendingFormat:@"%@", path];
-    str = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url            = [NSURL URLWithString:str];
+    NSString *urlStr = [[NSString alloc] init];
+    if([path hasPrefix:@"/"])
+        urlStr = [NSString stringWithFormat:@"%@%@", BASE_URL, path];
+    else
+        urlStr = [BASE_URL stringByAppendingFormat:@"%@", path];
+    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"%@", urlStr);
+    NSURL *url            = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     NSData *received      = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString *response    = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
@@ -47,7 +52,7 @@
     str = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url            = [NSURL URLWithString:str];
     _data = [_data stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"POST URL Data: %@", _data);
+    NSLog(@"POST URL: %@\n Data: %@", str, _data);
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"POST"];
     NSData *data = [_data dataUsingEncoding:NSUTF8StringEncoding];
@@ -55,7 +60,10 @@
     NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString *response = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
     
-    NSLog(@"POST Response: %@", response);
+    if(response)
+        NSLog(@"POST Response: %@", response);
+    else
+        response = @"No input file specified.";
     return response;
 }
 
@@ -66,9 +74,11 @@
  *
  *  @return 验证用户结果集: { code: 1, info: {} }, 1为成功，其他为失败
  */
-+ (NSString *) login: (NSString *) data {
++ (NSString *)login: (NSString *) data {
     return [HttpUtils httpPost: LOGIN_URL_PATH Data:data];
 }
+
+
 
 /**
  *  检测当前app网络环境

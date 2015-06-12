@@ -165,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				C42EC8391B28867F000F84EF /* GMGridView */,
-				C42EC8461B28867F000F84EF /* SSZipArchive */,
 				C42EC8471B28867F000F84EF /* Utils */,
 				C42EC8571B28867F000F84EF /* Views */,
 			);
@@ -190,13 +189,6 @@
 				C42EC8451B28867F000F84EF /* UIView+GMGridViewAdditions.m */,
 			);
 			path = GMGridView;
-			sourceTree = "<group>";
-		};
-		C42EC8461B28867F000F84EF /* SSZipArchive */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = SSZipArchive;
 			sourceTree = "<group>";
 		};
 		C42EC8471B28867F000F84EF /* Utils */ = {

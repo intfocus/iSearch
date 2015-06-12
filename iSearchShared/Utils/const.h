@@ -12,11 +12,15 @@
 // Global
 #define DEBUG                  1
 #define APP_LANG               @"zh-CN" // 应用系统的语言
-#define BASE_URL1               @"http://localhost:3000" //
-#define BASE_URL               @"http://demo.solife.us"  // 服务器url
+#define BASE_URL               @"http://192.168.0.115" //
+#define BASE_URL1               @"http://demo.solife.us"  // 服务器url
 #define CONFIG_DIRNAME         @"isearch_config" // 所有配置档放置在些文件夹下
 #define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
+#define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件
 #define REORGANIZE_FORMAT      @"yyMMddHHMMSS" // 内容重组后新文件名称格式
+
+// ActionLogger
+#define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
 
 #define SIZE_GRID_VIEW_CELL_WIDTH     120 // GridView Cell‘s width
 #define SIZE_GRID_VIEW_CELL_HEIGHT    80 // GridView Cell‘s width
@@ -61,13 +65,26 @@
 #define PAGE_IMAGE_NOT_FOUND       @"not_found.png"
 
 // 公告通知
-#define NOTIFICATION_URL_PATH     @"/demo/isearch/notifications"
+#define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
 #define NOTIFICATION_CACHE        @"notifications.json"
 #define NOTIFICATION_DIRNAME      @"notifications"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
-#define NOTIFICATION_DATE_FORMAT  @"yyyy/MM/dd" // 预告精确到天，格式化日历控件
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
 #define NOTIFICATION_DATE_FONT    14.0f // 公告日期字体大小
+
+// 公告API参数
+#define NOTIFICATION_PARAM_DEPTID     @"did" // 部门ID
+#define NOTIFICATION_PARAM_DATESTR    @"strdate" // 当前日期
+// 公告API响应字段
+#define NOTIFICATION_FIELD_STATUS     @"status"
+#define NOTIFICATION_FIELD_COUNT      @"count"
+#define NOTIFICATION_FIELD_GGDATA     @"ggdata" // 公告数据
+#define NOTIFICATION_FIELD_HDDATA     @"hddata" // 预告活动
+#define NOTIFICATION_FIELD_TITLE      @"Title"  // 标题
+#define NOTIFICATION_FIELD_MSG        @"Msg"     // 内容
+#define NOTIFICATION_FIELD_CREATEDATE @"EditTime" // 创建日期
+#define NOTIFICATION_FIELD_OCCURDATE  @"OccurTime"// 发生日期（公告为空)
+
 
 #endif

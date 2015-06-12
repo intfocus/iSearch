@@ -33,7 +33,7 @@ void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSS
             lineNumber, [body UTF8String]);
 }
 
-void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName,BOOL isPrintSuccessfully, NSError *error, NSString *format, ...) {
+void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName, BOOL isPrintSuccessfully, NSError *error, NSString *format, ...) {
     if(!isPrintSuccessfully && !error) return;
     
     // Type to hold information about variable arguments.
@@ -57,4 +57,22 @@ void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functio
     
     NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
     fprintf(stderr, "(%s) (%s:%d) %s", functionName, [fileName UTF8String], lineNumber, [body UTF8String]);
+}
+
+/**
+ * 需要post的数据为：
+ * UserId        用户编号
+ * FunctionName  功能名称
+ * ActionName    动作名称
+ * ActionTime    操作时间（2015/06/1 18:18:18）
+ * ActionReturn  操作结果（包括错误）
+ * ActionObject  操作对象（具体到文件）
+ */
+void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult) {
+    NSString *userID = @"1";
+    NSString *actionTime = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
+    NSString *data = [NSString stringWithFormat:@"UserId=%@&FunctionName=%s#%d&ActionName=%@&ActionTime=%@&ActionReturn=%@&ActionObject=%s",
+                      userID, functionName, lineNumber, actionName, actionTime, actionResult, sourceFile];
+    
+    [HttpUtils httpPost:ACTION_LOGGER_URL_PATH Data:data];
 }

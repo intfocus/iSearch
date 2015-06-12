@@ -5,6 +5,9 @@
 //  Created by lijunjie on 15/5/25.
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
+//  说明:
+//  公告: 当前日期向前推30天
+//  预告: 当前日期向后推30天
 //
 //  A 从服务器获取公告通知
 //      A.1 error => 跳至步骤B
@@ -19,7 +22,7 @@
 //      B2. 不存在则初始化公告通知数组为空， 继续步骤C
 //
 //  C 处理公告通知数组实例
-//      C1. 遍历公告通知数组分成:
+//      C1. 分解数据
 //          公告数组：元素为NSDirecotry, [发生日期]为空
 //          预告数组：元素为NSDirecotry, [发成日期]不为空
 //          预告日期数组: 元素为字符串， [发生日期]不空，并格式化为"yyyy/mm/dd", *去重* 。 为日历控件加状态使用
@@ -39,8 +42,6 @@
 //      }
 
 #import "NotificationViewController.h"
-#import "common.h"
-#import "NotificationCell.h"
 
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -61,6 +62,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    self.notifications            = [[NSMutableArray alloc] init];
+    self.notificationsAdvance     = [[NSMutableArray alloc] init];
+    self.notificationsAdvanceDate = [[NSMutableArray alloc] init];
+    
     
     self.calendar = [JTCalendar new];
     // All modifications on calendarAppearance have to be done before setMenuMonthsView and setContentView
@@ -99,20 +105,22 @@
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
     
-    self.notifications = [[NSMutableArray alloc] init];
-    self.notificationsAdvance = [[NSMutableArray alloc] init];
     
-    //[FileUtils printDir:@""];
     // 服务器获取成功则写入cache,否则读取cache
     NSString *cachePath = [FileUtils getPathName:NOTIFICATION_DIRNAME FileName:NOTIFICATION_CACHE];
     
     // 从服务器端获取[公告通知], 不判断网络环境，获取不到则取本地cache
-    NSString *response = [HttpUtils httpGet: NOTIFICATION_URL_PATH];
+    NSString *deptID = @"1";
+    NSString *currentDate = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
+    currentDate = @"2015/06/15";
+    NSString *notifiction_url = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", NOTIFICATION_URL_PATH, NOTIFICATION_PARAM_DEPTID, deptID, NOTIFICATION_PARAM_DATESTR, currentDate];
+    NSLog(@"%@", notifiction_url);
+    NSString *response = [HttpUtils httpGet: notifiction_url];
     NSError *error;
     // 确保该实例可以被读取
-    NSMutableArray *notificationDatas = [[NSMutableArray alloc] init];
+    NSMutableDictionary *notificationDatas = [[NSMutableDictionary alloc] init];
     notificationDatas = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
-    
+    NSErrorPrint(error, @"http get notifications and convert into json.");
     
     // 情况一: 服务器获取公告通知成功
     if(!error) {
@@ -123,71 +131,66 @@
         
         // 写入本地作为cache
         [response writeToFile:cachePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-        [self logger:error Info:@"notifications cache write"];
+        NSErrorPrint(error, @"notifications cache write");
         
-    // 情况二: 如果缓存文件存在则读取
+        // 情况二: 如果缓存文件存在则读取
     } else if([FileUtils checkFileExist:cachePath isDir:false]) {
-        [self logger:error Info:@"http get notifications list"];
+        NSErrorPrint(error, @"http get notifications list");
         
         // 读取本地cache
         NSLog(@"%@", cachePath);
         NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath usedEncoding:NULL error:&error];
-        if(error) {
-            [self logger:error Info:@"notifications cache read"];
-        } else {
+        NSErrorPrint(error, @"notifications cache read");
+        if(!error) {
             // 解析为json数组
             notificationDatas = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                            options:NSJSONReadingMutableContainers
-                                                              error:&error];
-            [self logger:error Info:@"notifications cache parse into json"];
+                                                                options:NSJSONReadingMutableContainers
+                                                                  error:&error];
+            NSErrorPrint(error, @"notifications cache parse into json");
         }
-    // 情况三:
+        // 情况三:
     } else {
         NSLog(@"<# HttpGET and cache all failed!>");
     }
     
     
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
+    NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
+    self.notifications  = notificationDatas[NOTIFICATION_FIELD_GGDATA];// 公告数据
+    self.notificationsAdvance = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告
+//    NSLog(@"response: %@", response);
+//    NSLog(@"data: %@", notificationDatas);
+//    NSLog(@"one: %@", self.notifications);
+//    NSLog(@"two: %@", self.notificationsAdvance);
+     NSLog(@"1: %@", self.notificationsAdvance);
+    
+    
+    // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    self.notificationsAdvanceDate = [[NSMutableArray alloc] init];
-    NSInteger toIndex = [NOTIFICATION_DATE_FORMAT length];
     NSString *occurDate = [[NSString alloc] init];
-    for(dict in notificationDatas) {
-        if((NSNull *)dict[NOTIFICATION_OCCUR_DATE] == [NSNull null])
-            [self.notifications addObject:dict];
-        else {
-            // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
-            occurDate = [dict[NOTIFICATION_OCCUR_DATE] substringToIndex:toIndex];
-            dict[NOTIFICATION_OCCUR_DATE] = occurDate;
-            [self.notificationsAdvance  addObject:dict];
-            // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
-            if(![self.notificationsAdvanceDate containsObject:occurDate])
-               [self.notificationsAdvanceDate addObject:occurDate];
-        }
+    for(dict in self.notificationsAdvance) {
+        // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
+        occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];
+        dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
+        if(![self.notificationsAdvanceDate containsObject:occurDate])
+            [self.notificationsAdvanceDate addObject:occurDate];
     }
+    NSLog(@"2: %@", self.notificationsAdvance);
+    
+    NSLog(@"3: %@", self.notificationsAdvanceDate);
+    
     // 公告通知按created_date升序
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"created_date" ascending:YES];
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
     [self.notifications sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     // 预告通知按occur_date升序
-    descriptor = [[NSSortDescriptor alloc] initWithKey:@"occur_date" ascending:YES];
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
     [self.notificationsAdvance sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-    NSLog(@"%@", self.notifications);
+
     
     // 初始化通知列表视图
     self.notificationView.delegate   = self;
     self.notificationView.dataSource = self;
     [self.notificationView reloadData];
-}
-
-/**
- *  封装自定义内容格式的logger
- *
- *  @param error NSError实例
- *  @param info  调试使用的显示信息
- */
-- (void) logger:(NSError *)error Info:(NSString *)info {
-    NSString *logState = (error == NULL ? @"successfully." : [NSString stringWithFormat:@"failed: %@", [error localizedDescription]]);
-    NSLog(@"<# %@ %@ >", info, logState);
 }
 
 /**
@@ -202,17 +205,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Buttons callback
-- (IBAction)didGoTodayTouch {
-    [self.calendar setCurrentDate:[NSDate date]];
-}
-
-- (IBAction)didChangeModeTouch {
-    self.calendar.calendarAppearance.isWeekMode = !self.calendar.calendarAppearance.isWeekMode;
-    
-    [self transitionExample];
+    _calendar = nil;
 }
 
 
@@ -234,30 +227,35 @@
     if(compareResult != NSOrderedAscending)
         return false;
     
-    NSString *dateStr = [DateUtils dateToStr:date Format:NOTIFICATION_DATE_FORMAT];
+    NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
     return [self.notificationsAdvanceDate containsObject:dateStr];
 }
 
 /**
  *  JTCanlendar回调函数；点击日历表中某日期时，响应处理
+ *  Question:
+ *      [NSPredicate predicateWithFormat:@"(OccurTime == %@)", dateStr];
+ *      => OccurTime == "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(%@ == %@)", @"OccurTime", dateStr];
+ *      => "OccurTime" == "2015/06/18"
  *
  *  @param calendar 日历控件实例
  *  @param date     选择的日期
  */
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-    
-    NSString *selectDate = [DateUtils dateToStr:date Format:NOTIFICATION_DATE_FORMAT];
-    NSPredicate *filter = [NSPredicate predicateWithFormat:@"(occur_date == %@)", selectDate];
-    NSLog(@"filter: %@", filter);
+    NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"(OccurTime == %@)", dateStr];
+    NSLog(@"filter: %@ \n %@", filter, self.notificationsAdvance);
     
     NSArray *notificationAdvance = [self.notificationsAdvance filteredArrayUsingPredicate:filter];
     NSLog(@"filter: %@", notificationAdvance);
+    
     NSString *notificationText = [[NSString alloc] init];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     for(dict in notificationAdvance) {
-        notificationText = [notificationText stringByAppendingString:dict[@"title"]];
+        notificationText = [notificationText stringByAppendingString:dict[NOTIFICATION_FIELD_TITLE]];
         notificationText = [notificationText stringByAppendingString:@"\n"];
-        notificationText = [notificationText stringByAppendingString:dict[@"msg"]];
+        notificationText = [notificationText stringByAppendingString:dict[NOTIFICATION_FIELD_MSG]];
         notificationText = [notificationText stringByAppendingString:@"\n"];
     }
     NSLog(@"%@", notificationText);
@@ -315,14 +313,14 @@
     cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
     
     NSMutableDictionary *dict = [self.notifications objectAtIndex:cellIndex];
-    cell.cellTitle.text = dict[@"title"];
+    cell.cellTitle.text = dict[NOTIFICATION_FIELD_TITLE];
     
     [cell.cellTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
     [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
     [cell.cellMsg setNumberOfLines: 2];
     [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-    [cell setIntroductionText:dict[@"msg"]];
-    [cell setCreatedDate:dict[@"created_date"]];
+    [cell setIntroductionText:dict[NOTIFICATION_FIELD_MSG]];
+    [cell setCreatedDate:dict[NOTIFICATION_FIELD_CREATEDATE]];
     
     //UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableViewCellLongPress:)];
     //[cell addGestureRecognizer:gesture];

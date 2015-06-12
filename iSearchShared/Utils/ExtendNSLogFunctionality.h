@@ -12,6 +12,9 @@
 #ifndef iSearch_ExtendNSLogFunctionality__h
 #define iSearch_ExtendNSLogFunctionality__h
 #import <Foundation/Foundation.h>
+#import "DateUtils.h"
+#import "HttpUtils.h"
+#import "const.h"
 
 #ifdef DEBUG
 #define NSLog(args...) ExtendNSLog(__FILE__,__LINE__,__PRETTY_FUNCTION__,args);
@@ -25,7 +28,10 @@
 #define NSErrorPrint(error, args...) ExtendNSLogPrintError(__FILE__,__LINE__,__PRETTY_FUNCTION__, false, error, args);
 #endif
 
+
+#define NSActionLogger(actionName, actionResult) actionLogPost(__FILE__,__LINE__,__PRETTY_FUNCTION__, actionName, actionResult);
+
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName,BOOL isPrintSuccessfully, NSError *error, NSString *format, ...);
-
+void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult);
 #endif

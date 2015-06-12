@@ -28,7 +28,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    LoginViewController *right=[[LoginViewController alloc] initWithNibName:nil bundle:nil];
+    //NSActionLogger(@"主界面加载", @"successfully");
+    NotificationViewController *right=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
     self.right=right;
 }
 

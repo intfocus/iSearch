@@ -175,7 +175,7 @@
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) copyFileDescContent:(NSString *) fileID {
++ (NSString *)copyFileDescContent:(NSString *) fileID {
     NSString *descContent = [FileUtils fileDescContent:fileID];
     NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
     NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
@@ -186,4 +186,6 @@
     
     return descContent;
 }
+
+
 @end

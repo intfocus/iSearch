@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "JTCalendar.h"
+#import "common.h"
+#import "NotificationCell.h"
 
 @interface NotificationViewController : UIViewController<JTCalendarDataSource>
 

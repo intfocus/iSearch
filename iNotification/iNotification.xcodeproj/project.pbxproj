@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C44922F41B2AC27500E3BB65 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922CE1B2AC27500E3BB65 /* GMGridView.m */; };
+		C44922F51B2AC27500E3BB65 /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922D11B2AC27500E3BB65 /* GMGridViewCell.m */; };
+		C44922F61B2AC27500E3BB65 /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922D31B2AC27500E3BB65 /* GMGridViewLayoutStrategies.m */; };
+		C44922F71B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922D51B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m */; };
+		C44922F81B2AC27500E3BB65 /* UIView+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922D71B2AC27500E3BB65 /* UIView+GMGridViewAdditions.m */; };
+		C44922F91B2AC27500E3BB65 /* DatabaseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922DD1B2AC27500E3BB65 /* DatabaseUtils.m */; };
+		C44922FA1B2AC27500E3BB65 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922DF1B2AC27500E3BB65 /* DateUtils.m */; };
+		C44922FB1B2AC27500E3BB65 /* ExtendNSLogFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922E11B2AC27500E3BB65 /* ExtendNSLogFunctionality.m */; };
+		C44922FC1B2AC27500E3BB65 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922E31B2AC27500E3BB65 /* FileUtils.m */; };
+		C44922FD1B2AC27500E3BB65 /* HttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922E51B2AC27500E3BB65 /* HttpUtils.m */; };
+		C44922FE1B2AC27500E3BB65 /* LogUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922E71B2AC27500E3BB65 /* LogUtils.m */; };
+		C44922FF1B2AC27500E3BB65 /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922EA1B2AC27500E3BB65 /* PopupView.m */; };
+		C44923001B2AC27500E3BB65 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922EC1B2AC27500E3BB65 /* ViewUtils.m */; };
+		C44923011B2AC27500E3BB65 /* ViewFilePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922EF1B2AC27500E3BB65 /* ViewFilePage.m */; };
+		C44923021B2AC27500E3BB65 /* ViewFilePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44922F01B2AC27500E3BB65 /* ViewFilePage.xib */; };
+		C44923031B2AC27500E3BB65 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922F21B2AC27500E3BB65 /* ViewSlide.m */; };
+		C44923041B2AC27500E3BB65 /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44922F31B2AC27500E3BB65 /* ViewSlide.xib */; };
 		C4AFBFB21B170B27009EF2C5 /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4AFBFB11B170B27009EF2C5 /* NotificationCell.m */; };
 		C4AFBFB51B170B45009EF2C5 /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4AFBFB41B170B45009EF2C5 /* NotificationCell.xib */; };
 		C4CCA7171B12C3A700384853 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA7161B12C3A700384853 /* main.m */; };
@@ -17,12 +34,6 @@
 		C4CCA7251B12C3A700384853 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4CCA7231B12C3A700384853 /* LaunchScreen.xib */; };
 		C4CCA7311B12C3A700384853 /* iNotificationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA7301B12C3A700384853 /* iNotificationTests.m */; };
 		C4CCA73B1B12C44100384853 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4CCA73A1B12C44100384853 /* ViewController.xib */; };
-		C4CCA74B1B12F74600384853 /* ExtendNSLogFunctionality.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA73F1B12F74600384853 /* ExtendNSLogFunctionality.m */; };
-		C4CCA74C1B12F74600384853 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA7411B12F74600384853 /* FileUtils.m */; };
-		C4CCA74D1B12F74600384853 /* HttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA7431B12F74600384853 /* HttpUtils.m */; };
-		C4CCA74E1B12F74600384853 /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA7461B12F74600384853 /* PopupView.m */; };
-		C4CCA7501B12F74600384853 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA74A1B12F74600384853 /* ViewUtils.m */; };
-		C4CCA7541B131FB900384853 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CCA7531B131FB900384853 /* DateUtils.m */; };
 		C54F76818F1CA8B721B3D3D2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7F195A08B5E4E329DCA6BC /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +51,43 @@
 		1C7F195A08B5E4E329DCA6BC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		652F63090B31AF7C0963D370 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		79A15CD7F3A4118292AE8037 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C44922CC1B2AC27500E3BB65 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
+		C44922CD1B2AC27500E3BB65 /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
+		C44922CE1B2AC27500E3BB65 /* GMGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridView.m; sourceTree = "<group>"; };
+		C44922CF1B2AC27500E3BB65 /* GMGridViewCell+Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridViewCell+Extended.h"; sourceTree = "<group>"; };
+		C44922D01B2AC27500E3BB65 /* GMGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridViewCell.h; sourceTree = "<group>"; };
+		C44922D11B2AC27500E3BB65 /* GMGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridViewCell.m; sourceTree = "<group>"; };
+		C44922D21B2AC27500E3BB65 /* GMGridViewLayoutStrategies.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridViewLayoutStrategies.h; sourceTree = "<group>"; };
+		C44922D31B2AC27500E3BB65 /* GMGridViewLayoutStrategies.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridViewLayoutStrategies.m; sourceTree = "<group>"; };
+		C44922D41B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIGestureRecognizer+GMGridViewAdditions.h"; sourceTree = "<group>"; };
+		C44922D51B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIGestureRecognizer+GMGridViewAdditions.m"; sourceTree = "<group>"; };
+		C44922D61B2AC27500E3BB65 /* UIView+GMGridViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+GMGridViewAdditions.h"; sourceTree = "<group>"; };
+		C44922D71B2AC27500E3BB65 /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GMGridViewAdditions.m"; sourceTree = "<group>"; };
+		C44922DA1B2AC27500E3BB65 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		C44922DB1B2AC27500E3BB65 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
+		C44922DC1B2AC27500E3BB65 /* DatabaseUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseUtils.h; sourceTree = "<group>"; };
+		C44922DD1B2AC27500E3BB65 /* DatabaseUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseUtils.m; sourceTree = "<group>"; };
+		C44922DE1B2AC27500E3BB65 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
+		C44922DF1B2AC27500E3BB65 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
+		C44922E01B2AC27500E3BB65 /* ExtendNSLogFunctionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNSLogFunctionality.h; sourceTree = "<group>"; };
+		C44922E11B2AC27500E3BB65 /* ExtendNSLogFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNSLogFunctionality.m; sourceTree = "<group>"; };
+		C44922E21B2AC27500E3BB65 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
+		C44922E31B2AC27500E3BB65 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
+		C44922E41B2AC27500E3BB65 /* HttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpUtils.h; sourceTree = "<group>"; };
+		C44922E51B2AC27500E3BB65 /* HttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtils.m; sourceTree = "<group>"; };
+		C44922E61B2AC27500E3BB65 /* LogUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogUtils.h; sourceTree = "<group>"; };
+		C44922E71B2AC27500E3BB65 /* LogUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogUtils.m; sourceTree = "<group>"; };
+		C44922E81B2AC27500E3BB65 /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
+		C44922E91B2AC27500E3BB65 /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
+		C44922EA1B2AC27500E3BB65 /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
+		C44922EB1B2AC27500E3BB65 /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
+		C44922EC1B2AC27500E3BB65 /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
+		C44922EE1B2AC27500E3BB65 /* ViewFilePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFilePage.h; sourceTree = "<group>"; };
+		C44922EF1B2AC27500E3BB65 /* ViewFilePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFilePage.m; sourceTree = "<group>"; };
+		C44922F01B2AC27500E3BB65 /* ViewFilePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFilePage.xib; sourceTree = "<group>"; };
+		C44922F11B2AC27500E3BB65 /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
+		C44922F21B2AC27500E3BB65 /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
+		C44922F31B2AC27500E3BB65 /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
 		C4AFBFB11B170B27009EF2C5 /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		C4AFBFB31B170B35009EF2C5 /* NotificationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		C4AFBFB41B170B45009EF2C5 /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
@@ -57,21 +105,6 @@
 		C4CCA72F1B12C3A700384853 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4CCA7301B12C3A700384853 /* iNotificationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iNotificationTests.m; sourceTree = "<group>"; };
 		C4CCA73A1B12C44100384853 /* ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
-		C4CCA73D1B12F74600384853 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
-		C4CCA73E1B12F74600384853 /* ExtendNSLogFunctionality.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExtendNSLogFunctionality.h; sourceTree = "<group>"; };
-		C4CCA73F1B12F74600384853 /* ExtendNSLogFunctionality.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExtendNSLogFunctionality.m; sourceTree = "<group>"; };
-		C4CCA7401B12F74600384853 /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
-		C4CCA7411B12F74600384853 /* FileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileUtils.m; sourceTree = "<group>"; };
-		C4CCA7421B12F74600384853 /* HttpUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpUtils.h; sourceTree = "<group>"; };
-		C4CCA7431B12F74600384853 /* HttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtils.m; sourceTree = "<group>"; };
-		C4CCA7441B12F74600384853 /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
-		C4CCA7451B12F74600384853 /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
-		C4CCA7461B12F74600384853 /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
-		C4CCA7491B12F74600384853 /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
-		C4CCA74A1B12F74600384853 /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
-		C4CCA7511B13185500384853 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
-		C4CCA7521B131FAB00384853 /* DateUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
-		C4CCA7531B131FB900384853 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +126,83 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C44922CA1B2AC27500E3BB65 /* iSearchShared */ = {
+			isa = PBXGroup;
+			children = (
+				C44922CB1B2AC27500E3BB65 /* GMGridView */,
+				C44922D81B2AC27500E3BB65 /* SSZipArchive */,
+				C44922D91B2AC27500E3BB65 /* Utils */,
+				C44922ED1B2AC27500E3BB65 /* Views */,
+			);
+			name = iSearchShared;
+			path = ../../iSearchShared;
+			sourceTree = "<group>";
+		};
+		C44922CB1B2AC27500E3BB65 /* GMGridView */ = {
+			isa = PBXGroup;
+			children = (
+				C44922CC1B2AC27500E3BB65 /* GMGridView-Constants.h */,
+				C44922CD1B2AC27500E3BB65 /* GMGridView.h */,
+				C44922CE1B2AC27500E3BB65 /* GMGridView.m */,
+				C44922CF1B2AC27500E3BB65 /* GMGridViewCell+Extended.h */,
+				C44922D01B2AC27500E3BB65 /* GMGridViewCell.h */,
+				C44922D11B2AC27500E3BB65 /* GMGridViewCell.m */,
+				C44922D21B2AC27500E3BB65 /* GMGridViewLayoutStrategies.h */,
+				C44922D31B2AC27500E3BB65 /* GMGridViewLayoutStrategies.m */,
+				C44922D41B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.h */,
+				C44922D51B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m */,
+				C44922D61B2AC27500E3BB65 /* UIView+GMGridViewAdditions.h */,
+				C44922D71B2AC27500E3BB65 /* UIView+GMGridViewAdditions.m */,
+			);
+			path = GMGridView;
+			sourceTree = "<group>";
+		};
+		C44922D81B2AC27500E3BB65 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		C44922D91B2AC27500E3BB65 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C44922DA1B2AC27500E3BB65 /* common.h */,
+				C44922DB1B2AC27500E3BB65 /* const.h */,
+				C44922DC1B2AC27500E3BB65 /* DatabaseUtils.h */,
+				C44922DD1B2AC27500E3BB65 /* DatabaseUtils.m */,
+				C44922DE1B2AC27500E3BB65 /* DateUtils.h */,
+				C44922DF1B2AC27500E3BB65 /* DateUtils.m */,
+				C44922E01B2AC27500E3BB65 /* ExtendNSLogFunctionality.h */,
+				C44922E11B2AC27500E3BB65 /* ExtendNSLogFunctionality.m */,
+				C44922E21B2AC27500E3BB65 /* FileUtils.h */,
+				C44922E31B2AC27500E3BB65 /* FileUtils.m */,
+				C44922E41B2AC27500E3BB65 /* HttpUtils.h */,
+				C44922E51B2AC27500E3BB65 /* HttpUtils.m */,
+				C44922E61B2AC27500E3BB65 /* LogUtils.h */,
+				C44922E71B2AC27500E3BB65 /* LogUtils.m */,
+				C44922E81B2AC27500E3BB65 /* message.h */,
+				C44922E91B2AC27500E3BB65 /* PopupView.h */,
+				C44922EA1B2AC27500E3BB65 /* PopupView.m */,
+				C44922EB1B2AC27500E3BB65 /* ViewUtils.h */,
+				C44922EC1B2AC27500E3BB65 /* ViewUtils.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		C44922ED1B2AC27500E3BB65 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C44922EE1B2AC27500E3BB65 /* ViewFilePage.h */,
+				C44922EF1B2AC27500E3BB65 /* ViewFilePage.m */,
+				C44922F01B2AC27500E3BB65 /* ViewFilePage.xib */,
+				C44922F11B2AC27500E3BB65 /* ViewSlide.h */,
+				C44922F21B2AC27500E3BB65 /* ViewSlide.m */,
+				C44922F31B2AC27500E3BB65 /* ViewSlide.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C4CCA7081B12C3A700384853 = {
 			isa = PBXGroup;
 			children = (
@@ -116,7 +226,7 @@
 		C4CCA7131B12C3A700384853 /* iNotification */ = {
 			isa = PBXGroup;
 			children = (
-				C4CCA73C1B12F74600384853 /* Utils */,
+				C44922CA1B2AC27500E3BB65 /* iSearchShared */,
 				C4CCA7181B12C3A700384853 /* AppDelegate.h */,
 				C4CCA7191B12C3A700384853 /* AppDelegate.m */,
 				C4CCA73A1B12C44100384853 /* ViewController.xib */,
@@ -157,29 +267,6 @@
 				C4CCA72F1B12C3A700384853 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		C4CCA73C1B12F74600384853 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				C4CCA73D1B12F74600384853 /* const.h */,
-				C4CCA7401B12F74600384853 /* FileUtils.h */,
-				C4CCA7411B12F74600384853 /* FileUtils.m */,
-				C4CCA7421B12F74600384853 /* HttpUtils.h */,
-				C4CCA7431B12F74600384853 /* HttpUtils.m */,
-				C4CCA7441B12F74600384853 /* message.h */,
-				C4CCA7451B12F74600384853 /* PopupView.h */,
-				C4CCA7461B12F74600384853 /* PopupView.m */,
-				C4CCA7491B12F74600384853 /* ViewUtils.h */,
-				C4CCA74A1B12F74600384853 /* ViewUtils.m */,
-				C4CCA7511B13185500384853 /* common.h */,
-				C4CCA7521B131FAB00384853 /* DateUtils.h */,
-				C4CCA7531B131FB900384853 /* DateUtils.m */,
-				C4CCA73E1B12F74600384853 /* ExtendNSLogFunctionality.h */,
-				C4CCA73F1B12F74600384853 /* ExtendNSLogFunctionality.m */,
-			);
-			name = Utils;
-			path = ../../iSearchShared/Utils;
 			sourceTree = "<group>";
 		};
 		C84B71FF1326C48E1C623711 /* Frameworks */ = {
@@ -282,10 +369,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4AFBFB51B170B45009EF2C5 /* NotificationCell.xib in Resources */,
+				C44923021B2AC27500E3BB65 /* ViewFilePage.xib in Resources */,
 				C4CCA7201B12C3A700384853 /* Main.storyboard in Resources */,
 				C4CCA7251B12C3A700384853 /* LaunchScreen.xib in Resources */,
 				C4CCA73B1B12C44100384853 /* ViewController.xib in Resources */,
 				C4CCA7221B12C3A700384853 /* Images.xcassets in Resources */,
+				C44923041B2AC27500E3BB65 /* ViewSlide.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,16 +425,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4CCA7501B12F74600384853 /* ViewUtils.m in Sources */,
-				C4CCA74C1B12F74600384853 /* FileUtils.m in Sources */,
+				C44922F81B2AC27500E3BB65 /* UIView+GMGridViewAdditions.m in Sources */,
+				C44923011B2AC27500E3BB65 /* ViewFilePage.m in Sources */,
+				C44923001B2AC27500E3BB65 /* ViewUtils.m in Sources */,
+				C44922F71B2AC27500E3BB65 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
 				C4CCA71D1B12C3A700384853 /* ViewController.m in Sources */,
-				C4CCA74E1B12F74600384853 /* PopupView.m in Sources */,
-				C4CCA74B1B12F74600384853 /* ExtendNSLogFunctionality.m in Sources */,
-				C4CCA74D1B12F74600384853 /* HttpUtils.m in Sources */,
+				C44922FD1B2AC27500E3BB65 /* HttpUtils.m in Sources */,
+				C44922F61B2AC27500E3BB65 /* GMGridViewLayoutStrategies.m in Sources */,
+				C44922FF1B2AC27500E3BB65 /* PopupView.m in Sources */,
 				C4CCA71A1B12C3A700384853 /* AppDelegate.m in Sources */,
+				C44922FB1B2AC27500E3BB65 /* ExtendNSLogFunctionality.m in Sources */,
+				C44922FA1B2AC27500E3BB65 /* DateUtils.m in Sources */,
+				C44922F51B2AC27500E3BB65 /* GMGridViewCell.m in Sources */,
+				C44922FC1B2AC27500E3BB65 /* FileUtils.m in Sources */,
+				C44922F91B2AC27500E3BB65 /* DatabaseUtils.m in Sources */,
+				C44922FE1B2AC27500E3BB65 /* LogUtils.m in Sources */,
+				C44923031B2AC27500E3BB65 /* ViewSlide.m in Sources */,
+				C44922F41B2AC27500E3BB65 /* GMGridView.m in Sources */,
 				C4CCA7171B12C3A700384853 /* main.m in Sources */,
 				C4AFBFB21B170B27009EF2C5 /* NotificationCell.m in Sources */,
-				C4CCA7541B131FB900384853 /* DateUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

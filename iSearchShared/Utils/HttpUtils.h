@@ -29,7 +29,6 @@
 + (NSString *) networkType;
 + (NSString*) devicePlatform;
 
-
 @end
 
 #endif

@@ -70,9 +70,9 @@
         self.cellCreatedDate.text = @" - ";
         return;
     }
-    NSInteger toIndex = [NOTIFICATION_DATE_FORMAT length];
+    NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
     createdDate = [createdDate substringToIndex:toIndex];
-    NSString *today = [DateUtils dateToStr:[NSDate date] Format:NOTIFICATION_DATE_FORMAT];
+    NSString *today = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
     
     // 如果是今天则显示"今天", 否则显示[yyyy/MM/dd]
     if([today isEqualToString:createdDate])

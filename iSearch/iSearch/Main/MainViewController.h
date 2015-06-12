@@ -10,6 +10,7 @@
 #define iSearch_MainViewController_h
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+#import "common.h"
 
 /**
  *  iSearch主界面, 框架为左右结构.
