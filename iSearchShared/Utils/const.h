@@ -10,6 +10,7 @@
 #define iSearch_const_h
 
 // Global
+#define DEBUG                  1
 #define APP_LANG               @"zh-CN" // 应用系统的语言
 #define BASE_URL1               @"http://localhost:3000" //
 #define BASE_URL               @"http://demo.solife.us"  // 服务器url

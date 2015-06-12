@@ -18,6 +18,6 @@
 #include "ViewUtils.h"
 #include "DateUtils.h"
 #include "PopupView.h"
-#include "LogUtils.h"
+#include "ExtendNSLogFunctionality.h"
 
 #endif
