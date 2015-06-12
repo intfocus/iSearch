@@ -33,6 +33,7 @@
 		C42EC82E1B27E8E8000F84EF /* ViewFilePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC82D1B27E8E8000F84EF /* ViewFilePage.xib */; };
 		C42EC8311B281EC0000F84EF /* overlay_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C42EC82F1B281EC0000F84EF /* overlay_selected.png */; };
 		C42EC8321B281EC0000F84EF /* overlay_selecting.png in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8301B281EC0000F84EF /* overlay_selecting.png */; };
+		C44922C81B2A935C00E3BB65 /* LogUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44922C71B2A935C00E3BB65 /* LogUtils.m */; };
 		C4713A981B26CB40002BB727 /* pdfJS.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4713A971B26CB40002BB727 /* pdfJS.zip */; };
 		C4713A9A1B26CD24002BB727 /* 102.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4713A991B26CD24002BB727 /* 102.zip */; };
 		C4713A9C1B26D30F002BB727 /* 1.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4713A9B1B26D30F002BB727 /* 1.zip */; };
@@ -109,6 +110,8 @@
 		C42EC82D1B27E8E8000F84EF /* ViewFilePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFilePage.xib; sourceTree = "<group>"; };
 		C42EC82F1B281EC0000F84EF /* overlay_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_selected.png; sourceTree = "<group>"; };
 		C42EC8301B281EC0000F84EF /* overlay_selecting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_selecting.png; sourceTree = "<group>"; };
+		C44922C71B2A935C00E3BB65 /* LogUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogUtils.m; sourceTree = "<group>"; };
+		C44922C91B2A936800E3BB65 /* LogUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogUtils.h; sourceTree = "<group>"; };
 		C4713A971B26CB40002BB727 /* pdfJS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = pdfJS.zip; sourceTree = "<group>"; };
 		C4713A991B26CD24002BB727 /* 102.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = 102.zip; sourceTree = "<group>"; };
 		C4713A9B1B26D30F002BB727 /* 1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = 1.zip; sourceTree = "<group>"; };
@@ -269,6 +272,8 @@
 				C42EC8161B27D47C000F84EF /* PopupView.m */,
 				C42EC8171B27D47C000F84EF /* ViewUtils.h */,
 				C42EC8181B27D47C000F84EF /* ViewUtils.m */,
+				C44922C71B2A935C00E3BB65 /* LogUtils.m */,
+				C44922C91B2A936800E3BB65 /* LogUtils.h */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -479,6 +484,7 @@
 				C41EC8E61ACB8A89008EDF7B /* ViewController.m in Sources */,
 				C42EC8281B27E886000F84EF /* ViewSlide.m in Sources */,
 				C42EC8221B27D47C000F84EF /* HttpUtils.m in Sources */,
+				C44922C81B2A935C00E3BB65 /* LogUtils.m in Sources */,
 				C41EC9461ACBCAE9008EDF7B /* PaintView.m in Sources */,
 				C41EC8E31ACB8A89008EDF7B /* AppDelegate.m in Sources */,
 				C42EC8201B27D47C000F84EF /* ExtendNSLogFunctionality.m in Sources */,

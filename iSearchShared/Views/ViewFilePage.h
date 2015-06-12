@@ -22,6 +22,7 @@
 @property (strong, nonatomic) NSMutableDictionary *dict; // 该文件的信息，json格式
 
 - (void)loadThumbnail:(NSString *)thumbnailPath;
+- (void)hightLight;
 @end
 
 #endif

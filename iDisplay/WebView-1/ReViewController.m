@@ -80,18 +80,12 @@
     
     // 任何@property对象都需要初始化,否则直接赋值失败
     self.tmpPageInfo = [[NSMutableDictionary alloc] init];
-    // 通过REORGANIZE_CONFIG_FILENAME配置档传递fileID/pageID
-    // 放前排 for 后面一些设置需要用到fileID/pageID
-    [self loadConfigInfo];
-    
+    _select = [[NSMutableArray alloc] init];
     self.selectState = false;
-    NSLog(@"structureView: %@",NSStringFromCGRect(self.structureView.bounds));
+    [self loadConfigInfo];  // 必须放前排 for 后面一些设置需要用到fileID/pageID
     
-    // 顶部导航 按钮控件
-//    self.navigation.rightBarButtonItem = [[UIBarButtonItem alloc]
-//                                          initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-//                                          target:self
-//                                          action:@selector(viewTapped:)];
+    NSLog(@"structureView: %@",NSStringFromCGRect(self.structureView.bounds));
+
     // 导航左侧按钮区
     NSMutableArray* array = [NSMutableArray array];
     UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"< 返回"]
@@ -146,8 +140,8 @@
     _gmGridView = gmGridView;
     
     _gmGridView.style = GMGridViewStyleSwap;
-    _gmGridView.itemSpacing = 50;
-    _gmGridView.itemHSpacing = 50;
+    _gmGridView.itemSpacing = 30;  // 页面垂直间隔
+    _gmGridView.itemHSpacing = 40; // 页面横向间隔
     _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
     _gmGridView.centerGrid = YES;
     _gmGridView.actionDelegate = self;
@@ -156,22 +150,8 @@
     _gmGridView.dataSource = self;
     _gmGridView.backgroundColor = [UIColor clearColor];
     
-    
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeInfoDark];
-    infoButton.frame = CGRectMake(self.structureView.bounds.size.width - 40,
-                                  self.structureView.bounds.size.height - 40,
-                                  40,
-                                  40);
-    infoButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-    [infoButton addTarget:self action:@selector(presentInfo) forControlEvents:UIControlEventTouchUpInside];
-    [self.structureView addSubview:infoButton];
-    
-    
-    changeBigImageView = [[UIImageView alloc]init ];
     _gmGridView.mainSuperView = self.structureView;
-    
-    self.view.backgroundColor = [UIColor purpleColor];
-    _select = [[NSMutableArray alloc] init];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     // 加载文件各页面
     _data = [self loadFilePages];;
@@ -186,9 +166,9 @@
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
-    NSLog(@"reorganize:\n%@", config);
     self.fileID = config[@"FileID"];
     self.pageID = config[@"PageID"];
+    //NSLog(@"reorganize:\n%@", config);
 }
 
 //////////////////////////////////////////////////////////////
@@ -202,13 +182,14 @@
  */
 - (NSMutableArray*) loadFilePages {
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    NSMutableDictionary *descJSON = [[NSMutableDictionary alloc]init];
+    NSMutableDictionary *descJSON = [[NSMutableDictionary alloc] init];
     
     // 此处必须读取swp文件
     // 如果在编辑文档页面界面，移动页面顺序、移除页面时，把app关闭，则再次进入编辑页面界面时是与原配置信息不一样的
     // 用户可以通过[恢复]实现还原最原始的状态
+    NSError *error;
     NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass: FILE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     descJSON = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
                                                options:NSJSONReadingMutableContainers
                                                  error:NULL];
@@ -226,14 +207,25 @@
 
 /**
  *  导航栏按钮[返回], 关闭当前文档编辑界面。
- *  对比desc.json.swp[@order]物理删除文档页面，并写回desc.json, 最后删除desc.json.swp配置档
+ *  读取desc.json.swp写回desc.json, 并物理删除swp文件
  *
+ *  bad方法: copy then remove or move; 各种问题
  *  @param gesture UIGestureRecognizer
  */
 - (void)actionDismiss:(UIGestureRecognizer *)gesture {
+    NSError *error;
+    NSString *descPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_FILENAME];
     NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:descSwpPath error:nil];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
+    
+    [descSwpContent writeToFile:descPath atomically:true encoding:NSUTF8StringEncoding error:&error];
+    [self printError:error Info:@"desc swp info write into desc"];
+    
+    if(!error) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager removeItemAtPath:descSwpContent error:&error];
+        [self printError:error Info:@"remove desc swp file"];
+    }
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }
@@ -246,23 +238,20 @@
 - (void)checkDescSwpContent {
     NSError *error;
     NSString *descPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_FILENAME];
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath];
-//    id descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-//                                               options:NSJSONReadingMutableContainers
-//                                                 error:&error];
-//    NSData *descJSON = [NSJSONSerialization dataWithJSONObject:descData
-//                                                       options:NSJSONWritingPrettyPrinted
-//                                                         error:&error];
-//    NSString *descStr = [[NSString alloc] initWithData:descJSON encoding:NSUTF8StringEncoding];
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    [self printError:error Info:@"read desc file"];
     NSMutableDictionary *descDict = [NSMutableDictionary alloc];
     descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+    [self printError:error Info:@"desc content convert to json"];
     
     NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
+    [self printError:error Info:@"read desc swp file"];
     NSMutableDictionary *descSwpDict = [NSMutableDictionary alloc];
     descSwpDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
-    BOOL  isSame = [descDict isEqualToDictionary:descSwpDict];
-
+    [self printError:error Info:@"desc swp content convert to json"];
+    
+    BOOL isSame = [descDict isEqualToDictionary:descSwpDict];
     self.restoreBarItem.enabled = !isSame;
 }
 
@@ -272,14 +261,19 @@
  *  @param sender UIBarButtonItem
  */
 - (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
+    NSError *error;
     NSString *descPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_FILENAME];
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath];
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    [self printError:error Info:@"read desc file"];
     NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
 
-    NSError *error;
     [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
-    if(error)
-        NSLog(@"<writeJSON#%d config write failed: %@>", __LINE__, [error localizedDescription]);
+    [self printError:error Info:@"[restore] desc content write into desc swp file"];
+    // 重新加载文档页面
+    if(!error) {
+        _data = [self loadFilePages];;
+        [_gmGridView reloadData];
+    }
 }
 
 /**
@@ -648,27 +642,30 @@
         
         
         ViewFilePage *filePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewFilePage" owner:self options:nil] objectAtIndex: 0];
-        // TODO: 根据fileID_pageID分解出fileID，然后到CONTENT/fileID/desc.json中读取name
-        // 此操作为了减少重复扫描本地信息
-        NSString *keyName = [NSString stringWithFormat:@"page-%@", self.fileID];
+        // TODO: 根据fileID_pageID分解出fileID，然后到CONTENT/fileID/desc.json中读取name;
+        // 文档页面可能是从其他文档重组过来的，所以fileID_pageID中的fileID不一定与文档ID一致;
+
+        NSString *currentFileID = self.fileID;
+        NSString *keyName = [NSString stringWithFormat:@"page-%@", currentFileID];
+        // self.tmpPageInfo - 为了减少重复扫描本地信息
         if(![[self.tmpPageInfo allKeys] containsObject:keyName]) {
-            
             NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
             NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
             NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
             
             [self.tmpPageInfo setObject:descSwpDict forKey:keyName];
-            
-            if([[descSwpDict[@"order"] objectAtIndex: index] isEqualToString: self.pageID]) {
-                filePage.layer.borderWidth = 10;
-                filePage.layer.borderColor = [UIColor redColor].CGColor;
-            }
-                
         }
-        filePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", self.tmpPageInfo[keyName][@"name"]];
+        
+        NSDictionary *currentDescSwpDict = [NSDictionary dictionaryWithDictionary: self.tmpPageInfo[keyName]];
+        NSString *currentPageID = [currentDescSwpDict[@"order"] objectAtIndex:index];
+        
+        if([currentPageID isEqualToString: self.pageID]) {
+            [filePage hightLight];
+            NSLog(@"hightLight: %@, %@", self.pageID, currentDescSwpDict);
+        }
+        filePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", currentDescSwpDict[@"name"]];
         filePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)index];
         
-        NSString *currentPageID = [self.tmpPageInfo[keyName][@"order"] objectAtIndex:index];
         NSString *thumbnailPath = [self fileThumbnail:self.fileID pageID:currentPageID];
         [filePage loadThumbnail: thumbnailPath];
         
@@ -907,6 +904,12 @@
 ////////////////////////////////////////////////////////////////
 //#pragma mark private methods
 ////////////////////////////////////////////////////////////////
+
+- (void)printError:(NSError *)error Info:(NSString *) info {
+    if(error)
+        NSLog(@"%@ when %@", info, [error localizedDescription]);
+}
+
 //
 //- (void)addMoreItem {}
 //- (void)removeItem {}

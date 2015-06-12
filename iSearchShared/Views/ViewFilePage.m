@@ -29,11 +29,6 @@
  *  配置文档页面: 缩略图、第几页、来自那个文档。
  */
 - (void) configView {
-    if(self.dict[@"from"])
-        self.labelFrom.text = self.dict[@"from"];
-    if(self.dict[@"pageNum"])
-        self.labelPageNum.text = self.dict[@"pageNum"];
-    if(self.dict[@"thumbnail"]) {}
 }
 /**
  *  UIWebView浏览PDF或GIF文档
@@ -56,5 +51,10 @@
     } else {
         NSLog(@"Load default thumbnail.");
     }
+}
+
+- (void)hightLight {
+    self.layer.borderWidth = 10.0f;
+    self.layer.borderColor = [UIColor redColor].CGColor;
 }
 @end

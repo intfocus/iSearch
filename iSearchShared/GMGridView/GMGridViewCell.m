@@ -262,7 +262,7 @@
     [self.selectButton setImage:(selectState ? _selectingButtonIcon : nil) forState:UIControlStateNormal];
 
     self.contentView.userInteractionEnabled = !selectState;
-    NSLog(@"GridViewCell#264 - selectState: %d", selectState);
+    //NSLog(@"GridViewCell#264 - selectState: %d", selectState);
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -273,7 +273,7 @@
     [self.selectButton setImage:(selected ? _selectedButtonIcon : _selectingButtonIcon) forState:UIControlStateNormal];
 
     self.contentView.userInteractionEnabled = !selected;
-    NSLog(@"GridViewCell#271 - setSelected: %d", selected);
+    //NSLog(@"GridViewCell#271 - setSelected: %d", selected);
 }
 
 - (void)setSelectButtonOffset:(CGPoint)offset {
@@ -301,8 +301,6 @@
         
         [self.selectButton setTitle:nil forState:UIControlStateNormal];
         [self.selectButton setBackgroundColor:[UIColor clearColor]];
-    } else {
-        NSLog(@"You should see this for you not config #selectingButtonIcon");
     }
 }
 

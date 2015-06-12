@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#ifndef iLogin_const_h
-#define iLogin_const_h
+#ifndef iSearch_const_h
+#define iSearch_const_h
 
 // Global
 #define APP_LANG               @"zh-CN" // 应用系统的语言
@@ -68,11 +68,5 @@
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
 #define NOTIFICATION_DATE_FONT    14.0f // 公告日期字体大小
-
-
-// NSLog扩展，显示__FILE__:__LINE__等信息
-#define DEBUG 1
-#import "ExtendNSLogFunctionality.h"
-#define DEBUG_CHECKER NSLog(@"%s#%d", __FILE__, __LINE__);
 
 #endif

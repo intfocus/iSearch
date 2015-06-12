@@ -94,6 +94,12 @@
     [self loadHtml];
 
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    NSLog(@"welcome come back, it's viewWillApper.");
+}
 - (void) demoExtract {
     // Files
     self.fileID = @"1";
