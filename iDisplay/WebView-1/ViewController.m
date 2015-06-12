@@ -323,7 +323,6 @@
         // 界面跳转至文档页面编辑界面
         ReViewController *showVC = [[ReViewController alloc] init];
         [self presentViewController:showVC animated:NO completion:nil];
-        NSLog(@"Come back from pages.");
     }
 }
 

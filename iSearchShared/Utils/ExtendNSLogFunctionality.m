@@ -33,19 +33,28 @@ void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSS
             lineNumber, [body UTF8String]);
 }
 
-void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName, NSError *error, NSString *info, BOOL isPrintSuccessfully) {
+void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName,BOOL isPrintSuccessfully, NSError *error, NSString *format, ...) {
     if(!isPrintSuccessfully && !error) return;
     
-    NSString *body = [[NSString alloc] init];
+    // Type to hold information about variable arguments.
+    va_list ap;
+    
+    // Initialize a variable argument list.
+    va_start (ap, format);
+    
+    NSString *body = [[NSString alloc] initWithFormat:format arguments:ap];
     if(isPrintSuccessfully && !error) {
-        body = [NSString stringWithFormat:@"%@ successfully.", info];
+        body = [NSString stringWithFormat:@"%@ successfully.", body];
     } else {
-        body = [NSString stringWithFormat:@"%@ failed for %@", info, [error localizedDescription]];
+        body = [NSString stringWithFormat:@"%@ failed for %@", body, [error localizedDescription]];
     }
-    NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
     
     if (![body hasSuffix: @"\n"])
         body = [body stringByAppendingString: @"\n"];
     
+    // End using variable argument list.
+    va_end (ap);
+    
+    NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
     fprintf(stderr, "(%s) (%s:%d) %s", functionName, [fileName UTF8String], lineNumber, [body UTF8String]);
 }
