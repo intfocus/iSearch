@@ -32,8 +32,6 @@
 		C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC87E1B28908B000F84EF /* NotificationCell.xib */; };
 		C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8801B28908B000F84EF /* NotificationViewController.m */; };
 		C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8811B28908B000F84EF /* NotificationViewController.xib */; };
-		C42EC88A1B289107000F84EF /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8881B289107000F84EF /* MainViewController.m */; };
-		C42EC88B1B289107000F84EF /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8891B289107000F84EF /* MainViewController.xib */; };
 		C42EC8901B289392000F84EF /* OfflineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC88E1B289392000F84EF /* OfflineViewController.m */; };
 		C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC88F1B289392000F84EF /* OfflineViewController.xib */; };
 		C42EC8941B289417000F84EF /* DatabaseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8931B289417000F84EF /* DatabaseUtils.m */; };
@@ -50,6 +48,19 @@
 		C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */; };
 		C4A3AF141B2B0CDE00A12170 /* PaintView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF131B2B0CDE00A12170 /* PaintView.m */; };
 		C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF161B2B0EF500A12170 /* pdfJS.zip */; };
+		C4A618EB1B2C7AEC00D0E91B /* UserHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */; };
+		C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */; };
+		C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */; };
+		C4A618EE1B2C7AEC00D0E91B /* SideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618E01B2C7AEC00D0E91B /* SideViewController.m */; };
+		C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */; };
+		C4A618F01B2C7AEC00D0E91B /* NewsListTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */; };
+		C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */; };
+		C4A618F21B2C7AEC00D0E91B /* NewsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */; };
+		C4A618F31B2C7AEC00D0E91B /* MainEntryButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618E81B2C7AEC00D0E91B /* MainEntryButton.xib */; };
+		C4A618F41B2C7AEC00D0E91B /* MainEntryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618E91B2C7AEC00D0E91B /* MainEntryButton.m */; };
+		C4A618F81B2C7B1200D0E91B /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618F51B2C7B1200D0E91B /* MainViewController.xib */; };
+		C4A618F91B2C7B1200D0E91B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618F61B2C7B1200D0E91B /* MainViewController.m */; };
+		C4A618FC1B2C7E2A00D0E91B /* RightSideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
@@ -115,9 +126,6 @@
 		C42EC87F1B28908B000F84EF /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
 		C42EC8801B28908B000F84EF /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		C42EC8811B28908B000F84EF /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
-		C42EC8871B289107000F84EF /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		C42EC8881B289107000F84EF /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		C42EC8891B289107000F84EF /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		C42EC88D1B289392000F84EF /* OfflineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineViewController.h; sourceTree = "<group>"; };
 		C42EC88E1B289392000F84EF /* OfflineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineViewController.m; sourceTree = "<group>"; };
 		C42EC88F1B289392000F84EF /* OfflineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineViewController.xib; sourceTree = "<group>"; };
@@ -142,6 +150,26 @@
 		C4A3AF121B2B0CDE00A12170 /* PaintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaintView.h; sourceTree = "<group>"; };
 		C4A3AF131B2B0CDE00A12170 /* PaintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaintView.m; sourceTree = "<group>"; };
 		C4A3AF161B2B0EF500A12170 /* pdfJS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = pdfJS.zip; sourceTree = "<group>"; };
+		C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeadView.xib; sourceTree = "<group>"; };
+		C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHeadView.m; sourceTree = "<group>"; };
+		C4A618DE1B2C7AEC00D0E91B /* UserHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHeadView.h; sourceTree = "<group>"; };
+		C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideViewController.xib; sourceTree = "<group>"; };
+		C4A618E01B2C7AEC00D0E91B /* SideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideViewController.m; sourceTree = "<group>"; };
+		C4A618E11B2C7AEC00D0E91B /* SideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideViewController.h; sourceTree = "<group>"; };
+		C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsListTabView.xib; sourceTree = "<group>"; };
+		C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsListTabView.m; sourceTree = "<group>"; };
+		C4A618E41B2C7AEC00D0E91B /* NewsListTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsListTabView.h; sourceTree = "<group>"; };
+		C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsListCell.xib; sourceTree = "<group>"; };
+		C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsListCell.m; sourceTree = "<group>"; };
+		C4A618E71B2C7AEC00D0E91B /* NewsListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsListCell.h; sourceTree = "<group>"; };
+		C4A618E81B2C7AEC00D0E91B /* MainEntryButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainEntryButton.xib; sourceTree = "<group>"; };
+		C4A618E91B2C7AEC00D0E91B /* MainEntryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainEntryButton.m; sourceTree = "<group>"; };
+		C4A618EA1B2C7AEC00D0E91B /* MainEntryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainEntryButton.h; sourceTree = "<group>"; };
+		C4A618F51B2C7B1200D0E91B /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		C4A618F61B2C7B1200D0E91B /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		C4A618F71B2C7B1200D0E91B /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightSideViewController.m; sourceTree = "<group>"; };
+		C4A618FB1B2C7E2A00D0E91B /* RightSideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightSideViewController.h; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCDD1B184E530067B762 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -298,9 +326,26 @@
 		C42EC8861B289107000F84EF /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				C42EC8871B289107000F84EF /* MainViewController.h */,
-				C42EC8881B289107000F84EF /* MainViewController.m */,
-				C42EC8891B289107000F84EF /* MainViewController.xib */,
+				C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */,
+				C4A618FB1B2C7E2A00D0E91B /* RightSideViewController.h */,
+				C4A618F51B2C7B1200D0E91B /* MainViewController.xib */,
+				C4A618F61B2C7B1200D0E91B /* MainViewController.m */,
+				C4A618F71B2C7B1200D0E91B /* MainViewController.h */,
+				C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */,
+				C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */,
+				C4A618DE1B2C7AEC00D0E91B /* UserHeadView.h */,
+				C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */,
+				C4A618E01B2C7AEC00D0E91B /* SideViewController.m */,
+				C4A618E11B2C7AEC00D0E91B /* SideViewController.h */,
+				C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */,
+				C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */,
+				C4A618E41B2C7AEC00D0E91B /* NewsListTabView.h */,
+				C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */,
+				C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */,
+				C4A618E71B2C7AEC00D0E91B /* NewsListCell.h */,
+				C4A618E81B2C7AEC00D0E91B /* MainEntryButton.xib */,
+				C4A618E91B2C7AEC00D0E91B /* MainEntryButton.m */,
+				C4A618EA1B2C7AEC00D0E91B /* MainEntryButton.h */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -503,6 +548,7 @@
 			files = (
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
 				C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */,
+				C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */,
 				C42EC86A1B28867F000F84EF /* ViewFilePage.xib in Resources */,
 				C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */,
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
@@ -511,14 +557,18 @@
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
 				C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */,
 				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
-				C42EC88B1B289107000F84EF /* MainViewController.xib in Resources */,
+				C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */,
+				C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */,
 				C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */,
 				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,
 				C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */,
 				C42BD5611B2BCAC1006DB157 /* 404.gif in Resources */,
 				C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */,
+				C4A618F81B2C7B1200D0E91B /* MainViewController.xib in Resources */,
+				C4A618F31B2C7AEC00D0E91B /* MainEntryButton.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */,
+				C4A618EB1B2C7AEC00D0E91B /* UserHeadView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,16 +619,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A618F01B2C7AEC00D0E91B /* NewsListTabView.m in Sources */,
 				C42EC85F1B28867F000F84EF /* GMGridViewCell.m in Sources */,
 				C42EC85E1B28867F000F84EF /* GMGridView.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
+				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
 				C42EC8681B28867F000F84EF /* ViewUtils.m in Sources */,
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
-				C42EC88A1B289107000F84EF /* MainViewController.m in Sources */,
 				C42EC8661B28867F000F84EF /* HttpUtils.m in Sources */,
 				C4A3AF0E1B2B0CCB00A12170 /* DisplayViewController.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */,
+				C4A618F41B2C7AEC00D0E91B /* MainEntryButton.m in Sources */,
 				C4E3CCDE1B184E530067B762 /* main.m in Sources */,
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
 				C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */,
@@ -589,12 +641,16 @@
 				C42EC8631B28867F000F84EF /* DateUtils.m in Sources */,
 				C42EC8601B28867F000F84EF /* GMGridViewLayoutStrategies.m in Sources */,
 				C42EC8671B28867F000F84EF /* PopupView.m in Sources */,
+				C4A618FC1B2C7E2A00D0E91B /* RightSideViewController.m in Sources */,
 				C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */,
+				C4A618F91B2C7B1200D0E91B /* MainViewController.m in Sources */,
 				C42EC8651B28867F000F84EF /* FileUtils.m in Sources */,
 				C42EC8691B28867F000F84EF /* ViewFilePage.m in Sources */,
 				C42EC8621B28867F000F84EF /* UIView+GMGridViewAdditions.m in Sources */,
+				C4A618F21B2C7AEC00D0E91B /* NewsListCell.m in Sources */,
 				C42EC8941B289417000F84EF /* DatabaseUtils.m in Sources */,
 				C42EC8611B28867F000F84EF /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
+				C4A618EE1B2C7AEC00D0E91B /* SideViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,15 +7,10 @@
 //
 
 
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
-#import "GMGridView.h"
-#import "common.h"
-#import "ViewSlide.h"
-#import "ViewFolder.h"
-#import "DisplayViewController.h"
+
+#import "RightSideViewController.h"
 
 
-@interface ContentViewController : UIViewController
+@interface ContentViewController : RightSideViewController
 - (void)calledByPresentedViewController;
 @end

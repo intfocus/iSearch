@@ -19,6 +19,8 @@
 #define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件
 #define REORGANIZE_FORMAT      @"yyMMddHHMMSS" // 内容重组后新文件名称格式
+#define LOCAL_OR_SERVER_LOCAL  @"local" // 获取服务器信息或本地缓存
+#define LOCAL_OR_SERVER_SREVER @"server"// 获取服务器信息或本地缓存
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"

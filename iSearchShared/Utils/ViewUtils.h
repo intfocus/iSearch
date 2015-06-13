@@ -47,6 +47,7 @@
  */
 + (NSString *) dateToStr: (NSDate *)date Format:(NSString*) format;
 
++ (UIView *)loadNibClass:(Class)cls;
 
 @end
 

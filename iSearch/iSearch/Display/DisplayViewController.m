@@ -384,7 +384,7 @@
 - (IBAction)ddd:(id)sender {
     @try {
         MainViewController *mainViewController = (MainViewController*)self.presentingViewController;
-        [mainViewController calledByPresentedViewController];
+        //[mainViewController calledByPresentedViewController];
     } @catch(NSException *e) {
         NSLog(@"abort for %@", [e reason]);
     } @finally {}

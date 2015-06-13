@@ -25,4 +25,11 @@
     [dateFormatter setDateFormat:format];
     return [dateFormatter dateFromString: str];
 }
+
++ (UIView *)loadNibClass:(Class)cls {
+    UINib *nib=[UINib nibWithNibName:NSStringFromClass(cls) bundle:nil];
+    NSArray *views=[nib instantiateWithOwner:nil options:nil];
+    return [views firstObject];
+}
+
 @end
