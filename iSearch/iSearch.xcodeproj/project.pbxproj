@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C31A5A26A50B79A54B9722 /* libPods.a */; };
+		C42BD5611B2BCAC1006DB157 /* 404.gif in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55A1B2BCAC1006DB157 /* 404.gif */; };
+		C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55B1B2BCAC1006DB157 /* close_x.png */; };
+		C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */; };
+		C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55F1B2BCAC1006DB157 /* overlay_selecting.png */; };
 		C42EC85E1B28867F000F84EF /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC83C1B28867F000F84EF /* GMGridView.m */; };
 		C42EC85F1B28867F000F84EF /* GMGridViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC83F1B28867F000F84EF /* GMGridViewCell.m */; };
 		C42EC8601B28867F000F84EF /* GMGridViewLayoutStrategies.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8411B28867F000F84EF /* GMGridViewLayoutStrategies.m */; };
@@ -67,6 +71,10 @@
 		3CB226BD2DC5BFC7B479B425 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		75C31A5A26A50B79A54B9722 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C42BD55A1B2BCAC1006DB157 /* 404.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 404.gif; sourceTree = "<group>"; };
+		C42BD55B1B2BCAC1006DB157 /* close_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_x.png; sourceTree = "<group>"; };
+		C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_selected.png; sourceTree = "<group>"; };
+		C42BD55F1B2BCAC1006DB157 /* overlay_selecting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_selecting.png; sourceTree = "<group>"; };
 		C42EC83A1B28867F000F84EF /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
 		C42EC83B1B28867F000F84EF /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
 		C42EC83C1B28867F000F84EF /* GMGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridView.m; sourceTree = "<group>"; };
@@ -184,6 +192,18 @@
 				69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		C42BD5591B2BCAC1006DB157 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				C42BD55A1B2BCAC1006DB157 /* 404.gif */,
+				C42BD55B1B2BCAC1006DB157 /* close_x.png */,
+				C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */,
+				C42BD55F1B2BCAC1006DB157 /* overlay_selecting.png */,
+			);
+			name = Images;
+			path = ../Images;
 			sourceTree = "<group>";
 		};
 		C42EC8381B28867F000F84EF /* iSearchShared */ = {
@@ -327,6 +347,7 @@
 		C4A3AF151B2B0EF500A12170 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C42BD5591B2BCAC1006DB157 /* Images */,
 				C4A3AF161B2B0EF500A12170 /* pdfJS.zip */,
 			);
 			path = Resources;
@@ -491,9 +512,13 @@
 				C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */,
 				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
 				C42EC88B1B289107000F84EF /* MainViewController.xib in Resources */,
+				C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */,
+				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,
 				C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */,
+				C42BD5611B2BCAC1006DB157 /* 404.gif in Resources */,
 				C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
+				C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

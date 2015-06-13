@@ -17,5 +17,6 @@
  */
 @interface MainViewController : UIViewController
 
+- (void)calledByPresentedViewController;
 @end
 #endif

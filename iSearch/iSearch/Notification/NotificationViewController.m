@@ -240,17 +240,18 @@
  *      => OccurTime == "2015/06/18"
  *      [NSPredicate predicateWithFormat:@"(%@ == %@)", @"OccurTime", dateStr];
  *      => "OccurTime" == "2015/06/18"
+ *   Solution:
+ *      String format and not use predicateWithFormat!
  *
  *  @param calendar 日历控件实例
  *  @param date     选择的日期
  */
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
     NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
-    NSPredicate *filter = [NSPredicate predicateWithFormat:@"(OccurTime == %@)", dateStr];
-    NSLog(@"filter: %@ \n %@", filter, self.notificationsAdvance);
-    
+    NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
+    NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
+
     NSArray *notificationAdvance = [self.notificationsAdvance filteredArrayUsingPredicate:filter];
-    NSLog(@"filter: %@", notificationAdvance);
     
     NSString *notificationText = [[NSString alloc] init];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
@@ -260,7 +261,7 @@
         notificationText = [notificationText stringByAppendingString:dict[NOTIFICATION_FIELD_MSG]];
         notificationText = [notificationText stringByAppendingString:@"\n"];
     }
-    NSLog(@"%@", notificationText);
+    
     self.notificationZone.text = notificationText;
 }
 

@@ -105,7 +105,7 @@
                                                        style:UIBarButtonItemStylePlain
                                                       target:nil
                                                       action:@selector(actionEditPages:)];
-    self.editBarItem.possibleTitles = [NSSet setWithObjects:BTN_SELECT, BTN_CANCEL, nil];
+    self.editBarItem.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_CANCEL, nil];
     [array addObject:self.editBarItem];
     
     // 恢复按钮 - desc.json覆盖desc.json.swp
@@ -155,6 +155,7 @@
     
     _gmGridView.mainSuperView = self.structureView;
     self.view.backgroundColor = [UIColor whiteColor];
+    _gmGridView.selectState = self.selectState;
     
     [self refreshGridView];
 }
@@ -303,7 +304,7 @@
         self.selectState = false;
         _gmGridView.selectState = self.selectState;
         
-        [self.editBarItem setTitle: BTN_SELECT];
+        [self.editBarItem setTitle: BTN_EDIT];
         // 在有选择多个页面情况下，[保存][移除]是激活的，
         // 但直接[取消]编辑状态时, 就需要手工禁用
         self.saveBarItem.enabled = false;
@@ -689,8 +690,6 @@
     GMGridViewCell *cell = [gridView dequeueReusableCell];
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        cell.deleteButtonIcon = [UIImage imageNamed:@"close_x.png"];
-        cell.deleteButtonOffset = CGPointMake(-15, -15);
         cell.selectingButtonIcon = [UIImage imageNamed:@"overlay_selecting.png"];
         cell.selectingButtonOffset = CGPointMake(0, 0);
         cell.selectedButtonIcon = [UIImage imageNamed:@"overlay_selected.png"];

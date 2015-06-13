@@ -62,10 +62,10 @@
                             </state>
                         </button>
                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pzH-g4-n0d">
-                            <rect key="frame" x="240" y="2" width="51" height="31"/>
+                            <rect key="frame" x="254" y="2" width="51" height="31"/>
                         </switch>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="激光笔" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uck-PE-Yze">
-                            <rect key="frame" x="188" y="9" width="49" height="21"/>
+                            <rect key="frame" x="202" y="9" width="49" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="49" id="J79-9y-hdP"/>
                             </constraints>
@@ -74,33 +74,54 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sJ-c4-EJO">
-                            <rect key="frame" x="19" y="5" width="49" height="30"/>
+                            <rect key="frame" x="80" y="5" width="43" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="49" id="QjT-Mg-mMG"/>
                             </constraints>
-                            <state key="normal" title="上一页">
+                            <state key="normal" title="上页">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="lastPage:" destination="-1" eventType="touchUpInside" id="Gu6-df-VJl"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M2e-E7-OIM">
+                            <rect key="frame" x="0.0" y="5" width="41" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="49" id="02E-Wd-Nif"/>
+                            </constraints>
+                            <state key="normal" title="关闭">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eAM-kQ-Zzd">
+                            <rect key="frame" x="164" y="5" width="30" height="30"/>
+                            <state key="normal" title="编辑">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="enterFilePagesView:" destination="-1" eventType="touchUpInside" id="tvZ-dk-vv7"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BEB-1x-j62">
-                            <rect key="frame" x="72" y="5" width="50" height="30"/>
-                            <state key="normal" title="下一页">
+                            <rect key="frame" x="119" y="5" width="38" height="30"/>
+                            <state key="normal" title="下页">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="nextPage:" destination="-1" eventType="touchUpInside" id="gwu-M3-W1z"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eAM-kQ-Zzd">
-                            <rect key="frame" x="135" y="6" width="30" height="30"/>
-                            <state key="normal" title="编辑">
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U0i-aH-zn3">
+                            <rect key="frame" x="44" y="5" width="34" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="49" id="zGr-IV-RlV"/>
+                            </constraints>
+                            <state key="normal" title="test">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="enterFilePagesView:" destination="-1" eventType="touchUpInside" id="tvZ-dk-vv7"/>
+                                <action selector="ddd:" destination="-1" eventType="touchUpInside" id="1g3-LS-wBD"/>
                             </connections>
                         </button>
                     </subviews>

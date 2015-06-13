@@ -36,6 +36,8 @@
 //
 #import <UIKit/UIKit.h>
 #import "GMGridView-Constants.h"
+#define DEBUG 1
+#import "ExtendNSLogFunctionality.h"
 
 @interface GMGridViewCell : UIView
 {

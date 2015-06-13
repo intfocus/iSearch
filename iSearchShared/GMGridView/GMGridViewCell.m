@@ -253,16 +253,16 @@
     // 在设置_selectState前把selected处理掉。
     // 设置为非编辑状态时，所有cell的selected都要设置为false
     // 再进入编辑状态时，重新选择
-    if(!selectState) {
+    if(selectState) {
         [self setSelected: false];
     }
     _selectState = selectState;
     
     self.selectButton.alpha = selectState ? 1 : 0;
     [self.selectButton setImage:(selectState ? _selectingButtonIcon : nil) forState:UIControlStateNormal];
-
+    
     self.contentView.userInteractionEnabled = !selectState;
-    //NSLog(@"GridViewCell#264 - selectState: %d", selectState);
+    NSLog(@"GridViewCell#264 - selectState: %d", selectState);
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -271,9 +271,11 @@
     
     _selected = selected;
     [self.selectButton setImage:(selected ? _selectedButtonIcon : _selectingButtonIcon) forState:UIControlStateNormal];
+    
+    NSLog(@"275 %@", [[self.selectButton currentImage] accessibilityLabel]);
 
     self.contentView.userInteractionEnabled = !selected;
-    //NSLog(@"GridViewCell#271 - setSelected: %d", selected);
+    NSLog(@"GridViewCell#271 - setSelected: %d", selected);
 }
 
 - (void)setSelectButtonOffset:(CGPoint)offset {
@@ -290,8 +292,11 @@
 // 可以传递两种状态的ButtonIcon
 - (void)setSelectingButtonIcon:(UIImage *)selectButtonIcon {
     _selectingButtonIcon = selectButtonIcon;
+    NSLog(@"set selecting");
+    
     // set icon when click select it
     [self.selectButton setImage:nil forState:UIControlStateNormal];
+    NSLog(@"setSelectingButtonIcon#295 %@", [selectButtonIcon accessibilityIdentifier]);
     
     if (selectButtonIcon) {
         self.selectButton.frame = CGRectMake(self.selectButton.frame.origin.x,
@@ -300,8 +305,13 @@
                                              selectButtonIcon.size.height);
         
         [self.selectButton setTitle:nil forState:UIControlStateNormal];
-        [self.selectButton setBackgroundColor:[UIColor clearColor]];
+        [self.selectButton setBackgroundColor:[UIColor blackColor]];
     }
+}
+
+- (void)setSelectedButtonIcon:(UIImage *)selectButtonIcon {
+    _selectedButtonIcon = selectButtonIcon;
+    NSLog(@"set selected");
 }
 
 - (UIImage *)selectButtonIcon {

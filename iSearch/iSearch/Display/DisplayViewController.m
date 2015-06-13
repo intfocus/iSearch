@@ -362,7 +362,7 @@
 }
 
 // 做笔记
-- (void) toggleDrawing {
+- (void)toggleDrawing {
     if(!self.isDrawing) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
         self.paintView.backgroundColor = [UIColor whiteColor];
@@ -379,6 +379,15 @@
         [self.drawBtn setTitle:@"作笔记" forState:UIControlStateNormal];
         
     }
+}
+
+- (IBAction)ddd:(id)sender {
+    @try {
+        MainViewController *mainViewController = (MainViewController*)self.presentingViewController;
+        [mainViewController calledByPresentedViewController];
+    } @catch(NSException *e) {
+        NSLog(@"abort for %@", [e reason]);
+    } @finally {}
 }
 
 @end

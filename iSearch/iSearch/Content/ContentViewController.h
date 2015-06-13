@@ -14,13 +14,8 @@
 #import "ViewSlide.h"
 #import "ViewFolder.h"
 #import "DisplayViewController.h"
-//#import "const.h"
-//#import "message.h"
-//#import "HttpUtils.h"
-//#import "ViewUtils.h"
-//#import "FileUtils.h"
-//#import "ShowViewController.h"
+
 
 @interface ContentViewController : UIViewController
-
+- (void)calledByPresentedViewController;
 @end

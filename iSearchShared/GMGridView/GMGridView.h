@@ -29,6 +29,8 @@
 #import <UIKit/UIKit.h>
 #import "GMGridView-Constants.h"
 #import "GMGridViewCell.h"
+#define DEBUG 1
+#import "ExtendNSLogFunctionality.h"
 
 @protocol GMGridViewDataSource;
 @protocol GMGridViewActionDelegate;

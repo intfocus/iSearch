@@ -178,11 +178,20 @@ NSMutableArray       *_data;
     NSMutableArray *fileArray = [[NSMutableArray alloc] init];
     
     categoryArray = [self loadContentDataFromServer:CONTENT_TYPE_CATEGORY DeptID:deptID CategoryID:categoryID];
+    categoryArray = [self arraySortByID:categoryArray];
     fileArray = [self loadContentDataFromServer:CONTENT_TYPE_FILE DeptID:deptID CategoryID:categoryID];
+    fileArray = [self arraySortByID:fileArray];
+    
     NSMutableSet *mergeSet = [NSMutableSet setWithArray:categoryArray];
     [mergeSet addObjectsFromArray:fileArray];
     NSArray *array = [mergeSet allObjects];
     
+    return [NSMutableArray arrayWithArray:array];
+}
+
+- (NSMutableArray *)arraySortByID:(NSMutableArray *)mutableArray {
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:CONTENT_FIELD_ID ascending:YES];
+    NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     return [NSMutableArray arrayWithArray:array];
 }
 - (NSMutableArray*)loadContentDataFromServer:(NSString *) type
@@ -266,7 +275,7 @@ NSMutableArray       *_data;
 }
 
 - (CGSize)sizeForItemsInGMGridView:(GMGridView *)gridView {
-    return CGSizeMake(SIZE_GRID_VIEW_CELL_WIDTH, SIZE_GRID_VIEW_CELL_HEIGHT);
+    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
 }
 
 // GridViewCell界面 - 目录界面
@@ -475,4 +484,7 @@ NSMutableArray       *_data;
 
 - (void)GMGridView:(GMGridView *)gridView didEnterFullSizeForCell:(UIView *)cell {}
 
+- (void)calledByPresentedViewController {
+    NSLog(@"called by Display view.");
+}
 @end

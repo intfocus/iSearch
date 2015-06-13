@@ -376,6 +376,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
         && ((self.isSelectState && !selectState) || (!self.isSelectState && selectState))) {
         
         NSLog(@"GridView#387 setSelectState Begin");
+        // 设置为可编辑时，所有cell寝始化为false
         for (GMGridViewCell *cell in [self itemSubviews]) {
             [cell setSelectState:selectState];
         }

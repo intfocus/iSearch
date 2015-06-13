@@ -45,7 +45,6 @@
 #define BTN_SUBMIT @"提交"
 #define BTN_CANCEL @"取消"
 #define BTN_EDIT   @"编辑"
-#define BTN_SELECT @"选择"
 #define BTN_SAVE   @"保存"
 #define BTN_REMOVE @"移除"
 #define BTN_BACK   @"返回"
