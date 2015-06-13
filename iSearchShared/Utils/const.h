@@ -11,6 +11,7 @@
 
 // Global
 #define DEBUG                  1
+#define PARAM_LANG             @"lang" // 传递给服务器的语言key
 #define APP_LANG               @"zh-CN" // 应用系统的语言
 #define BASE_URL               @"http://192.168.0.115" //
 #define BASE_URL1               @"http://demo.solife.us"  // 服务器url
@@ -64,11 +65,36 @@
 #define CONTENT_FIELD_TYPE      @"Type" // 类型: 0为目录，1为文件
 #define CONTENT_FIELD_URL       @"DownloadUrl" // 文件下载链接，代码拼接而成
 
-// 离线搜索
+// 离线搜索/批量下载
 #define DATABASE_DIRNAME         @"Database" // 数据库文件存放的文件夹名称
 #define DATABASE_FILEAME         @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 #define OFFLINE_SEARCH_TABLENAME @"offline_search" // 离线搜索时数据存储的数据库名称
-#define OFFLINE_URL_PATH         @"/demo/isearch/offline" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
+#define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
+// API参数
+#define OFFLINE_PARAM_DEPTID     @"did"
+// API字段
+#define OFFLINE_FIELD_DATA       @"data"
+#define OFFLINE_FIELD_ID         @"Id"
+#define OFFLINE_FIELD_TYPE       @"Type"
+#define OFFLINE_FIELD_DESC       @"Desc"
+#define OFFLINE_FIELD_TAGS       @"Tags"
+#define OFFLINE_FIELD_NAME       @"Name"
+#define OFFLINE_FIELD_TITLE      @"Title"
+#define OFFLINE_FIELD_CATEGORYNAME @"CategoryName"
+#define OFFLINE_FIELD_ZIPSIZE    @"ZipSize"
+#define OFFLINE_FIELD_PAGENUM    @"PageNo"
+// 表字段
+#define OFFLINE_TABLE_NAME       @"offline"
+#define OFFLINE_COLUMN_FILEID    @"file_id"
+#define OFFLINE_COLUMN_NAME      @"file_name"
+#define OFFLINE_COLUMN_TYPE      @"file_type"
+#define OFFLINE_COLUMN_DESC      @"desc"
+#define OFFLINE_COLUMN_TAGS      @"tags"
+#define OFFLINE_COLUMN_CATEGORYNAME @"category_name"
+#define OFFLINE_COLUMN_PAGENUM   @"page_num"
+#define OFFLINE_COLUMN_ZIPURL    @"zip_url"
+#define OFFLINE_COLUMN_ZIPSIZE   @"zip_size"
+
 
 // 内容重组
 #define REORGANIZE_CONFIG_FILENAME @"reorganize.json"

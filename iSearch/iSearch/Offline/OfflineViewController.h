@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DatabaseUtils.h"
+#import "common.h"
 
 @interface OfflineViewController : UIViewController
 

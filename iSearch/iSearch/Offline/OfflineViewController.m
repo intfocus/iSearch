@@ -25,10 +25,6 @@
 //  3. 搜索使用SQL语句 like
 
 #import "OfflineViewController.h"
-#import "HttpUtils.h"
-#import "const.h"
-#import "DatabaseUtils.h"
-#import "PopupView.h"
 
 @interface OfflineViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) DatabaseUtils  *database;
@@ -90,28 +86,48 @@
 }
 
 - (void)reDownloadFilesList {
+    NSString *deptID = @"10";
     NSError *error;
-    NSString *jsonStr = [HttpUtils httpGet:OFFLINE_URL_PATH];
-    NSMutableArray *dataList = [NSJSONSerialization JSONObjectWithData:[jsonStr dataUsingEncoding:NSUTF8StringEncoding]
+    NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", OFFLINE_URL_PATH, PARAM_LANG, APP_LANG, OFFLINE_PARAM_DEPTID, deptID];
+    NSString *response = [HttpUtils httpGet:urlPath];
+    NSLog(@"url: %@\response: %@", urlPath, response);
+    NSMutableArray *mutableArray = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
                                                                options:NSJSONReadingMutableContainers
                                                                  error:&error];
-
-    if(error==NULL) {
-        [self showPopupView: [NSString stringWithFormat:@"刷新: %lu行", (unsigned long)dataList.count]];
+    NSErrorPrint(error, @"string convert into json");
+    if(!error) {
+        [self showPopupView: [NSString stringWithFormat:@"刷新: %lu行", (unsigned long)mutableArray.count]];
         // 插入前先删除
         [self.database executeSQL:[NSString stringWithFormat:@"delete from %@;" , OFFLINE_SEARCH_TABLENAME]];
         
         NSLog(@"Get %@%@ successfully.", BASE_URL, OFFLINE_URL_PATH);
-        NSLog(@"DataList count: %lu", (unsigned long)dataList.count);
+        NSLog(@"DataList count: %lu", (unsigned long)mutableArray.count);
 
         NSString *tmpSql = [[NSString alloc] init];
         NSMutableString *insertSql = [[NSMutableString alloc]init];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        for(dict in dataList) {
-            tmpSql = [NSString stringWithFormat:@"insert into %@(fid, name, type, desc, tags, page_count, zip_url) \
-                      values(%@,  '%@', %@,   '%@', '%@', %@,         '%@');\n",
-                      OFFLINE_SEARCH_TABLENAME,
-                      dict[@"id"], dict[@"name"], dict[@"type"], dict[@"desc"], dict[@"tags"], dict[@"page_count"], dict[@"zip_url"]];
+        for(dict in mutableArray) {
+            tmpSql = [NSString stringWithFormat:@"insert into %@(%@,    %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@) \
+                                                          values('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@');\n",
+                      OFFLINE_TABLE_NAME,
+                      OFFLINE_COLUMN_FILEID,
+                      OFFLINE_COLUMN_NAME,
+                      OFFLINE_COLUMN_TYPE,
+                      OFFLINE_COLUMN_DESC,
+                      OFFLINE_COLUMN_TAGS,
+                      OFFLINE_COLUMN_PAGENUM,
+                      OFFLINE_COLUMN_CATEGORYNAME,
+                      OFFLINE_COLUMN_ZIPURL,
+                      OFFLINE_COLUMN_ZIPSIZE,
+                      dict[OFFLINE_FIELD_ID],
+                      dict[OFFLINE_FIELD_NAME],
+                      dict[OFFLINE_FIELD_TYPE],
+                      dict[OFFLINE_FIELD_DESC],
+                      dict[OFFLINE_FIELD_TAGS],
+                      dict[OFFLINE_FIELD_PAGENUM],
+                      dict[OFFLINE_FIELD_CATEGORYNAME],
+                      dict[OFFLINE_FIELD_ID],// ZipUrl由FileID拼接
+                      dict[OFFLINE_FIELD_ZIPSIZE]];
             [insertSql appendString:tmpSql];
         }
         //NSLog(@"DataList: %@", insertSql);
@@ -145,8 +161,8 @@
     }
     cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
     NSMutableDictionary *dict = [self.dataList objectAtIndex:indexPath.row];
-    cell.textLabel.text       = [NSString stringWithFormat:@"%@ - %@", dict[@"name"], dict[@"fid"]];
-    cell.detailTextLabel.text = [dict[@"desc"] stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    cell.textLabel.text       = [NSString stringWithFormat:@"%@ - %@", dict[OFFLINE_FIELD_NAME], dict[OFFLINE_FIELD_ID]];
+    cell.detailTextLabel.text = [dict[OFFLINE_FIELD_DESC] stringByReplacingOccurrencesOfString:@"\r" withString:@""];
     [cell.textLabel setFont:[UIFont systemFontOfSize:16.0]];
     [cell.detailTextLabel setFont:[UIFont systemFontOfSize:16.0]];
     

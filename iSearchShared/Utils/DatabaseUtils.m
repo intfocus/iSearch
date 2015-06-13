@@ -29,32 +29,35 @@
 + (DatabaseUtils *) setUP {
     DatabaseUtils *databaseUtils = [[DatabaseUtils alloc] init];
     
-    NSString *table_offline_search= [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ ( \
+    NSString *createTableOfflineSQL= [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ ( \
             id integer PRIMARY KEY AUTOINCREMENT, \
-            fid integer NOT NULL,                 \
-            name varchar(100) NOT NULL,           \
-            type varchar(100) NOT NULL,           \
-            desc varchar(1000) NULL,              \
-            zip_url varchar(100) NULL,             \
-            tags varchar(100) NULL,               \
-            page_count integer NULL DEFAULT 0,    \
+            %@ varchar(100) NOT NULL,                                                        \
+            %@ varchar(100) NOT NULL,                                                        \
+            %@ varchar(100) NOT NULL,                                                        \
+            %@ varchar(1000) NULL,                                                           \
+            %@ varchar(100) NULL,                                                            \
+            %@ varchar(100) NULL,                                                            \
+            %@ varchar(100) NULL,                                                            \
+            %@ varchar(100) NULL,                                                            \
+            %@ varchar(100) NULL DEFAULT '0',                                                \
             create_time datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')), \
             modify_time datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))  \
-            );                                    \
-        CREATE INDEX IF NOT EXISTS idx_type ON %@(type); \
+            );                                                                               \
+        CREATE INDEX IF NOT EXISTS idx_type ON %@(%@); \
         CREATE INDEX IF NOT EXISTS idx_create_time ON %@(create_time);",
-        OFFLINE_SEARCH_TABLENAME,OFFLINE_SEARCH_TABLENAME,OFFLINE_SEARCH_TABLENAME];
-        // fid        - 文件或目录在服务器上的id
-        // name       - 文件或目录的名称
-        // type       - 目录: 0; 文档: 1; 直文档: 2; 视频: 4
-        // desc       - 描述
-        // tags       - 标签
-        // page_count - 文档页数
-        // zip_url    - 文件下载链接
-        //
-    [databaseUtils executeSQL: table_offline_search];
-    
-    // 添加其他数据表时，参照上述代码复制
+        OFFLINE_TABLE_NAME,
+        OFFLINE_COLUMN_FILEID,
+        OFFLINE_COLUMN_NAME,
+        OFFLINE_COLUMN_TYPE,
+        OFFLINE_COLUMN_DESC,
+        OFFLINE_COLUMN_TAGS,
+        OFFLINE_COLUMN_PAGENUM,
+        OFFLINE_COLUMN_CATEGORYNAME,
+        OFFLINE_COLUMN_ZIPURL,
+        OFFLINE_COLUMN_ZIPSIZE,
+        OFFLINE_TABLE_NAME,OFFLINE_COLUMN_TYPE,
+        OFFLINE_TABLE_NAME];
+    [databaseUtils executeSQL: createTableOfflineSQL];
     
     return databaseUtils;
 }
