@@ -9,6 +9,16 @@
 #ifndef iSearch_const_h
 #define iSearch_const_h
 
+// 主界面左侧导航按钮Tag
+typedef NS_ENUM(NSInteger, EntryButtonTag){
+    EntryButtonIndex=0,
+    EntryButtonFavorite=1,
+    EntryButtonNotification=2,
+    EntryButtonDownload=3,
+    EntryButtonSetting=4,
+    EntryButtonLogout=5,
+};
+
 // Global
 #define DEBUG                  1
 #define PARAM_LANG             @"lang" // 传递给服务器的语言key

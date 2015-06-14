@@ -5,7 +5,8 @@
 //  Created by lijunjie on 15/6/10.
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
-
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "MainViewController.h"
 #import "LoginViewCOntroller.h"
 #import "NotificationViewController.h"
@@ -13,6 +14,9 @@
 #import "ContentViewController.h"
 #import "RightSideViewController.h"
 #import "SideViewController.h"
+#import "PopupView.h"
+#import "const.h"
+
 
 @interface MainViewController ()
 
@@ -41,7 +45,7 @@
         self.leftViewController   = left;
         
         SideViewController *side     = (id)self.leftViewController;
-        UIViewController *controller = [side viewControllerForTag:0];
+        UIViewController *controller = [side viewControllerForTag:EntryButtonIndex];
         self.rightViewController     = controller;
     });
 

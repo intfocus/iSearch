@@ -185,8 +185,10 @@ NSMutableArray       *_data;
     else {
         NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
     }
-    categoryArray = [self arraySortByID:categoryArray];
-    fileArray = [self arraySortByID:fileArray];
+    if([categoryArray count])
+        categoryArray = [self arraySortByID:categoryArray];
+    if([fileArray count])
+        fileArray = [self arraySortByID:fileArray];
     
     NSMutableSet *mergeSet = [NSMutableSet setWithArray:categoryArray];
     [mergeSet addObjectsFromArray:fileArray];
@@ -208,6 +210,10 @@ NSMutableArray       *_data;
     NSString *urlPath = [[NSString alloc] init];
     NSString *response = [[NSString alloc] init];
     
+    // 无网络直接返回空值
+    if(![HttpUtils isNetworkAvailable])
+        return mutableArray;
+    
     if([type isEqualToString:CONTENT_TYPE_CATEGORY]) {
         urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_PARENTID, categoryID];
     } else if([type isEqualToString:CONTENT_TYPE_FILE]) {
@@ -227,14 +233,15 @@ NSMutableArray       *_data;
     
     NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
     
-    if(!error) {
+    // 解析成功、获取数据不为空时，写入本地缓存
+    if(!error && [mutableArray count]) {
         // 1. 请求目录返回josn字符串写入CONTENT_DIRNAME/id.json
         [response writeToFile:cacheFilePath atomically:true encoding:NSUTF8StringEncoding error:&error];
         NSErrorPrint(error, @"content category write into %@", cacheFilePath);
-    } else {
-        // 1.2 无网络环境(获取目录失败)，但CONTENT_DIRNAME/id.json存在，读取该缓存信息加载目录
-        if([FileUtils checkFileExist:cacheFilePath isDir:false])
-            mutableArray = [self loadContentFromLocal: cacheFilePath];
+//    } else {
+//        // 1.2 无网络环境(获取目录失败)，但CONTENT_DIRNAME/id.json存在，读取该缓存信息加载目录
+//        if([FileUtils checkFileExist:cacheFilePath isDir:false])
+//            mutableArray = [self loadContentFromLocal: cacheFilePath];
     }
     
     return mutableArray;
@@ -402,7 +409,9 @@ NSMutableArray       *_data;
     // 如果是目录，点击cell则加载该目录下的数据结构
     // 如果是文件，则点击cell上的功能按钮
     if([type isEqualToString:@"0"]) {
-        _data = [self loadContentData:self.deptID CategoryID:categoryID Type:LOCAL_OR_SERVER_SREVER];
+        NSString *localOrServer = [HttpUtils isNetworkAvailable] ? LOCAL_OR_SERVER_SREVER : LOCAL_OR_SERVER_LOCAL;
+        _data = [self loadContentData:self.deptID CategoryID:categoryID Type:localOrServer];
+    
         [_gmGridView reloadData];
     }
 }

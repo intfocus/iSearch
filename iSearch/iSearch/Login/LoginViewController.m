@@ -64,6 +64,7 @@
 #import "LoginViewController.h"
 #import "common.h"
 #import "ViewUtils.h"
+#import "MainViewController.h"
 
 @interface LoginViewController ()
 // i18n controls
@@ -94,7 +95,7 @@
     [super viewDidLoad];
 
     // 登陆前 Logor动态效果
-    [self twitterSplash];
+    // [self twitterSplash];
     
     // 多语言控制
     self.labelUser.text = LOGIN_LABEL_USER;
@@ -198,6 +199,9 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
+    
+    [self enterMainViewController];
+    return;
     
     // C.1 界面输入框、按钮等控件disabeld
     [self switchCtlStateWhenLogin:false];
@@ -387,6 +391,30 @@
         [errors addObject:LOGIN_ERROR_PWD_NOT_MATCH];
 
     return errors;
+}
+
+// pragm mark - 进入主界面
+-(void)enterMainViewController{
+    // 这里最好换成import，不要用NSClassFromString
+    UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
+    //MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
+    UIWindow *window = self.view.window;
+    window.rootViewController = mainView;
+}
+
+
+// pragm mark - screen style setting
+-(BOOL)prefersStatusBarHidden{
+    return NO;
+}
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
 }
 
 

@@ -8,12 +8,11 @@
 
 #ifndef iSearch_MainViewController_h
 #define iSearch_MainViewController_h
-#import <UIKit/UIKit.h>
-#import <Foundation/Foundation.h>
-#import "common.h"
+#import "PopupView.h"
 
 /**
  *  iSearch主界面, 框架为左右结构.
+ *  登录成功后，进入该界面
  */
 @interface MainViewController : UIViewController
 

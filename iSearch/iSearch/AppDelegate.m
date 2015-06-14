@@ -20,8 +20,9 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.rootViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    
+    //self.window.rootViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    // 每次启动app都需要进入登录界面
+    self.window.rootViewController=[[NSClassFromString(@"LoginViewController") alloc] initWithNibName:@"LoginViewController" bundle:nil];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -34,13 +35,13 @@
  *
  *  @return 屏幕横竖展示方式
  */
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if ([self.window.rootViewController.presentedViewController isKindOfClass: [MainViewController class]]) {
-        return UIInterfaceOrientationMaskLandscape;
-    }
-    else
-        return UIInterfaceOrientationMaskLandscape;
-}
+//- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+//    if ([self.window.rootViewController.presentedViewController isKindOfClass: [MainViewController class]]) {
+//        return UIInterfaceOrientationMaskLandscape;
+//    }
+//    else
+//        return UIInterfaceOrientationMaskLandscape;
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

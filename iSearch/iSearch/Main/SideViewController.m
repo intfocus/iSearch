@@ -17,6 +17,7 @@
 #import "UserHeadView.h"
 #import "MainEntryButton.h"
 #import "NewsListTabView.h"
+#import "const.h"
 
 @interface SideViewController ()
 
@@ -61,7 +62,8 @@
 
         [head addTarget:self.masterViewController action:@selector(onUserHeadClick:) forControlEvents:UIControlEventTouchUpInside];
     }
-
+    
+    // warning 此处位置调整时，需要修改
     NSArray *array=@[@"首页",@"收藏",@"通知",@"下载",@"设置",@"登出"];
 
     //[array objectAtIndex:10];
@@ -78,22 +80,38 @@
     }
 }
 
+
 -(UIViewController *)viewControllerForTag:(NSInteger)tag{
     UIViewController *vc = nil;
     
-    if (tag==0) {
-        vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
-    }
-
-    if (tag==2) {
-        vc=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
-    }
-    if (tag==3) {
-        vc=[[OfflineViewController alloc] initWithNibName:nil bundle:nil];
-    }
-    if (tag==5) {
-        [self.masterViewController backToLoginViewController];
-        return nil;
+    switch (tag) {
+        case EntryButtonIndex:
+            vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+            break;
+            
+        case EntryButtonFavorite:
+            vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+            break;
+            
+        case EntryButtonNotification:
+            vc=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
+            break;
+            
+        case EntryButtonDownload:
+            vc=[[OfflineViewController alloc] initWithNibName:nil bundle:nil];
+            break;
+            
+        case EntryButtonSetting:
+            vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+            break;
+            
+        case EntryButtonLogout:
+            [self.masterViewController backToLoginViewController];
+            return nil;
+            
+            break;
+        default:
+            break;
     }
     
     return vc;
