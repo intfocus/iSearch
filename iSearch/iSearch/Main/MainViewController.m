@@ -49,9 +49,9 @@
         self.rightViewController     = controller;
     });
 
-    BlockTask(^{
-        //sleep(1);
-    });
+//    BlockTask(^{
+//        //sleep(1);
+//    });
 
 }
 

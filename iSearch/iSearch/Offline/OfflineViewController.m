@@ -40,7 +40,6 @@
 @property (nonatomic, nonatomic) PopupView      *popupView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
-@property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 
 @end
 
@@ -52,7 +51,8 @@
     // 初始化配置数据库
     self.database = [DatabaseUtils setUP];
 
-    self.navigation.rightBarButtonItem = [[UIBarButtonItem alloc]
+    self.title = @"离线搜索";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
                                               initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                               target:self
                                               action:@selector(reDownloadFilesList)];
@@ -166,7 +166,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"cellID";
-    NSUInteger cellIndex = [indexPath row];
+    NSInteger cellIndex = [indexPath row];
     NSLog(@"indexPath - %d", cellIndex);
     
     
