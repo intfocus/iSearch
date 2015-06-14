@@ -17,7 +17,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
+    RegisterUserNotification();
+    NSSetUncaughtExceptionHandler(&UncaughtExceptionHandlerInstance);
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     //self.window.rootViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
@@ -27,6 +29,28 @@
     return YES;
 }
 
+// 捕捉到异常时，推送通知；需要真机测试
+void SOS_Notification(NSString* signal){
+    UILocalNotification *notification=[[UILocalNotification alloc] init];
+    if (notification) {
+        notification.fireDate=[NSDate dateWithTimeIntervalSinceNow:1];
+        notification.alertBody=signal;
+        notification.userInfo=nil;
+        notification.soundName=UILocalNotificationDefaultSoundName;
+        [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+    }
+}
+
+void RegisterUserNotification(){
+    UIApplication *application=[UIApplication sharedApplication];
+    UIUserNotificationType types=UIUserNotificationTypeAlert|UIUserNotificationTypeSound|UIUserNotificationTypeBadge;
+    UIUserNotificationSettings *user=[UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [application registerUserNotificationSettings:user];
+}
+
+void UncaughtExceptionHandlerInstance(NSException *exception){
+    SOS_Notification(exception.name);
+}
 /**
  *  不同展示，屏幕横竖展示方式需求不同，在此设置
  *
