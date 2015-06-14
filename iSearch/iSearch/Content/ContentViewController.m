@@ -129,8 +129,7 @@ NSMutableArray       *_data;
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSMutableArray *tmpArray = [self loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_SREVER];
-        if([tmpArray count])
-            [_gmGridView reloadData];
+        if([tmpArray count]) [_gmGridView reloadData];
     });
 }
 //////////////////////////////////////////////////////////////
@@ -223,7 +222,6 @@ NSMutableArray       *_data;
                                                  options:NSJSONReadingMutableContainers
                                                    error:&error];
     NSErrorPrint(error, @"string convert into json");
-    if(!error) return mutableArray;
     
     mutableArray = responseJSON[CONTENT_FIELD_DATA];
     

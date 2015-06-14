@@ -326,26 +326,19 @@
 		C42EC8861B289107000F84EF /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */,
-				C4A618FB1B2C7E2A00D0E91B /* RightSideViewController.h */,
 				C4A618F51B2C7B1200D0E91B /* MainViewController.xib */,
 				C4A618F61B2C7B1200D0E91B /* MainViewController.m */,
 				C4A618F71B2C7B1200D0E91B /* MainViewController.h */,
-				C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */,
-				C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */,
-				C4A618DE1B2C7AEC00D0E91B /* UserHeadView.h */,
+				C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */,
+				C4A618FB1B2C7E2A00D0E91B /* RightSideViewController.h */,
 				C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */,
 				C4A618E01B2C7AEC00D0E91B /* SideViewController.m */,
 				C4A618E11B2C7AEC00D0E91B /* SideViewController.h */,
-				C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */,
-				C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */,
-				C4A618E41B2C7AEC00D0E91B /* NewsListTabView.h */,
-				C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */,
-				C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */,
-				C4A618E71B2C7AEC00D0E91B /* NewsListCell.h */,
 				C4A618E81B2C7AEC00D0E91B /* MainEntryButton.xib */,
 				C4A618E91B2C7AEC00D0E91B /* MainEntryButton.m */,
 				C4A618EA1B2C7AEC00D0E91B /* MainEntryButton.h */,
+				C433EA851B2D246D00AD9CEB /* Header */,
+				C433EA841B2D244300AD9CEB /* NewsList */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -358,6 +351,29 @@
 				C42EC88F1B289392000F84EF /* OfflineViewController.xib */,
 			);
 			path = Offline;
+			sourceTree = "<group>";
+		};
+		C433EA841B2D244300AD9CEB /* NewsList */ = {
+			isa = PBXGroup;
+			children = (
+				C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */,
+				C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */,
+				C4A618E41B2C7AEC00D0E91B /* NewsListTabView.h */,
+				C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */,
+				C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */,
+				C4A618E71B2C7AEC00D0E91B /* NewsListCell.h */,
+			);
+			name = NewsList;
+			sourceTree = "<group>";
+		};
+		C433EA851B2D246D00AD9CEB /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */,
+				C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */,
+				C4A618DE1B2C7AEC00D0E91B /* UserHeadView.h */,
+			);
+			name = Header;
 			sourceTree = "<group>";
 		};
 		C44923561B2AF72900E3BB65 /* Content */ = {

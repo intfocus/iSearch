@@ -98,7 +98,7 @@
     return -__LINE__;
 } // end of executeSQL()
 
-- (NSMutableArray*) selectFilesWithKeywords: (NSArray *) keywords {
+- (NSMutableArray*) searchFilesWithKeywords: (NSArray *) keywords {
     sqlite3 *database;
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     
@@ -106,48 +106,63 @@
     if (result != SQLITE_OK) {
         NSLog(@"DatabaseUtils#selectWithResult open database failed - line number: %i.", __LINE__);
     }
-    NSString *sql = [NSString stringWithFormat:@"select id, fid, name, type, desc, tags, page_count, zip_url, create_time, modify_time from %@ ", OFFLINE_SEARCH_TABLENAME];
+    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@, %@, %@, %@, create_time, modify_time from %@ ",
+                     OFFLINE_COLUMN_FILEID,
+                     OFFLINE_COLUMN_NAME,
+                     OFFLINE_COLUMN_TYPE,
+                     OFFLINE_COLUMN_DESC,
+                     OFFLINE_COLUMN_TAGS,
+                     OFFLINE_COLUMN_PAGENUM,
+                     OFFLINE_COLUMN_CATEGORYNAME,
+                     OFFLINE_COLUMN_ZIPURL,
+                     OFFLINE_COLUMN_ZIPSIZE,
+                     OFFLINE_TABLE_NAME];
     NSString *keyword;
     NSMutableArray *likes = [[NSMutableArray alloc] init];
     for(keyword in keywords) {
         //[likes addObject:[NSString stringWithFormat:@" name like '%%%@%%' or desc like '%%%@%%' ", keyword, keyword]];
-        [likes addObject:[NSString stringWithFormat:@" name like '%%%@%%' ", keyword]];
+        [likes addObject:[NSString stringWithFormat:@" or %@ like '%%%@%%' or %@ like '%%%@%%' ", OFFLINE_FIELD_NAME, keyword, OFFLINE_FIELD_DESC, keyword]];
     }
     // 关键字不为空，SQL语句添加where过滤
-    NSString *where = @" where ";
+    NSString *where = @" where 1 = 1 ";
     if([keywords count]) {
-        where = [where stringByAppendingString:[likes componentsJoinedByString:@" or "]];
+        where = [where stringByAppendingString:[likes componentsJoinedByString:@" "]];
         sql   = [sql stringByAppendingString:where];
     }
     
     char *errorMsg;
     sqlite3_stmt *statement;
-    int _id, _fid, _type, _page_count;
-    NSString *_name, *_desc, *_tags, *_zip_url;
+    int _id;
+    NSString *_one, *_two, *_three, *_four, *_five, *_six, *_seven, *_eight, *_nine;
     NSString *_create_time, *_modify_time;
     if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
             _id          = sqlite3_column_int(statement, 0);
-            _fid         = sqlite3_column_int(statement, 1);
-            _name        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 2)encoding:NSUTF8StringEncoding];
-            _type        = sqlite3_column_int(statement, 3);
-            _desc        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 4)encoding:NSUTF8StringEncoding];
-            _tags        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 5)encoding:NSUTF8StringEncoding];
-            _page_count  = sqlite3_column_int(statement, 6);
-            _zip_url     = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 7)encoding:NSUTF8StringEncoding];
-            _create_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 8)encoding:NSUTF8StringEncoding];
-            _modify_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 9)encoding:NSUTF8StringEncoding];
+            _one        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 1)encoding:NSUTF8StringEncoding];
+            _two        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 2)encoding:NSUTF8StringEncoding];
+            _three        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 3)encoding:NSUTF8StringEncoding];
+            _four       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 4)encoding:NSUTF8StringEncoding];
+            _five        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 5)encoding:NSUTF8StringEncoding];
+            _six        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 6)encoding:NSUTF8StringEncoding];
+            _seven        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 7)encoding:NSUTF8StringEncoding];
+            _eight        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 8)encoding:NSUTF8StringEncoding];
+            _nine        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 9)encoding:NSUTF8StringEncoding];
+            _create_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 10)encoding:NSUTF8StringEncoding];
+            _modify_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 11)encoding:NSUTF8StringEncoding];
             
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
             [mutableDictionary setObject:[NSNumber numberWithInteger:_id]  forKey:@"id"];
-            [mutableDictionary setObject:[NSNumber numberWithInteger:_fid] forKey:@"fid"];
-            [mutableDictionary setObject:_name forKey:@"name"];
-            [mutableDictionary setObject:[NSNumber numberWithInteger:_type] forKey:@"type"];
-            [mutableDictionary setObject:_desc  forKey:@"desc"];
-            [mutableDictionary setObject:_tags forKey:@"tags"];
-            [mutableDictionary setObject:[NSNumber numberWithInteger:_page_count]  forKey:@"page_count"];
-            [mutableDictionary setObject:_zip_url forKey:@"zip_url"];
+            [mutableDictionary setObject:_one forKey:OFFLINE_COLUMN_FILEID];
+            [mutableDictionary setObject:_two forKey:OFFLINE_COLUMN_NAME];
+            [mutableDictionary setObject:_three forKey:OFFLINE_COLUMN_TYPE];
+            [mutableDictionary setObject:_four forKey:OFFLINE_COLUMN_DESC];
+            [mutableDictionary setObject:_five forKey:OFFLINE_COLUMN_TAGS];
+            [mutableDictionary setObject:_six forKey:OFFLINE_COLUMN_PAGENUM];
+            [mutableDictionary setObject:_seven forKey:OFFLINE_COLUMN_CATEGORYNAME];
+            [mutableDictionary setObject:_eight forKey:OFFLINE_COLUMN_ZIPURL];
+            [mutableDictionary setObject:_nine forKey:OFFLINE_COLUMN_ZIPSIZE];
+
             [mutableDictionary setObject:_create_time forKey:@"create_time"];
             [mutableDictionary setObject:_modify_time forKey:@"modify_time"];
             
@@ -164,7 +179,7 @@
 } // end of selectFilesWithKeywords()
 
 - (void) deleteWithId: (NSString *) id {
-    NSString *sql = [NSString stringWithFormat:@"delete from %@ where id = %@;", OFFLINE_SEARCH_TABLENAME, id];
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where id = %@;", OFFLINE_TABLE_NAME, id];
     [self executeSQL: sql];
 }
 

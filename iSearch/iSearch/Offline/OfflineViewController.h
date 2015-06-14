@@ -6,11 +6,9 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "DatabaseUtils.h"
-#import "common.h"
+#import "RightSideViewController.h"
 
-@interface OfflineViewController : UIViewController
+@interface OfflineViewController : RightSideViewController
 
 
 @end

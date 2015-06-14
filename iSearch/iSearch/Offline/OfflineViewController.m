@@ -25,10 +25,13 @@
 //  3. 搜索使用SQL语句 like
 
 #import "OfflineViewController.h"
+#import <UIKit/UIKit.h>
+#import "DatabaseUtils.h"
+#import "common.h"
 
 @interface OfflineViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) DatabaseUtils  *database;
-@property (nonatomic, nonatomic) NSMutableArray *dataList;
+@property (strong, nonatomic) NSMutableArray *dataList;
 @property (nonatomic, nonatomic) PopupView      *popupView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
@@ -52,7 +55,8 @@
     
     self.tableView.delegate   = self;
     self.tableView.dataSource = self;
-    self.dataList = [self.database selectFilesWithKeywords:@[]];
+    self.dataList = [[NSMutableArray alloc] init];
+    self.dataList = [self.database searchFilesWithKeywords:@[]];
     [self.tableView reloadData];
     
     // 搜索框内容改变时，实时搜索并展示
@@ -79,7 +83,7 @@
     NSArray *keywords = [searchText componentsSeparatedByString:NSLocalizedString(@" ", nil)];
     
     NSLog(@"%@", keywords);
-    self.dataList = [self.database selectFilesWithKeywords:keywords];
+    self.dataList = [self.database searchFilesWithKeywords:keywords];
     [self.tableView reloadData];
     
     [self showPopupView: [NSString stringWithFormat:@"筛选: %lu行", (unsigned long)self.dataList.count]];
@@ -91,16 +95,18 @@
     NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", OFFLINE_URL_PATH, PARAM_LANG, APP_LANG, OFFLINE_PARAM_DEPTID, deptID];
     NSString *response = [HttpUtils httpGet:urlPath];
     NSLog(@"url: %@\response: %@", urlPath, response);
-    NSMutableArray *mutableArray = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
+    NSMutableDictionary *mutableDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
                                                                options:NSJSONReadingMutableContainers
                                                                  error:&error];
+    NSMutableArray *mutableArray = mutableDict[OFFLINE_FIELD_DATA];
+    
     NSErrorPrint(error, @"string convert into json");
     if(!error) {
         [self showPopupView: [NSString stringWithFormat:@"刷新: %lu行", (unsigned long)mutableArray.count]];
         // 插入前先删除
-        [self.database executeSQL:[NSString stringWithFormat:@"delete from %@;" , OFFLINE_SEARCH_TABLENAME]];
+        [self.database executeSQL:[NSString stringWithFormat:@"delete from %@;" , OFFLINE_TABLE_NAME]];
         
-        NSLog(@"Get %@%@ successfully.", BASE_URL, OFFLINE_URL_PATH);
+        NSLog(@"Get %@ successfully.", urlPath);
         NSLog(@"DataList count: %lu", (unsigned long)mutableArray.count);
 
         NSString *tmpSql = [[NSString alloc] init];
@@ -123,7 +129,7 @@
                       dict[OFFLINE_FIELD_NAME],
                       dict[OFFLINE_FIELD_TYPE],
                       dict[OFFLINE_FIELD_DESC],
-                      dict[OFFLINE_FIELD_TAGS],
+                      dict[OFFLINE_FIELD_TYPE],
                       dict[OFFLINE_FIELD_PAGENUM],
                       dict[OFFLINE_FIELD_CATEGORYNAME],
                       dict[OFFLINE_FIELD_ID],// ZipUrl由FileID拼接
@@ -133,7 +139,7 @@
         //NSLog(@"DataList: %@", insertSql);
         [self.database executeSQL:insertSql];
         
-        self.dataList = [self.database selectFilesWithKeywords:@[]];
+        self.dataList = [self.database searchFilesWithKeywords:@[]];
         [self.tableView reloadData];
         
     } else {
@@ -147,20 +153,24 @@
     [self.popupView setText: text];
     [self.view addSubview:self.popupView];
 }
+
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.dataList count];
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"cellID";
+    NSInteger cellIndex = indexPath.row;
+    NSLog(@"indexPath - %@", indexPath.row);
+    
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     }
     cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-    NSMutableDictionary *dict = [self.dataList objectAtIndex:indexPath.row];
+    NSMutableDictionary *dict = [self.dataList objectAtIndex:cellIndex];
     cell.textLabel.text       = [NSString stringWithFormat:@"%@ - %@", dict[OFFLINE_FIELD_NAME], dict[OFFLINE_FIELD_ID]];
     cell.detailTextLabel.text = [dict[OFFLINE_FIELD_DESC] stringByReplacingOccurrencesOfString:@"\r" withString:@""];
     [cell.textLabel setFont:[UIFont systemFontOfSize:16.0]];

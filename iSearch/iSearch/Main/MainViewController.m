@@ -12,7 +12,6 @@
 #import "OfflineViewController.h"
 #import "ContentViewController.h"
 #import "RightSideViewController.h"
-
 #import "SideViewController.h"
 
 @interface MainViewController ()

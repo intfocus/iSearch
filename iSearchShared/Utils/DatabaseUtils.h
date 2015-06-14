@@ -21,7 +21,7 @@
 + (DatabaseUtils *) setUP;
 - (NSInteger) executeSQL: (NSString *) sql;
 - (void) deleteWithId: (NSString *) id;
-- (NSMutableArray*) selectFilesWithKeywords: (NSArray *) keywords;
+- (NSMutableArray*) searchFilesWithKeywords: (NSArray *) keywords;
 
 @end
 

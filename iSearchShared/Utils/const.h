@@ -21,6 +21,8 @@
 #define REORGANIZE_FORMAT      @"yyMMddHHMMSS" // 内容重组后新文件名称格式
 #define LOCAL_OR_SERVER_LOCAL  @"local" // 获取服务器信息或本地缓存
 #define LOCAL_OR_SERVER_SREVER @"server"// 获取服务器信息或本地缓存
+#define DATABASE_DIRNAME         @"Database" // 数据库文件存放的文件夹名称
+#define DATABASE_FILEAME         @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -68,9 +70,6 @@
 #define CONTENT_FIELD_URL       @"DownloadUrl" // 文件下载链接，代码拼接而成
 
 // 离线搜索/批量下载
-#define DATABASE_DIRNAME         @"Database" // 数据库文件存放的文件夹名称
-#define DATABASE_FILEAME         @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
-#define OFFLINE_SEARCH_TABLENAME @"offline_search" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
@@ -85,8 +84,8 @@
 #define OFFLINE_FIELD_CATEGORYNAME @"CategoryName"
 #define OFFLINE_FIELD_ZIPSIZE    @"ZipSize"
 #define OFFLINE_FIELD_PAGENUM    @"PageNo"
-// 表字段
-#define OFFLINE_TABLE_NAME       @"offline"
+// 数据库表字段
+#define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"
 #define OFFLINE_COLUMN_NAME      @"file_name"
 #define OFFLINE_COLUMN_TYPE      @"file_type"
