@@ -57,6 +57,7 @@
 #import "ViewSlide.h"
 #import "ViewFolder.h"
 #import "DisplayViewController.h"
+#import "ContentUtils.h"
 
 #define NUMBER_ITEMS_ON_LOAD 10
 #define SIZE_GRID_VIEW_CELL_WIDTH 120//230
@@ -66,7 +67,7 @@
 #pragma mark ViewController (privates methods)
 //////////////////////////////////////////////////////////////
 
-@interface ContentViewController ()   <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
+@interface ContentViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
 __gm_weak GMGridView *_gmGridView;
 UIImageView          *changeBigImageView;
 NSMutableArray       *_data;
@@ -102,9 +103,22 @@ NSMutableArray       *_data;
     self.deptID = @"10";
     //  1. 读取本地缓存，优先加载界面
     _data = [[NSMutableArray alloc] init];
-    _data = [self loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_LOCAL];
+    _data = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_LOCAL];
     
     // GMGridView Configuration
+    [self configGridView];
+    
+    // 耗时间的操作放在些block中
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_SREVER];
+        if([tmpArray count]) {
+            _data = tmpArray;
+            [_gmGridView reloadData];
+        }
+    });
+}
+
+- (void) configGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.structureView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
@@ -121,16 +135,9 @@ NSMutableArray       *_data;
     _gmGridView.transformDelegate = self;
     _gmGridView.dataSource = self;
     _gmGridView.backgroundColor = [UIColor clearColor];
- 
     _gmGridView.mainSuperView = self.structureView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
     
     self.view.backgroundColor = [UIColor purpleColor];
-    
-    // 耗时间的操作放在些block中
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *tmpArray = [self loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_SREVER];
-        if([tmpArray count]) [_gmGridView reloadData];
-    });
 }
 //////////////////////////////////////////////////////////////
 #pragma mark memory management
@@ -168,127 +175,7 @@ NSMutableArray       *_data;
  *  @param fid  文件在服务器上的id
  *  @param type 文件类型
  */
-- (NSMutableArray*)loadContentData:(NSString *)deptID
-                        CategoryID:(NSString *)categoryID
-                              Type:(NSString *)localOrServer {
-    NSMutableArray *categoryArray = [[NSMutableArray alloc] init];
-    NSMutableArray *fileArray = [[NSMutableArray alloc] init];
-    
-    if([localOrServer isEqualToString:LOCAL_OR_SERVER_LOCAL]) {
-        categoryArray = [self loadContentDataFromLocal:CONTENT_TYPE_CATEGORY DeptID:deptID CategoryID:categoryID];
-        fileArray     = [self loadContentDataFromLocal:CONTENT_TYPE_FILE DeptID:deptID CategoryID:categoryID];
-    }
-    else if([localOrServer isEqualToString:LOCAL_OR_SERVER_SREVER]) {
-        categoryArray = [self loadContentDataFromServer:CONTENT_TYPE_CATEGORY DeptID:deptID CategoryID:categoryID];
-        fileArray     = [self loadContentDataFromServer:CONTENT_TYPE_FILE DeptID:deptID CategoryID:categoryID];
-    }
-    else {
-        NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
-    }
-    if([categoryArray count])
-        categoryArray = [self arraySortByID:categoryArray];
-    if([fileArray count])
-        fileArray = [self arraySortByID:fileArray];
-    
-    NSMutableSet *mergeSet = [NSMutableSet setWithArray:categoryArray];
-    [mergeSet addObjectsFromArray:fileArray];
-    NSArray *array = [mergeSet allObjects];
-    
-    return [NSMutableArray arrayWithArray:array];
-}
-
-- (NSMutableArray *)arraySortByID:(NSMutableArray *)mutableArray {
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:CONTENT_FIELD_ID ascending:YES];
-    NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-    return [NSMutableArray arrayWithArray:array];
-}
-- (NSMutableArray*)loadContentDataFromServer:(NSString *) type
-                                      DeptID:(NSString *) deptID
-                                  CategoryID:(NSString *) categoryID {
-    NSError *error;
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *urlPath = [[NSString alloc] init];
-    NSString *response = [[NSString alloc] init];
-    
-    // 无网络直接返回空值
-    if(![HttpUtils isNetworkAvailable])
-        return mutableArray;
-    
-    if([type isEqualToString:CONTENT_TYPE_CATEGORY]) {
-        urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_PARENTID, categoryID];
-    } else if([type isEqualToString:CONTENT_TYPE_FILE]) {
-        urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_FILE_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_FILE_CATEGORYID, categoryID];
-    } else {
-        NSLog(@"Not Support [%@]", type);
-        return mutableArray;
-    }
-    
-    response = [HttpUtils httpGet: urlPath];
-    NSMutableDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
-                                                 options:NSJSONReadingMutableContainers
-                                                   error:&error];
-    NSErrorPrint(error, @"string convert into json");
-    
-    mutableArray = responseJSON[CONTENT_FIELD_DATA];
-    
-    NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
-    
-    // 解析成功、获取数据不为空时，写入本地缓存
-    if(!error && [mutableArray count]) {
-        // 1. 请求目录返回josn字符串写入CONTENT_DIRNAME/id.json
-        [response writeToFile:cacheFilePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"content category write into %@", cacheFilePath);
-//    } else {
-//        // 1.2 无网络环境(获取目录失败)，但CONTENT_DIRNAME/id.json存在，读取该缓存信息加载目录
-//        if([FileUtils checkFileExist:cacheFilePath isDir:false])
-//            mutableArray = [self loadContentFromLocal: cacheFilePath];
-    }
-    
-    return mutableArray;
-}
-
-
-- (NSMutableArray*)loadContentDataFromLocal:(NSString *) type
-                                     DeptID:(NSString *) deptID
-                                 CategoryID:(NSString *) categoryID {
-    NSError *error;
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *cacheContent = [[NSString alloc] init];
-    NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
-    
-    if(![FileUtils checkFileExist:cacheFilePath isDir:false])
-        return mutableArray;
-    
-    cacheContent = [NSString stringWithContentsOfFile:cacheFilePath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read cache#%@ %@", type, cacheContent);
-    
-    NSMutableDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&error];
-    NSErrorPrint(error, @"string convert into json");
-    mutableArray = responseJSON[CONTENT_FIELD_DATA];
-    
-    return mutableArray;
-}
-/**
- *  CONTENT_DIRNAME/id.json存在，读取该缓存信息加载目录
- *
- *  @param pathName 目录json缓存文件路径
- *
- *  @return 目录数据
- */
-- (NSMutableArray *) loadContentFromLocal: (NSString*) pathName {
-    NSLog(@"%@", pathName);
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *fileContent = [NSString stringWithContentsOfFile:pathName usedEncoding:NULL error:NULL];
-    NSLog(@"loadContentFromLocal: %@", pathName);
-    mutableArray = [NSJSONSerialization JSONObjectWithData:[fileContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:NULL];
-    
-    return mutableArray;
-}
-
+ // 代码抽取放在ContentUtils.h文件中
 
 //////////////////////////////////////////////////////////////
 #pragma mark orientation management
@@ -410,7 +297,7 @@ NSMutableArray       *_data;
     // 如果是文件，则点击cell上的功能按钮
     if([type isEqualToString:@"0"]) {
         NSString *localOrServer = [HttpUtils isNetworkAvailable] ? LOCAL_OR_SERVER_SREVER : LOCAL_OR_SERVER_LOCAL;
-        _data = [self loadContentData:self.deptID CategoryID:categoryID Type:localOrServer];
+        _data = [ContentUtils loadContentData:self.deptID CategoryID:categoryID Type:localOrServer];
     
         [_gmGridView reloadData];
     }

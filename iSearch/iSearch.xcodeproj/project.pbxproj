@@ -38,6 +38,15 @@
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
+		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
+		C46497321B2D678B005E3903 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46497311B2D678B005E3903 /* HomeViewController.xib */; };
+		C46497341B2D8244005E3903 /* OneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46497331B2D8244005E3903 /* OneViewController.xib */; };
+		C46497371B2D825D005E3903 /* OneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497361B2D825D005E3903 /* OneViewController.m */; };
+		C464973E1B2D88CC005E3903 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497391B2D88CC005E3903 /* ThreeViewController.m */; };
+		C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464973A1B2D88CC005E3903 /* ThreeViewController.xib */; };
+		C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464973C1B2D88CC005E3903 /* TwoViewController.m */; };
+		C46497411B2D88CC005E3903 /* TwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464973D1B2D88CC005E3903 /* TwoViewController.xib */; };
+		C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497451B2D8BFB005E3903 /* ContentUtis.m */; };
 		C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */; };
 		C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */; };
 		C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF031B2B067D00A12170 /* ViewSlide.m */; };
@@ -135,6 +144,20 @@
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
+		C464972E1B2D6767005E3903 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
+		C464972F1B2D6772005E3903 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
+		C46497311B2D678B005E3903 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
+		C46497331B2D8244005E3903 /* OneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OneViewController.xib; sourceTree = "<group>"; };
+		C46497351B2D8251005E3903 /* OneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneViewController.h; sourceTree = "<group>"; };
+		C46497361B2D825D005E3903 /* OneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneViewController.m; sourceTree = "<group>"; };
+		C46497381B2D88CC005E3903 /* ThreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreeViewController.h; sourceTree = "<group>"; };
+		C46497391B2D88CC005E3903 /* ThreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreeViewController.m; sourceTree = "<group>"; };
+		C464973A1B2D88CC005E3903 /* ThreeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThreeViewController.xib; sourceTree = "<group>"; };
+		C464973B1B2D88CC005E3903 /* TwoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoViewController.h; sourceTree = "<group>"; };
+		C464973C1B2D88CC005E3903 /* TwoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoViewController.m; sourceTree = "<group>"; };
+		C464973D1B2D88CC005E3903 /* TwoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwoViewController.xib; sourceTree = "<group>"; };
+		C46497451B2D8BFB005E3903 /* ContentUtis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentUtis.m; sourceTree = "<group>"; };
+		C46497471B2D8C03005E3903 /* ContentUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentUtils.h; sourceTree = "<group>"; };
 		C4A3AEFD1B2AFC4A00A12170 /* ViewFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFolder.h; sourceTree = "<group>"; };
 		C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFolder.m; sourceTree = "<group>"; };
 		C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFolder.xib; sourceTree = "<group>"; };
@@ -388,8 +411,53 @@
 				C44923571B2AF72900E3BB65 /* ContentViewController.h */,
 				C44923581B2AF72900E3BB65 /* ContentViewController.m */,
 				C44923591B2AF72900E3BB65 /* ContentViewController.xib */,
+				C46497471B2D8C03005E3903 /* ContentUtils.h */,
+				C46497451B2D8BFB005E3903 /* ContentUtis.m */,
 			);
 			path = Content;
+			sourceTree = "<group>";
+		};
+		C464972D1B2D6759005E3903 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				C464972E1B2D6767005E3903 /* HomeViewController.h */,
+				C464972F1B2D6772005E3903 /* HomeViewController.m */,
+				C46497311B2D678B005E3903 /* HomeViewController.xib */,
+				C46497431B2D88E6005E3903 /* Favorite */,
+				C46497421B2D88D8005E3903 /* Content */,
+				C46497441B2D88EF005E3903 /* MyRecords */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		C46497421B2D88D8005E3903 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				C464973B1B2D88CC005E3903 /* TwoViewController.h */,
+				C464973C1B2D88CC005E3903 /* TwoViewController.m */,
+				C464973D1B2D88CC005E3903 /* TwoViewController.xib */,
+			);
+			name = Content;
+			sourceTree = "<group>";
+		};
+		C46497431B2D88E6005E3903 /* Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				C46497351B2D8251005E3903 /* OneViewController.h */,
+				C46497361B2D825D005E3903 /* OneViewController.m */,
+				C46497331B2D8244005E3903 /* OneViewController.xib */,
+			);
+			name = Favorite;
+			sourceTree = "<group>";
+		};
+		C46497441B2D88EF005E3903 /* MyRecords */ = {
+			isa = PBXGroup;
+			children = (
+				C46497381B2D88CC005E3903 /* ThreeViewController.h */,
+				C46497391B2D88CC005E3903 /* ThreeViewController.m */,
+				C464973A1B2D88CC005E3903 /* ThreeViewController.xib */,
+			);
+			name = MyRecords;
 			sourceTree = "<group>";
 		};
 		C4A3AF071B2B0CCB00A12170 /* Display */ = {
@@ -437,6 +505,7 @@
 		C4E3CCDA1B184E520067B762 /* iSearch */ = {
 			isa = PBXGroup;
 			children = (
+				C464972D1B2D6759005E3903 /* Home */,
 				C4A3AF151B2B0EF500A12170 /* Resources */,
 				C4A3AF071B2B0CCB00A12170 /* Display */,
 				C44923561B2AF72900E3BB65 /* Content */,
@@ -571,20 +640,24 @@
 				C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
+				C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */,
 				C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */,
 				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
 				C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */,
 				C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */,
 				C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */,
+				C46497341B2D8244005E3903 /* OneViewController.xib in Resources */,
 				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,
 				C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */,
 				C42BD5611B2BCAC1006DB157 /* 404.gif in Resources */,
 				C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */,
 				C4A618F81B2C7B1200D0E91B /* MainViewController.xib in Resources */,
+				C46497411B2D88CC005E3903 /* TwoViewController.xib in Resources */,
 				C4A618F31B2C7AEC00D0E91B /* MainEntryButton.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */,
 				C4A618EB1B2C7AEC00D0E91B /* UserHeadView.xib in Resources */,
+				C46497321B2D678B005E3903 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +713,7 @@
 				C42EC85E1B28867F000F84EF /* GMGridView.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
 				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
+				C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */,
 				C42EC8681B28867F000F84EF /* ViewUtils.m in Sources */,
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
 				C42EC8661B28867F000F84EF /* HttpUtils.m in Sources */,
@@ -650,8 +724,10 @@
 				C4E3CCDE1B184E530067B762 /* main.m in Sources */,
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
 				C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */,
+				C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */,
 				C4A3AF141B2B0CDE00A12170 /* PaintView.m in Sources */,
 				C42EC8641B28867F000F84EF /* ExtendNSLogFunctionality.m in Sources */,
+				C46497301B2D6772005E3903 /* HomeViewController.m in Sources */,
 				C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */,
 				C42EC8901B289392000F84EF /* OfflineViewController.m in Sources */,
 				C42EC8631B28867F000F84EF /* DateUtils.m in Sources */,
@@ -659,9 +735,11 @@
 				C42EC8671B28867F000F84EF /* PopupView.m in Sources */,
 				C4A618FC1B2C7E2A00D0E91B /* RightSideViewController.m in Sources */,
 				C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */,
+				C46497371B2D825D005E3903 /* OneViewController.m in Sources */,
 				C4A618F91B2C7B1200D0E91B /* MainViewController.m in Sources */,
 				C42EC8651B28867F000F84EF /* FileUtils.m in Sources */,
 				C42EC8691B28867F000F84EF /* ViewFilePage.m in Sources */,
+				C464973E1B2D88CC005E3903 /* ThreeViewController.m in Sources */,
 				C42EC8621B28867F000F84EF /* UIView+GMGridViewAdditions.m in Sources */,
 				C4A618F21B2C7AEC00D0E91B /* NewsListCell.m in Sources */,
 				C42EC8941B289417000F84EF /* DatabaseUtils.m in Sources */,

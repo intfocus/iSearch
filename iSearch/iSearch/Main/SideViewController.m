@@ -7,9 +7,9 @@
 //
 
 #import "SideViewController.h"
-
 #import "MainViewController.h"
 
+#import "HomeViewController.h"
 #import "NotificationViewController.h"
 #import "OfflineViewController.h"
 #import "ContentViewController.h"
@@ -85,8 +85,8 @@
     UIViewController *vc = nil;
     
     switch (tag) {
-        case EntryButtonIndex:
-            vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+        case EntryButtonHomePage:
+            vc=[[HomeViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
         case EntryButtonFavorite:

@@ -199,6 +199,13 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
+    
+    
+    // 跳至主界面
+    [self enterMainViewController];
+    return;
+    
+    
     // C.1 界面输入框、按钮等控件disabeld
     [self switchCtlStateWhenLogin:false];
 
@@ -327,8 +334,10 @@
     NSMutableArray *errors = [self checkEnableLoginOffline:dict User:user Pwd:pwd];
     
     if(![errors count]) {
-        [ViewUtils simpleAlertView:self Title:@"登陆成功" Message:@"TODO# 跳至主页[离线]" ButtonTitle:BTN_CONFIRM];
-        
+        //[ViewUtils simpleAlertView:self Title:@"登陆成功" Message:@"TODO# 跳至主页[离线]" ButtonTitle:BTN_CONFIRM];
+        // 跳至主界面
+        [self enterMainViewController];
+        return errors;
     // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[errors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];

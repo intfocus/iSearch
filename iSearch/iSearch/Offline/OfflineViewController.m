@@ -47,7 +47,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
     // 初始化配置数据库
     self.database = [DatabaseUtils setUP];
 

@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "MainViewController.h"
 #import "LoginViewCOntroller.h"
+#import "SideViewController.h"
+#import "RightSideViewController.h"
+
+#import "HomeViewController.h"
 #import "NotificationViewController.h"
 #import "OfflineViewController.h"
 #import "ContentViewController.h"
-#import "RightSideViewController.h"
-#import "SideViewController.h"
+
 #import "PopupView.h"
 #import "const.h"
 
@@ -45,7 +48,7 @@
         self.leftViewController   = left;
         
         SideViewController *side     = (id)self.leftViewController;
-        UIViewController *controller = [side viewControllerForTag:EntryButtonDownload];
+        UIViewController *controller = [side viewControllerForTag:EntryButtonHomePage];
         self.rightViewController     = controller;
     });
 

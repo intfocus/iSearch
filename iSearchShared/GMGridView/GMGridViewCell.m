@@ -262,7 +262,7 @@
     [self.selectButton setImage:(selectState ? _selectingButtonIcon : nil) forState:UIControlStateNormal];
     
     self.contentView.userInteractionEnabled = !selectState;
-    NSLog(@"GridViewCell#264 - selectState: %d", selectState);
+    //NSLog(@"GridViewCell#264 - selectState: %d", selectState);
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -272,10 +272,10 @@
     _selected = selected;
     [self.selectButton setImage:(selected ? _selectedButtonIcon : _selectingButtonIcon) forState:UIControlStateNormal];
     
-    NSLog(@"275 %@", [[self.selectButton currentImage] accessibilityLabel]);
+    //NSLog(@"275 %@", [[self.selectButton currentImage] accessibilityLabel]);
 
     self.contentView.userInteractionEnabled = !selected;
-    NSLog(@"GridViewCell#271 - setSelected: %d", selected);
+    //NSLog(@"GridViewCell#271 - setSelected: %d", selected);
 }
 
 - (void)setSelectButtonOffset:(CGPoint)offset {
@@ -292,11 +292,11 @@
 // 可以传递两种状态的ButtonIcon
 - (void)setSelectingButtonIcon:(UIImage *)selectButtonIcon {
     _selectingButtonIcon = selectButtonIcon;
-    NSLog(@"set selecting");
+    //NSLog(@"set selecting");
     
     // set icon when click select it
     [self.selectButton setImage:nil forState:UIControlStateNormal];
-    NSLog(@"setSelectingButtonIcon#295 %@", [selectButtonIcon accessibilityIdentifier]);
+    //NSLog(@"setSelectingButtonIcon#295 %@", [selectButtonIcon accessibilityIdentifier]);
     
     if (selectButtonIcon) {
         self.selectButton.frame = CGRectMake(self.selectButton.frame.origin.x,
@@ -311,7 +311,7 @@
 
 - (void)setSelectedButtonIcon:(UIImage *)selectButtonIcon {
     _selectedButtonIcon = selectButtonIcon;
-    NSLog(@"set selected");
+    //NSLog(@"set selected");
 }
 
 - (UIImage *)selectButtonIcon {
