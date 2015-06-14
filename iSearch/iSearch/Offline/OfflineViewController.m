@@ -23,11 +23,16 @@
 //      }]三
 //  2. 文档列表写入数据库（先清除旧数据）[TODO: 如何保证写入顺利?]
 //  3. 搜索使用SQL语句 like
-
+//  **注意**
+//  1. 从服务器获取数据，使用OFFLINE_FIELD_*
+//     从本地数据取数据，使用OFFLINE_COLUMN_*
 #import "OfflineViewController.h"
 #import <UIKit/UIKit.h>
 #import "DatabaseUtils.h"
-#import "common.h"
+#import "const.h"
+#import "PopupView.h"
+#import "HttpUtils.h"
+#import "ExtendNSLogFunctionality.h"
 
 @interface OfflineViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) DatabaseUtils  *database;
@@ -161,8 +166,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"cellID";
-    NSInteger cellIndex = indexPath.row;
-    NSLog(@"indexPath - %@", indexPath.row);
+    NSUInteger cellIndex = [indexPath row];
+    NSLog(@"indexPath - %d", cellIndex);
     
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -171,8 +176,8 @@
     }
     cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
     NSMutableDictionary *dict = [self.dataList objectAtIndex:cellIndex];
-    cell.textLabel.text       = [NSString stringWithFormat:@"%@ - %@", dict[OFFLINE_FIELD_NAME], dict[OFFLINE_FIELD_ID]];
-    cell.detailTextLabel.text = [dict[OFFLINE_FIELD_DESC] stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    cell.textLabel.text       = [NSString stringWithFormat:@"%@ - %@", dict[OFFLINE_COLUMN_NAME], dict[OFFLINE_COLUMN_FILEID]];
+    cell.detailTextLabel.text = [dict[OFFLINE_COLUMN_DESC] stringByReplacingOccurrencesOfString:@"\r" withString:@""];
     [cell.textLabel setFont:[UIFont systemFontOfSize:16.0]];
     [cell.detailTextLabel setFont:[UIFont systemFontOfSize:16.0]];
     

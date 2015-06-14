@@ -45,7 +45,7 @@
         self.leftViewController   = left;
         
         SideViewController *side     = (id)self.leftViewController;
-        UIViewController *controller = [side viewControllerForTag:EntryButtonIndex];
+        UIViewController *controller = [side viewControllerForTag:EntryButtonDownload];
         self.rightViewController     = controller;
     });
 
