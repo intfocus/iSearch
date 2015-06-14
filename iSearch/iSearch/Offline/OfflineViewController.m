@@ -33,6 +33,7 @@
 #import "PopupView.h"
 #import "HttpUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import "OfflineCell.h"
 
 @interface OfflineViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) DatabaseUtils  *database;
@@ -167,28 +168,31 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"cellID";
     NSInteger cellIndex = [indexPath row];
-    NSLog(@"indexPath - %d", cellIndex);
+    NSMutableDictionary *currentDict = [self.dataList objectAtIndex:cellIndex];
+    //NSLog(@"indexPath - %d", cellIndex);
     
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    OfflineCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"OfflineCell" owner:self options:nil] lastObject];
     }
-    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-    NSMutableDictionary *dict = [self.dataList objectAtIndex:cellIndex];
-    cell.textLabel.text       = [NSString stringWithFormat:@"%@ - %@", dict[OFFLINE_COLUMN_NAME], dict[OFFLINE_COLUMN_FILEID]];
-    cell.detailTextLabel.text = [dict[OFFLINE_COLUMN_DESC] stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-    [cell.textLabel setFont:[UIFont systemFontOfSize:16.0]];
-    [cell.detailTextLabel setFont:[UIFont systemFontOfSize:16.0]];
-    
-    // remove blue selection
-    //cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-//    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableViewCellLongPress:)];
-//    [cell addGestureRecognizer:gesture];
-    
+    cell.dict = currentDict;
+    cell.labelFileName.text = currentDict[OFFLINE_COLUMN_NAME];
+    cell.labelCategory.text = currentDict[OFFLINE_COLUMN_CATEGORYNAME];
+    cell.labelZipSize.text  = currentDict[OFFLINE_COLUMN_ZIPSIZE];
+    [cell initControls];
+
     return cell;
 }
-
+/**
+ *  Cell高度
+ *
+ *  @param tableView <#tableView description#>
+ *  @param indexPath <#indexPath description#>
+ *
+ *  @return Cell高度
+ */
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 70.0f;
+}
 
 @end

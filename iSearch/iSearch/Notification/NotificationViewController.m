@@ -44,7 +44,12 @@
 
 
 #import "NotificationViewController.h"
-
+#import "NotificationCell.h"
+#import "const.h"
+#import "FileUtils.h"
+#import "DateUtils.h"
+#import "HttpUtils.h"
+#import "extendNslogfunctionality.h"
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *notificationView;  // 通告列表图
@@ -322,7 +327,9 @@
     [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
     [cell setIntroductionText:dict[NOTIFICATION_FIELD_MSG]];
     [cell setCreatedDate:dict[NOTIFICATION_FIELD_CREATEDATE]];
-    
+
+
+        
     //UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableViewCellLongPress:)];
     //[cell addGestureRecognizer:gesture];
     return cell;

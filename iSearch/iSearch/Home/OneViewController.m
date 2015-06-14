@@ -27,15 +27,20 @@
     [super viewDidLoad];
     _data = [[NSMutableArray alloc] init];
     NSInteger i = 0;
-    for(i=0; i< 3; i++) {
+    for(i=0; i< 13; i++) {
         [_data addObject:[NSString stringWithFormat:@"HomePageOne - %ld", (long)i]];
     }
 
     
+    self.scrollView.contentSize = CGSizeMake([_data count] * (SIZE_GRID_VIEW_PAGE_WIDTH + 100), 200);
+    self.view.backgroundColor = [UIColor greenColor];
+    //self.scrollView.pagingEnabled = YES;
     // GMGridView Configuration
     [self configGMGridView];
 }
-
+-(void)viewDidLayoutSubviews{
+    //self.automaticallyAdjustsScrollViewInsets = NO;
+}
 - (void) configGMGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

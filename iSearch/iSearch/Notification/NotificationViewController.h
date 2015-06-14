@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "JTCalendar.h"
-#import "common.h"
-#import "NotificationCell.h"
+#import "RightSideViewController.h"
 
-@interface NotificationViewController : UIViewController<JTCalendarDataSource>
+@interface NotificationViewController : RightSideViewController<JTCalendarDataSource>
 
 @property (weak, nonatomic) IBOutlet JTCalendarMenuView *calendarMenuView;
 @property (weak, nonatomic) IBOutlet JTCalendarContentView *calendarContentView;

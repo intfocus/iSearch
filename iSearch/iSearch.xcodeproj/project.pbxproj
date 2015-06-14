@@ -47,6 +47,11 @@
 		C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464973C1B2D88CC005E3903 /* TwoViewController.m */; };
 		C46497411B2D88CC005E3903 /* TwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464973D1B2D88CC005E3903 /* TwoViewController.xib */; };
 		C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497451B2D8BFB005E3903 /* ContentUtis.m */; };
+		C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497491B2D9737005E3903 /* OfflineCell.m */; };
+		C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464974B1B2D973F005E3903 /* OfflineCell.xib */; };
+		C464974F1B2D9B93005E3903 /* PlayFile.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974D1B2D9B93005E3903 /* PlayFile.png */; };
+		C46497501B2D9B93005E3903 /* ToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974E1B2D9B93005E3903 /* ToDownload.png */; };
+		C46497521B2DB108005E3903 /* ToView.png in Resources */ = {isa = PBXBuildFile; fileRef = C46497511B2DB108005E3903 /* ToView.png */; };
 		C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */; };
 		C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */; };
 		C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF031B2B067D00A12170 /* ViewSlide.m */; };
@@ -158,6 +163,12 @@
 		C464973D1B2D88CC005E3903 /* TwoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwoViewController.xib; sourceTree = "<group>"; };
 		C46497451B2D8BFB005E3903 /* ContentUtis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentUtis.m; sourceTree = "<group>"; };
 		C46497471B2D8C03005E3903 /* ContentUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentUtils.h; sourceTree = "<group>"; };
+		C46497481B2D972E005E3903 /* OfflineCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OfflineCell.h; sourceTree = "<group>"; };
+		C46497491B2D9737005E3903 /* OfflineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineCell.m; sourceTree = "<group>"; };
+		C464974B1B2D973F005E3903 /* OfflineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineCell.xib; sourceTree = "<group>"; };
+		C464974D1B2D9B93005E3903 /* PlayFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayFile.png; sourceTree = "<group>"; };
+		C464974E1B2D9B93005E3903 /* ToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToDownload.png; sourceTree = "<group>"; };
+		C46497511B2DB108005E3903 /* ToView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToView.png; sourceTree = "<group>"; };
 		C4A3AEFD1B2AFC4A00A12170 /* ViewFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFolder.h; sourceTree = "<group>"; };
 		C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFolder.m; sourceTree = "<group>"; };
 		C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFolder.xib; sourceTree = "<group>"; };
@@ -248,6 +259,9 @@
 		C42BD5591B2BCAC1006DB157 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C46497511B2DB108005E3903 /* ToView.png */,
+				C464974D1B2D9B93005E3903 /* PlayFile.png */,
+				C464974E1B2D9B93005E3903 /* ToDownload.png */,
 				C42BD55A1B2BCAC1006DB157 /* 404.gif */,
 				C42BD55B1B2BCAC1006DB157 /* close_x.png */,
 				C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */,
@@ -336,12 +350,12 @@
 		C42EC87B1B28908B000F84EF /* Notification */ = {
 			isa = PBXGroup;
 			children = (
-				C42EC87C1B28908B000F84EF /* NotificationCell.h */,
-				C42EC87D1B28908B000F84EF /* NotificationCell.m */,
-				C42EC87E1B28908B000F84EF /* NotificationCell.xib */,
 				C42EC87F1B28908B000F84EF /* NotificationViewController.h */,
 				C42EC8801B28908B000F84EF /* NotificationViewController.m */,
 				C42EC8811B28908B000F84EF /* NotificationViewController.xib */,
+				C42EC87C1B28908B000F84EF /* NotificationCell.h */,
+				C42EC87D1B28908B000F84EF /* NotificationCell.m */,
+				C42EC87E1B28908B000F84EF /* NotificationCell.xib */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -354,9 +368,9 @@
 				C4A618F71B2C7B1200D0E91B /* MainViewController.h */,
 				C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */,
 				C4A618FB1B2C7E2A00D0E91B /* RightSideViewController.h */,
-				C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */,
-				C4A618E01B2C7AEC00D0E91B /* SideViewController.m */,
 				C4A618E11B2C7AEC00D0E91B /* SideViewController.h */,
+				C4A618E01B2C7AEC00D0E91B /* SideViewController.m */,
+				C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */,
 				C4A618E81B2C7AEC00D0E91B /* MainEntryButton.xib */,
 				C4A618E91B2C7AEC00D0E91B /* MainEntryButton.m */,
 				C4A618EA1B2C7AEC00D0E91B /* MainEntryButton.h */,
@@ -372,6 +386,9 @@
 				C42EC88D1B289392000F84EF /* OfflineViewController.h */,
 				C42EC88E1B289392000F84EF /* OfflineViewController.m */,
 				C42EC88F1B289392000F84EF /* OfflineViewController.xib */,
+				C46497481B2D972E005E3903 /* OfflineCell.h */,
+				C46497491B2D9737005E3903 /* OfflineCell.m */,
+				C464974B1B2D973F005E3903 /* OfflineCell.xib */,
 			);
 			path = Offline;
 			sourceTree = "<group>";
@@ -633,11 +650,14 @@
 			files = (
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
 				C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */,
+				C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */,
 				C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */,
+				C46497501B2D9B93005E3903 /* ToDownload.png in Resources */,
 				C42EC86A1B28867F000F84EF /* ViewFilePage.xib in Resources */,
 				C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */,
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
 				C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */,
+				C46497521B2DB108005E3903 /* ToView.png in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
 				C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */,
@@ -653,6 +673,7 @@
 				C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */,
 				C4A618F81B2C7B1200D0E91B /* MainViewController.xib in Resources */,
 				C46497411B2D88CC005E3903 /* TwoViewController.xib in Resources */,
+				C464974F1B2D9B93005E3903 /* PlayFile.png in Resources */,
 				C4A618F31B2C7AEC00D0E91B /* MainEntryButton.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */,
@@ -725,6 +746,7 @@
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
 				C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */,
 				C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */,
+				C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */,
 				C4A3AF141B2B0CDE00A12170 /* PaintView.m in Sources */,
 				C42EC8641B28867F000F84EF /* ExtendNSLogFunctionality.m in Sources */,
 				C46497301B2D6772005E3903 /* HomeViewController.m in Sources */,

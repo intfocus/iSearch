@@ -10,7 +10,7 @@
 #ifndef iNotification_NotifictionCell_h
 #define iNotification_NotifictionCell_h
 #import <UIKit/UIKit.h>
-#import "common.h"
+
 
 /**
  *  公告通知中通知列表使用TableView显示，此类为TableViewCell用来显示单个通知明细

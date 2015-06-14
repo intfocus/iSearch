@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "NotificationCell.h"
+#import "const.h"
+#import "DateUtils.h"
+#import "message.h"
 
 @implementation NotificationCell
 @synthesize cellTitle;
