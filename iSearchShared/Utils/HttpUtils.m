@@ -10,6 +10,10 @@
 
 #import "HttpUtils.h"
 #import "const.h"
+#import <UIKit/UIKit.h>
+#import "sys/utsname.h"
+////https://github.com/tonymillion/Reachability
+#import "Reachability.h"
 
 @interface HttpUtils()
 
@@ -67,18 +71,6 @@
     return response;
 }
 
-/**
- *  app登陆时验证用户信息
- *
- *  @param data 验证用户信息的参数, eg: user=username&pwd=password
- *
- *  @return 验证用户结果集: { code: 1, info: {} }, 1为成功，其他为失败
- */
-+ (NSString *)login: (NSString *) data {
-    return [HttpUtils httpPost: LOGIN_URL_PATH Data:data];
-}
-
-
 
 /**
  *  检测当前app网络环境
@@ -87,16 +79,16 @@
  */
 + (BOOL) isNetworkAvailable {
     BOOL isExistenceNetwork = NO;
-//    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
-//    switch ([reach currentReachabilityStatus]) {
-//        case NotReachable:
-//            break;
-//        case ReachableViaWiFi:
-//        case ReachableViaWWAN:
-//            isExistenceNetwork = YES;
-//            break;
-//    }
-//    
+    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    switch ([reach currentReachabilityStatus]) {
+        case NotReachable:
+            break;
+        case ReachableViaWiFi:
+        case ReachableViaWWAN:
+            isExistenceNetwork = YES;
+            break;
+    }
+    
     return isExistenceNetwork;
 }
 /**

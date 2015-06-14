@@ -11,18 +11,13 @@
 #ifndef iLogin_HttpUtils_h
 #define iLogin_HttpUtils_h
 
-#import <UIKit/UIKit.h>
-#import "sys/utsname.h"
 
-////https://github.com/tonymillion/Reachability
-//#import "Reachability.h"
 
 
 @interface HttpUtils : NSObject
 
 + (NSString *) httpGet: (NSString *) path;
 + (NSString *) httpPost: (NSString *) path Data: (NSString *) data;
-+ (NSString *) login: (NSString *) data;
 
 
 + (BOOL) isNetworkAvailable;

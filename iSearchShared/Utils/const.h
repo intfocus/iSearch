@@ -11,12 +11,12 @@
 
 // 主界面左侧导航按钮Tag
 typedef NS_ENUM(NSInteger, EntryButtonTag){
-    EntryButtonIndex=0,
-    EntryButtonFavorite=1,
-    EntryButtonNotification=2,
-    EntryButtonDownload=3,
-    EntryButtonSetting=4,
-    EntryButtonLogout=5,
+    EntryButtonIndex        = 0,
+    EntryButtonFavorite     = 1,
+    EntryButtonNotification = 2,
+    EntryButtonDownload     = 3,
+    EntryButtonSetting      = 4,
+    EntryButtonLogout       = 5,
 };
 
 // Global
@@ -24,8 +24,7 @@ typedef NS_ENUM(NSInteger, EntryButtonTag){
 #define PARAM_LANG             @"lang" // 传递给服务器的语言key
 #define APP_LANG               @"zh-CN" // 应用系统的语言
 #define BASE_URL               @"http://192.168.0.115" //
-#define BASE_URL1               @"http://demo.solife.us"  // 服务器url
-#define CONFIG_DIRNAME         @"isearch_config" // 所有配置档放置在些文件夹下
+#define CONFIG_DIRNAME         @"Configs" // 所有配置档放置在些文件夹下
 #define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件
 #define REORGANIZE_FORMAT      @"yyMMddHHMMSS" // 内容重组后新文件名称格式
@@ -49,11 +48,31 @@ typedef NS_ENUM(NSInteger, EntryButtonTag){
 #define GRID_VIEW_DELETE_BTN_IMAGE    @"close_x.png" // GridView Delete按钮背影图片
 
 // 登陆相关
-#define LOGIN_URL_PATH         @"/demo/isearch/login" // 用户身份验证的url路径
+#define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
 #define LOGIN_CONFIG_FILENAME  @"login.plist" // 用户验证成功后，信息写入该配置档
 #define LOGIN_KEEP_HOURS       12 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define LOGIN_LAST_DEFAULT     @"1970/01/01 00:00:00" // 用户登陆前的默认登陆成功时间
+// API参数
+#define LOGIN_PARAM_UID        @"eid"
+// API字段
+#define LOGIN_FIELD_STATUS     @"status" // 为1则交互成功
+#define LOGIN_FIELD_ID         @"Id"
+#define LOGIN_FIELD_NAME       @"Name"
+#define LOGIN_FIELD_EMAIL      @"Email"
+#define LOGIN_FIELD_EMPLOYEEID @"EmployeeId"
+#define LOGIN_FIELD_DEPTID     @"DeptId"
+#define LOGIN_FIELD_RESULT     @"Result"
+// 通用字段
+#define USER_ID                @"UserID"
+#define USER_NAME              @"UserName"
+#define USER_EMAIL              @"UserEmail"
+#define USER_DEPTID            @"UserDeptID"
+#define USER_EMPLOYEEID        @"UserEmployeeID"
+#define USER_LOGIN_USERNAME    @"LoginUserName"
+#define USER_LOGIN_PASSWORD    @"LoginPassword"
+#define USER_LOGIN_REMEMBER_PWD  @"LoginRememberPWD"
+#define USER_LOGIN_LAST        @"LoginLastTime"
 
 // 目录相关(_FILE与获取文件相关，默认获取分类)
 #define CONTENT_URL_PATH        @"/uat/api/Categories_Api.php" // 请求目录的url路径

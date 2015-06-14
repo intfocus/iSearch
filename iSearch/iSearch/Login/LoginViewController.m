@@ -199,10 +199,6 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
-    
-    [self enterMainViewController];
-    return;
-    
     // C.1 界面输入框、按钮等控件disabeld
     [self switchCtlStateWhenLogin:false];
 
@@ -211,14 +207,14 @@
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
     
     // C.3 取得输入内容，并作去除前后空格等处理
-    NSString *user = [self.fieldUser.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *pwd = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *username = [self.fieldUser.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     
     // C.2 如果无网络环境，跳至步骤D[离线登陆]
     if(![HttpUtils isNetworkAvailable]) {
-        NSMutableDictionary *dict = [self readLoginConfigFile];
-        loginErrors = [self loginOfflineAction:dict User:user Pwd:pwd];
+        NSMutableDictionary *configDict = [self readLoginConfigFile];
+        loginErrors = [self loginOfflineAction:configDict User:username Pwd:password];
         
         
         // 3.done 界面输入框、按钮等控件enabeld, switch复原
@@ -229,8 +225,8 @@
     
     // C.4 检测TextField-User、TextField-PWD输入框内容不可为空，进入步骤C,否则跳至步骤C.alert
     if(![loginErrors count]) {
-        if(!user.length) [loginErrors addObject:LOGIN_ERROR_USER_EMPTY];
-        if(!pwd.length)  [loginErrors addObject:LOGIN_ERROR_PWD_EMPTY];
+        if(!username.length) [loginErrors addObject:LOGIN_ERROR_USER_EMPTY];
+        if(!password.length)  [loginErrors addObject:LOGIN_ERROR_PWD_EMPTY];
     }
 
     // C.5 http post至server
@@ -244,38 +240,49 @@
         //      code: 1,            -- success: 1; failed: 0
         //      info: { uid: 1 ...} -- success: { uid: 1 ...}; failed: { error: ... }
         //  }
-        NSString *loginParams = [NSString stringWithFormat:@"user=%@&password=%@&lang=%@", user, pwd, APP_LANG];
-        NSString *response = [HttpUtils login:loginParams];
+        NSString *uid = @"1";
+        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, uid];
+        NSString *response = [HttpUtils httpGet:urlPath];
         
         NSError *error;
-        NSMutableDictionary *mutableDictionary = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+        NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
+                                                                           options:NSJSONReadingMutableContainers
+                                                                             error:&error];
+        NSErrorPrint(error, @"login response convert into json");
       
         // 服务器交互成功
         if(!error) {
             // 服务器响应json格式为: { code: 1, info: {} }
             //  code = 1 则表示服务器与客户端交互成功, info为用户信息,格式为JSON
             //  code = 非1 则表示服务器方面查检出有错误， info为错误信息,格式为JSON
-            NSNumber            *code = [mutableDictionary objectForKey:@"code"];
-            NSMutableDictionary *info = [mutableDictionary objectForKey:@"info"];
+            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
             // C.5.1 登陆成功,跳至步骤 C.success
-            if([code isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
                 //      3.success
                 //          last为当前时间(格式LOGIN_DATE_FORMAT)
                 //          password = remember_password ? 控件内容 : @""
                 //          把user/password/last/remember_password写入login.plist文件
+                // 界面输入信息
                 NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
-                [data setObject:user forKey:@"user"];
-                [data setObject:pwd forKey:@"password"];
-                [data setObject:(self.rememberPwd.checkState ? @"1" : @"0") forKey:@"remember_password"];
-                [data setObject:[ViewUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:@"last"];
+                [data setObject:username forKey:USER_LOGIN_USERNAME];
+                [data setObject:password forKey:USER_LOGIN_PASSWORD];
+                [data setObject:(self.rememberPwd.checkState ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
+                [data setObject:[ViewUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
+                // 服务器信息
+                [data setObject:[responseDict objectForKey:LOGIN_FIELD_ID] forKey:USER_ID];
+                [data setObject:[responseDict objectForKey:LOGIN_FIELD_NAME] forKey:USER_NAME];
+                [data setObject:[responseDict objectForKey:LOGIN_FIELD_EMAIL] forKey:USER_EMAIL];
+                [data setObject:[responseDict objectForKey:LOGIN_FIELD_DEPTID] forKey:USER_DEPTID];
+                [data setObject:[responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID] forKey:USER_EMPLOYEEID];
                 [data writeToFile:[self loginConfigPath] atomically:YES];
                 
-                // 跳至主页
-                [ViewUtils simpleAlertView:self Title:@"登陆成功" Message:@"TODO# 跳至主页" ButtonTitle:BTN_CONFIRM];
-                
+                // 跳至主界面
+                [self enterMainViewController];
+                return;
             } else {
                 // C.5.2 服务器端反馈错误信息，跳至步骤 C.alert
-                [loginErrors addObject:[info objectForKey:@"error"]];
+                NSLog(@"登陆失败.");
+                [loginErrors addObject:[NSString stringWithFormat:@"responseResult:%@",[responseDict objectForKey:LOGIN_FIELD_RESULT]]];
             }
         // C.5.3 服务器无响应，跳至步骤 C.alert
         } else {
