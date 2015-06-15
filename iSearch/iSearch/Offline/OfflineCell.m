@@ -44,7 +44,6 @@
         downloadState = @"未下载";
     }
     self.labelDownloadState.text = downloadState;
-    NSLog(@"imageName %@", imageName);
     UIImage *image = [UIImage imageNamed:imageName];
     [self.btnDownloadOrView setImage:image forState:UIControlStateNormal];
     self.btnDownloadOrView.frame = CGRectMake(self.btnDownloadOrView.frame.origin.x,
@@ -55,7 +54,7 @@
 }
 
 - (IBAction) slideClick:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID]]) {
+    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Force:NO]) {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@", BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.dict[OFFLINE_COLUMN_FILEID]];
         [self downloadZip:downloadUrl];
         //} else {
@@ -67,7 +66,7 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID]]) {
+    if([FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Force:NO]) {
         self.labelDownloadState.text = @"已下载";
     } else {
         self.labelDownloadState.text = @"未下载";

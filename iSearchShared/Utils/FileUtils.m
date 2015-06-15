@@ -92,17 +92,62 @@
 }
 
 /**
- *  检测演示文档是否下载，[同步目录]中判断是否已下载.
+ *  检测演示文档是否下载; 
+ *    平时扫描文件列表时，force:NO
+ *    演示文稿时，force:YES; 
+ *    避免由于文件约束问题闪退。
  *
- *  @param fid 文件在服务器上的id
+ *  需要考虑问题:
+ *  1. Files/fileID/文件是否存在；
+ *  2.（force:YES)
+ *     a)Files/fileID/desc.json是否存在
+ *     b)内容是否为空
+ *     c)格式是否为json
+ *
+ *  @param fileID 文件在服务器上的文件id
+ *  @param isForce 确认文件存在的逻辑强度
  *
  *  @return 存在即true, 否则false
  */
-+ (BOOL) checkSlideExist: (NSString *) fileID {
-    NSString *pathName = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
++ (BOOL) checkSlideExist: (NSString *) fileID Force:(BOOL)isForce {
+    NSError *error;
+    NSMutableArray *errors = [[NSMutableArray alloc] init];
+    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    // 1. Files/fileID/文件是否存在
+    if(![FileUtils checkFileExist:filePath isDir:YES]) {
+        [errors addObject:@"fileID文件夹不存在."];
+    }
     
-    NSLog(@"%@", pathName);
-    return [FileUtils checkFileExist:pathName isDir:true];
+    // 2. a)Files/fileID/desc.json是否存在，b)内容是否为空，c)格式是否为json
+    NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    if(isForce && errors && [errors count] == 0) {
+        // a)Files/fileID/desc.json是否存在
+        if(![FileUtils checkFileExist:descPath isDir:NO]) {
+            [errors addObject:@"fileID/desc.json文件不存在."];
+        }
+    
+        // b)内容是否为空，c)格式是否为json
+        if(errors && [errors count] == 0) {
+            // b)内容是否为空，
+            NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+            if(error || ![descContent length]) {
+                [errors addObject:@"fileID/desc.json文件不存在."];
+            }
+            
+            // c)格式是否为json
+            if(errors && [errors count] == 0) {
+                NSMutableDictionary *configDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                  options:NSJSONReadingMutableContainers
+                                                                                    error:&error];
+                if(error || [[configDict allKeys] count] == 0) {
+                    [errors addObject:@"fileID/desc.json为空或解释失败."];
+                }
+            }
+        }
+    }
+    
+    if(errors && [errors count] > 0) NSLog(@"TODO#popupView/checkSlideExist: \n%@", errors);
+    return ([errors count] == 0);
 }
 
 /**

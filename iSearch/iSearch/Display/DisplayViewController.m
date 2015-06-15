@@ -50,7 +50,7 @@
     self.editPanel.backgroundColor = [UIColor blackColor];
     [self.editPanel setHidden: true];
     
-    [self.editBtn setTag: 0]; // 1为编辑状态
+    [self.editBtn setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
     [self.editBtn addTarget:self action:@selector(toggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.laserSwitch setOn: false];
@@ -170,24 +170,29 @@
  *
  *  @param sender UIButton
  */
-- (void) toggleShowEditPanel: (UIButton*) sender {
-    if(sender.tag == 0) {
-        [UIView animateWithDuration:.5f animations:^{
-            [self.editPanel setHidden:false];
-        }];
-        
-        [self.editBtn setTag:1];
-        [self.editBtn setTitle:@"<<" forState:UIControlStateNormal];
-    } else {
-        [UIView animateWithDuration:.5f animations:^{
-            [self.editPanel setHidden:true];
-        }];
-        
-        [self stopNote];
-        [self stopLaser];
-        
-        [self.editBtn setTag:0];
-        [self.editBtn setTitle:@">>" forState:UIControlStateNormal];
+- (IBAction)toggleShowEditPanel:(UIButton *)sender {
+    NSInteger tag = [sender tag];
+    [UIView animateWithDuration:.5f animations:^{
+        [self.editPanel setHidden:(tag != SlideEditPanelShow)];
+    }];
+    
+    switch(tag) {
+        case SlideEditPanelHiden: {
+            [self.editBtn setTag:SlideEditPanelShow];
+            [self.editBtn setTitle:@"<<" forState:UIControlStateNormal];
+        }
+        break;
+            
+        case SlideEditPanelShow: {
+            [self stopNote];
+            [self stopLaser];
+            
+            [self.editBtn setTag:SlideEditPanelHiden];
+            [self.editBtn setTitle:@"编辑" forState:UIControlStateNormal];
+        }
+        break;
+        default:
+        break;
     }
 }
 /**
@@ -211,9 +216,9 @@
 - (void) startLaser {
     if(!self.isLasering) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-30)];
-        self.paintView.backgroundColor = [UIColor whiteColor];
+        self.paintView.backgroundColor = [UIColor purpleColor];
         self.paintView.paintColor = [UIColor blackColor];
-        self.paintView.alpha = 0.2;
+        self.paintView.alpha = 0.6;
         self.paintView.laser = true;
         self.paintView.erase = false;
         [self.view addSubview:self.paintView];
@@ -248,8 +253,8 @@
 - (void) startNote {
     if(!self.isDrawing) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        self.paintView.backgroundColor = [UIColor whiteColor];
-        self.paintView.alpha = 0.3;
+        self.paintView.backgroundColor = [UIColor purpleColor];
+        self.paintView.alpha = 0.6;
         self.paintView.erase = false;
         self.paintView.laser = false;
         [self.view addSubview:self.paintView];
@@ -310,7 +315,7 @@
 - (IBAction) enterFilePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:self.fileID]) {
+    if([FileUtils checkSlideExist:self.fileID Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
@@ -379,6 +384,15 @@
         [self.drawBtn setTitle:@"作笔记" forState:UIControlStateNormal];
         
     }
+}
+
+/**
+ *  关闭presentViewController
+ *
+ *  @param sender
+ */
+- (IBAction)actionDismiss:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (IBAction)ddd:(id)sender {

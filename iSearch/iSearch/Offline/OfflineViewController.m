@@ -31,9 +31,11 @@
 #import "DatabaseUtils.h"
 #import "const.h"
 #import "PopupView.h"
+#import "FileUtils.h"
 #import "HttpUtils.h"
 #import "ExtendNSLogFunctionality.h"
 #import "OfflineCell.h"
+#import "DisplayViewController.h"
 
 @interface OfflineViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) DatabaseUtils  *database;
@@ -119,7 +121,7 @@
         NSMutableString *insertSql = [[NSMutableString alloc]init];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         for(dict in mutableArray) {
-            tmpSql = [NSString stringWithFormat:@"insert into %@(%@,    %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@) \
+            tmpSql = [NSString stringWithFormat:@"insert into %@(%@,    %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@)  \
                                                           values('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@');\n",
                       OFFLINE_TABLE_NAME,
                       OFFLINE_COLUMN_FILEID,
@@ -179,6 +181,10 @@
     cell.labelFileName.text = currentDict[OFFLINE_COLUMN_NAME];
     cell.labelCategory.text = currentDict[OFFLINE_COLUMN_CATEGORYNAME];
     cell.labelZipSize.text  = currentDict[OFFLINE_COLUMN_ZIPSIZE];
+    // 如果文件已经下载，文档原[下载]按钮显示为[演示]
+    cell.btnDownloadOrView.tag = [currentDict[OFFLINE_COLUMN_FILEID] intValue];
+    [cell.btnDownloadOrView addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+    // 文件是否下载，文件大小等信息操作<OfflineCell#initControls>
     [cell initControls];
 
     return cell;
@@ -193,6 +199,23 @@
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 70.0f;
+}
+
+// 如果文件已经下载，文档原[下载]按钮显示为[演示]
+- (IBAction) actionDisplaySlide:(id)sender {
+    NSString *fileID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    
+    // 如果文档已经下载，即可执行演示效果，
+    // 否则需要下载，该功能在FileSlide内部处理
+    if([FileUtils checkSlideExist:fileID Force:YES]) {
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:FILE_DISPLAY_FILENAME];
+        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+        [configDict setObject:fileID forKey:@"FileID"];
+        [configDict writeToFile:configPath atomically:YES];
+        
+        DisplayViewController *showVC = [[DisplayViewController alloc] init];
+        [self presentViewController:showVC animated:NO completion:nil];
+    }
 }
 
 @end

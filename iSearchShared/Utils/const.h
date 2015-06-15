@@ -26,6 +26,12 @@ typedef NS_ENUM(NSInteger, GridViewTag){
     GridViewThree   = 2
 };
 
+// 演示文稿 编辑面板 伸缩按钮
+typedef NS_ENUM(NSInteger, SlideEditPanelTag){
+    SlideEditPanelHiden = 0,
+    SlideEditPanelShow  = 1
+};
+
 
 // Global
 #define DEBUG                  1

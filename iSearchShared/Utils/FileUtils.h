@@ -58,13 +58,25 @@
 
 
 /**
- *  检测演示文档是否下载，[同步目录]中判断是否已下载.
+ *  检测演示文档是否下载;
+ *    平时扫描文件列表时，force:NO
+ *    演示文稿时，force:YES;
+ *    避免由于文件约束问题闪退。
  *
- *  @param fid 文件在服务器上的id
+ *  需要考虑问题:
+ *  1. Files/fileID/文件是否存在；
+ *  2.（force:YES)
+ *     a)Files/fileID/desc.json是否存在
+ *     b)内容是否为空
+ *     c)格式是否为json
+ *
+ *  @param fileID 文件在服务器上的文件id
+ *  @param isForce 确认文件存在的逻辑强度
  *
  *  @return 存在即true, 否则false
  */
-+ (BOOL) checkSlideExist: (NSString *) fid;
+
++ (BOOL) checkSlideExist: (NSString *) fileID Force:(BOOL)isForce;
 
 /**
  *  打印沙盒目录列表, 相当于`tree ./`， 测试时可以用到

@@ -239,7 +239,7 @@ NSMutableArray       *_data;
             
             // 如果文件已经下载，文档原[下载]按钮显示为[演示]
             slide.slideDownload.tag = [dict[CONTENT_FIELD_ID] intValue];
-            [slide.slideDownload addTarget:self action:@selector(showSlide:) forControlEvents:UIControlEventTouchUpInside];
+            [slide.slideDownload addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
             
             [cell setContentView: slide];
         }
@@ -250,15 +250,15 @@ NSMutableArray       *_data;
 }
 
 // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-- (IBAction) showSlide:(id)sender {
-    NSString *fid = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+- (IBAction) actionDisplaySlide:(id)sender {
+    NSString *fileID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fid]) {
+    if([FileUtils checkSlideExist:fileID Force:YES]) {
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:FILE_DISPLAY_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-        [config setObject:fid forKey:@"FileID"];
+        [config setObject:fileID forKey:@"FileID"];
         [config writeToFile:pathName atomically:YES];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];
