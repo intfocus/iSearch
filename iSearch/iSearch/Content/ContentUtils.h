@@ -33,5 +33,22 @@
                                      DeptID:(NSString *) deptID
                                  CategoryID:(NSString *) categoryID;
 + (NSMutableArray *)loadContentFromLocal:(NSString *)pathName;
+
+/**
+ *  获取某分类的基本信息。
+ *  首页目录为指定CONTENT_ROOT_ID -> level1
+ *  点击某分类categoryID -> level2
+ *      此时导航栏需要显示该类的基本信息，但存放在level1分类ID的缓存文件中
+ *  此时CONTENT_ROOT_ID为parentID
+ *
+ *  @param categoryID 当前目录的根ID
+ *  @param parentID   上一层目录的根ID
+ *  @param depthID    部门ID
+ *
+ *  @return categoryDict
+ */
++ (NSMutableDictionary *)readCategoryInfo:(NSString *)categoryID
+                                 ParentID:(NSString *)parentID
+                                  DepthID:(NSString *)deptID;
 @end
 #endif

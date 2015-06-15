@@ -76,8 +76,9 @@ UIImageView          *changeBigImageView;
 NSMutableArray       *_data;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
-@property (strong, nonatomic) NSString  *categoryID; // 当前目录的分类ID
 @property (strong, nonatomic) NSString  *deptID;
+@property (strong, nonatomic) NSString  *categoryID; // 与categoryDict并不冲突，以此值来取它对应的信息
+@property (strong, nonatomic) NSMutableDictionary *categoryDict; // 依赖于categoryID
 
 // 顶部控件
 @property (weak, nonatomic) IBOutlet UIButton *navBtnBack; // 返回
@@ -105,22 +106,28 @@ NSMutableArray       *_data;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSLog(@"structureView: %@",NSStringFromCGRect(self.scrollView.bounds));
-    self.view.backgroundColor=[UIColor blackColor];
+    // 任何实例都需要初始化
+    self.categoryDict = [[NSMutableDictionary alloc] init];
+    
+    // 获取该目录视图的分类信息
+    self.deptID = @"10";
+    [self assignCategoryInfo:self.deptID];
     
     // 配置顶部导航控件
     [self.navBtnBack setTitle:@"\U000025C0\U0000FE0E返回" forState:UIControlStateNormal];
     [self.navBtnBack addTarget:self action:@selector(actionNavBack:) forControlEvents:UIControlEventTouchUpInside];
-
+    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
     
-    self.deptID = @"10";
-    self.categoryID = [self currentCategoryID];
+    
+    
     //  1. 读取本地缓存，优先加载界面
     _data = [[NSMutableArray alloc] init];
     _data = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_LOCAL];
     
     // GMGridView Configuration
     [self configGridView];
+    NSLog(@"structureView: %@",NSStringFromCGRect(self.scrollView.bounds));
+    self.view.backgroundColor=[UIColor blackColor];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -134,10 +141,13 @@ NSMutableArray       *_data;
 
 /**
  *  取得当前目录视图下的分类ID
+ *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
+ *  栈中最后一个对象即当前目录的分类ID
+ * 
+ *  强制使用deptID作为参数，以避免先使用后赋值。
  *
- *  @return 分类ID
  */
-- (NSString *)currentCategoryID {
+- (void)assignCategoryInfo:(NSString *)deptID {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
@@ -147,9 +157,27 @@ NSMutableArray       *_data;
         categoryID = CONTENT_ROOT_ID;
     }
     
-    return categoryID;
+    NSString *parentID = CONTENT_ROOT_ID;
+    if([mutableArray count] >= 2) {
+        // 倒数第二个为父ID
+        NSInteger index = [mutableArray count] - 2;
+        parentID = [mutableArray objectAtIndex:index];
+    }
+    
+    self.categoryID = categoryID;
+    self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
 }
 
+/**
+ *  导航栏[返回]响应处理；
+ *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
+ *      1. 移除最后一个对象
+ *      2. 判断栈中对象数据
+ *      2.1 如果为空，判断HomePage
+ *      2.2 不为空，刷新本界面
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)actionNavBack:(id)sender {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];

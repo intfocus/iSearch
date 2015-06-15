@@ -114,7 +114,7 @@
         
         viewCategory.labelTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
         [viewCategory setImageWith:[_data objectAtIndex:index][CONTENT_FIELD_TYPE] CategoryID:[currentDict objectForKey:CONTENT_FIELD_ID]];
-        viewCategory.tag = [[currentDict objectForKey:CONTENT_FIELD_ID] intValue];
+        viewCategory.btnEvent.tag = [[currentDict objectForKey:CONTENT_FIELD_ID] intValue];
         [viewCategory.btnEvent addTarget:self action:@selector(enterContentViewController:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell setContentView: viewCategory];
@@ -144,6 +144,8 @@
     }
     // 进入是push
     mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    // 此处为homePage应该先清空栈再宰相
+    [mutableArray removeAllObjects];
     [mutableArray addObject:categoryID];
     [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
     // 写入配置档
