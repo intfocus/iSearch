@@ -99,7 +99,8 @@
  */
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    NSLog(@"view: %@",NSStringFromCGRect(self.view.bounds));
     // 登陆前 Logor动态效果
     // [self twitterSplash];
     
@@ -113,20 +114,6 @@
     [self.fieldPwd setSecureTextEntry:YES];
     // [登陆]按钮点击事件
     [self.submit addTarget:self action:@selector(submitAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-//    self.fieldUser.placeholder = @"user";
-//    self.fieldPwd.placeholder = @"password";
-    
-    // checkbox - remember password
-//    self.rememberPwd = [[M13Checkbox alloc] initWithFrame:self.switchRememberPwd.frame title:LOGIN_REMEMBER_PWD];
-//    [self.rememberPwd titleLabel].textColor = [UIColor lightGrayColor];
-//    // checkbox border color
-//    [self.rememberPwd setStrokeColor:[UIColor lightGrayColor]];
-//    [self.rememberPwd setCheckAlignment:M13CheckboxAlignmentLeft];
-//    [self.rememberPwd autoFitWidthToText];
-//    
-//    [[self.switchRememberPwd superview] addSubview:self.rememberPwd];
-//    [self.switchRememberPwd removeFromSuperview];
     
     // 用户登陆信息记录的配置档路径
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
@@ -225,8 +212,6 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
-    
-    
     // 跳至主界面
     [self enterMainViewController];
     return;

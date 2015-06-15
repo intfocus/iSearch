@@ -222,7 +222,7 @@ NSMutableArray       *_data;
         // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
         if([type isEqualToString:@"0"]) {
             ViewFolder *folder = [[[NSBundle mainBundle] loadNibNamed:@"ViewFolder" owner:self options:nil] lastObject];
-            folder.folderTitle.text = name;
+            folder.labelTitle.text = name;
             
             [folder setFrame:CGRectMake(0, 0, 76,107)];
             [cell setContentView: folder];

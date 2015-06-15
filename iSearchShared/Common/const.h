@@ -44,8 +44,8 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 #define REORGANIZE_FORMAT      @"yyMMddHHMMSS" // 内容重组后新文件名称格式
 #define LOCAL_OR_SERVER_LOCAL  @"local" // 获取服务器信息或本地缓存
 #define LOCAL_OR_SERVER_SREVER @"server"// 获取服务器信息或本地缓存
-#define DATABASE_DIRNAME         @"Database" // 数据库文件存放的文件夹名称
-#define DATABASE_FILEAME         @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
+#define DATABASE_DIRNAME       @"Database" // 数据库文件存放的文件夹名称
+#define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -145,7 +145,7 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 #define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
 #define FAVORITE_DIRNAME           @"Favorite"
 #define FILE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
-#define FILE_CONFIG_SWP_FILENAME  @"desc.json.swp" // 文件页面编辑时的配置档拷贝
+#define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"
 #define PAGE_IMAGE_FORMAT          @"gif"

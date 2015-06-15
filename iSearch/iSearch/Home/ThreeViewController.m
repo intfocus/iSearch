@@ -30,7 +30,10 @@
     for(i=0; i< 3; i++) {
         [_data addObject:[NSString stringWithFormat:@"HomePageThree - %ld", (long)i]];
     }
-
+    
+    self.scrollView.contentSize = CGSizeMake([_data count] * (SIZE_GRID_VIEW_PAGE_WIDTH + 100), 237);
+    self.view.backgroundColor = [UIColor blueColor];
+    NSLog(@"scrollView: %@",NSStringFromCGRect(self.scrollView.bounds));
     
     // GMGridView Configuration
     [self configGMGridView];
@@ -80,12 +83,10 @@
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
     
-    NSLog(@"MyRecords - %ld %d", (long)index, [gridView tag]);
-    
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
         ViewFolder *folder = [[[NSBundle mainBundle] loadNibNamed:@"ViewFolder" owner:self options:nil] lastObject];
-        folder.folderTitle.text = [_data objectAtIndex:index];
+        folder.labelTitle.text = [_data objectAtIndex:index];
         
         [folder setFrame:CGRectMake(0, 0, 76,107)];
         [cell setContentView: folder];

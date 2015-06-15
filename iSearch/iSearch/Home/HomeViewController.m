@@ -30,9 +30,12 @@
     OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
     self.oneViewController     = one;
     TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
+    two.masterViewController   = self.masterViewController;
     self.twoViewController     = two;
     ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
     self.threeViewController   = three;
+    
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

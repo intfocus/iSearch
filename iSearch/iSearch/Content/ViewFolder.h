@@ -14,8 +14,11 @@
 @interface ViewFolder : UIView
 
 
-@property (weak, nonatomic) IBOutlet UILabel *folderTitle;
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
+@property (weak, nonatomic) IBOutlet UIImageView *imageCover;
+@property (weak, nonatomic) IBOutlet UIButton *btnEvent;
 
+- (void)setImageWith:(NSString *)typeID CategoryID:(NSString *)categoryID;
 @end
 
 #endif

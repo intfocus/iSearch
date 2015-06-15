@@ -10,10 +10,11 @@
 #define iSearch_TwoViewController_h
 
 #import <UIKit/UIKit.h>
+#import "RightSideViewController.h"
 /**
  *  HomePage第二栏 - 我的分类
  */
-@interface TwoViewController : UIViewController
+@interface TwoViewController : RightSideViewController
 
 @end
 

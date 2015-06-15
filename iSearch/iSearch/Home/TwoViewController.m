@@ -13,6 +13,9 @@
 #import "ViewFolder.h"
 #import "ContentUtils.h"
 
+#import "MainViewController.h"
+#import "ContentViewController.h"
+
 @interface TwoViewController ()<GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
     UIImageView          *changeBigImageView;
@@ -37,6 +40,9 @@
 //    }
     
     _data = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_LOCAL];
+    self.view.backgroundColor = [UIColor redColor];
+    self.scrollView.contentSize = CGSizeMake([_data count] * (SIZE_GRID_VIEW_PAGE_WIDTH + 100), 237);
+    NSLog(@"scrollView: %@",NSStringFromCGRect(self.scrollView.bounds));
     
     // GMGridView Configuration
     [self configGMGridView];
@@ -96,21 +102,28 @@
     GMGridViewCell *cell = [gridView dequeueReusableCell];
     NSMutableDictionary *currentDict = [_data objectAtIndex:index];
     
-    NSLog(@"content - %ld %@", (long)index, currentDict);
-    
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
         ViewFolder *folder = [[[NSBundle mainBundle] loadNibNamed:@"ViewFolder" owner:self options:nil] lastObject];
-        folder.folderTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
+        folder.labelTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
+        [folder setImageWith:@"0" CategoryID:[currentDict objectForKey:CONTENT_FIELD_ID]];
+        [folder.btnEvent addTarget:self action:@selector(helloWorld:) forControlEvents:UIControlEventTouchUpInside];
         
-        [folder setFrame:CGRectMake(0, 0, 76,107)];
+        //folder.btnEvent.alpha = 1;
+        //[folder setFrame:CGRectMake(0, 0, 76,107)];
         [cell setContentView: folder];
     }
     
     return cell;
 }
 
+- (IBAction)helloWorld:(id)sender {
+    NSLog(@"hellWorld");
+    MainViewController *mainViewController = (MainViewController *)[self masterViewController];
+    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+    mainViewController.rightViewController = contentViewController;
 
+}
 
 
 - (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {
@@ -214,6 +227,7 @@
     
     return fullView;
 }
+
 
 - (void)GMGridView:(GMGridView *)gridView didStartTransformingCell:(GMGridViewCell *)cell
 {

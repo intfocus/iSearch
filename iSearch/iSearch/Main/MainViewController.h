@@ -16,6 +16,8 @@
  */
 @interface MainViewController : UIViewController
 
+@property(nonatomic,strong)UIViewController *rightViewController;
+
 - (void)hideLeftView;
 - (void)showLeftView;
 
@@ -23,6 +25,7 @@
 -(void)onUserHeadClick:(id)sender;
 
 - (void)backToLoginViewController;
+- (void)helloWorld;
 
 @end
 #endif

@@ -49,6 +49,7 @@
 
 + (UIView *)loadNibClass:(Class)cls;
 
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
 @end
 
 #endif

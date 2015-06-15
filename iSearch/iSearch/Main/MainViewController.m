@@ -19,6 +19,7 @@
 
 #import "PopupView.h"
 #import "const.h"
+#import "ExtendNSLogFunctionality.h"
 
 
 @interface MainViewController ()
@@ -27,7 +28,6 @@
 @property(nonatomic,strong)IBOutlet UIView *rightView;
 
 @property(nonatomic,strong)UIViewController *leftViewController;
-@property(nonatomic,strong)UIViewController *rightViewController;
 
 @end
 
@@ -172,6 +172,10 @@
     LoginViewController *login = [[LoginViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
     window.rootViewController = login;
+}
+
+-(void)helloWorld {
+    NSLog(@"hello world");
 }
 
 @end
