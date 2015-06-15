@@ -65,19 +65,25 @@
 #import "common.h"
 #import "ViewUtils.h"
 #import "MainViewController.h"
+#import "SKSplashIcon.h"
+// #import "M13Checkbox.h"
 
 @interface LoginViewController ()
 // i18n controls
 @property (weak, nonatomic) IBOutlet UILabel *labelUser;
 @property (weak, nonatomic) IBOutlet UILabel *labelPwd;
 @property (weak, nonatomic) IBOutlet UILabel *labelSwitch;
+@property (weak, nonatomic) IBOutlet UIView *bgView;
+@property (weak, nonatomic) IBOutlet UIView *inputBgView;
+@property (weak, nonatomic) IBOutlet UIView *inputBg2View;
+@property (weak, nonatomic) IBOutlet UIView *buttonBgView;
 
 // function controls
 @property (weak, nonatomic) IBOutlet UITextField *fieldUser;
 @property (weak, nonatomic) IBOutlet UITextField *fieldPwd;
 @property (weak, nonatomic) IBOutlet UIButton *submit;
 @property (weak, nonatomic) IBOutlet UISwitch *switchRememberPwd;
-@property (retain, nonatomic) IBOutlet M13Checkbox *rememberPwd;
+//@property (retain, nonatomic) IBOutlet M13Checkbox *rememberPwd;
 
 // logo动态效果
 @property (strong, nonatomic) SKSplashView *splashView;
@@ -108,19 +114,19 @@
     // [登陆]按钮点击事件
     [self.submit addTarget:self action:@selector(submitAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.fieldUser.placeholder = @"user";
-    self.fieldPwd.placeholder = @"password";
+//    self.fieldUser.placeholder = @"user";
+//    self.fieldPwd.placeholder = @"password";
     
     // checkbox - remember password
-    self.rememberPwd = [[M13Checkbox alloc] initWithFrame:self.switchRememberPwd.frame title:LOGIN_REMEMBER_PWD];
-    [self.rememberPwd titleLabel].textColor = [UIColor lightGrayColor];
-    // checkbox border color
-    [self.rememberPwd setStrokeColor:[UIColor lightGrayColor]];
-    [self.rememberPwd setCheckAlignment:M13CheckboxAlignmentLeft];
-    [self.rememberPwd autoFitWidthToText];
-    
-    [[self.switchRememberPwd superview] addSubview:self.rememberPwd];
-    [self.switchRememberPwd removeFromSuperview];
+//    self.rememberPwd = [[M13Checkbox alloc] initWithFrame:self.switchRememberPwd.frame title:LOGIN_REMEMBER_PWD];
+//    [self.rememberPwd titleLabel].textColor = [UIColor lightGrayColor];
+//    // checkbox border color
+//    [self.rememberPwd setStrokeColor:[UIColor lightGrayColor]];
+//    [self.rememberPwd setCheckAlignment:M13CheckboxAlignmentLeft];
+//    [self.rememberPwd autoFitWidthToText];
+//    
+//    [[self.switchRememberPwd superview] addSubview:self.rememberPwd];
+//    [self.switchRememberPwd removeFromSuperview];
     
     // 用户登陆信息记录的配置档路径
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
@@ -135,12 +141,32 @@
         //      B.3 Switch-RememberPassword控件设置上次登陆成功配置，默认@"0" (don't remember password)
         NSMutableDictionary *dict = [self readLoginConfigFile];
         self.fieldUser.text = dict[@"user"];
-        [self.rememberPwd setCheckState:false];
+        [self.switchRememberPwd setOn:NO];
         if([dict[@"remember_password"] isEqualToString:@"1"]) {
             self.fieldPwd.text  = dict[@"password"];
-            [self.rememberPwd setCheckState:true];
+            [self.switchRememberPwd setOn:YES];
         }
     }
+    
+    UIImageView *iconIV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    iconIV.image = [UIImage imageNamed:@"iconUser"];
+    UIView *imageView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 32)];
+    [imageView addSubview:iconIV];
+    self.fieldUser.leftView = imageView;
+    self.fieldUser.leftViewMode = UITextFieldViewModeAlways;
+    UIImageView *iconIV2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    iconIV2.image = [UIImage imageNamed:@"iconPassword"];
+    UIView *imageView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 32)];
+    [imageView2 addSubview:iconIV2];
+    self.fieldPwd.leftView = imageView2;
+    self.fieldPwd.leftViewMode = UITextFieldViewModeAlways;
+    
+    [self.fieldUser setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [self.fieldPwd setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
+    self.bgView.layer.cornerRadius = 6.0;
+    self.inputBgView.layer.cornerRadius = 4.0;
+    self.inputBg2View.layer.cornerRadius = 4.0;
+    self.buttonBgView.layer.cornerRadius = 4.0;
 }
 /**
  *  界面每次出现时都会被触发，动态加载动作放在这里
@@ -152,15 +178,15 @@
 /**
  *  twitter加载Logo的动态效果
  */
-- (void) twitterSplash {    //Twitter style splash
-    SKSplashIcon *twitterSplashIcon = [[SKSplashIcon alloc] initWithImage:[UIImage imageNamed:@"twitterIcon.png"] animationType:SKIconAnimationTypeBounce];
-    UIColor *twitterColor = [UIColor colorWithRed:0.25098 green:0.6 blue:1.0 alpha:1.0];
-    _splashView = [[SKSplashView alloc] initWithSplashIcon:twitterSplashIcon backgroundColor:twitterColor animationType:SKSplashAnimationTypeNone];
-    _splashView.delegate = self; //Optional -> if you want to receive updates on animation beginning/end
-    _splashView.animationDuration = 2; //Optional -> set animation duration. Default: 1s
-    [self.view addSubview:_splashView];
-    [_splashView startAnimation];
-}
+//- (void) twitterSplash {    //Twitter style splash
+//    SKSplashIcon *twitterSplashIcon = [[SKSplashIcon alloc] initWithImage:[UIImage imageNamed:@"twitterIcon.png"] animationType:SKIconAnimationTypeBounce];
+//    UIColor *twitterColor = [UIColor colorWithRed:0.25098 green:0.6 blue:1.0 alpha:1.0];
+//    _splashView = [[SKSplashView alloc] initWithSplashIcon:twitterSplashIcon backgroundColor:twitterColor animationType:SKSplashAnimationTypeNone];
+//    _splashView.delegate = self; //Optional -> if you want to receive updates on animation beginning/end
+//    _splashView.animationDuration = 2; //Optional -> set animation duration. Default: 1s
+//    [self.view addSubview:_splashView];
+//    [_splashView startAnimation];
+//}
 
 
 //////////////////////////////////////////////////////////////
@@ -273,7 +299,7 @@
                 NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
                 [data setObject:username forKey:USER_LOGIN_USERNAME];
                 [data setObject:password forKey:USER_LOGIN_PASSWORD];
-                [data setObject:(self.rememberPwd.checkState ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
+                [data setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
                 [data setObject:[ViewUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
                 // 服务器信息
                 [data setObject:[responseDict objectForKey:LOGIN_FIELD_ID] forKey:USER_ID];
@@ -317,7 +343,7 @@
     [self.fieldPwd setEnabled: isEnaled];
     [self.fieldUser setEnabled: isEnaled];
     [self.submit setEnabled: isEnaled];
-    [self.rememberPwd setEnabled: isEnaled];
+    [self.switchRememberPwd setEnabled: isEnaled];
 }
 
 /**

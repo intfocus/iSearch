@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "M13Checkbox.h"
-#import "SKSplashIcon.h"
 
-@interface LoginViewController : UIViewController<SKSplashDelegate>
+@interface LoginViewController : UIViewController//<SKSplashDelegate>
 
 
 @end

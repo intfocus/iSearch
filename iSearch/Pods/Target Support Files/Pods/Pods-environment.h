@@ -12,12 +12,6 @@
 #define COCOAPODS_VERSION_MINOR_JTCalendar 2
 #define COCOAPODS_VERSION_PATCH_JTCalendar 3
 
-// M13Checkbox
-#define COCOAPODS_POD_AVAILABLE_M13Checkbox
-#define COCOAPODS_VERSION_MAJOR_M13Checkbox 1
-#define COCOAPODS_VERSION_MINOR_M13Checkbox 1
-#define COCOAPODS_VERSION_PATCH_M13Checkbox 2
-
 // MMMaterialDesignSpinner
 #define COCOAPODS_POD_AVAILABLE_MMMaterialDesignSpinner
 #define COCOAPODS_VERSION_MAJOR_MMMaterialDesignSpinner 0

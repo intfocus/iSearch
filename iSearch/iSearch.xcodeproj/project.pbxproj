@@ -33,7 +33,6 @@
 		C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8801B28908B000F84EF /* NotificationViewController.m */; };
 		C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8811B28908B000F84EF /* NotificationViewController.xib */; };
 		C42EC8901B289392000F84EF /* OfflineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC88E1B289392000F84EF /* OfflineViewController.m */; };
-		C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC88F1B289392000F84EF /* OfflineViewController.xib */; };
 		C42EC8941B289417000F84EF /* DatabaseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8931B289417000F84EF /* DatabaseUtils.m */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
@@ -75,6 +74,7 @@
 		C4A618F81B2C7B1200D0E91B /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618F51B2C7B1200D0E91B /* MainViewController.xib */; };
 		C4A618F91B2C7B1200D0E91B /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618F61B2C7B1200D0E91B /* MainViewController.m */; };
 		C4A618FC1B2C7E2A00D0E91B /* RightSideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */; };
+		C4BFEF481B2E6AF60080D7EE /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
@@ -142,7 +142,6 @@
 		C42EC8811B28908B000F84EF /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
 		C42EC88D1B289392000F84EF /* OfflineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineViewController.h; sourceTree = "<group>"; };
 		C42EC88E1B289392000F84EF /* OfflineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineViewController.m; sourceTree = "<group>"; };
-		C42EC88F1B289392000F84EF /* OfflineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineViewController.xib; sourceTree = "<group>"; };
 		C42EC8921B289417000F84EF /* DatabaseUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseUtils.h; sourceTree = "<group>"; };
 		C42EC8931B289417000F84EF /* DatabaseUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatabaseUtils.m; sourceTree = "<group>"; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -204,6 +203,7 @@
 		C4A618F71B2C7B1200D0E91B /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		C4A618FA1B2C7E2A00D0E91B /* RightSideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RightSideViewController.m; sourceTree = "<group>"; };
 		C4A618FB1B2C7E2A00D0E91B /* RightSideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RightSideViewController.h; sourceTree = "<group>"; };
+		C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineViewController.xib; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCDD1B184E530067B762 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -383,9 +383,9 @@
 		C42EC88C1B289392000F84EF /* Offline */ = {
 			isa = PBXGroup;
 			children = (
+				C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */,
 				C42EC88D1B289392000F84EF /* OfflineViewController.h */,
 				C42EC88E1B289392000F84EF /* OfflineViewController.m */,
-				C42EC88F1B289392000F84EF /* OfflineViewController.xib */,
 				C46497481B2D972E005E3903 /* OfflineCell.h */,
 				C46497491B2D9737005E3903 /* OfflineCell.m */,
 				C464974B1B2D973F005E3903 /* OfflineCell.xib */,
@@ -654,11 +654,11 @@
 				C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */,
 				C46497501B2D9B93005E3903 /* ToDownload.png in Resources */,
 				C42EC86A1B28867F000F84EF /* ViewFilePage.xib in Resources */,
-				C42EC8911B289392000F84EF /* OfflineViewController.xib in Resources */,
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
 				C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */,
 				C46497521B2DB108005E3903 /* ToView.png in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
+				C4BFEF481B2E6AF60080D7EE /* OfflineViewController.xib in Resources */,
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
 				C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */,
 				C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */,
