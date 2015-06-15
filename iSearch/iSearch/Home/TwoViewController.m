@@ -10,8 +10,9 @@
 #import "TwoViewController.h"
 #import "GMGridView.h"
 #import "const.h"
-#import "ViewFolder.h"
+#import "ViewCategory.h"
 #import "ContentUtils.h"
+#import "FileUtils.h"
 
 #import "MainViewController.h"
 #import "ContentViewController.h"
@@ -34,27 +35,24 @@
     
     self.deptID = @"10";
     _data = [[NSMutableArray alloc] init];
-//    NSInteger i = 0;
-//    for(i=0; i< 3; i++) {
-//        [_data addObject:[NSString stringWithFormat:@"HomePageTwo - %ld", (long)i]];
-//    }
+
     
-    _data = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_LOCAL];
+    _data = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL];
     self.view.backgroundColor = [UIColor redColor];
     self.scrollView.contentSize = CGSizeMake([_data count] * (SIZE_GRID_VIEW_PAGE_WIDTH + 100), 237);
     NSLog(@"scrollView: %@",NSStringFromCGRect(self.scrollView.bounds));
     
     // GMGridView Configuration
     [self configGMGridView];
-//    
-//    // 耗时间的操作放在些block中
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_SREVER];
-//        if([tmpArray count]) {
-//            _data = tmpArray;
-//            [_gmGridView reloadData];
-//        }
-//    });
+    
+    // 耗时间的操作放在些block中
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
+        if([tmpArray count]) {
+            _data = tmpArray;
+            [_gmGridView reloadData];
+        }
+    });
 }
 
 - (void) configGMGridView {
@@ -100,28 +98,62 @@
 // GridViewCell界面 - 目录界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
-    NSMutableDictionary *currentDict = [_data objectAtIndex:index];
+
     
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        ViewFolder *folder = [[[NSBundle mainBundle] loadNibNamed:@"ViewFolder" owner:self options:nil] lastObject];
-        folder.labelTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
-        [folder setImageWith:@"0" CategoryID:[currentDict objectForKey:CONTENT_FIELD_ID]];
-        [folder.btnEvent addTarget:self action:@selector(helloWorld:) forControlEvents:UIControlEventTouchUpInside];
+        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
         
-        //folder.btnEvent.alpha = 1;
-        //[folder setFrame:CGRectMake(0, 0, 76,107)];
-        [cell setContentView: folder];
+        NSMutableDictionary *currentDict = [_data objectAtIndex:index];
+        
+        // 服务器端Category没有ID值
+        if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
+            currentDict[CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
+            [_data objectAtIndex:index][CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
+        }
+        
+        viewCategory.labelTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
+        [viewCategory setImageWith:[_data objectAtIndex:index][CONTENT_FIELD_TYPE] CategoryID:[currentDict objectForKey:CONTENT_FIELD_ID]];
+        viewCategory.tag = [[currentDict objectForKey:CONTENT_FIELD_ID] intValue];
+        [viewCategory.btnEvent addTarget:self action:@selector(enterContentViewController:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell setContentView: viewCategory];
     }
     
     return cell;
 }
 
-- (IBAction)helloWorld:(id)sender {
-    NSLog(@"hellWorld");
+/**
+ *  进入目录界面;
+ *  用户点击分类导航行为记录CONTENT_CONFIG_FILENAME[@CONTENT_KEY_NAVSTACK], 类型为NSMutableArray
+ *  进入push, 返回是pop
+ *
+ *  @param sender UIButton
+ */
+- (IBAction)enterContentViewController:(UIButton *)sender {
+    // 进入分类时，需要记录该分类ID
+    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    
+    // 点击分类导航行为记录
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    // 不存在key@CONTENT_KEY_NAVSTACK则初始为空数组
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+    if(![configDict objectForKey:CONTENT_KEY_NAVSTACK]) {
+        [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
+    }
+    // 进入是push
+    mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    [mutableArray addObject:categoryID];
+    [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
+    // 写入配置档
+    [configDict writeToFile:configPath atomically:true];
+    
+    
+    // 切换viewController视图
     MainViewController *mainViewController = (MainViewController *)[self masterViewController];
     ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-    mainViewController.rightViewController = contentViewController;
+    [mainViewController setRightViewController:contentViewController withNav: NO];
 
 }
 

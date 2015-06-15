@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-@interface ViewFolder : UIView
+@interface ViewCategory : UIView
 
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;

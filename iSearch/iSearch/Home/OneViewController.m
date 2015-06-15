@@ -10,7 +10,7 @@
 #import "OneViewController.h"
 #import "GMGridView.h"
 #import "const.h"
-#import "ViewFolder.h"
+#import "ViewCategory.h"
 
 @interface OneViewController ()<GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
@@ -88,11 +88,11 @@
     
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        ViewFolder *folder = [[[NSBundle mainBundle] loadNibNamed:@"ViewFolder" owner:self options:nil] lastObject];
-        folder.labelTitle.text = [_data objectAtIndex:index];
+        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+        viewCategory.labelTitle.text = [_data objectAtIndex:index];
         
-        [folder setFrame:CGRectMake(0, 0, 76,107)];
-        [cell setContentView: folder];
+        [viewCategory setFrame:CGRectMake(0, 0, 76,107)];
+        [cell setContentView: viewCategory];
     }
     
     return cell;

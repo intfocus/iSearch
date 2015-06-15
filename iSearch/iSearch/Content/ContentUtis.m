@@ -33,12 +33,12 @@
     NSMutableArray *fileArray = [[NSMutableArray alloc] init];
     
     if([localOrServer isEqualToString:LOCAL_OR_SERVER_LOCAL]) {
-        categoryArray = [ContentUtils loadContentDataFromLocal:CONTENT_TYPE_CATEGORY DeptID:deptID CategoryID:categoryID];
-        fileArray     = [ContentUtils loadContentDataFromLocal:CONTENT_TYPE_FILE DeptID:deptID CategoryID:categoryID];
+        categoryArray = [ContentUtils loadContentDataFromLocal:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
+        fileArray     = [ContentUtils loadContentDataFromLocal:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
     }
     else if([localOrServer isEqualToString:LOCAL_OR_SERVER_SREVER]) {
-        categoryArray = [ContentUtils loadContentDataFromServer:CONTENT_TYPE_CATEGORY DeptID:deptID CategoryID:categoryID];
-        fileArray     = [ContentUtils loadContentDataFromServer:CONTENT_TYPE_FILE DeptID:deptID CategoryID:categoryID];
+        categoryArray = [ContentUtils loadContentDataFromServer:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
+        fileArray     = [ContentUtils loadContentDataFromServer:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
     }
     else {
         NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
@@ -75,9 +75,9 @@
     if(![HttpUtils isNetworkAvailable])
         return mutableArray;
     
-    if([type isEqualToString:CONTENT_TYPE_CATEGORY]) {
+    if([type isEqualToString:CONTENT_CATEGORY]) {
         urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_PARENTID, categoryID];
-    } else if([type isEqualToString:CONTENT_TYPE_FILE]) {
+    } else if([type isEqualToString:CONTENT_SLIDE]) {
         urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_FILE_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_FILE_CATEGORYID, categoryID];
     } else {
         NSLog(@"Not Support [%@]", type);

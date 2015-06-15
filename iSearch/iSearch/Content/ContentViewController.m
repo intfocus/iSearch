@@ -47,6 +47,8 @@
 //      2. iphone/ipad目录中控件尺寸比例不一致
 //      3. 已经下载文件，是否删除
 //
+//  用彷点击行为记录:
+//  点击分类push，点击[返回]pop, 如果到了根节点，则返回HomePage
 
 
 #import "ContentViewController.h"
@@ -55,9 +57,10 @@
 #import "GMGridView.h"
 #import "common.h"
 #import "ViewSlide.h"
-#import "ViewFolder.h"
+#import "ViewCategory.h"
 #import "DisplayViewController.h"
 #import "ContentUtils.h"
+#import "HomeViewController.h"
 
 #define NUMBER_ITEMS_ON_LOAD 10
 #define SIZE_GRID_VIEW_CELL_WIDTH 120//230
@@ -72,12 +75,19 @@ __gm_weak GMGridView *_gmGridView;
 UIImageView          *changeBigImageView;
 NSMutableArray       *_data;
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *structureView; // 目录结构图
-@property (weak, nonatomic) IBOutlet UITextView *noticeView;      //
-@property (weak, nonatomic) IBOutlet UIView *btnsView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
+@property (strong, nonatomic) NSString  *categoryID; // 当前目录的分类ID
 @property (strong, nonatomic) NSString  *deptID;
-@property (nonatomic) NSInteger offsetX;
 
+// 顶部控件
+@property (weak, nonatomic) IBOutlet UIButton *navBtnBack; // 返回
+@property (weak, nonatomic) IBOutlet UILabel  *navLabel;   // 当前分类名称
+@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterAll;   // 全部
+@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterOne;   // 分类
+@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 幻灯片
+@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterThree; // 文献
+@property (weak, nonatomic) IBOutlet UIButton *navBtnSortOne; // 按时间排序
+@property (weak, nonatomic) IBOutlet UIButton *navBtnSortTwo; // 按名称排序
 
 // http download variables begin
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
@@ -89,18 +99,22 @@ NSMutableArray       *_data;
 @end
 
 @implementation ContentViewController
-@synthesize structureView;
-@synthesize noticeView;
-@synthesize btnsView;
-@synthesize offsetX;
+@synthesize scrollView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    NSLog(@"structureView: %@",NSStringFromCGRect(self.structureView.bounds));
+    NSLog(@"structureView: %@",NSStringFromCGRect(self.scrollView.bounds));
+    self.view.backgroundColor=[UIColor blackColor];
+    
+    // 配置顶部导航控件
+    [self.navBtnBack setTitle:@"\U000025C0\U0000FE0E返回" forState:UIControlStateNormal];
+    [self.navBtnBack addTarget:self action:@selector(actionNavBack:) forControlEvents:UIControlEventTouchUpInside];
 
+    
     self.deptID = @"10";
+    self.categoryID = [self currentCategoryID];
     //  1. 读取本地缓存，优先加载界面
     _data = [[NSMutableArray alloc] init];
     _data = [ContentUtils loadContentData:self.deptID CategoryID:@"1" Type:LOCAL_OR_SERVER_LOCAL];
@@ -118,11 +132,52 @@ NSMutableArray       *_data;
     });
 }
 
+/**
+ *  取得当前目录视图下的分类ID
+ *
+ *  @return 分类ID
+ */
+- (NSString *)currentCategoryID {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    NSString *categoryID = [mutableArray lastObject];
+    if([categoryID length] == 0) {
+        NSLog(@"BUG - 此目录下未取得CategoryID: %@", mutableArray);
+        categoryID = CONTENT_ROOT_ID;
+    }
+    
+    return categoryID;
+}
+
+- (IBAction)actionNavBack:(id)sender {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+
+    [mutableArray removeLastObject];
+    [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
+    [configDict writeToFile:configPath atomically:true];
+    
+    MainViewController *mainViewController = (MainViewController *)[self masterViewController];
+    if([mutableArray count] == 0) {
+        // 返回HomePage
+        HomeViewController *homeViewController = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
+        [mainViewController setRightViewController:homeViewController withNav: NO];
+    } else {
+        // 刷新本视图
+        ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+        [mainViewController setRightViewController:contentViewController withNav: NO];
+    }
+}
+/**
+ *  配置GridView
+ */
 - (void) configGridView {
-    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.structureView.bounds];
+    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
-    [self.structureView addSubview:gmGridView];
+    [self.scrollView addSubview:gmGridView];
     _gmGridView = gmGridView;
     
     _gmGridView.style = GMGridViewStyleSwap;
@@ -135,9 +190,8 @@ NSMutableArray       *_data;
     _gmGridView.transformDelegate = self;
     _gmGridView.dataSource = self;
     _gmGridView.backgroundColor = [UIColor clearColor];
-    _gmGridView.mainSuperView = self.structureView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
+    _gmGridView.mainSuperView = self.scrollView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
     
-    self.view.backgroundColor = [UIColor purpleColor];
 }
 //////////////////////////////////////////////////////////////
 #pragma mark memory management
@@ -210,35 +264,36 @@ NSMutableArray       *_data;
         cell = [[GMGridViewCell alloc] init];
         
         // 根据服务器返回的JSON数据显示文件夹或文档。
-        NSMutableDictionary *dict = [_data objectAtIndex:index];
-        NSString *name = dict[CONTENT_FIELD_NAME];
-        if(![[dict allKeys] containsObject:CONTENT_FIELD_TYPE]) {
-            dict[CONTENT_FIELD_TYPE] = @"0";
-            [_data objectAtIndex:index][CONTENT_FIELD_TYPE] = @"0";
+        NSMutableDictionary *currentDict = [_data objectAtIndex:index];
+        NSString *name = currentDict[CONTENT_FIELD_NAME];
+        
+        // 服务器端Category没有ID值
+        if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
+            currentDict[CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
+            [_data objectAtIndex:index][CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
         }
-        NSString *type = [dict objectForKey:CONTENT_FIELD_TYPE];
-        NSLog(@"%@", dict);
+        NSString *type = [currentDict objectForKey:CONTENT_FIELD_TYPE];
         
         // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
         if([type isEqualToString:@"0"]) {
-            ViewFolder *folder = [[[NSBundle mainBundle] loadNibNamed:@"ViewFolder" owner:self options:nil] lastObject];
-            folder.labelTitle.text = name;
+            ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+            viewCategory.labelTitle.text = name;
             
-            [folder setFrame:CGRectMake(0, 0, 76,107)];
-            [cell setContentView: folder];
+            [viewCategory setFrame:CGRectMake(0, 0, 76,107)];
+            [cell setContentView: viewCategory];
             NSLog(@"%@ - %@", name, type);
         } else {
             ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
             slide.slideTitle.text = name;
             NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, dict[CONTENT_FIELD_ID]];
-            dict[CONTENT_FIELD_URL] = downloadUrl;
-            slide.dict = dict;
+                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, currentDict[CONTENT_FIELD_ID]];
+            currentDict[CONTENT_FIELD_URL] = downloadUrl;
+            slide.dict = currentDict;
             // 数据初始化操作，须在initWithFrame操作前，因为该操作会触发slide内部处理
             slide = [slide initWithFrame:CGRectMake(0, 0, 230, 150)];
             
             // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-            slide.slideDownload.tag = [dict[CONTENT_FIELD_ID] intValue];
+            slide.slideDownload.tag = [currentDict[CONTENT_FIELD_ID] intValue];
             [slide.slideDownload addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
             
             [cell setContentView: slide];
@@ -256,9 +311,9 @@ NSMutableArray       *_data;
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:fileID Force:YES]) {
-        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:FILE_DISPLAY_FILENAME];
+        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-        [config setObject:fileID forKey:@"FileID"];
+        [config setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
         [config writeToFile:pathName atomically:YES];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];

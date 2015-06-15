@@ -51,8 +51,8 @@
 		C464974F1B2D9B93005E3903 /* PlayFile.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974D1B2D9B93005E3903 /* PlayFile.png */; };
 		C46497501B2D9B93005E3903 /* ToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974E1B2D9B93005E3903 /* ToDownload.png */; };
 		C46497521B2DB108005E3903 /* ToView.png in Resources */ = {isa = PBXBuildFile; fileRef = C46497511B2DB108005E3903 /* ToView.png */; };
-		C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */; };
-		C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */; };
+		C4A3AF001B2AFC4A00A12170 /* ViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AEFE1B2AFC4A00A12170 /* ViewCategory.m */; };
+		C4A3AF011B2AFC4A00A12170 /* ViewCategory.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AEFF1B2AFC4A00A12170 /* ViewCategory.xib */; };
 		C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF031B2B067D00A12170 /* ViewSlide.m */; };
 		C4A3AF061B2B067D00A12170 /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF041B2B067D00A12170 /* ViewSlide.xib */; };
 		C4A3AF0E1B2B0CCB00A12170 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */; };
@@ -169,9 +169,9 @@
 		C464974D1B2D9B93005E3903 /* PlayFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayFile.png; sourceTree = "<group>"; };
 		C464974E1B2D9B93005E3903 /* ToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToDownload.png; sourceTree = "<group>"; };
 		C46497511B2DB108005E3903 /* ToView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToView.png; sourceTree = "<group>"; };
-		C4A3AEFD1B2AFC4A00A12170 /* ViewFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFolder.h; sourceTree = "<group>"; };
-		C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFolder.m; sourceTree = "<group>"; };
-		C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFolder.xib; sourceTree = "<group>"; };
+		C4A3AEFD1B2AFC4A00A12170 /* ViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewCategory.h; sourceTree = "<group>"; };
+		C4A3AEFE1B2AFC4A00A12170 /* ViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewCategory.m; sourceTree = "<group>"; };
+		C4A3AEFF1B2AFC4A00A12170 /* ViewCategory.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewCategory.xib; sourceTree = "<group>"; };
 		C4A3AF021B2B067D00A12170 /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
 		C4A3AF031B2B067D00A12170 /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
 		C4A3AF041B2B067D00A12170 /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
@@ -434,9 +434,9 @@
 				C4A3AF021B2B067D00A12170 /* ViewSlide.h */,
 				C4A3AF031B2B067D00A12170 /* ViewSlide.m */,
 				C4A3AF041B2B067D00A12170 /* ViewSlide.xib */,
-				C4A3AEFD1B2AFC4A00A12170 /* ViewFolder.h */,
-				C4A3AEFE1B2AFC4A00A12170 /* ViewFolder.m */,
-				C4A3AEFF1B2AFC4A00A12170 /* ViewFolder.xib */,
+				C4A3AEFD1B2AFC4A00A12170 /* ViewCategory.h */,
+				C4A3AEFE1B2AFC4A00A12170 /* ViewCategory.m */,
+				C4A3AEFF1B2AFC4A00A12170 /* ViewCategory.xib */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -684,7 +684,7 @@
 				C46497501B2D9B93005E3903 /* ToDownload.png in Resources */,
 				C42EC86A1B28867F000F84EF /* ViewFilePage.xib in Resources */,
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
-				C4A3AF011B2AFC4A00A12170 /* ViewFolder.xib in Resources */,
+				C4A3AF011B2AFC4A00A12170 /* ViewCategory.xib in Resources */,
 				C4BFEF4E1B2E92A80080D7EE /* 0-1.png in Resources */,
 				C46497521B2DB108005E3903 /* ToView.png in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
@@ -776,7 +776,7 @@
 				C4A618F41B2C7AEC00D0E91B /* MainEntryButton.m in Sources */,
 				C4E3CCDE1B184E530067B762 /* main.m in Sources */,
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
-				C4A3AF001B2AFC4A00A12170 /* ViewFolder.m in Sources */,
+				C4A3AF001B2AFC4A00A12170 /* ViewCategory.m in Sources */,
 				C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */,
 				C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */,
 				C4A3AF141B2B0CDE00A12170 /* PaintView.m in Sources */,

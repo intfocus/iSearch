@@ -6,7 +6,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ContentViewController">
             <connections>
-                <outlet property="structureView" destination="vDS-wB-v2s" id="4RO-f0-hPy"/>
+                <outlet property="navBtnBack" destination="8EH-5x-aId" id="W0h-P0-iIl"/>
+                <outlet property="navBtnFilterAll" destination="TL4-IU-Y9Q" id="Ey3-ci-XaO"/>
+                <outlet property="navBtnFilterOne" destination="9v7-lh-s46" id="Nhe-I7-4Vk"/>
+                <outlet property="navBtnFilterThree" destination="BcX-RS-SOq" id="ZIX-di-jTa"/>
+                <outlet property="navBtnFilterTwo" destination="JA6-0y-Odh" id="kNT-ey-2hm"/>
+                <outlet property="navBtnSortOne" destination="sQq-tU-DFv" id="Y6w-gq-RiJ"/>
+                <outlet property="navBtnSortTwo" destination="VFy-bB-Eu3" id="iyO-Xe-fy5"/>
+                <outlet property="navLabel" destination="8Fb-ML-uOL" id="Odi-ef-igI"/>
+                <outlet property="scrollView" destination="vDS-wB-v2s" id="SYg-vw-fkm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="nP7-9L-T38"/>
             </connections>
         </placeholder>
@@ -16,12 +24,80 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vDS-wB-v2s">
-                    <rect key="frame" x="0.0" y="39" width="600" height="561"/>
+                    <rect key="frame" x="0.0" y="40" width="600" height="561"/>
                     <color key="backgroundColor" red="0.15043900007869804" green="0.11993905747953448" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </scrollView>
                 <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XAy-YW-7YX">
-                    <rect key="frame" x="0.0" y="2" width="600" height="20"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8EH-5x-aId">
+                            <rect key="frame" x="3" y="5" width="49" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <state key="normal" title="返回">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQq-tU-DFv">
+                            <rect key="frame" x="492" y="5" width="45" height="30"/>
+                            <state key="normal" title="按时间">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFy-bB-Eu3">
+                            <rect key="frame" x="547" y="5" width="45" height="30"/>
+                            <state key="normal" title="按分类">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="字分类1.1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Fb-ML-uOL">
+                            <rect key="frame" x="61" y="9" width="136" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5v-Q8-GuA">
+                            <rect key="frame" x="200" y="0.0" width="249" height="40"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TL4-IU-Y9Q">
+                                    <rect key="frame" x="18" y="5" width="40" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                    <state key="normal" title="全部">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-lh-s46">
+                                    <rect key="frame" x="66" y="5" width="44" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <state key="normal" title="分类">
+                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcX-RS-SOq">
+                                    <rect key="frame" x="191" y="5" width="41" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <state key="normal" title="文献">
+                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JA6-0y-Odh">
+                                    <rect key="frame" x="118" y="5" width="65" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <state key="normal" title="幻灯片">
+                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" red="0.51247160489999999" green="1" blue="0.1445082074" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -36,7 +112,7 @@
                 <constraint firstItem="vDS-wB-v2s" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ncC-ze-irr"/>
                 <constraint firstItem="XAy-YW-7YX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yNs-EX-1DY"/>
             </constraints>
-            <point key="canvasLocation" x="139" y="140"/>
+            <point key="canvasLocation" x="107" y="141"/>
         </view>
     </objects>
 </document>

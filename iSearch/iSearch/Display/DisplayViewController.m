@@ -97,10 +97,10 @@
 }
 
 - (void) loadConfigInfo {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:FILE_DISPLAY_FILENAME];
-    NSMutableDictionary *config = [FileUtils readConfigFile:configPath];
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
-    self.fileID = config[@"FileID"];
+    self.fileID = [configDict objectForKey:CONTENT_KEY_DISPLAYID];
     //NSLog(@"reorganize:\n%@", config);
 }
 

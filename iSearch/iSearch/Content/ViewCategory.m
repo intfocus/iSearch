@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#import "ViewFolder.h"
+#import "ViewCategory.h"
 
-@implementation ViewFolder
+@implementation ViewCategory
 @synthesize labelTitle;
 @synthesize imageCover;
 
@@ -20,6 +20,7 @@
  */
 - (void)setImageWith:(NSString *)typeID CategoryID:(NSString *)categoryID {
     NSString *imageName = [NSString stringWithFormat:@"%@-%@.png", typeID, categoryID];
+    NSLog(@"imageName %@",imageName);
     UIImage *image = [UIImage imageNamed:imageName];
     image = [self imageWithImage:image scaledToSize:CGSizeMake(213, 207)];
     [self.imageCover setImage:image];

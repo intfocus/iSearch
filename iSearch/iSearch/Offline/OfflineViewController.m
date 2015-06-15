@@ -208,9 +208,9 @@
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:fileID Force:YES]) {
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:FILE_DISPLAY_FILENAME];
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:fileID forKey:@"FileID"];
+        [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
         [configDict writeToFile:configPath atomically:YES];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];

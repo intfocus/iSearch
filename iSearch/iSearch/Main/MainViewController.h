@@ -16,7 +16,6 @@
  */
 @interface MainViewController : UIViewController
 
-@property(nonatomic,strong)UIViewController *rightViewController;
 
 - (void)hideLeftView;
 - (void)showLeftView;
@@ -26,6 +25,9 @@
 
 - (void)backToLoginViewController;
 - (void)helloWorld;
+
+
+- (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;
 
 @end
 #endif

@@ -28,6 +28,7 @@
 @property(nonatomic,strong)IBOutlet UIView *rightView;
 
 @property(nonatomic,strong)UIViewController *leftViewController;
+@property(nonatomic,strong)UIViewController *rightViewController;
 
 @end
 
@@ -49,7 +50,7 @@
         
         SideViewController *side     = (id)self.leftViewController;
         UIViewController *controller = [side viewControllerForTag:EntryButtonHomePage];
-        self.rightViewController     = controller;
+        [self setRightViewController:controller withNav:YES];
     });
 
 //    BlockTask(^{
@@ -136,7 +137,7 @@
     left.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     left.view.frame=self.leftView.bounds;
 }
-- (void)setRightViewController:(UIViewController *)right{
+- (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation {
     [_rightViewController removeFromParentViewController];
     [_rightViewController.view removeFromSuperview];
 
@@ -147,11 +148,12 @@
     RightSideViewController *r=(id)right;
     r.masterViewController=self;
     
-    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:right];
-    nav.navigationBar.translucent=NO;
-    nav.toolbar.translucent=NO;
-    
-    right=nav;
+    if(hasNavigation) {
+        UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:right];
+        nav.navigationBar.translucent=NO;
+        nav.toolbar.translucent=NO;
+        right=nav;
+    }
 
     _rightViewController=right;
     [self addChildViewController:right];

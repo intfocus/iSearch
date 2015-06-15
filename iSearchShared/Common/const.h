@@ -46,6 +46,7 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 #define LOCAL_OR_SERVER_SREVER @"server"// 获取服务器信息或本地缓存
 #define DATABASE_DIRNAME       @"Database" // 数据库文件存放的文件夹名称
 #define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
+#define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -96,10 +97,14 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 #define DOWNLOAD_DIRNAME        @"Download"// [目录]中[文件]压缩包下载文件夹
 #define FILE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
-#define FILE_DISPLAY_FILENAME   @"display.json" // 目录中文件已经下载，点击[演示];
+// 目录Config中key
+#define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
+#define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
+// 目录中文件类型
+#define CONTENT_CATEGORY   @"0" // 分类，可以点击再进入
+#define CONTENT_SLIDE      @"1" // 文献 （待确认)
+#define CONTENT_PPT        @"2" // 幻灯片（待确认)
 // 目录API参数
-#define CONTENT_TYPE_FILE       @"File"
-#define CONTENT_TYPE_CATEGORY   @"Category"
 #define CONTENT_PARAM_DEPTID    @"did" // 部门ID
 #define CONTENT_PARAM_PARENTID  @"pid" // 分类父ID
 #define CONTENT_PARAM_FILE_CATEGORYID @"cid" // 待加载分类ID
