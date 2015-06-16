@@ -50,6 +50,20 @@
 + (UIView *)loadNibClass:(Class)cls;
 
 + (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
+
+
+/**
+ *  tableViewCell根据内容自定义高度
+ *
+ *  @param text     cell显示内容
+ *  @param width    cell的宽度，以此自适应高度
+ *  @param fontSize 内容字段大小
+ *
+ *  @return CGSize
+ */
++ (CGSize) sizeForTableViewCell:(NSString *)text
+                          Width:(NSInteger)width
+                       FontSize:(NSInteger)fontSize;
 @end
 
 #endif

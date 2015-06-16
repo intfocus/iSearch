@@ -10,4 +10,10 @@
 
 @implementation MainEntryButton
 
+- (void)awakeFromNib{
+    [super awakeFromNib];
+    self.heightConstraint.constant = 0.5;
+    self.heightConstraint2.constant = 0.5;
+}
+
 @end

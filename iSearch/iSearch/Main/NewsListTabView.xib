@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
@@ -10,26 +10,34 @@
             <rect key="frame" x="0.0" y="0.0" width="240" height="240"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="jbT-Hr-0If">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jbT-Hr-0If">
                     <rect key="frame" x="0.0" y="0.0" width="240" height="40"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Le2-CN-qz4">
+                            <rect key="frame" x="10" y="6" width="220" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="220" id="ER5-tA-VUl"/>
+                                <constraint firstAttribute="height" constant="28" id="WCt-fl-DY9"/>
+                            </constraints>
+                            <segments>
+                                <segment title="公司公告"/>
+                                <segment title="公司活动"/>
+                            </segments>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="onTabClick:" destination="iN0-l3-epB" eventType="valueChanged" id="ytR-Hl-9sY"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" red="0.2196078431372549" green="0.2196078431372549" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="63a-Hl-dUh"/>
+                        <constraint firstAttribute="centerX" secondItem="Le2-CN-qz4" secondAttribute="centerX" id="I0D-la-1S9"/>
+                        <constraint firstAttribute="centerY" secondItem="Le2-CN-qz4" secondAttribute="centerY" id="onE-et-jAP"/>
+                    </constraints>
                 </view>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Le2-CN-qz4">
-                    <rect key="frame" x="10" y="5" width="220" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <segments>
-                        <segment title="First"/>
-                        <segment title="Second"/>
-                    </segments>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <connections>
-                        <action selector="onTabClick:" destination="iN0-l3-epB" eventType="valueChanged" id="ytR-Hl-9sY"/>
-                    </connections>
-                </segmentedControl>
-                <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="mmX-Ph-8po">
+                <tableView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="mmX-Ph-8po">
                     <rect key="frame" x="0.0" y="40" width="240" height="200"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
@@ -38,7 +46,16 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="jbT-Hr-0If" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="5q3-sM-kfW"/>
+                <constraint firstItem="mmX-Ph-8po" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5ur-91-JnR"/>
+                <constraint firstAttribute="trailing" secondItem="jbT-Hr-0If" secondAttribute="trailing" id="8Kc-E5-bQa"/>
+                <constraint firstAttribute="bottom" secondItem="mmX-Ph-8po" secondAttribute="bottom" id="Fp2-WD-0iD"/>
+                <constraint firstAttribute="trailing" secondItem="mmX-Ph-8po" secondAttribute="trailing" id="NWJ-J9-vQj"/>
+                <constraint firstItem="mmX-Ph-8po" firstAttribute="top" secondItem="jbT-Hr-0If" secondAttribute="bottom" id="chi-oL-JgW"/>
+                <constraint firstItem="jbT-Hr-0If" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="rcl-Qa-IvF"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="listView" destination="mmX-Ph-8po" id="i65-HH-Igl"/>
@@ -47,9 +64,4 @@
             <point key="canvasLocation" x="234" y="269"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

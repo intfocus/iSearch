@@ -43,4 +43,26 @@
     UIGraphicsEndImageContext();
     return newImage;
 }
+
+/**
+ *  tableViewCell根据内容自定义高度
+ *
+ *  @param text     cell显示内容
+ *  @param width    cell的宽度，以此自适应高度
+ *  @param fontSize 内容字段大小
+ *
+ *  @return CGSize
+ */
++ (CGSize) sizeForTableViewCell:(NSString *)text
+                          Width:(NSInteger)width
+                       FontSize:(NSInteger)fontSize {
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 240.0, 50000)];
+    textLabel.text=text;
+    textLabel.numberOfLines=0;
+    textLabel.textColor = [UIColor whiteColor];
+    textLabel.font = [UIFont systemFontOfSize:fontSize];
+    [textLabel sizeToFit];
+    CGRect rect = textLabel.frame;;
+    return rect.size;
+}
 @end

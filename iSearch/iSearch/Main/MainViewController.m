@@ -91,7 +91,7 @@
 
     #warning viewController的配置集中到sideViewController里
     UIViewController *controller=[side viewControllerForTag:entry.tag];
-    self.rightViewController=controller;
+    [self setRightViewController:controller withNav:YES];
 
     if (!controller) {
         NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
@@ -118,6 +118,7 @@
     CGRect left = bounds;
     left.size.width=leftWidth;
     self.leftView.frame=left;
+    
     CGRect right=bounds;
     right.origin.x=leftWidth;
     right.size.width=CGRectGetWidth(bounds) - leftWidth;

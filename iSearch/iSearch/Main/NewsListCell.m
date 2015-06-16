@@ -28,7 +28,15 @@
     
 }
 
--(CGSize)sizeForCell:(NSString*)text withWidth:(NSInteger)width{
+- (CGFloat)heightForCell:(NSString*)text {
+    self.textLabel.text=text;
+    self.textLabel.frame=CGRectMake(0, 0, self.bounds.size.width, 50000);
+    [self.textLabel sizeToFit];
+    CGRect r=self.textLabel.frame;
+    return r.size.height;
+}
+
+-(CGSize)sizeForCell:(NSString*)text withWidth:(NSInteger)width {
     self.textLabel.text=text;
     self.textLabel.frame=CGRectMake(0, 0, width, 50000);
     [self.textLabel sizeToFit];

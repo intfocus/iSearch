@@ -9,10 +9,9 @@
 #import "SideViewController.h"
 #import "MainViewController.h"
 
-#import "HomeViewController.h"
 #import "NotificationViewController.h"
 #import "OfflineViewController.h"
-#import "ContentViewController.h"
+#import "HomeViewController.h"
 
 #import "UserHeadView.h"
 #import "MainEntryButton.h"
@@ -22,6 +21,7 @@
 @interface SideViewController ()
 
 @property(nonatomic,weak)NewsListTabView *newsTabView;
+@property (nonatomic) NSMutableArray *buttons;
 
 @end
 
@@ -30,9 +30,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.view.backgroundColor=[UIColor blackColor];
+    
+    self.buttons = [@[] mutableCopy];
     [self placeEntryButton];
-
     [self placeNewsTab];
 }
 
@@ -64,7 +64,8 @@
     }
     
     // warning 此处位置调整时，需要修改
-    NSArray *array=@[@"首页",@"收藏",@"通知",@"下载",@"设置",@"登出"];
+    NSArray *array=@[@"首页",@"收藏",@"通知",@"下载",@"设置",@"登出"];//
+    NSArray *images = @[@"iconIndex",@"iconCollection",@"iconNotification",@"iconDownload",@"iconSetup",@"iconSignOut"];//
 
     //[array objectAtIndex:10];
 
@@ -76,21 +77,39 @@
 
         entry.tag=[array indexOfObject:title];
         entry.titleView.text=title;
+        entry.iconView.image = [UIImage imageNamed:images[entry.tag]];
         [entry addTarget:self.masterViewController action:@selector(onEntryClick:) forControlEvents:UIControlEventTouchUpInside];
+        [self.buttons addObject:entry];
+        [entry addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
+    [self buttonClicked:self.buttons.firstObject];
 }
 
+- (void)buttonClicked:(MainEntryButton *)button{
+    for (MainEntryButton *entry in self.buttons) {
+        entry.backgroundColor = [UIColor clearColor];
+        entry.heightConstraint.constant = 0.5;
+        entry.heightConstraint2.constant = 0.5;
+    }
+    if ([self.buttons indexOfObject:button] > 0) {
+        MainEntryButton *lastOne = self.buttons[[self.buttons indexOfObject:button] - 1];
+        lastOne.heightConstraint.constant = 0;
+        lastOne.heightConstraint2.constant = 0;
+    }
+    button.backgroundColor = [UIColor colorWithRed:45/255.0 green:45/255.0 blue:45/255.0 alpha:1.0];
+}
 
 -(UIViewController *)viewControllerForTag:(NSInteger)tag{
     UIViewController *vc = nil;
-    
+    NSLog(@"click tag - %ld", (long)tag);
     switch (tag) {
         case EntryButtonHomePage:
             vc=[[HomeViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
         case EntryButtonFavorite:
-            vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+            //vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
         case EntryButtonNotification:
@@ -102,7 +121,7 @@
             break;
             
         case EntryButtonSetting:
-            vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+            //vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
         case EntryButtonLogout:
@@ -114,6 +133,7 @@
             break;
     }
     
+    if(!vc) vc = [[OfflineViewController alloc] initWithNibName:nil bundle:nil];
     return vc;
 }
 
