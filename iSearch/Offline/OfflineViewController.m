@@ -69,6 +69,7 @@
     
     // 搜索框内容改变时，实时搜索并展示
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SearchValueChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+    [self.searchTextField setTag:TextFieldSearchDB];
     [self.searchTextField addTarget:self action:@selector(SearchValueChanged:) forControlEvents:UIControlEventValueChanged];
     
     
@@ -84,9 +85,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+/**
+ *  监听输入框内容变化
+ *
+ *  @param notifice notifice
+ */
 - (void)SearchValueChanged:(NSNotification*)notifice {
-    UITextField *field=[notifice object];
+    UITextField *field = [notifice object];
+    // 本指定TextField，则放弃监听
+    if([field tag] != TextFieldSearchDB) return;
+    
     NSString *searchText = [field.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSArray *keywords = [searchText componentsSeparatedByString:NSLocalizedString(@" ", nil)];
     
@@ -180,7 +188,7 @@
     cell.dict = currentDict;
     cell.labelFileName.text = currentDict[OFFLINE_COLUMN_NAME];
     cell.labelCategory.text = currentDict[OFFLINE_COLUMN_CATEGORYNAME];
-    cell.labelZipSize.text  = currentDict[OFFLINE_COLUMN_ZIPSIZE];
+    cell.labelZipSize.text  = [FileUtils humanFileSize:currentDict[OFFLINE_COLUMN_ZIPSIZE]];
     // 如果文件已经下载，文档原[下载]按钮显示为[演示]
     cell.btnDownloadOrView.tag = [currentDict[OFFLINE_COLUMN_FILEID] intValue];
     [cell.btnDownloadOrView addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
