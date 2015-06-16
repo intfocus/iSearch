@@ -11,27 +11,41 @@
 
 // 主界面左侧导航按钮Tag
 typedef NS_ENUM(NSInteger, EntryButtonTag){
-    EntryButtonHomePage     = 0,
-    EntryButtonFavorite     = 1,
-    EntryButtonNotification = 2,
-    EntryButtonDownload     = 3,
-    EntryButtonSetting      = 4,
-    EntryButtonLogout       = 5
+    EntryButtonHomePage     = 10,
+    EntryButtonFavorite     = 11,
+    EntryButtonNotification = 12,
+    EntryButtonDownload     = 13,
+    EntryButtonSetting      = 14,
+    EntryButtonLogout       = 15
 };
 
 // HomePage GridViewTag
 typedef NS_ENUM(NSInteger, GridViewTag){
-    GridViewOne     = 0,
-    GridViewTwo     = 1,
-    GridViewThree   = 2
+    GridViewOne     = 10,
+    GridViewTwo     = 11,
+    GridViewThree   = 12
 };
 
 // 演示文稿 编辑面板 伸缩按钮
 typedef NS_ENUM(NSInteger, SlideEditPanelTag){
-    SlideEditPanelHiden = 0,
-    SlideEditPanelShow  = 1
+    SlideEditPanelHiden = 10,
+    SlideEditPanelShow  = 11
 };
 
+//
+
+/**
+ *  TextFieldTag
+ *
+ * 离线搜索， 有TextFild ValueChaged监听， 但presentView显示Display,
+ * 在presentView显示编辑界面, 选择收藏，输入框信息，会被监听误收
+ *
+ * **重点** 勿从0开始，因为默认tag=0
+ */
+typedef NS_ENUM(NSInteger, TextFieldTag){
+    TextFieldSearchDB  = 10,
+    TextFieldAddNewTag = 11
+};
 
 // Global
 #define DEBUG                  1
@@ -149,7 +163,15 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 #define REORGANIZE_CONFIG_FILENAME @"reorganize.json"
 #define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
 #define FAVORITE_DIRNAME           @"Favorite"
+// 文档描述desc.json相关
+// TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
 #define FILE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define FILE_DESC_ID               @"id"
+#define FILE_DESC_TYPE             @"type"
+#define FILE_DESC_NAME             @"name"
+#define FILE_DESC_DESC             @"desc"
+#define FILE_DESC_ORDER            @"order"
+#define FILE_DESC_MODIFY           @"updated_at" // 本地更新时间
 #define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"

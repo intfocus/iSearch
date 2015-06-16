@@ -37,6 +37,10 @@
 		C464974F1B2D9B93005E3903 /* PlayFile.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974D1B2D9B93005E3903 /* PlayFile.png */; };
 		C46497501B2D9B93005E3903 /* ToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974E1B2D9B93005E3903 /* ToDownload.png */; };
 		C46497521B2DB108005E3903 /* ToView.png in Resources */ = {isa = PBXBuildFile; fileRef = C46497511B2DB108005E3903 /* ToView.png */; };
+		C46EC4F31B30296D000C0903 /* AddToFavoriteView.m in Sources */ = {isa = PBXBuildFile; fileRef = C46EC4F21B30296D000C0903 /* AddToFavoriteView.m */; };
+		C46EC4F61B302986000C0903 /* AddToFavoriteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46EC4F51B302986000C0903 /* AddToFavoriteView.xib */; };
+		C46EC4F81B302BC9000C0903 /* TagListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46EC4F71B302BC9000C0903 /* TagListView.xib */; };
+		C46EC4FA1B302BD3000C0903 /* TagListView.m in Sources */ = {isa = PBXBuildFile; fileRef = C46EC4F91B302BD3000C0903 /* TagListView.m */; };
 		C4A3AF001B2AFC4A00A12170 /* ViewCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AEFE1B2AFC4A00A12170 /* ViewCategory.m */; };
 		C4A3AF011B2AFC4A00A12170 /* ViewCategory.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AEFF1B2AFC4A00A12170 /* ViewCategory.xib */; };
 		C4A3AF051B2B067D00A12170 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF031B2B067D00A12170 /* ViewSlide.m */; };
@@ -141,6 +145,12 @@
 		C464974D1B2D9B93005E3903 /* PlayFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayFile.png; sourceTree = "<group>"; };
 		C464974E1B2D9B93005E3903 /* ToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToDownload.png; sourceTree = "<group>"; };
 		C46497511B2DB108005E3903 /* ToView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToView.png; sourceTree = "<group>"; };
+		C46EC4F21B30296D000C0903 /* AddToFavoriteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddToFavoriteView.m; sourceTree = "<group>"; };
+		C46EC4F41B302978000C0903 /* AddToFavoriteView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddToFavoriteView.h; sourceTree = "<group>"; };
+		C46EC4F51B302986000C0903 /* AddToFavoriteView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddToFavoriteView.xib; sourceTree = "<group>"; };
+		C46EC4F71B302BC9000C0903 /* TagListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagListView.xib; sourceTree = "<group>"; };
+		C46EC4F91B302BD3000C0903 /* TagListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagListView.m; sourceTree = "<group>"; };
+		C46EC4FB1B302BDB000C0903 /* TagListView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TagListView.h; sourceTree = "<group>"; };
 		C4A3AEFD1B2AFC4A00A12170 /* ViewCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewCategory.h; sourceTree = "<group>"; };
 		C4A3AEFE1B2AFC4A00A12170 /* ViewCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewCategory.m; sourceTree = "<group>"; };
 		C4A3AEFF1B2AFC4A00A12170 /* ViewCategory.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewCategory.xib; sourceTree = "<group>"; };
@@ -435,6 +445,12 @@
 				C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */,
 				C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */,
 				C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */,
+				C46EC4F41B302978000C0903 /* AddToFavoriteView.h */,
+				C46EC4F21B30296D000C0903 /* AddToFavoriteView.m */,
+				C46EC4F51B302986000C0903 /* AddToFavoriteView.xib */,
+				C46EC4FB1B302BDB000C0903 /* TagListView.h */,
+				C46EC4F91B302BD3000C0903 /* TagListView.m */,
+				C46EC4F71B302BC9000C0903 /* TagListView.xib */,
 			);
 			path = Display;
 			sourceTree = "<group>";
@@ -682,6 +698,7 @@
 			files = (
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
 				C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */,
+				C46EC4F81B302BC9000C0903 /* TagListView.xib in Resources */,
 				C4BED0961B2FFF49000147A2 /* ViewFilePage.xib in Resources */,
 				C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */,
 				C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */,
@@ -705,6 +722,7 @@
 				C4BFEF511B2E92A80080D7EE /* 0-4.png in Resources */,
 				C4BFEF4F1B2E92A80080D7EE /* 0-2.png in Resources */,
 				C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */,
+				C46EC4F61B302986000C0903 /* AddToFavoriteView.xib in Resources */,
 				C42BD5611B2BCAC1006DB157 /* 404.gif in Resources */,
 				C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */,
 				C4A618F81B2C7B1200D0E91B /* MainViewController.xib in Resources */,
@@ -786,8 +804,10 @@
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
 				C4BED0951B2FFF49000147A2 /* ViewFilePage.m in Sources */,
 				C4A3AF001B2AFC4A00A12170 /* ViewCategory.m in Sources */,
+				C46EC4F31B30296D000C0903 /* AddToFavoriteView.m in Sources */,
 				C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */,
 				C4BED0881B2FFEE2000147A2 /* FileUtils.m in Sources */,
+				C46EC4FA1B302BD3000C0903 /* TagListView.m in Sources */,
 				C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */,
 				C4BED07D1B2FFEE2000147A2 /* UIView+GMGridViewAdditions.m in Sources */,
 				C46497301B2D6772005E3903 /* HomeViewController.m in Sources */,

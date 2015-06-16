@@ -8,6 +8,12 @@
 
 #ifndef iSearch_TagListView_h
 #define iSearch_TagListView_h
+#import <UIKit/UIKit.h>
 
+/**
+ *  编辑文档页面时 => 选择页面 => 保存
+ */
+@interface TagListView : UIViewController
+@end
 
 #endif

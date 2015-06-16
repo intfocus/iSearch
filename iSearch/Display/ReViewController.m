@@ -43,7 +43,12 @@
 //  w:427  h:375 margin:20
 //  w:2048 h:1536
 //  w:1024 h:768
+
 #import "ReViewController.h"
+#import "ViewFilePage.h"
+#import "common.h"
+#import "GMGridView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
@@ -317,7 +322,7 @@
     NSString *message = @"已存在内容重组文件:\n";
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     for(dict in [self reorganizeNames])
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"%@\n", dict[@"fileName"]]];
+        message = [message stringByAppendingString:[NSString stringWithFormat:@"%@\n", dict[FILE_DESC_NAME]]];
     
     message = [message stringByAppendingString:@"\n请输入内容重组后文件名称"];
     
@@ -405,7 +410,7 @@
     [self refreshGridView];
 }
 /**
- *  编辑状态下，选择多个页面后[保存].
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
  *
  // step1: 判断name=text是否存在
  // 重组内容文件名称格式: r150501010101
@@ -426,14 +431,14 @@
     NSError *error;
     NSString *searchFileID;
     NSMutableArray *reorganizeNames = [self reorganizeNames];
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
-    // 检测已经内容重组的文件名称
+    // 检测扫描收藏目录，检测是否存在
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
     for(dict in reorganizeNames) {
-        if([dict[@"fileName"] isEqualToString:searchFileName]) {
-            searchFileID = dict[@"fileID"];
+        if([dict[FILE_DESC_NAME] isEqualToString:searchFileName]) {
+            searchFileID = dict[FILE_DESC_ID];
             break;
         }
     }
@@ -458,9 +463,9 @@
             [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
         
         // 创建配置档内容
-        [descData setObject:newFileID forKey:@"id"];
-        [descData setObject:searchFileName forKey:@"name"];
-        [descData setObject:searchFileName forKey:@"desc"];
+        [descData setObject:newFileID forKey:FILE_DESC_ID];
+        [descData setObject:searchFileName forKey:FILE_DESC_NAME];
+        [descData setObject:searchFileName forKey:FILE_DESC_DESC];
         
         // 把选中的页面复制到内容重组文件中
         // _select存放的为GridView序号
@@ -471,7 +476,7 @@
             
             [pages addObject:pageName];
         }
-        [descData setObject:pages forKey:@"order"];
+        [descData setObject:pages forKey:FILE_DESC_ORDER];
         
         // step2.2 收藏夹中原已存在，修改原配置档，复制页面
     } else {
@@ -486,7 +491,7 @@
                                                      error:&error];
         NSErrorPrint(error, @"desc content convert into json");
         
-        pages = descData[@"order"];
+        pages = descData[FILE_DESC_ORDER];
         for(pageIndex in _select) {
             pageName = [_data objectAtIndex:[pageIndex intValue]];
             
@@ -499,7 +504,7 @@
             [pages addObject:pageName];
         }
         // 重新赋值order
-        [descData setObject:pages forKey:@"order"];
+        [descData setObject:pages forKey:FILE_DESC_ORDER];
     }
     
     // 配置信息写入文件
@@ -508,45 +513,44 @@
 
 
 /**
- *  内容重组的文件列表
+ *  内容重组文件（放入收藏目录下）
  *
  *  @return [{fileName: filename, fileId: fileid}]
  */
 - (NSMutableArray *) reorganizeNames {
-    NSMutableArray *fileNames = [[NSMutableArray alloc]init];
+    NSMutableArray *filesInfo = [[NSMutableArray alloc]init];
     
     // 重组内容文件名称格式: r150501
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *files = [fileManager contentsOfDirectoryAtPath:filesPath error:&error];
     
-    // 过滤出原重组内容的文件列表进行匹配
-    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
-    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
+//    // 过滤出原重组内容的文件列表进行匹配
+//    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
+//    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
 
     NSString *fileId, *filePath, *descPath, *descContent;
 
-    for(fileId in reorganizeFiles) {
+    for(fileId in files) {
         filePath = [filesPath stringByAppendingPathComponent:fileId];
         descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
         
         // 配置档不存在，跳过
-        if(![FileUtils checkFileExist:descPath isDir:false]) continue;
+        if(![FileUtils checkSlideExist:fileID Force:YES]) continue;
         
         // 解析字符串为JSON
         descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
         NSErrorPrint(error, @"[保存] read desc file");
-        id desc = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+        NSMutableDictionary *descJSON = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
                                                   options:NSJSONReadingMutableContainers
                                                     error:&error];
         NSErrorPrint(error, @"[保存] desc content convert into json");
 
-        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:desc[@"name"], @"fileName", fileId, @"fileID", nil];
-        [fileNames addObject:dict];
+        [filesInfo addObject:descJSON];
     }
     
-    return fileNames;
+    return filesInfo;
 }
 
 /**

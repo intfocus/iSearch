@@ -6,6 +6,12 @@
 // project.
 
 
+// DLRadioButton
+#define COCOAPODS_POD_AVAILABLE_DLRadioButton
+#define COCOAPODS_VERSION_MAJOR_DLRadioButton 1
+#define COCOAPODS_VERSION_MINOR_DLRadioButton 1
+#define COCOAPODS_VERSION_PATCH_DLRadioButton 1
+
 // JTCalendar
 #define COCOAPODS_POD_AVAILABLE_JTCalendar
 #define COCOAPODS_VERSION_MAJOR_JTCalendar 1

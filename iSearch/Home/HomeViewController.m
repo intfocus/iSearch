@@ -13,9 +13,9 @@
 #import "ThreeViewController.h"
 
 @interface HomeViewController ()
-@property (weak, nonatomic) IBOutlet UIView *oneView;
-@property (weak, nonatomic) IBOutlet UIView *twoView;
-@property (weak, nonatomic) IBOutlet UIView *threeView;
+@property (weak, nonatomic) IBOutlet UIView *oneView;   // 我的收藏
+@property (weak, nonatomic) IBOutlet UIView *twoView;   // 我的分类
+@property (weak, nonatomic) IBOutlet UIView *threeView; // 我的记录
 
 @property(nonatomic,strong)UIViewController *oneViewController;
 @property(nonatomic,strong)UIViewController *twoViewController;
@@ -34,6 +34,8 @@
     self.twoViewController     = two;
     ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
     self.threeViewController   = three;
+    
+    self.navigationItem.title = @"主页";
     
     
 }

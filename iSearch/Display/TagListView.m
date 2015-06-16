@@ -7,3 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TagListView.h"
+#import "DLRadioButton.h"
+
+@interface TagListView()
+
+@property (weak, nonatomic) IBOutlet UIButton *btnAddNewTag;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+@end
+
+@implementation TagListView
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
+- (void)scanFavoriteFilesLis {
+    
+}
+@end

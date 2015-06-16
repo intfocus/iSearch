@@ -233,5 +233,38 @@
     return descContent;
 }
 
+/**
+ *  文件体积大小转化为可读文字；
+ *
+ *  831106     => 811.6K
+ *  8311060    =>   7.9M
+ *  83110600   =>  79.3M
+ *  831106000  =>  792.6M
+ *
+ *  @param fileSize 文件体积大小
+ *
+ *  @return 可读数字，保留一位小数，追加单位
+ */
++ (NSString *)humanFileSize:(NSString *)fileSize {
+    NSString *humanSize = [[NSString alloc] init];
+    
+    @try {
+        double convertedValue = [fileSize doubleValue];
+        int multiplyFactor = 0;
+        
+        NSArray *tokens = [NSArray arrayWithObjects:@"B",@"K",@"M",@"G",@"T",nil];
+        
+        while (convertedValue > 1024) {
+            convertedValue /= 1024;
+            multiplyFactor++;
+        }
+        humanSize = [NSString stringWithFormat:@"%4.1f%@",convertedValue, [tokens objectAtIndex:multiplyFactor]];
+    } @catch(NSException *e) {
+        NSLog(@"convert [%@] into human readability failed for %@", fileSize, [e description]);
+        humanSize = fileSize;
+    }
+    
+    return humanSize;
+}
 
 @end

@@ -7,3 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AddToFavoriteView.h"
+
+@interface AddToFavoriteView()
+
+@end
+
+@implementation AddToFavoriteView
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
+@end

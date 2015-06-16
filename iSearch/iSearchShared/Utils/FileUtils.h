@@ -121,6 +121,20 @@
  */
 + (NSString *) copyFileDescContent:(NSString *) fileID;
 
+
+/**
+ *  文件体积大小转化为可读文字；
+ *
+ *  831106     => 811.6K
+ *  8311060    =>   7.9M
+ *  83110600   =>  79.3M
+ *  831106000  =>  792.6M
+ *
+ *  @param fileSize 文件体积大小
+ *
+ *  @return 可读数字，保留一位小数，追加单位
+ */
++ (NSString *)humanFileSize:(NSString *)fileSize;
 @end
 
 

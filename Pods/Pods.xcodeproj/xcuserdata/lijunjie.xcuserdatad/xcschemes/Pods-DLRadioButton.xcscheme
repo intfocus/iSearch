@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "03B48C9AD1EB840EE69F0C38"
-               BuildableName = "libPods-JTCalendar.a"
-               BlueprintName = "Pods-JTCalendar"
+               BlueprintIdentifier = "090DCE12761B720361FA5426"
+               BuildableName = "libPods-DLRadioButton.a"
+               BlueprintName = "Pods-DLRadioButton"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
