@@ -6,6 +6,12 @@
 // project.
 
 
+// CWPopup
+#define COCOAPODS_POD_AVAILABLE_CWPopup
+#define COCOAPODS_VERSION_MAJOR_CWPopup 1
+#define COCOAPODS_VERSION_MINOR_CWPopup 2
+#define COCOAPODS_VERSION_PATCH_CWPopup 6
+
 // DLRadioButton
 #define COCOAPODS_POD_AVAILABLE_DLRadioButton
 #define COCOAPODS_VERSION_MAJOR_DLRadioButton 1

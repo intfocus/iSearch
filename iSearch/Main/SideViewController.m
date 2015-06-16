@@ -13,6 +13,7 @@
 #import "OfflineViewController.h"
 #import "HomeViewController.h"
 
+
 #import "UserHeadView.h"
 #import "MainEntryButton.h"
 #import "NewsListTabView.h"
@@ -120,8 +121,9 @@
             vc=[[OfflineViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
-        case EntryButtonSetting:
-            //vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+        case EntryButtonSetting: {
+ 
+        }
             break;
             
         case EntryButtonLogout:

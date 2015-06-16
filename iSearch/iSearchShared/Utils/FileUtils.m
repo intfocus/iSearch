@@ -10,6 +10,7 @@
 
 #import "FileUtils.h"
 #import "const.h"
+#import "ExtendNSLogFunctionality.h"
 
 @interface FileUtils()
 @end
@@ -109,10 +110,12 @@
  *
  *  @return 存在即true, 否则false
  */
-+ (BOOL) checkSlideExist: (NSString *) fileID Force:(BOOL)isForce {
++ (BOOL) checkSlideExist: (NSString *) fileID
+                     Dir:(NSString *)dir
+                   Force:(BOOL)isForce {
     NSError *error;
     NSMutableArray *errors = [[NSMutableArray alloc] init];
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
     // 1. Files/fileID/文件是否存在
     if(![FileUtils checkFileExist:filePath isDir:YES]) {
         [errors addObject:@"fileID文件夹不存在."];
@@ -265,6 +268,46 @@
     }
     
     return humanSize;
+}
+/**
+ *  收藏文件列表（FAVORITE_DIRNAME）
+ *
+ *  @return @{FILE_DESC_KEY: }
+ */
++ (NSMutableArray *) favoriteFileList {
+    NSMutableArray *fileList = [[NSMutableArray alloc]init];
+    
+    // 重组内容文件名称格式: r150501
+    NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *files = [fileManager contentsOfDirectoryAtPath:filesPath error:&error];
+    
+    //    // 过滤出原重组内容的文件列表进行匹配
+    //    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
+    //    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
+    
+    NSString *fileID, *filePath, *descPath, *descContent;
+    
+    for(fileID in files) {
+        filePath = [filesPath stringByAppendingPathComponent:fileID];
+        descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        
+        // 配置档不存在，跳过
+        if(![FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) continue;
+        
+        // 解析字符串为JSON
+        descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+        NSErrorPrint(error, @"read desc file#%@", fileID);
+        NSMutableDictionary *descJSON = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        options:NSJSONReadingMutableContainers
+                                                                          error:&error];
+        NSErrorPrint(error, @"file#%@ desc content convert into json", fileID);
+        
+        [fileList addObject:descJSON];
+    }
+    
+    return fileList;
 }
 
 @end

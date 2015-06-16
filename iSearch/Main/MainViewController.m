@@ -22,6 +22,10 @@
 #import "ExtendNSLogFunctionality.h"
 
 
+#import "TagListView.h"
+#import "UIViewController+CWPopup.h"
+
+
 @interface MainViewController ()
 
 @property(nonatomic,strong)IBOutlet UIView *leftView;
@@ -40,6 +44,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
+
+    
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //NSActionLogger(@"主界面加载", @"successfully");
@@ -53,6 +59,12 @@
         [self setRightViewController:controller withNav:YES];
     });
 
+//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+//    tapRecognizer.numberOfTapsRequired = 1;
+//    tapRecognizer.delegate = self;
+//    [self.view addGestureRecognizer:tapRecognizer];
+    self.useBlurForPopup = YES;
+    
 //    BlockTask(^{
 //        //sleep(1);
 //    });
@@ -79,6 +91,14 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
+- (void)dismissPopup {
+    if (self.popupViewController != nil) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissed");
+        }];
+    }
+}
+
 
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置
@@ -90,11 +110,20 @@
     SideViewController *side=(id)self.leftViewController;
 
     #warning viewController的配置集中到sideViewController里
-    UIViewController *controller=[side viewControllerForTag:entry.tag];
-    [self setRightViewController:controller withNav:YES];
+    
+    NSLog(@"Exception: sender.tag = %ld; %ld", (long)[sender tag], EntryButtonSetting);
+    if([entry tag] == EntryButtonSetting) {
+        TagListView *tagListView = [[TagListView alloc] init];
+        [self presentPopupViewController:tagListView animated:YES completion:^(void) {
+            NSLog(@"popup view presented");
+        }];
+    } else {
+        UIViewController *controller=[side viewControllerForTag:entry.tag];
+        [self setRightViewController:controller withNav:YES];
 
-    if (!controller) {
-        NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
+        if (!controller) {
+            NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
+        }
     }
 }
 

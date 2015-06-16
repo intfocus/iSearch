@@ -10,7 +10,6 @@
 
 #import "RightSideViewController.h"
 
-
 @interface ContentViewController : RightSideViewController
 - (void)calledByPresentedViewController;
 @end

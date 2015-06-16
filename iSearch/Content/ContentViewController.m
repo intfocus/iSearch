@@ -52,15 +52,19 @@
 
 
 #import "ContentViewController.h"
-#import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
+
 #import "GMGridView.h"
-#import "common.h"
 #import "ViewSlide.h"
 #import "ViewCategory.h"
+
 #import "DisplayViewController.h"
-#import "ContentUtils.h"
 #import "HomeViewController.h"
+#import "MainViewController.h"
+
+#import "ContentUtils.h"
+#import "FileUtils.h"
+#import "DateUtils.h"
+#import "ExtendNSLogFunctionality.h"
 
 #define NUMBER_ITEMS_ON_LOAD 10
 #define SIZE_GRID_VIEW_CELL_WIDTH 120//230
@@ -338,7 +342,7 @@ NSMutableArray       *_data;
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Force:YES]) {
+    if([FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) {
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         [config setObject:fileID forKey:CONTENT_KEY_DISPLAYID];

@@ -10,6 +10,14 @@
 #import "SSZipArchive.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 
+#import "ReViewController.h"
+#import "MainViewController.h"
+
+#import "const.h"
+#import "message.h"
+#import "FileUtils.h"
+#import "ExtendNSLogFunctionality.h"
+
 @interface DisplayViewController ()
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 展示html5
 @property (weak, nonatomic) IBOutlet UIButton *editBtn; // 切换显示编辑状态面板的显示
@@ -40,7 +48,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self loadConfigInfo];
-    NSLog(@"device: %@", NSStringFromCGRect([[UIScreen mainScreen] bounds]))
+    NSLog(@"device: %@", NSStringFromCGRect([[UIScreen mainScreen] bounds]));
     self.htmlCurrentIndex    = 0;
     self.isDrawing           = false;
     self.paintView            = nil;
@@ -315,7 +323,7 @@
 - (IBAction) enterFilePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:self.fileID Force:YES]) {
+    if([FileUtils checkSlideExist:self.fileID Dir:FILE_DIRNAME Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];

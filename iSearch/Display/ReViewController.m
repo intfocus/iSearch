@@ -46,9 +46,15 @@
 
 #import "ReViewController.h"
 #import "ViewFilePage.h"
-#import "common.h"
 #import "GMGridView.h"
-#import <QuartzCore/QuartzCore.h>
+#import "TagListView.h"
+#import "UIViewController+CWPopup.h"
+
+#import "const.h"
+#import "message.h"
+#import "FileUtils.h"
+#import "ViewUtils.h"
+#import "ExtendNSLogFunctionality.h"
 
 @interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
@@ -61,22 +67,22 @@
 @property (nonatomic, assign) BOOL selectState;   // 编辑状态
 @property (nonatomic, nonatomic) NSString  *fileID;
 @property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
-@property (nonatomic, nonatomic) UIBarButtonItem *editBarItem; // 是否切换至编辑状态
-@property (nonatomic, nonatomic) UIBarButtonItem *restoreBarItem; // 恢复至初始状态，desc.json覆盖desc.json.swp
-@property (nonatomic, nonatomic) UIBarButtonItem *saveBarItem;   // 编辑状态下至少选择一个页面时激活
-@property (nonatomic, nonatomic) UIBarButtonItem *removeBarItem; // 编辑状态下至少选择一个页面时激活
-@property (nonatomic, nonatomic) NSMutableDictionary *tmpPageInfo;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
+@property (nonatomic, nonatomic) UIBarButtonItem *barItemEdit; // 是否切换至编辑状态
+@property (nonatomic, nonatomic) UIBarButtonItem *barItemRestore; // 恢复至初始状态，desc.json覆盖desc.json.swp
+@property (nonatomic, nonatomic) UIBarButtonItem *barItemSave;   // 编辑状态下至少选择一个页面时激活
+@property (nonatomic, nonatomic) UIBarButtonItem *barItemRemove; // 编辑状态下至少选择一个页面时激活
+@property (nonatomic, nonatomic) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
 
 @end
 
 @implementation ReViewController
 @synthesize fileID;
 @synthesize pageID;
-@synthesize restoreBarItem;
-@synthesize editBarItem;
-@synthesize saveBarItem;
-@synthesize removeBarItem;
-@synthesize tmpPageInfo;
+@synthesize barItemRestore;
+@synthesize barItemEdit;
+@synthesize barItemSave;
+@synthesize barItemRemove;
+@synthesize pageInfoTmp;
 @synthesize selectState;
 
 - (void)viewDidLoad {
@@ -84,7 +90,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // 任何@property对象都需要初始化,否则直接赋值失败
-    self.tmpPageInfo = [[NSMutableDictionary alloc] init];
+    self.pageInfoTmp = [[NSMutableDictionary alloc] init];
     _data = [[NSMutableArray alloc] init];
     _select = [[NSMutableArray alloc] init];
     self.selectState = false;
@@ -106,41 +112,53 @@
     
     
     // 编辑状态-切换
-    self.editBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
+    self.barItemEdit = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
                                                        style:UIBarButtonItemStylePlain
                                                       target:nil
                                                       action:@selector(actionEditPages:)];
-    self.editBarItem.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_CANCEL, nil];
-    [array addObject:self.editBarItem];
+    self.barItemEdit.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_CANCEL, nil];
+    [array addObject:self.barItemEdit];
     
     // 恢复按钮 - desc.json覆盖desc.json.swp
-    self.restoreBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
+    self.barItemRestore = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
                                                           style:UIBarButtonItemStylePlain
                                                          target:nil
                                                          action:@selector(actionRestorePages:)];
     // 对比是否有修改，以此设置[恢复]状态
     [self checkDescSwpContent];
-    [array addObject:self.restoreBarItem];
+    [array addObject:self.barItemRestore];
     
     // 保存 - 编辑状态下，至少选择一页面时，激活
-    self.saveBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
+    self.barItemSave = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
                                                     style:UIBarButtonItemStylePlain
                                                    target:nil
                                                   action:@selector(actionSavePages:)];
-    self.saveBarItem.enabled = false;
-    [array addObject:self.saveBarItem];
+    self.barItemSave.enabled = false;
+    [array addObject:self.barItemSave];
     
     // 移除 - 编辑状态下，至少选择一页面时，激活
-    self.removeBarItem = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_REMOVE]
+    self.barItemRemove = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_REMOVE]
                                                     style:UIBarButtonItemStylePlain
                                                    target:nil
                                                    action:@selector(actionRemovePages:)];
-    self.removeBarItem.enabled = false;
-    [array addObject:self.removeBarItem];
-    
+    self.barItemRemove.enabled = false;
+    [array addObject:self.barItemRemove];
     self.navigation.rightBarButtonItems = [[array reverseObjectEnumerator] allObjects];
     
+    // 选择页面后，保存
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    tapRecognizer.delegate = self;
+    [self.view addGestureRecognizer:tapRecognizer];
+    self.useBlurForPopup = YES;
+    
     // 配置创建 GMGridView
+    [self configGridView];
+    
+    [self refreshGridView];
+}
+
+- (void) configGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.structureView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
@@ -161,10 +179,7 @@
     _gmGridView.mainSuperView = self.structureView;
     self.view.backgroundColor = [UIColor whiteColor];
     _gmGridView.selectState = self.selectState;
-    
-    [self refreshGridView];
 }
-
 - (void) refreshGridView {
     // 加载文件各页面
     _data = [self loadFilePages];;
@@ -184,6 +199,24 @@
     self.fileID = config[@"FileID"];
     self.pageID = config[@"PageID"];
     //NSLog(@"reorganize:\n%@", config);
+}
+
+//////////////////////////////////////////////////////////////
+#pragma mark 编辑状态，选择页面，[保存]
+//////////////////////////////////////////////////////////////
+- (IBAction)btnPresentPopup:(UIButton *)sender {
+    TagListView *tagListView = [[TagListView alloc] init];
+    [self presentPopupViewController:tagListView animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
+}
+
+- (void)dismissPopup {
+    if (self.popupViewController != nil) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissed");
+        }];
+    }
 }
 
 //////////////////////////////////////////////////////////////
@@ -267,7 +300,7 @@
     NSErrorPrint(error, @"desc swp content convert to json");
     
     BOOL isSame = [descDict isEqualToDictionary:descSwpDict];
-    self.restoreBarItem.enabled = !isSame;
+    self.barItemRestore.enabled = !isSame;
 }
 
 /**
@@ -302,39 +335,44 @@
         _gmGridView.selectState = self.selectState;
         
         // 导航栏按钮样式
-        [self.editBarItem setTitle: BTN_CANCEL];
-        self.saveBarItem.enabled = false;
-        self.removeBarItem.enabled = false;
+        [self.barItemEdit setTitle: BTN_CANCEL];
+        self.barItemSave.enabled = false;
+        self.barItemRemove.enabled = false;
     } else {
         self.selectState = false;
         _gmGridView.selectState = self.selectState;
         
-        [self.editBarItem setTitle: BTN_EDIT];
+        [self.barItemEdit setTitle: BTN_EDIT];
         // 在有选择多个页面情况下，[保存][移除]是激活的，
         // 但直接[取消]编辑状态时, 就需要手工禁用
-        self.saveBarItem.enabled = false;
-        self.removeBarItem.enabled = false;
+        self.barItemSave.enabled = false;
+        self.barItemRemove.enabled = false;
     }
     
 }
 
 - (IBAction)actionSavePages:(UIBarButtonItem*)sender {
-    NSString *message = @"已存在内容重组文件:\n";
+    NSString *message = @" 已存在内容重组文件:\n";
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    for(dict in [self reorganizeNames])
+    for(dict in [FileUtils favoriteFileList])
         message = [message stringByAppendingString:[NSString stringWithFormat:@"%@\n", dict[FILE_DESC_NAME]]];
     
-    message = [message stringByAppendingString:@"\n请输入内容重组后文件名称"];
+    message = [message stringByAppendingString:@"\n 请输入内容重组后文件名称 "];
     
-    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"添加标签"
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@" 添加标签 "
                                                          message:message
                                                         delegate:self
                                                cancelButtonTitle:BTN_CANCEL
                                                otherButtonTitles:BTN_SURE, nil];
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = 100; // 区分alwrtView, for 所有alertView共用同一个回调函数
+    alertView.tag = 100; // 区分 alwrtView, for 所有 alertView 共用同一个回调函数
     
     [alertView show];
+//    [self performSelector:@selector(btnPresentPopup:) withObject:self afterDelay:0];
+//    TagListView *tagListView = [[TagListView alloc] init];
+//    [self presentPopupViewController:tagListView animated:YES completion:^(void) {
+//        NSLog(@"popup view presented");
+//    }];
 }
 
 - (IBAction)actionRemovePages:(UIBarButtonItem*)sender {
@@ -430,7 +468,7 @@
     // 重组内容文件名称格式: r150501010101
     NSError *error;
     NSString *searchFileID;
-    NSMutableArray *reorganizeNames = [self reorganizeNames];
+    NSMutableArray *reorganizeNames = [FileUtils favoriteFileList];
     NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
@@ -509,48 +547,6 @@
     
     // 配置信息写入文件
     [self writeJSON:descData Into:descPath];
-}
-
-
-/**
- *  内容重组文件（放入收藏目录下）
- *
- *  @return [{fileName: filename, fileId: fileid}]
- */
-- (NSMutableArray *) reorganizeNames {
-    NSMutableArray *filesInfo = [[NSMutableArray alloc]init];
-    
-    // 重组内容文件名称格式: r150501
-    NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
-    NSError *error;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *files = [fileManager contentsOfDirectoryAtPath:filesPath error:&error];
-    
-//    // 过滤出原重组内容的文件列表进行匹配
-//    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
-//    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
-
-    NSString *fileId, *filePath, *descPath, *descContent;
-
-    for(fileId in files) {
-        filePath = [filesPath stringByAppendingPathComponent:fileId];
-        descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
-        
-        // 配置档不存在，跳过
-        if(![FileUtils checkSlideExist:fileID Force:YES]) continue;
-        
-        // 解析字符串为JSON
-        descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"[保存] read desc file");
-        NSMutableDictionary *descJSON = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                  options:NSJSONReadingMutableContainers
-                                                    error:&error];
-        NSErrorPrint(error, @"[保存] desc content convert into json");
-
-        [filesInfo addObject:descJSON];
-    }
-    
-    return filesInfo;
 }
 
 /**
@@ -710,15 +706,15 @@
         NSString *currentFileID = self.fileID;
         NSString *keyName = [NSString stringWithFormat:@"page-%@", currentFileID];
         // self.tmpPageInfo - 为了减少重复扫描本地信息
-        if(![[self.tmpPageInfo allKeys] containsObject:keyName]) {
+        if(![[self.pageInfoTmp allKeys] containsObject:keyName]) {
             NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
             NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
             NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
             
-            [self.tmpPageInfo setObject:descSwpDict forKey:keyName];
+            [self.pageInfoTmp setObject:descSwpDict forKey:keyName];
         }
         
-        NSDictionary *currentDescSwpDict = [NSDictionary dictionaryWithDictionary: self.tmpPageInfo[keyName]];
+        NSDictionary *currentDescSwpDict = [NSDictionary dictionaryWithDictionary: self.pageInfoTmp[keyName]];
         NSString *currentPageID = [currentDescSwpDict[@"order"] objectAtIndex:index];
         
         if([currentPageID isEqualToString: self.pageID]) {
@@ -811,11 +807,11 @@
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
     if([_select count]) {
-        self.saveBarItem.enabled = true;
-        self.removeBarItem.enabled = true;
+        self.barItemSave.enabled = true;
+        self.barItemRemove.enabled = true;
     } else {
-        self.saveBarItem.enabled = false;
-        self.removeBarItem.enabled = false;
+        self.barItemSave.enabled = false;
+        self.barItemRemove.enabled = false;
     }
 }
 

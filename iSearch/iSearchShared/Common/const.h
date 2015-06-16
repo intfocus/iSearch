@@ -11,12 +11,12 @@
 
 // 主界面左侧导航按钮Tag
 typedef NS_ENUM(NSInteger, EntryButtonTag){
-    EntryButtonHomePage     = 10,
-    EntryButtonFavorite     = 11,
-    EntryButtonNotification = 12,
-    EntryButtonDownload     = 13,
-    EntryButtonSetting      = 14,
-    EntryButtonLogout       = 15
+    EntryButtonHomePage     = 0,
+    EntryButtonFavorite     = 1,
+    EntryButtonNotification = 2,
+    EntryButtonDownload     = 3,
+    EntryButtonSetting      = 4,
+    EntryButtonLogout       = 5
 };
 
 // HomePage GridViewTag

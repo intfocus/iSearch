@@ -76,7 +76,9 @@
  *  @return 存在即true, 否则false
  */
 
-+ (BOOL) checkSlideExist: (NSString *) fileID Force:(BOOL)isForce;
++ (BOOL) checkSlideExist: (NSString *) fileID
+                     Dir:(NSString *)dir
+                   Force:(BOOL)isForce;
 
 /**
  *  打印沙盒目录列表, 相当于`tree ./`， 测试时可以用到
@@ -135,6 +137,13 @@
  *  @return 可读数字，保留一位小数，追加单位
  */
 + (NSString *)humanFileSize:(NSString *)fileSize;
+
+/**
+ *  收藏文件列表（FAVORITE_DIRNAME）
+ *
+ *  @return @{FILE_DESC_KEY: }
+ */
++ (NSMutableArray *) favoriteFileList;
 @end
 
 

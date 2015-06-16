@@ -6,6 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TagListView">
             <connections>
+                <outlet property="btnAddNewTag" destination="UUR-xA-Ma5" id="M2p-5h-Zvl"/>
+                <outlet property="scrollView" destination="0q1-sb-oZ5" id="cVF-IN-CqF"/>
                 <outlet property="view" destination="iN0-l3-epB" id="rYb-iE-Sfg"/>
             </connections>
         </placeholder>

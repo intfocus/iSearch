@@ -45,14 +45,14 @@
     // GMGridView Configuration
     [self configGMGridView];
     
-    // 耗时间的操作放在些block中
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
-        if([tmpArray count]) {
-            _data = tmpArray;
-            [_gmGridView reloadData];
-        }
-    });
+//    // 耗时间的操作放在些block中
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
+//        if([tmpArray count]) {
+//            _data = tmpArray;
+//            [_gmGridView reloadData];
+//        }
+//    });
 }
 
 - (void) configGMGridView {

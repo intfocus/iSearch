@@ -25,7 +25,7 @@
 }
 
 - (IBAction) slideClick:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Force:NO]) {
+    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:FILE_DIRNAME Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
         [self downloadZip:self.dict[CONTENT_FIELD_URL]];
     //} else {
@@ -37,7 +37,7 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Force:NO]) {
+    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:FILE_DIRNAME Force:NO]) {
         [self.slideDownload setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
     } else {
         [self.slideDownload setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];

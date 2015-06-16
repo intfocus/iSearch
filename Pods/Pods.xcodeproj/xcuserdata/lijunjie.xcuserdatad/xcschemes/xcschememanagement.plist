@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-CWPopup.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-DLRadioButton.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -47,42 +52,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>03B48C9AD1EB840EE69F0C38</key>
+		<key>0676662230791D13EDCF9C79</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>090DCE12761B720361FA5426</key>
+		<key>13CD73037BCB73B3FE18A72F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>62F5AE3BEE5B89E2F46D07A2</key>
+		<key>7034D5FB5DB64A3DD6A6EC00</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6ABE0528B91C1BBE8BA370BD</key>
+		<key>77DF9402AA2221B01F687766</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8CCAAF951217D3AC0CE05A1D</key>
+		<key>9411DC90391366BBF2D6412E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E095C850837368D92CC3CA45</key>
+		<key>B1AD88C00FC8B01654317CC8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E9EF24D73C0D972FBCB218D0</key>
+		<key>B514C3079F701FDC3828701F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FB9BB7E493EC4CB222DC6807</key>
+		<key>C6086874170700BC831F8249</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DE3DFA873AF1947B472C23C7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

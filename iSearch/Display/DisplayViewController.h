@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PaintView.h"
-#import "common.h"
-#import "ReViewController.h"
-#import "MainViewController.h"
+
 
 @interface DisplayViewController : UIViewController {
      PaintView *paintView;

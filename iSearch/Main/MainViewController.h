@@ -14,7 +14,8 @@
  *  iSearch主界面, 框架为左右结构.
  *  登录成功后，进入该界面
  */
-@interface MainViewController : UIViewController
+@interface MainViewController : UIViewController <UIGestureRecognizerDelegate>
+
 
 
 - (void)hideLeftView;

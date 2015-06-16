@@ -54,7 +54,7 @@
 }
 
 - (IBAction) slideClick:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Force:NO]) {
+    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:FAVORITE_DIRNAME Force:NO]) {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@", BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.dict[OFFLINE_COLUMN_FILEID]];
         [self downloadZip:downloadUrl];
         //} else {
@@ -66,7 +66,7 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Force:NO]) {
+    if([FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:FAVORITE_DIRNAME Force:NO]) {
         self.labelDownloadState.text = @"已下载";
     } else {
         self.labelDownloadState.text = @"未下载";

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 //#import <Foundation/Foundation.h>
 
-@interface ReViewController : UIViewController
+@interface ReViewController : UIViewController <UIGestureRecognizerDelegate>
 @end
 
