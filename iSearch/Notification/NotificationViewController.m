@@ -119,7 +119,6 @@
     // 从服务器端获取[公告通知], 不判断网络环境，获取不到则取本地cache
     NSString *deptID = @"1";
     NSString *currentDate = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
-    currentDate = @"2015/06/15";
     NSString *notifiction_url = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", NOTIFICATION_URL_PATH, NOTIFICATION_PARAM_DEPTID, deptID, NOTIFICATION_PARAM_DATESTR, currentDate];
     NSLog(@"%@", notifiction_url);
     NSString *response = [HttpUtils httpGet: notifiction_url];
@@ -165,11 +164,6 @@
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
     self.notifications  = notificationDatas[NOTIFICATION_FIELD_GGDATA];// 公告数据
     self.notificationsAdvance = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告
-//    NSLog(@"response: %@", response);
-//    NSLog(@"data: %@", notificationDatas);
-//    NSLog(@"one: %@", self.notifications);
-//    NSLog(@"two: %@", self.notificationsAdvance);
-     NSLog(@"1: %@", self.notificationsAdvance);
     
     
     // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
@@ -182,9 +176,6 @@
         if(![self.notificationsAdvanceDate containsObject:occurDate])
             [self.notificationsAdvanceDate addObject:occurDate];
     }
-    NSLog(@"2: %@", self.notificationsAdvance);
-    
-    NSLog(@"3: %@", self.notificationsAdvanceDate);
     
     // 公告通知按created_date升序
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
@@ -325,7 +316,6 @@
     [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
     [cell.cellMsg setNumberOfLines: 2];
     [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-    [cell setIntroductionText:dict[NOTIFICATION_FIELD_MSG]];
     [cell setCreatedDate:dict[NOTIFICATION_FIELD_CREATEDATE]];
 
 

@@ -10,5 +10,4 @@
 
 @interface NewsListCell : UITableViewCell
 
--(CGSize)sizeForCell:(NSString*)text withWidth:(NSInteger)width;
 @end

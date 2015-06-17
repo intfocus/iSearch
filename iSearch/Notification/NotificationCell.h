@@ -21,23 +21,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *cellMsg;
 @property (weak, nonatomic) IBOutlet UILabel *cellCreatedDate;
 
-
-/**
- *  TableViewCell自身函数，自定义操作放在这里
- *
- *  @param reuseIdentifier <#reuseIdentifier description#>
- *
- *  @return <#return value description#>
- */
-- (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
-
-/**
- *  赋值 and 自动换行,计算出cell的高度
- *
- *  @param text label内容
- */
-- (void)setIntroductionText:(NSString*)text;
-
 /**
  *  设置公告创建日期，如果是今天的则显示[今天]，否则显示[yyyy/MM/dd]
  *
