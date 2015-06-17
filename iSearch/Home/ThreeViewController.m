@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "ThreeViewController.h"
+
 #import "GMGridView.h"
+#import "GMGridViewLayoutStrategies.h"
 #import "const.h"
 #import "ViewCategory.h"
 
@@ -17,44 +19,49 @@
     UIImageView          *changeBigImageView;
     NSMutableArray       *_data;
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
 @end
 
 @implementation ThreeViewController
-@synthesize scrollView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _data = [[NSMutableArray alloc] init];
     NSInteger i = 0;
-    for(i=0; i< 3; i++) {
-        [_data addObject:[NSString stringWithFormat:@"HomePageThree - %ld", (long)i]];
+    for(i=0; i< 13; i++) {
+        [_data addObject:[NSString stringWithFormat:@"我的记录-%ld", (long)i]];
     }
-    
-    self.scrollView.contentSize = CGSizeMake([_data count] * (SIZE_GRID_VIEW_PAGE_WIDTH + 100), 237);
-    self.view.backgroundColor = [UIColor blueColor];
-    NSLog(@"scrollView: %@",NSStringFromCGRect(self.scrollView.bounds));
     
     // GMGridView Configuration
     [self configGMGridView];
+    
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width *2, self.view.frame.size.height)];
+    self.view.layer.masksToBounds = NO;
+    self.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.view.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    self.view.layer.shadowOpacity = 0.2f;
+    self.view.layer.shadowPath = shadowPath.CGPath;
+}
+
+-(void)viewDidLayoutSubviews{
 }
 
 - (void) configGMGridView {
-    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
+    
+    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    gmGridView.backgroundColor = [UIColor clearColor];
-    [self.scrollView addSubview:gmGridView];
+    gmGridView.style = GMGridViewStylePush;
+    gmGridView.itemSpacing = 12;
+    gmGridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    gmGridView.centerGrid = YES;
+    gmGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontal];
+    [self.view addSubview:gmGridView];
     _gmGridView = gmGridView;
     
-    _gmGridView.style = GMGridViewStyleSwap;
-    _gmGridView.itemSpacing = 50;
-    _gmGridView.itemHSpacing = 50;
-    _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
-    _gmGridView.centerGrid = YES;
+    
     _gmGridView.dataSource = self;
-    _gmGridView.backgroundColor = [UIColor clearColor];
-    _gmGridView.mainSuperView = self.scrollView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
-    _gmGridView.tag = GridViewThree;
+    _gmGridView.mainSuperView = self.view;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,12 +75,12 @@
 #pragma mark GMGridViewDataSource
 //////////////////////////////////////////////////////////////
 
-- (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
-    return [_data count];
+- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
 }
 
-- (CGSize)sizeForItemsInGMGridView:(GMGridView *)gridView {
-    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
+- (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
+    return [_data count];
 }
 
 // GridViewCell界面 - 目录界面
@@ -85,16 +92,13 @@
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
         viewCategory.labelTitle.text = [_data objectAtIndex:index];
         
-        [viewCategory setFrame:CGRectMake(0, 0, 76,107)];
+        [viewCategory setImageWith:@"0" CategoryID:@"3"];
         [cell setContentView: viewCategory];
     }
-    
     return cell;
 }
-
 
 - (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {
     [_data removeObjectAtIndex:index];
 }
-
 @end

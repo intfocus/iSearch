@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "iSearch/Display/ReViewController.m"
-            timestampString = "456150433.6409"
+            filePath = "iSearch/Offline/OfflineViewController.m"
+            timestampString = "456214250.332832"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "460"
-            endingLineNumber = "460"
-            landmarkName = "-selectAndSavePages:"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
+            landmarkName = "-actionDisplaySlide:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

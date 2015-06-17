@@ -30,14 +30,21 @@
     OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
     self.oneViewController     = one;
     TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
-    two.masterViewController   = self.masterViewController;
+    //    two.masterViewController   = self.masterViewController;
     self.twoViewController     = two;
     ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
     self.threeViewController   = three;
     
-    self.navigationItem.title = @"主页";
-    
-    
+    //self.navigationItem.title = @"主页";
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-8, 0, 44, 44)];
+    titleLabel.text = @"主页";
+    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.font = [UIFont systemFontOfSize:20.0];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [containerView addSubview:titleLabel];
+    containerView.layer.masksToBounds = NO;
+    UIBarButtonItem *leftTitleBI = [[UIBarButtonItem alloc] initWithCustomView:containerView];
+    self.navigationItem.leftBarButtonItem = leftTitleBI;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -59,7 +66,7 @@
     [self addChildViewController:one];
     [self.oneView addSubview:one.view];
     
-    one.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    //one.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     one.view.frame=self.oneView.bounds;
 }
 

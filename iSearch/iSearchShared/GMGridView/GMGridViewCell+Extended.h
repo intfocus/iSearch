@@ -35,14 +35,10 @@ typedef void (^GMGridViewCellDeleteBlock)(GMGridViewCell*);
 typedef void (^GMGridViewCellSelectBlock)(GMGridViewCell*);
 
 //////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark Interface GMGridViewCell (Extended)
+#pragma mark - Interface GMGridViewCell (Extended)
 //////////////////////////////////////////////////////////////
 
 @interface GMGridViewCell () 
-{
-    
-}
 
 @property (nonatomic, strong) UIView *fullSizeView;
 @property (nonatomic, assign) CGSize fullSize;
@@ -50,17 +46,18 @@ typedef void (^GMGridViewCellSelectBlock)(GMGridViewCell*);
 @property (nonatomic, readonly, getter=isInShakingMode) BOOL inShakingMode;
 @property (nonatomic, readonly, getter=isInFullSizeMode) BOOL inFullSizeMode;
 
+@property (nonatomic, getter=isEditing) BOOL editing;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 // add by junjie.li
+@property (nonatomic, gm_weak) UIButton *selectButton;
 @property (nonatomic, getter=isSelectState) BOOL selectState;
 @property (nonatomic, getter=isSelected) BOOL selected;
-@property (nonatomic, getter=isEditing) BOOL editing;
-@property (nonatomic, copy) GMGridViewCellDeleteBlock deleteBlock;
 @property (nonatomic, copy) GMGridViewCellSelectBlock selectBlock;
+
+@property (nonatomic, copy) GMGridViewCellDeleteBlock deleteBlock;
 
 @property (nonatomic, assign) UIViewAutoresizing defaultFullsizeViewResizingMask;
 @property (nonatomic, gm_weak) UIButton *deleteButton;
-@property (nonatomic, gm_weak) UIButton *selectButton;
-
 
 - (void)prepareForReuse;
 - (void)shake:(BOOL)on; // shakes the contentView only, not the fullsize one

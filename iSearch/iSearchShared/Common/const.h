@@ -68,8 +68,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SIZE_GRID_VIEW_CELL_WIDTH     120 // GridView Cell‘s width
 #define SIZE_GRID_VIEW_CELL_HEIGHT    80 // GridView Cell‘s width
 //  w:427  h:375 间距:20
-#define SIZE_GRID_VIEW_PAGE_WIDTH     213 // 文档页面编辑时GridView Cell width
-#define SIZE_GRID_VIEW_PAGE_HEIGHT    237 // 文档页面编辑时GridView Cell height
+#define SIZE_GRID_VIEW_PAGE_WIDTH     184 // 文档页面编辑时GridView Cell width
+#define SIZE_GRID_VIEW_PAGE_HEIGHT    184 // 文档页面编辑时GridView Cell height
 #define SIZE_GRID_VIEW_PAGE_MARGIN    20/2 // 文档页面编辑时GridView Cell 间距
 
 #define GRID_VIEW_DELETE_BTN_OFFSET_X -15 // GridView Delete按钮平移位置

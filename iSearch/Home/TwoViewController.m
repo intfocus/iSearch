@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "TwoViewController.h"
 #import "GMGridView.h"
+#import "GMGridViewLayoutStrategies.h"
+
 #import "const.h"
+#import "FileUtils.h"
 #import "ViewCategory.h"
 #import "ContentUtils.h"
-#import "FileUtils.h"
 
 #import "MainViewController.h"
 #import "ContentViewController.h"
@@ -31,54 +33,42 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
+  
     self.deptID = @"10";
     _data = [[NSMutableArray alloc] init];
-
-    
     _data = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL];
-    self.view.backgroundColor = [UIColor redColor];
-    self.scrollView.contentSize = CGSizeMake([_data count] * (SIZE_GRID_VIEW_PAGE_WIDTH + 100), 237);
-    NSLog(@"scrollView: %@",NSStringFromCGRect(self.scrollView.bounds));
     
     // GMGridView Configuration
     [self configGMGridView];
     
-//    // 耗时间的操作放在些block中
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
-//        if([tmpArray count]) {
-//            _data = tmpArray;
-//            [_gmGridView reloadData];
-//        }
-//    });
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width *2, self.view.frame.size.height)];
+    self.view.layer.masksToBounds = NO;
+    self.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.view.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    self.view.layer.shadowOpacity = 0.2f;
+    self.view.layer.shadowPath = shadowPath.CGPath;
 }
 
 - (void) configGMGridView {
-    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
+    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    gmGridView.backgroundColor = [UIColor clearColor];
-    [self.scrollView addSubview:gmGridView];
+    gmGridView.style = GMGridViewStylePush;
+    gmGridView.itemSpacing = 12;
+    gmGridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    gmGridView.centerGrid = YES;
+    gmGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontal];
+    [self.view addSubview:gmGridView];
     _gmGridView = gmGridView;
     
-    _gmGridView.style = GMGridViewStyleSwap;
-    _gmGridView.itemSpacing = 50;
-    _gmGridView.itemHSpacing = 50;
-    _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
-    _gmGridView.centerGrid = YES;
+    
     _gmGridView.dataSource = self;
-    _gmGridView.backgroundColor = [UIColor clearColor];
-    _gmGridView.mainSuperView = self.scrollView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
-    _gmGridView.tag = GridViewTwo;
+    _gmGridView.mainSuperView = self.view;
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     _gmGridView = nil;
 }
-
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
@@ -88,7 +78,7 @@
     return [_data count];
 }
 
-- (CGSize)sizeForItemsInGMGridView:(GMGridView *)gridView {
+- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
 }
 

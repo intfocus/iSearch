@@ -35,6 +35,9 @@
 
 typedef enum {
     GMGridViewLayoutVertical = 0,
+    GMGridViewLayoutHorizontal,
+    GMGridViewLayoutHorizontalPagedLTR,   // LTR: left to right
+    GMGridViewLayoutHorizontalPagedTTB    // TTB: top to bottom
 } GMGridViewLayoutStrategyType;
 
 
@@ -61,7 +64,7 @@ typedef enum {
 - (GMGridViewLayoutStrategyType)type;
 
 // Setup
-- (void)setupItemSize:(CGSize)itemSize andItemSpacing:(NSInteger)spacing andItemHSpacing:(NSInteger)hSpacing withMinEdgeInsets:(UIEdgeInsets)edgeInsets andCenteredGrid:(BOOL)centered;
+- (void)setupItemSize:(CGSize)itemSize andItemSpacing:(NSInteger)spacing withMinEdgeInsets:(UIEdgeInsets)edgeInsets andCenteredGrid:(BOOL)centered;
 
 // Recomputing
 - (void)rebaseWithItemCount:(NSInteger)count insideOfBounds:(CGRect)bounds;
@@ -103,7 +106,6 @@ typedef enum {
 
 @property (nonatomic, readonly) CGSize itemSize;
 @property (nonatomic, readonly) NSInteger itemSpacing;
-@property (nonatomic, readonly) NSInteger itemHSpacing;
 @property (nonatomic, readonly) UIEdgeInsets minEdgeInsets;
 @property (nonatomic, readonly) BOOL centeredGrid;
 
@@ -113,7 +115,7 @@ typedef enum {
 @property (nonatomic, readonly) CGSize contentSize;
 
 // Protocol methods implemented in base class
-- (void)setupItemSize:(CGSize)itemSize andItemSpacing:(NSInteger)spacing andItemHSpacing:(NSInteger)hSpacing withMinEdgeInsets:(UIEdgeInsets)edgeInsets andCenteredGrid:(BOOL)centered;
+- (void)setupItemSize:(CGSize)itemSize andItemSpacing:(NSInteger)spacing withMinEdgeInsets:(UIEdgeInsets)edgeInsets andCenteredGrid:(BOOL)centered;
 
 // Helpers
 - (void)setEdgeAndContentSizeFromAbsoluteContentSize:(CGSize)actualContentSize;
@@ -131,5 +133,61 @@ typedef enum {
 }
 
 @property (nonatomic, readonly) NSInteger numberOfItemsPerRow;
+
+@end
+
+//////////////////////////////////////////////////////////////
+#pragma mark - Horizontal strategy
+//////////////////////////////////////////////////////////////
+
+@interface GMGridViewLayoutHorizontalStrategy : GMGridViewLayoutStrategyBase <GMGridViewLayoutStrategy>
+{
+    @protected
+    NSInteger _numberOfItemsPerColumn;
+}
+
+@property (nonatomic, readonly) NSInteger numberOfItemsPerColumn;
+
+@end
+
+
+//////////////////////////////////////////////////////////////
+#pragma mark - Horizontal Paged strategy (LTR behavior)
+//////////////////////////////////////////////////////////////
+
+@interface GMGridViewLayoutHorizontalPagedStrategy : GMGridViewLayoutHorizontalStrategy
+{
+    @protected
+    NSInteger _numberOfItemsPerRow;
+    NSInteger _numberOfItemsPerPage;
+    NSInteger _numberOfPages;
+}
+
+@property (nonatomic, readonly) NSInteger numberOfItemsPerRow;
+@property (nonatomic, readonly) NSInteger numberOfItemsPerPage;
+@property (nonatomic, readonly) NSInteger numberOfPages;
+
+
+// Only these 3 methods have be reimplemented by child classes to change the LTR and TTB kind of behavior
+- (NSInteger)positionForItemAtColumn:(NSInteger)column row:(NSInteger)row page:(NSInteger)page;
+- (NSInteger)columnForItemAtPosition:(NSInteger)position;
+- (NSInteger)rowForItemAtPosition:(NSInteger)position;
+
+@end
+
+
+//////////////////////////////////////////////////////////////
+#pragma mark - Horizontal Paged Left to Right strategy
+//////////////////////////////////////////////////////////////
+
+@interface GMGridViewLayoutHorizontalPagedLTRStrategy : GMGridViewLayoutHorizontalPagedStrategy
+
+@end
+
+//////////////////////////////////////////////////////////////
+#pragma mark - Horizontal Paged Top To Bottom strategy
+//////////////////////////////////////////////////////////////
+
+@interface GMGridViewLayoutHorizontalPagedTTBStrategy : GMGridViewLayoutHorizontalPagedStrategy
 
 @end

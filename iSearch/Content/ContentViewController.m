@@ -214,7 +214,6 @@ NSMutableArray       *_data;
     
     _gmGridView.style = GMGridViewStyleSwap;
     _gmGridView.itemSpacing = 50;
-    _gmGridView.itemHSpacing = 50;
     _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
     _gmGridView.centerGrid = YES;
     _gmGridView.actionDelegate = self;
@@ -283,7 +282,8 @@ NSMutableArray       *_data;
     return [_data count];
 }
 
-- (CGSize)sizeForItemsInGMGridView:(GMGridView *)gridView {
+
+- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
 }
 

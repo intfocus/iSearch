@@ -2,12 +2,10 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OneViewController">
             <connections>
-                <outlet property="scrollView" destination="TEN-46-AfQ" id="ScQ-Me-tON"/>
                 <outlet property="view" destination="iN0-l3-epB" id="gpg-uK-nMf"/>
             </connections>
         </placeholder>
@@ -15,18 +13,7 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="237"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TEN-46-AfQ">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="237"/>
-                </scrollView>
-            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="TEN-46-AfQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-8" id="0Hz-tA-329"/>
-                <constraint firstAttribute="trailingMargin" secondItem="TEN-46-AfQ" secondAttribute="trailing" constant="-8" id="GQB-Vt-cnQ"/>
-                <constraint firstAttribute="bottomMargin" secondItem="TEN-46-AfQ" secondAttribute="bottom" constant="-8" id="OZs-0J-hQ6"/>
-                <constraint firstItem="TEN-46-AfQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="-8" id="kEy-kC-GhQ"/>
-            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="409" y="61"/>
         </view>

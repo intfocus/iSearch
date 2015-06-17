@@ -62,7 +62,7 @@
     NSMutableArray       *_data; // 文件的页面信息
     NSMutableArray       *_select; // 内容重组选择的页面序号
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *structureView; // GridView Container
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 @property (nonatomic, assign) BOOL selectState;   // 编辑状态
 @property (nonatomic, nonatomic) NSString  *fileID;
@@ -94,9 +94,10 @@
     _data = [[NSMutableArray alloc] init];
     _select = [[NSMutableArray alloc] init];
     self.selectState = false;
-    [self loadConfigInfo];  // 必须放前排 for 后面一些设置需要用到fileID/pageID
+    // 必须放前排 for 后面一些设置需要用到fileID/pageID
+    [self loadConfigInfo];
     
-    NSLog(@"structureView: %@",NSStringFromCGRect(self.structureView.bounds));
+    NSLog(@"structureView: %@",NSStringFromCGRect(self.scrollView.bounds));
 
     // 导航左侧按钮区
     NSMutableArray* array = [NSMutableArray array];
@@ -159,25 +160,25 @@
 }
 
 - (void) configGridView {
-    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.structureView.bounds];
+    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
-    [self.structureView addSubview:gmGridView];
+    [self.scrollView addSubview:gmGridView];
     _gmGridView = gmGridView;
     
     _gmGridView.style = GMGridViewStyleSwap;
     _gmGridView.itemSpacing = 50;  // 页面横向间隔
-    _gmGridView.itemHSpacing = 20; // 页面垂直间隔
     _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
     _gmGridView.centerGrid = YES;
     _gmGridView.actionDelegate = self;
     _gmGridView.sortingDelegate = self;
     _gmGridView.transformDelegate = self;
     _gmGridView.dataSource = self;
-    _gmGridView.backgroundColor = [UIColor clearColor];
+    self.scrollView.backgroundColor = [UIColor redColor];
+    _gmGridView.backgroundColor = [UIColor greenColor];
     
-    _gmGridView.mainSuperView = self.structureView;
-    self.view.backgroundColor = [UIColor whiteColor];
+    _gmGridView.mainSuperView = self.scrollView;
+    self.view.backgroundColor = [UIColor blueColor];
     _gmGridView.selectState = self.selectState;
 }
 - (void) refreshGridView {
@@ -677,8 +678,9 @@
     return [_data count];
 }
 
-- (CGSize)sizeForItemsInGMGridView:(GMGridView *)gridView {
-    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_HEIGHT);
+
+- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
 }
 
 // GridViewCell界面 - 文件各页面展示界面

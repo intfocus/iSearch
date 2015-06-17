@@ -30,20 +30,17 @@
 #import "UIView+GMGridViewAdditions.h"
 
 //////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark Interface Private
+#pragma mark - Interface Private
 //////////////////////////////////////////////////////////////
 
-@interface GMGridViewCell (Privates) 
+@interface GMGridViewCell(Private)
 
 - (void)actionDelete;
-- (void)actionSelect;
 
 @end
 
 //////////////////////////////////////////////////////////////
-#pragma mark -
-#pragma mark Implementation GMGridViewCell
+#pragma mark - Implementation GMGridViewCell
 //////////////////////////////////////////////////////////////
 
 @implementation GMGridViewCell
@@ -56,13 +53,16 @@
 @synthesize inFullSizeMode = _inFullSizeMode;
 @synthesize defaultFullsizeViewResizingMask = _defaultFullsizeViewResizingMask;
 @synthesize deleteButton = _deleteButton;
-@synthesize selectButton = _selectButton;
 @synthesize deleteBlock = _deleteBlock;
-@synthesize selectBlock = _selectBlock;
 @synthesize deleteButtonIcon = _deleteButtonIcon;
+@synthesize deleteButtonOffset;
+@synthesize reuseIdentifier;
+@synthesize highlighted;
+
+@synthesize selectButton = _selectButton;
+@synthesize selectBlock = _selectBlock;
 @synthesize selectingButtonIcon = _selectingButtonIcon;
 @synthesize selectedButtonIcon = _selectedButtonIcon;
-@synthesize deleteButtonOffset;
 @synthesize selectingButtonOffset;
 @synthesize selectedButtonOffset;
 
@@ -72,11 +72,7 @@
 
 - (id)init
 {
-    if (self = [self initWithFrame:CGRectZero]) 
-    {
-
-    }
-    return self;
+    return self = [self initWithFrame:CGRectZero];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -85,17 +81,16 @@
     {
         self.autoresizesSubviews = !YES;
         self.editing = NO;
-        self.selectState = NO;
         
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.deleteButton = deleteButton;
         [self.deleteButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        self.deleteButton.showsTouchWhenHighlighted = YES;
         self.deleteButtonIcon = nil;
         self.deleteButtonOffset = CGPointMake(-5, -5);
         self.deleteButton.alpha = 0;
         [self addSubview:deleteButton];
         [deleteButton addTarget:self action:@selector(actionDelete) forControlEvents:UIControlEventTouchUpInside];
+        
         
         // add by junjie.li
         UIButton *selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -114,7 +109,7 @@
 
 
 //////////////////////////////////////////////////////////////
-#pragma mark 
+#pragma mark UIView
 //////////////////////////////////////////////////////////////
 
 - (void)layoutSubviews
@@ -131,6 +126,21 @@
     }
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.highlighted = YES;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.highlighted = NO;
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.highlighted = NO;
+}
+
 //////////////////////////////////////////////////////////////
 #pragma mark Setters / getters
 //////////////////////////////////////////////////////////////
@@ -144,6 +154,11 @@
     {
         contentView.frame = self.contentView.frame;
     }
+    else
+    {
+        contentView.frame = self.bounds;
+    }
+    
     _contentView = contentView;
     
     self.contentView.autoresizingMask = UIViewAutoresizingNone;
@@ -187,19 +202,28 @@
 
 - (void)setEditing:(BOOL)editing
 {
-    //NSLog(@"click Cell#setEditing %d", editing);
-    _editing = editing;
-    
-    [UIView animateWithDuration:0.2 
-                          delay:0 
-                        options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut
-                     animations:^{
-                         self.deleteButton.alpha = editing ? 1 : 0;
-                     } 
-                     completion:nil];
-    
-    self.contentView.userInteractionEnabled = !editing;
-    //[self shakeStatus:editing];
+    [self setEditing:editing animated:NO];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    if (editing != _editing) {
+        _editing = editing;
+        if (animated) {
+            [UIView animateWithDuration:0.2f
+                                  delay:0.f
+                                options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut
+                             animations:^{
+                                 self.deleteButton.alpha = editing ? 1.f : 0.f;
+                             }
+                             completion:nil];
+        }else {
+            self.deleteButton.alpha = editing ? 1.f : 0.f;
+        }
+		
+        self.contentView.userInteractionEnabled = !editing;
+        [self shakeStatus:editing];
+    }
 }
 
 - (void)setDeleteButtonOffset:(CGPoint)offset
@@ -248,6 +272,18 @@
     return [self.deleteButton currentImage];
 }
 
+
+- (void)setHighlighted:(BOOL)aHighlighted {
+    highlighted = aHighlighted;
+	
+	[self.contentView recursiveEnumerateSubviewsUsingBlock:^(UIView *view, BOOL *stop) {
+		if ([view respondsToSelector:@selector(setHighlighted:)]) {
+			[(UIControl*)view setHighlighted:highlighted];
+		}
+	}];
+}
+
+
 // add by junjie.li
 - (void)setSelectState:(BOOL)selectState {
     // 在设置_selectState前把selected处理掉。
@@ -273,7 +309,7 @@
     [self.selectButton setImage:(selected ? _selectedButtonIcon : _selectingButtonIcon) forState:UIControlStateNormal];
     
     //NSLog(@"275 %@", [[self.selectButton currentImage] accessibilityLabel]);
-
+    
     self.contentView.userInteractionEnabled = !selected;
     //NSLog(@"GridViewCell#271 - setSelected: %d", selected);
 }
@@ -318,6 +354,8 @@
     return [self.selectButton currentImage];
 }
 
+
+
 //////////////////////////////////////////////////////////////
 #pragma mark Private methods
 //////////////////////////////////////////////////////////////
@@ -329,13 +367,11 @@
         self.deleteBlock(self);
     }
 }
-
 - (void)actionSelect {
     if (self.selectBlock) {
         self.selectBlock(self);
     }
 }
-
 //////////////////////////////////////////////////////////////
 #pragma mark Public methods
 //////////////////////////////////////////////////////////////
@@ -382,7 +418,7 @@
                          completion:^(BOOL finished){
                              [self setNeedsLayout];
                          }
-        ];
+		 ];
     }
     else
     {
@@ -404,17 +440,18 @@
     }
 }
 
-- (void)stepToFullsizeWithAlpha:(CGFloat)alpha {
+- (void)stepToFullsizeWithAlpha:(CGFloat)alpha
+{
     return; // not supported anymore - to be fixed
     
-    
-//    if (![self isInFullSizeMode])  {
-//        alpha = MAX(0, alpha);
-//        alpha = MIN(1, alpha);
-//        
-//        self.fullSizeView.alpha = alpha;
-//        self.contentView.alpha  = 1.4 - alpha;
-//    }
+    if (![self isInFullSizeMode]) 
+    {
+        alpha = MAX(0, alpha);
+        alpha = MIN(1, alpha);
+        
+        self.fullSizeView.alpha = alpha;
+        self.contentView.alpha  = 1.4 - alpha;
+    }
 }
 
 @end

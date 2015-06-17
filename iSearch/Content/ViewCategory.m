@@ -21,7 +21,7 @@
 - (void)setImageWith:(NSString *)typeID CategoryID:(NSString *)categoryID {
     NSString *imageName = [NSString stringWithFormat:@"%@-%@.png", typeID, categoryID];
     UIImage *image = [UIImage imageNamed:imageName];
-    image = [self imageWithImage:image scaledToSize:CGSizeMake(213, 207)];
+    image = [self imageWithImage:image scaledToSize:CGSizeMake(184, 154)];
     [self.imageCover setImage:image];
     
     self.btnEvent.frame = CGRectMake(0,0,
