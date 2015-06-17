@@ -325,7 +325,7 @@
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:self.fileID Dir:FILE_DIRNAME Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
-        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
+        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
         NSString *pageID = [[self.fileDesc objectForKey:@"order"] objectAtIndex:self.htmlCurrentIndex];
@@ -401,15 +401,6 @@
  */
 - (IBAction)actionDismiss:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (IBAction)ddd:(id)sender {
-    @try {
-        MainViewController *mainViewController = (MainViewController*)self.presentingViewController;
-        //[mainViewController calledByPresentedViewController];
-    } @catch(NSException *e) {
-        NSLog(@"abort for %@", [e reason]);
-    } @finally {}
 }
 
 @end

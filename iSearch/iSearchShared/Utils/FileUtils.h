@@ -96,12 +96,12 @@
 
 /**
  *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
- *
+ *  Dir: FILE_DIRNAME/FAVORITE_DIRNAME
  *  @param fileID fileID
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) fileDescContent:(NSString *) fileID;
++ (NSString *) fileDescContent:(NSString *) fileID Dir:(NSString *)dir;
 
 /**
  *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json(.swp)
@@ -153,13 +153,16 @@
  *  step2.1 若不存在,则创建
  *  @param tagName 输入的新标签名称
  *
+ *  结论: 调用过本函数，FILE_DIRNAME/FileID/desc.json 必须存在
+ *       后继操作: 拷贝页面文件及文件夹
+ *
  *  @param tagName   标签名称
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (void)addNewTag:(NSString*)tagName
-             Desc:(NSString *)tagDesc
-        Timestamp:(NSString *)timestamp;
++ (NSMutableDictionary *)findOrCreateTag:(NSString*)tagName
+                                    Desc:(NSString *)tagDesc
+                               Timestamp:(NSString *)timestamp;
 
 /**
  *  NSMutableDictionary写入本地文件
@@ -169,6 +172,17 @@
  */
 + (void) writeJSON:(NSMutableDictionary *)data
               Into:(NSString *) filePath;
+
+/**
+ *  根据文件名称在收藏夹中查找文件描述档
+ *
+ *  @param fileName 文件名称
+ *
+ *  @return descJSOn
+ */
++ (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName;
+
+
 @end
 
 

@@ -160,7 +160,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 
 // 内容重组
-#define REORGANIZE_CONFIG_FILENAME @"reorganize.json"
+#define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
+#define ADDTAG_CONFIG_FILENAME     @"add_tag.json" // 编辑界面，选择页面后，保存信息
 #define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
 #define FAVORITE_DIRNAME           @"Favorite"
 // 文档描述desc.json相关

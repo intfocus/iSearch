@@ -18,8 +18,8 @@
 @interface AddNewTagView()
 @property (weak, nonatomic) IBOutlet UITextField *fieldName;
 @property (weak, nonatomic) IBOutlet UITextView  *textDesc;
-@property (retain, nonatomic) IBOutlet UIBarButtonItem *barItemCancel; // 取消
-@property (retain, nonatomic) IBOutlet UIBarButtonItem *barItemSubmit; // 完成
+@property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemCancel; // 取消
+@property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemSubmit; // 完成
 
 @end
 
@@ -33,12 +33,12 @@
     self.title = @"创建标签";
     self.barItemCancel = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"取消"]
                                                          style:UIBarButtonItemStylePlain
-                                                        target:nil
+                                                        target:self
                                                         action:@selector(actionCancel:)];
     self.navigationItem.leftBarButtonItem = self.barItemCancel;
     self.barItemSubmit = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"完成"]
                                                          style:UIBarButtonItemStylePlain
-                                                        target:nil
+                                                        target:self
                                                         action:@selector(actionSubmit:)];
     self.navigationItem.rightBarButtonItem = self.barItemSubmit;
     
@@ -65,16 +65,16 @@
     self.textDesc.layer.cornerRadius =5.0;
 }
 
-- (IBAction)actionSubmit:(id)sender {
+- (IBAction)actionSubmit:(UIBarButtonItem *)sender {
     NSString *tagName = [self.fieldName.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *tagDesc = [self.textDesc.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:NEW_TAG_FORMAT];
-    [FileUtils addNewTag:tagName Desc:tagDesc Timestamp:timestamp];
+    NSMutableDictionary *descDict = [FileUtils findOrCreateTag:tagName Desc:tagDesc Timestamp:timestamp];
     
-    [self switchToTagListView:tagName];
+    [self switchToTagListView:descDict];
 }
-- (IBAction)actionCancel:(id)sender {
-    [self switchToTagListView:@""];
+- (IBAction)actionCancel:(UIBarButtonItem *)sender {
+    [self switchToTagListView:[[NSMutableDictionary alloc] init]];
 }
 
 
@@ -96,11 +96,11 @@
 
 #pragma mark - helpers
 
-- (void) switchToTagListView:(NSString *)newTagName {
+- (void) switchToTagListView:(NSMutableDictionary *)descDict {
     MainAddNewTagView *masterView = [self masterViewController];
     TagListView *childView = [[TagListView alloc] init];
     [childView setMasterViewController:masterView];
-    [masterView setTagName:newTagName];
+    masterView.descDict = descDict;
     [masterView setMainViewController:childView];
 }
 #pragma mark - gesture recognizer delegate functions

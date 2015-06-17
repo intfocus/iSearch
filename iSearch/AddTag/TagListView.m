@@ -14,12 +14,13 @@
 
 #import "MainAddNewTagView.h"
 #import "AddNewTagView.h"
+#import "ReViewController.h"
 
 @interface TagListView()
 @property (weak, nonatomic) IBOutlet UIButton *btnAddNewTag;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (retain, nonatomic) IBOutlet UIBarButtonItem *barItemCancel; // 取消
-@property (retain, nonatomic) IBOutlet UIBarButtonItem *barItemSubmit; // 完成
+@property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemCancel; // 取消
+@property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemSubmit; // 完成
 @property (nonatomic) NSArray *arrayTagName;
 
 @end
@@ -34,20 +35,20 @@
     self.title = @"添加标签";
     self.barItemCancel = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"取消"]
                                                           style:UIBarButtonItemStylePlain
-                                                         target:nil
-                                                         action:@selector(actionCancel:)];
+                                                         target:self
+                                                         action:@selector(actionDismissPopup:)];
     self.navigationItem.leftBarButtonItem = self.barItemCancel;
     self.barItemSubmit = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"完成"]
                                                          style:UIBarButtonItemStylePlain
-                                                        target:nil
-                                                        action:@selector(actionSubmit:)];
+                                                        target:self
+                                                        action:@selector(actionSave:)];
     self.navigationItem.rightBarButtonItem = self.barItemSubmit;
     
     /**
      *  控件控制
      */
     // 有勾选标签则激活
-    self.barItemSubmit.enabled = NO;
+//    self.barItemSubmit.enabled = NO;
     [self.btnAddNewTag addTarget:self action:@selector(actionAddNewTag:) forControlEvents:UIControlEventTouchUpInside];
     
     /**
@@ -84,8 +85,17 @@
 }
 
 #pragma mark - @Selector
-- (IBAction)actionCancel:(id)sender {
-    
+/**
+ *  标签列表页[取消]事件
+ *  返回原弹出页（编辑页面）
+ *
+ *  @param sender 召唤先祖，dismiss自己；自杀的权力都没有，CWPopup插件待弃！
+ */
+- (IBAction)actionDismissPopup:(UIBarButtonItem *)sender {
+    NSLog(@"cancel");
+    MainAddNewTagView *masterView1 = [self masterViewController];
+    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+    [masterView2 dismissPopup];
 }
 
 /**
@@ -93,8 +103,16 @@
  *
  *  @param sender <#sender description#>
  */
-- (IBAction)actionSubmit:(id)sender {
-    [self showSelectedButton:self.arrayTagName];
+- (IBAction)actionSave:(UIBarButtonItem *)sender {
+    NSString *fileName = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
+    NSMutableDictionary *descDict = [FileUtils getDescFromFavoriteWithName:fileName];
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:ADDTAG_CONFIG_FILENAME];
+    [FileUtils writeJSON:descDict Into:configPath];
+    
+    MainAddNewTagView *masterView1 = [self masterViewController];
+    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+    [masterView2 actionSavePagesWithMoveFiles:descDict];
+    [masterView2 dismissPopup];
 }
 
 /**
@@ -112,8 +130,10 @@
 
 - (void)checkNewTagNameInList:(DLRadioButton *)radioButton {
     MainAddNewTagView *masterView = [self masterViewController];
-    NSString *newTagName = masterView.tagName;
-    if([newTagName length] >0 && [newTagName isEqualToString:radioButton.titleLabel.text]) {
+    NSMutableDictionary *descDict = masterView.descDict;
+    if(descDict[FILE_DESC_NAME] &&
+       [descDict[FILE_DESC_NAME] length] >0 &&
+       [descDict[FILE_DESC_NAME] isEqualToString:radioButton.titleLabel.text]) {
         radioButton.selected = YES;
         self.barItemSubmit.enabled = YES;
     }
@@ -148,10 +168,6 @@
     radioButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     return radioButton;
 }
-
-- (IBAction)actionDismissPopup:(id)sender {
-}
-
 #pragma mark - radio buttions list click monitor
 /**
  *  所有radioButton实例的点击事件都要添加此事件

@@ -47,8 +47,6 @@
 #import "ReViewController.h"
 #import "ViewFilePage.h"
 #import "GMGridView.h"
-#import "TagListView.h"
-#import "UIViewController+CWPopup.h"
 
 #import "const.h"
 #import "message.h"
@@ -56,10 +54,13 @@
 #import "ViewUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
+#import "MainAddNewTagView.h"
+#import "UIViewController+CWPopup.h"
+
 @interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
     UIImageView          *changeBigImageView;
-    NSMutableArray       *_data; // 文件的页面信息
+    NSMutableArray       *_data;   // 文件的页面信息
     NSMutableArray       *_select; // 内容重组选择的页面序号
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
@@ -147,10 +148,12 @@
     self.navigation.rightBarButtonItems = [[array reverseObjectEnumerator] allObjects];
     
     // 选择页面后，保存
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
-    tapRecognizer.numberOfTapsRequired = 1;
-    tapRecognizer.delegate = self;
-    [self.view addGestureRecognizer:tapRecognizer];
+//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+//    tapRecognizer.numberOfTapsRequired = 1;
+//    tapRecognizer.delegate = self;
+//    [self.view addGestureRecognizer:tapRecognizer];
+//    
+    // CWPopup 事件
     self.useBlurForPopup = YES;
     
     // 配置创建 GMGridView
@@ -194,7 +197,7 @@
  *
  */
 - (void) loadConfigInfo {
-    NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:REORGANIZE_CONFIG_FILENAME];
+    NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
     self.fileID = config[@"FileID"];
@@ -202,15 +205,6 @@
     //NSLog(@"reorganize:\n%@", config);
 }
 
-//////////////////////////////////////////////////////////////
-#pragma mark 编辑状态，选择页面，[保存]
-//////////////////////////////////////////////////////////////
-- (IBAction)btnPresentPopup:(UIButton *)sender {
-    TagListView *tagListView = [[TagListView alloc] init];
-    [self presentPopupViewController:tagListView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
-    }];
-}
 
 - (void)dismissPopup {
     if (self.popupViewController != nil) {
@@ -353,27 +347,11 @@
 }
 
 - (IBAction)actionSavePages:(UIBarButtonItem*)sender {
-    NSString *message = @" 已存在内容重组文件:\n";
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-    for(dict in [FileUtils favoriteFileList])
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"%@\n", dict[FILE_DESC_NAME]]];
-    
-    message = [message stringByAppendingString:@"\n 请输入内容重组后文件名称 "];
-    
-    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@" 添加标签 "
-                                                         message:message
-                                                        delegate:self
-                                               cancelButtonTitle:BTN_CANCEL
-                                               otherButtonTitles:BTN_SURE, nil];
-    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    alertView.tag = 100; // 区分 alwrtView, for 所有 alertView 共用同一个回调函数
-    
-    [alertView show];
-//    [self performSelector:@selector(btnPresentPopup:) withObject:self afterDelay:0];
-//    TagListView *tagListView = [[TagListView alloc] init];
-//    [self presentPopupViewController:tagListView animated:YES completion:^(void) {
-//        NSLog(@"popup view presented");
-//    }];
+    MainAddNewTagView *popupView = [[MainAddNewTagView alloc] init];
+    popupView.masterViewController = self;
+    [self presentPopupViewController:popupView animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
 }
 
 - (IBAction)actionRemovePages:(UIBarButtonItem*)sender {
@@ -549,9 +527,53 @@
     // 配置信息写入文件
     [self writeJSON:descData Into:descPath];
 }
+/**
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
+ *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
+ *
+ *  并把当前选择的页面拷贝到目标文件ID文件夹下
+ *
+ *  @param dict 目标文件配置
+ */
+- (void)actionSavePagesWithMoveFiles:(NSMutableDictionary *)dict {
+    // 初始化重组内容文件的配置档
+    NSMutableDictionary *descData = [NSMutableDictionary dictionaryWithCapacity:0];
+    NSError *error;
+    NSString *descPath  = [[NSString alloc] init];
+    NSNumber *pageIndex = [[NSNumber alloc] init];
+    NSString *pageName  = [[NSString alloc] init];
+    NSMutableArray *pages = [[NSMutableArray alloc] init];
+
+    // 读取原有配置档信息
+    NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:dict[FILE_DESC_ID]];
+    descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"read desc file");
+    descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                               options:NSJSONReadingMutableContainers
+                                                 error:&error];
+    NSErrorPrint(error, @"desc content convert into json");
+    
+    pages = descData[FILE_DESC_ORDER];
+    for(pageIndex in _select) {
+        pageName = [_data objectAtIndex:[pageIndex intValue]];
+        
+        // 如果该页面已经存在，则跳过。
+        if([pages containsObject:pageName]) continue;
+        
+        // 拷贝文件page/image
+        [self copyFilePage:pageName FromFileId:self.fileID ToFileId:dict[FILE_DESC_ID]];
+        
+        [pages addObject:pageName];
+    }
+    // 重新赋值order
+    [descData setObject:pages forKey:FILE_DESC_ORDER];
+    [FileUtils writeJSON:descData Into:descPath];
+}
 
 /**
- *  拷贝文件fromFileId的页面pageName至文件toFileId下
+ *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
  *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
  *
  *  @param pageName   页面名称fildId_pageId.html
@@ -565,9 +587,10 @@
     NSString *filePath, *newFilePath, *pagePath, *newPagePath, *imagePath, *newImagePath;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
     
     filePath      = [filesPath stringByAppendingPathComponent:fromFileId];
-    newFilePath   = [filesPath stringByAppendingPathComponent:toFileId];
+    newFilePath   = [favoritePath stringByAppendingPathComponent:toFileId];
     // 复制html文件
     pagePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
     newPagePath = [newFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];

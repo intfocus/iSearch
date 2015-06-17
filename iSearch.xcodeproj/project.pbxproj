@@ -386,6 +386,26 @@
 			name = AddNewTag;
 			sourceTree = "<group>";
 		};
+		C42EE8271B317EBE00C1CA0B /* EditPages */ = {
+			isa = PBXGroup;
+			children = (
+				C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */,
+				C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */,
+				C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */,
+			);
+			name = EditPages;
+			sourceTree = "<group>";
+		};
+		C42EE8281B317ED500C1CA0B /* PageView */ = {
+			isa = PBXGroup;
+			children = (
+				C4BED0921B2FFF49000147A2 /* ViewFilePage.h */,
+				C4BED0931B2FFF49000147A2 /* ViewFilePage.m */,
+				C4BED0941B2FFF49000147A2 /* ViewFilePage.xib */,
+			);
+			name = PageView;
+			sourceTree = "<group>";
+		};
 		C433EA841B2D244300AD9CEB /* NewsList */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,15 +493,11 @@
 		C4A3AF071B2B0CCB00A12170 /* Display */ = {
 			isa = PBXGroup;
 			children = (
-				C4BED0921B2FFF49000147A2 /* ViewFilePage.h */,
-				C4BED0931B2FFF49000147A2 /* ViewFilePage.m */,
-				C4BED0941B2FFF49000147A2 /* ViewFilePage.xib */,
+				C42EE8281B317ED500C1CA0B /* PageView */,
+				C42EE8271B317EBE00C1CA0B /* EditPages */,
 				C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */,
 				C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */,
 				C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */,
-				C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */,
-				C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */,
-				C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */,
 			);
 			path = Display;
 			sourceTree = "<group>";

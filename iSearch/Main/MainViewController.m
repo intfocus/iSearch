@@ -21,11 +21,6 @@
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
 
-
-#import "MainAddNewTagView.h"
-#import "UIViewController+CWPopup.h"
-
-
 @interface MainViewController ()
 
 @property(nonatomic,strong)IBOutlet UIView *leftView;
@@ -56,12 +51,6 @@
         UIViewController *controller = [side viewControllerForTag:EntryButtonHomePage];
         [self setRightViewController:controller withNav:YES];
     });
-
-//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
-//    tapRecognizer.numberOfTapsRequired = 1;
-//    tapRecognizer.delegate = self;
-//    [self.view addGestureRecognizer:tapRecognizer];
-    self.useBlurForPopup = YES;
     
 //    BlockTask(^{
 //        //sleep(1);
@@ -89,14 +78,6 @@
     return UIInterfaceOrientationMaskLandscape;
 }
 
-- (void)dismissPopup {
-    if (self.popupViewController != nil) {
-        [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
-        }];
-    }
-}
-
 
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置
@@ -109,20 +90,14 @@
 
     #warning viewController的配置集中到sideViewController里
     
-    NSLog(@"Exception: sender.tag = %ld; %ld", (long)[sender tag], EntryButtonSetting);
-    if([entry tag] == EntryButtonSetting) {
-        MainAddNewTagView *view = [[MainAddNewTagView alloc] init];
-        [self presentPopupViewController:view animated:YES completion:^(void) {
-            NSLog(@"popup view presented");
-        }];
-    } else {
-        UIViewController *controller=[side viewControllerForTag:entry.tag];
-        [self setRightViewController:controller withNav:YES];
 
-        if (!controller) {
-            NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
-        }
+    UIViewController *controller=[side viewControllerForTag:entry.tag];
+    [self setRightViewController:controller withNav:YES];
+
+    if (!controller) {
+        NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
     }
+   
 }
 
 - (void)hideLeftView{

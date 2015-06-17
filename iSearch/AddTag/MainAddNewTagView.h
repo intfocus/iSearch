@@ -17,8 +17,11 @@
  *  编辑文档页面时 => 选择页面 => 保存 => 选择标签/创建标签
  */
 @interface MainAddNewTagView : UIViewController
-
+// 调用本视图的父controller
+@property(nonatomic,strong) UIViewController *masterViewController;
+// 标签列表/创建新标签 容器
 @property(nonatomic,strong) UIViewController *mainViewController;
-@property(nonatomic, nonatomic) NSString *tagName; // 传递[创建新标签]的标签名称
+// 传递[创建新标签]的标签名称
+@property(nonatomic, nonatomic) NSMutableDictionary *descDict;
 @end
 #endif

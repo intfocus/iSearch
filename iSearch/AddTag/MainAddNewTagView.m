@@ -29,7 +29,7 @@
     /**
      *  实例变量初始化
      */
-    self.tagName = [[NSString alloc] init];
+    self.descDict = [[NSMutableDictionary alloc] init];
     
     /**
      *  控件事件

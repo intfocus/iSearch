@@ -187,12 +187,14 @@
 /**
  *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
  *
+ *
  *  @param fileID fileID
+ *  @param Dir FILE_DIRNAME/FAVORITE_DIRNAME
  *
  *  @return 文档配置档内容;str
  */
-+ (NSString *) fileDescContent:(NSString *) fileID {
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
++ (NSString *) fileDescContent:(NSString *)fileID Dir:(NSString *)dir {
+    NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
     NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
     NSError *error;
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
@@ -209,8 +211,8 @@
  *
  *  @return 文档配置档路径
  */
-+ (NSString *) fileDescPath:(NSString *) fileID
-                      Klass:(NSString *) klass {
++ (NSString *) fileDescPath:(NSString *)fileID
+                      Klass:(NSString *)klass {
     NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
     NSString *descPath = [filePath stringByAppendingPathComponent:klass];
     
@@ -225,7 +227,7 @@
  *  @return 文档配置档内容;jsonStr
  */
 + (NSString *)copyFileDescContent:(NSString *) fileID {
-    NSString *descContent = [FileUtils fileDescContent:fileID];
+    NSString *descContent = [FileUtils fileDescContent:fileID Dir: FILE_DIRNAME];
     NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
     NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
     
@@ -318,17 +320,17 @@
  *  step2.1 若不存在,则创建
  *  @param tagName 输入的新标签名称
  *
+ *  结论: 调用过本函数，FILE_DIRNAME/FileID/desc.json 必须存在
+ *       后继操作: 拷贝页面文件及文件夹
+ *
  *  @param tagName   标签名称
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (void)addNewTag:(NSString*)tagName
-             Desc:(NSString *)tagDesc
-        Timestamp:(NSString *)timestamp {
++ (NSMutableDictionary *)findOrCreateTag:(NSString*)tagName
+                                    Desc:(NSString *)tagDesc
+                               Timestamp:(NSString *)timestamp {
     tagName = [tagName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    // 输入标签名称为空，不做操作
-    if([tagName length] == 0) return;
     
     // step1: 判断该标签名称是否存在
     NSError *error;
@@ -388,6 +390,8 @@
         [descData setObject:tagDesc forKey:FILE_DESC_DESC];
     }
     [FileUtils writeJSON:descData Into:descPath];
+    
+    return descData;
 }
 
 /**
@@ -414,4 +418,22 @@
     }
 }
 
+/**
+ *  根据文件名称在收藏夹中查找文件描述档
+ *
+ *  @param fileName 文件名称
+ *
+ *  @return descJSOn
+ */
++ (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName {
+    NSMutableArray *fileList = [FileUtils favoriteFileList];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    for(dict in fileList) {
+        if(dict[FILE_DESC_NAME] && [dict[FILE_DESC_NAME] isEqualToString:fileName]) {
+            break;
+        }
+    }
+    
+    return dict;
+}
 @end
