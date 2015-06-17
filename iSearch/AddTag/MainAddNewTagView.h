@@ -18,6 +18,7 @@
  */
 @interface MainAddNewTagView : UIViewController
 
-@property(nonatomic,strong)UIViewController *mainViewController;
+@property(nonatomic,strong) UIViewController *mainViewController;
+@property(nonatomic, nonatomic) NSString *tagName; // 传递[创建新标签]的标签名称
 @end
 #endif

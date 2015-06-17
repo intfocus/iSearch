@@ -27,6 +27,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     /**
+     *  实例变量初始化
+     */
+    self.tagName = [[NSString alloc] init];
+    
+    /**
      *  控件事件
      */
     TagListView *view  = [[TagListView alloc] initWithNibName:nil bundle:nil];
@@ -34,17 +39,22 @@
     self.mainViewController   = view;
 }
 
-- (void)setMainViewController:(UIViewController *)mView{
+- (void)setMainViewController:(UIViewController *)mainView{
     [_mainViewController removeFromParentViewController];
     [_mainViewController.view removeFromSuperview];
     
-    if (!mView) return;
+    if (!mainView) return;
     
-    _mainViewController=mView;
-    [self addChildViewController:mView];
-    [self.mainView addSubview:mView.view];
+    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:mainView];
+    nav.navigationBar.translucent=NO;
+    nav.toolbar.translucent=NO;
+    mainView=nav;
     
-    mView.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    mView.view.frame=self.mainView.bounds;
+    _mainViewController=mainView;
+    [self addChildViewController:mainView];
+    [self.mainView addSubview:mainView.view];
+    
+    mainView.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    mainView.view.frame=self.mainView.bounds;
 }
 @end

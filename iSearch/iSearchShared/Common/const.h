@@ -44,7 +44,7 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
  */
 typedef NS_ENUM(NSInteger, TextFieldTag){
     TextFieldSearchDB  = 10,
-    TextFieldAddNewTag = 11
+    TextFieldNewTagName = 11
 };
 
 // Global

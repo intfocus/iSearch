@@ -18,8 +18,6 @@
  */
 @interface TagListView : UIViewController
 
-- (void)dismissPopup;
-
 @property(nonatomic,weak)MainAddNewTagView *masterViewController;
 
 @end
