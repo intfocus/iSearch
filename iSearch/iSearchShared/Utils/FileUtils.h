@@ -144,6 +144,31 @@
  *  @return @{FILE_DESC_KEY: }
  */
 + (NSMutableArray *) favoriteFileList;
+
+/** 创建新标签
+ *
+ * step1: 判断该标签名称是否存在
+ *      创建FileID, 格式: r150501010101
+ *      初始化重组内容文件的配置档
+ *  step2.1 若不存在,则创建
+ *  @param tagName 输入的新标签名称
+ *
+ *  @param tagName   标签名称
+ *  @param tagDesc   标签描述
+ *  @param timestamp 时间戳 （创建新FileID时使用)
+ */
++ (void)addNewTag:(NSString*)tagName
+             Desc:(NSString *)tagDesc
+        Timestamp:(NSString *)timestamp;
+
+/**
+ *  NSMutableDictionary写入本地文件
+ *
+ *  @param data     JSON
+ *  @param filePath 目标文件
+ */
++ (void) writeJSON:(NSMutableDictionary *)data
+              Into:(NSString *) filePath;
 @end
 
 

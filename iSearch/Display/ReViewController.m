@@ -493,7 +493,7 @@
     // step1.1 若不存在,则创建
     if(![searchFileID length]) {
         // 内容重组文件新名称，名称格式: r150501010101
-        NSString *newFileID = [NSString stringWithFormat:@"r%@", [ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
+        NSString *newFileID = [NSString stringWithFormat:@"r%@", [ViewUtils dateToStr:[NSDate date] Format:NEW_TAG_FORMAT]];
         NSString *newFilePath = [filesPath stringByAppendingPathComponent:newFileID];
         descPath = [newFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
         

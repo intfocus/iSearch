@@ -22,7 +22,7 @@
 #import "ExtendNSLogFunctionality.h"
 
 
-#import "TagListView.h"
+#import "MainAddNewTagView.h"
 #import "UIViewController+CWPopup.h"
 
 
@@ -44,8 +44,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-
-    
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //NSActionLogger(@"主界面加载", @"successfully");
@@ -113,8 +111,8 @@
     
     NSLog(@"Exception: sender.tag = %ld; %ld", (long)[sender tag], EntryButtonSetting);
     if([entry tag] == EntryButtonSetting) {
-        TagListView *tagListView = [[TagListView alloc] init];
-        [self presentPopupViewController:tagListView animated:YES completion:^(void) {
+        MainAddNewTagView *view = [[MainAddNewTagView alloc] init];
+        [self presentPopupViewController:view animated:YES completion:^(void) {
             NSLog(@"popup view presented");
         }];
     } else {

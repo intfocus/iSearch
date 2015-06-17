@@ -26,6 +26,7 @@
 
 - (void)backToLoginViewController;
 - (void)helloWorld;
+- (void)dismissPopup;
 
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;

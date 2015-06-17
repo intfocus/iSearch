@@ -110,9 +110,9 @@
  *
  *  @return 存在即true, 否则false
  */
-+ (BOOL) checkSlideExist: (NSString *) fileID
-                     Dir:(NSString *)dir
-                   Force:(BOOL)isForce {
++ (BOOL) checkSlideExist:(NSString *) fileID
+                     Dir:(NSString *) dir
+                   Force:(BOOL) isForce {
     NSError *error;
     NSMutableArray *errors = [[NSMutableArray alloc] init];
     NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
@@ -308,6 +308,110 @@
     }
     
     return fileList;
+}
+
+/** 创建新标签
+ *
+ * step1: 判断该标签名称是否存在
+ *      创建FileID, 格式: r150501010101
+ *      初始化重组内容文件的配置档
+ *  step2.1 若不存在,则创建
+ *  @param tagName 输入的新标签名称
+ *
+ *  @param tagName   标签名称
+ *  @param tagDesc   标签描述
+ *  @param timestamp 时间戳 （创建新FileID时使用)
+ */
++ (void)addNewTag:(NSString*)tagName
+             Desc:(NSString *)tagDesc
+        Timestamp:(NSString *)timestamp {
+    tagName = [tagName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    // 输入标签名称为空，不做操作
+    if([tagName length] == 0) return;
+    
+    // step1: 判断该标签名称是否存在
+    NSError *error;
+    NSString *tagFileID = [[NSString alloc] init];
+    NSMutableArray *fileList = [FileUtils favoriteFileList];
+    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // 检测扫描收藏目录，检测是否存在
+    // 若存在则赋值tagFileID，为后面判断依据
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
+    for(dict in fileList) {
+        if([dict[FILE_DESC_NAME] isEqualToString:tagName]) {
+            tagFileID = dict[FILE_DESC_ID];
+            break;
+        }
+    }
+    
+    // 初始化重组内容文件的配置档
+    // 创建FileID, 格式: r150501010101
+    NSMutableDictionary *descData = [NSMutableDictionary dictionaryWithCapacity:0];
+    NSString *descPath  = [[NSString alloc] init];
+    
+    // step1.1 若不存在,则创建
+    if([tagFileID length] == 0) {
+        // 内容重组文件新名称，名称格式: r150501010101
+        NSString *newFileID = [NSString stringWithFormat:@"r%@", timestamp];
+        //[ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
+        NSString *newFilePath = [favoritePath stringByAppendingPathComponent:newFileID];
+        descPath = [newFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        
+        // 检测newFileID路径是否不存在，否则创建
+        if(![FileUtils checkFileExist:newFilePath isDir:true])
+            [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+        
+        // 创建配置档内容
+        [descData setObject:newFileID forKey:FILE_DESC_ID];
+        [descData setObject:tagName forKey:FILE_DESC_NAME];
+        [descData setObject:tagDesc forKey:FILE_DESC_DESC];
+        [descData setObject:[[NSMutableArray alloc] init] forKey:FILE_DESC_ORDER];
+        
+        // step2.2 收藏夹中原已存在，修改原配置档，复制页面
+    } else {
+        // 读取原有配置档信息
+        NSString *tagFilePath = [favoritePath stringByAppendingPathComponent:tagFileID];
+        descPath = [tagFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        
+        NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+        NSErrorPrint(error, @"read desc file");
+        descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                   options:NSJSONReadingMutableContainers
+                                                     error:&error];
+        NSErrorPrint(error, @"desc content convert into json");
+        
+        // 重置name/desc
+        [descData setObject:tagName forKey:FILE_DESC_NAME];
+        [descData setObject:tagDesc forKey:FILE_DESC_DESC];
+    }
+    [FileUtils writeJSON:descData Into:descPath];
+}
+
+/**
+ *  NSMutableDictionary写入本地文件
+ *
+ *  @param data     JSON
+ *  @param filePath 目标文件
+ */
++ (void) writeJSON:(NSMutableDictionary *)data
+              Into:(NSString *) filePath {
+    NSError *error;
+    if ([NSJSONSerialization isValidJSONObject:data]) {
+        // NSMutableDictionary convert to JSON Data
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
+                                                           options:NSJSONWritingPrettyPrinted
+                                                             error:&error];
+        NSErrorPrint(error, @"NsMutableDict convert to json");
+        // JSON Data convert to NSString
+        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        if(!error) {
+            [jsonStr writeToFile:filePath atomically:true encoding:NSUTF8StringEncoding error:&error];
+            NSErrorPrint(error, @"json string write into desc file#%@", [filePath lastPathComponent]);
+        }
+    }
 }
 
 @end
