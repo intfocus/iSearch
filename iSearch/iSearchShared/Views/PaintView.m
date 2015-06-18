@@ -51,7 +51,7 @@
     if(self.laser) {
         //[[linesArray reverseObjectEnumerator] allObjects];
         NSDictionary *lineDic = [linesArray lastObject];
-        UIColor *lineColor = [lineDic objectForKey:@"color"];
+//        UIColor *lineColor = [lineDic objectForKey:@"color"];
         CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
         //NSArray *linePointArray = [[[lineDic objectForKey:@"line"] reverseObjectEnumerator] allObjects];
         NSMutableArray *linePointArray = [lineDic objectForKey:@"line"];

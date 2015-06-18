@@ -54,14 +54,14 @@
 
 -(void)placeEntryButton{
     NSInteger offset=20;
-
+    
     {
-        UserHeadView *head=(id)[ViewUtils loadNibClass:[UserHeadView class]];
-        head.frame=CGRectOffset(head.frame, 0, offset);
-        offset+=CGRectGetHeight(head.frame);
-        [self.view addSubview:head];
-
-        [head addTarget:self.masterViewController action:@selector(onUserHeadClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.head=(id)[ViewUtils loadNibClass:[UserHeadView class]];
+        self.head.frame=CGRectOffset(self.head.frame, 0, offset);
+        offset+=CGRectGetHeight(self.head.frame);
+        [self.view addSubview:self.head];
+        
+        [self.head addTarget:self.masterViewController action:@selector(onUserHeadClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     // warning 此处位置调整时，需要修改

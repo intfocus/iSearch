@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 #import "ViewUtils.h"
+#import "UserHeadView.h"
 
 @class MainViewController;
 
 @interface SideViewController : UIViewController
 
 @property(nonatomic,weak)MainViewController *masterViewController;
+@property (nonatomic) UserHeadView *head;
 
 -(UIViewController *)viewControllerForTag:(NSInteger)tag;
 
