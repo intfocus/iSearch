@@ -182,7 +182,17 @@
  */
 + (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName;
 
-
+/**
+ *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
+ *
+ *  @param FileID fileID
+ *  @param PageID pageID
+ *
+ *  @return pdf/gif文档路径
+ */
++ (NSString*) fileThumbnail:(NSString *)FileID
+                     PageID:(NSString *)PageID
+                        Dir:(NSString *)dir;
 @end
 
 

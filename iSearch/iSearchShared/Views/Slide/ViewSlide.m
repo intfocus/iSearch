@@ -13,18 +13,45 @@
 #import "SSZipArchive.h"
 
 @implementation ViewSlide
-@synthesize slideTitle;
+@synthesize labelTitle;
+@synthesize btnDownloadOrDisplay;
+@synthesize btnFileInfo;
+@synthesize webViewThumbnail;
 
 
 - (id)initWithFrame:(CGRect)theFrame {
     self = [super initWithFrame:theFrame];
     if (self) {
-        [self checkSlideDownloadBtn];
+        // 非收藏文件，才有检测的必要
+        if(!self.isFavoriteFile) {
+            [self checkSlideDownloadBtn];
+        }
     }
     return self;
 }
 
-- (IBAction) slideClick:(id)sender {
+/**
+ *  给dict赋值时，进行内部操作
+ *  1. 非收藏文件，才有检测的必要
+ *
+ *  @param dict <#dict description#>
+ */
+- (void)setDict:(NSMutableDictionary *)dict {
+    _dict = dict;
+    
+    // 收藏文件，说明已下载
+    if(self.isFavoriteFile) {
+        self.btnDownloadOrDisplay.hidden = YES;
+        
+    } else {
+        self.btnDownloadOrDisplay.hidden = YES;
+        [self checkSlideDownloadBtn];
+    }
+    
+    
+}
+
+- (IBAction) actionDownloadFile:(id)sender {
     if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:FILE_DIRNAME Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
         [self downloadZip:self.dict[CONTENT_FIELD_URL]];
@@ -38,9 +65,32 @@
  */
 - (void) checkSlideDownloadBtn {
     if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:FILE_DIRNAME Force:NO]) {
-        [self.slideDownload setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
+        [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
     } else {
-        [self.slideDownload setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];
+        [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];
+    }
+}
+
+/**
+ *  UIWebView浏览PDF或GIF文档
+ *
+ *  @param documentName PDF文档路径
+ *  @param webView      UIWebView
+ */
+- (void)loadThumbnail:(NSString *)thumbnailPath {
+    NSString *extName = [thumbnailPath pathExtension];
+    
+    if([extName isEqualToString:@"pdf"]) {
+        NSURL *url = [NSURL fileURLWithPath:thumbnailPath];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.webViewThumbnail loadRequest:request];
+        
+    } else if([extName isEqualToString:@"gif"]) {
+        
+        NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", thumbnailPath];
+        [self.webViewThumbnail loadHTMLString:html baseURL:nil];
+    } else {
+        NSLog(@"Load default thumbnail.");
     }
 }
 

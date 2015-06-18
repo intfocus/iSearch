@@ -436,4 +436,26 @@
     
     return dict;
 }
+
+/**
+ *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
+ *
+ *  @param FileID fileID
+ *  @param PageID pageID
+ *
+ *  @return pdf/gif文档路径
+ */
++ (NSString*) fileThumbnail:(NSString *)fileID
+                     PageID:(NSString *)pageID
+                        Dir:(NSString *)dir {
+    NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
+    NSString *pagePath = [filePath stringByAppendingPathComponent:pageID];
+    NSString *thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.pdf", pageID]];
+    
+    if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gif", pageID]];
+    }
+    //NSLog(@"thumbnail: %@", thumbnailPath);
+    return thumbnailPath;
+}
 @end

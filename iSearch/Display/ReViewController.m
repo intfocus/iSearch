@@ -749,7 +749,7 @@
         filePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", currentDescSwpDict[@"name"]];
         filePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页#%@", (long)index, [currentDescSwpDict[@"order"] objectAtIndex:index]];
         
-        NSString *thumbnailPath = [self fileThumbnail:self.fileID pageID:currentPageID];
+        NSString *thumbnailPath = [FileUtils fileThumbnail:self.fileID PageID:currentPageID Dir:FILE_DIRNAME];
         [filePage loadThumbnail: thumbnailPath];
         
         
@@ -760,26 +760,7 @@
     return cell;
 }
 
-/**
- *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
- *
- *  @param FileID fileID
- *  @param PageID pageID
- *
- *  @return pdf/gif文档路径
- */
-- (NSString*) fileThumbnail: (NSString*)FileID
-                     pageID:(NSString*) PageID {
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:FileID];
-    NSString *pagePath = [filePath stringByAppendingPathComponent:PageID];
-    NSString *thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.pdf", PageID]];
-    
-    if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gif", PageID]];
-    }
-    //NSLog(@"thumbnail: %@", thumbnailPath);
-    return thumbnailPath;
-}
+
 /**
  *  读取文档描述
  *

@@ -316,7 +316,7 @@ NSMutableArray       *_data;
             NSLog(@"%@ - %@", name, type);
         } else {
             ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-            slide.slideTitle.text = name;
+            slide.labelTitle.text = name;
             NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
                                      BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, currentDict[CONTENT_FIELD_ID]];
             currentDict[CONTENT_FIELD_URL] = downloadUrl;
@@ -325,8 +325,8 @@ NSMutableArray       *_data;
             slide = [slide initWithFrame:CGRectMake(0, 0, 230, 150)];
             
             // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-            slide.slideDownload.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-            [slide.slideDownload addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+            slide.btnDownloadOrDisplay.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+            [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
             
             [cell setContentView: slide];
         }
