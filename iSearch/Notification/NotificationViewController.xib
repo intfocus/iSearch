@@ -106,6 +106,7 @@
                     <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="On4-S5-Hgk" firstAttribute="leading" secondItem="g2m-kY-Kx4" secondAttribute="leading" constant="8" id="A5O-8t-YK0"/>
+                        <constraint firstItem="On4-S5-Hgk" firstAttribute="top" secondItem="uZ6-pG-284" secondAttribute="bottom" constant="5" id="AKS-QG-vaM"/>
                         <constraint firstAttribute="bottom" secondItem="On4-S5-Hgk" secondAttribute="bottom" constant="15" id="DoW-bJ-0yL"/>
                         <constraint firstItem="i9u-Ga-CwW" firstAttribute="leading" secondItem="g2m-kY-Kx4" secondAttribute="leading" id="IaH-h0-rxn"/>
                         <constraint firstItem="i9u-Ga-CwW" firstAttribute="top" secondItem="g2m-kY-Kx4" secondAttribute="top" id="KpM-lG-p14"/>

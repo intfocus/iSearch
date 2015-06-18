@@ -82,6 +82,8 @@
     self.dataListOne     = [[NSMutableArray alloc] init];
     self.dataListTwo     = [[NSMutableArray alloc] init];
     self.dataListTwoDate = [[NSMutableArray alloc] init];
+    // 服务器取数据
+    [self dealWithData];
     // 通知列表
     self.tableViewOne.delegate   = self;
     self.tableViewOne.dataSource = self;
@@ -91,9 +93,6 @@
     self.tableViewTwo.tag = NotificationTableViewTWO;
     // 日历控件
     [self configCalendar];
-
-    // 服务器取数据
-    [self dealWithData];
     
     /**
      * 控件事件
@@ -156,6 +155,12 @@
 }
 
 #pragma mark - IBAction
+#warning#TODO UI
+/**
+ *  日历控件事件处理-按月/全部
+ *
+ *  @param sender <#sender description#>
+ */
 - (IBAction)actionSegmentControlClick:(id)sender {
 //    NSInteger calendarHeight = self.viewCalendar.bounds.size.height;
 //    CGRect bounds = self.notificationZone.bounds;
@@ -163,14 +168,14 @@
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0: { // 按月
             self.viewCalendar.hidden = NO;
-//            bounds.size.height = bounds.size.height - calendarHeight;
+            // bounds.size.height = bounds.size.height - calendarHeight;
         }
             break;
         case 1: { // 全部
             self.viewCalendar.hidden = YES;
             self.dataListTwo = self.dataList[NOTIFICATION_FIELD_HDDATA]; // 预告数据
             [self.tableViewTwo reloadData];
-//            bounds.size.height = bounds.size.height + calendarHeight;
+            // bounds.size.height = bounds.size.height + calendarHeight;
         }
             break;
         default:
@@ -294,7 +299,8 @@
     NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
     NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
 
-    self.dataListTwo = [NSMutableArray arrayWithArray:[self.dataListTwo filteredArrayUsingPredicate:filter]];
+    NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
     [self.tableViewTwo reloadData];
 }
 
@@ -383,6 +389,7 @@
             [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
+            break;
         default:
             cell.cellMsg.text = @"Unknow cell.";
             break;
