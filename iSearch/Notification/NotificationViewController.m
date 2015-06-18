@@ -50,7 +50,8 @@
 #import "DateUtils.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
-#import "extendNslogfunctionality.h"
+#import "ExtendNslogfunctionality.h"
+#import "MainViewController.h"
 
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -59,6 +60,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *notificationZone;  // 显示预告
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;  // 预告显示布局-按月/
 @property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
+@property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemTMP;
 @property (strong, nonatomic) NSMutableDictionary *dataList; // 通告预告混合数据
 @property (strong, nonatomic) NSMutableArray *dataListOne; // 通告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwo; // 预告数据列表
@@ -98,6 +100,25 @@
      * 控件事件
      */
     [self.segmentControl addTarget:self action:@selector(actionSegmentControlClick:) forControlEvents:UIControlEventValueChanged];
+    
+    // 导航栏标题
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-8, 0, 144, 44)];
+    titleLabel.text = @"公告通知";
+    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.font = [UIFont systemFontOfSize:20.0];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 144, 44)];
+    [containerView addSubview:titleLabel];
+    containerView.layer.masksToBounds = NO;
+    UIBarButtonItem *leftTitleBI = [[UIBarButtonItem alloc] initWithCustomView:containerView];
+    self.navigationItem.leftBarButtonItem = leftTitleBI;
+    
+    // 临时放置
+    self.barItemTMP = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"<<"]
+                                                            style:UIBarButtonItemStylePlain
+                                                           target:self
+                                                           action:@selector(toggleShowLeftBar:)];
+    self.barItemTMP.possibleTitles = [NSSet setWithObjects:@"<<", @">>", nil];
+    self.navigationItem.rightBarButtonItem = self.barItemTMP;
 }
 
 /**
@@ -113,6 +134,19 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
     _calendar = nil;
+}
+
+- (IBAction)toggleShowLeftBar:(id)sender {
+    MainViewController *mainViewController = [self masterViewController];
+    if([self.barItemTMP.title isEqualToString:@"<<"]) {
+        [mainViewController hideLeftView];
+        [self.barItemTMP setTitle:@">>"];
+    } else {
+        [mainViewController showLeftView];
+        [self.barItemTMP setTitle:@"<<"];
+        
+    }
+    
 }
 
 - (void)configCalendar {
@@ -367,12 +401,12 @@
             cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
             
             NSMutableDictionary *currentDict = [self.dataListOne objectAtIndex:cellIndex];
-            cell.cellTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
             
-            [cell.cellTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-            [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-            cell.cellMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
-            [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+            [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+            [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+            cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
+            [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
             break;
@@ -381,17 +415,16 @@
             cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
             
             NSMutableDictionary *currentDict = [self.dataListTwo objectAtIndex:cellIndex];
-            cell.cellTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
             
-            [cell.cellTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-            [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-            cell.cellMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
-            [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-            [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
+            [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+            [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+            cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
+            cell.labelDate.hidden = YES;
         }
             break;
         default:
-            cell.cellMsg.text = @"Unknow cell.";
+            cell.labelMsg.text = @"Unknow cell.";
             break;
     }
     

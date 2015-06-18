@@ -41,9 +41,9 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="cellCreatedDate" destination="FP3-AM-5V8" id="jra-PI-he8"/>
-                <outlet property="cellMsg" destination="Lpb-51-Hec" id="XWX-Zo-vjM"/>
-                <outlet property="cellTitle" destination="aCs-kO-H9X" id="naH-xb-1B9"/>
+                <outlet property="labelDate" destination="FP3-AM-5V8" id="xzE-Kz-D4e"/>
+                <outlet property="labelMsg" destination="Lpb-51-Hec" id="sgj-ov-uWW"/>
+                <outlet property="labelTitle" destination="aCs-kO-H9X" id="Bou-y3-3Oq"/>
             </connections>
             <point key="canvasLocation" x="242" y="261"/>
         </tableViewCell>

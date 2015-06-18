@@ -106,12 +106,12 @@
    
 }
 
-- (void)hideLeftView{
+- (void)hideLeftView {
     self.leftView.hidden = YES;
     [self.view setNeedsLayout];
 }
 
-- (void)showLeftView{
+- (void)showLeftView {
     self.leftView.hidden = NO;
     [self.view setNeedsLayout];
 }

@@ -104,7 +104,7 @@
     NSMutableArray* array = [NSMutableArray array];
     UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"< 返回"]
                                                             style:UIBarButtonItemStylePlain
-                                                           target:nil
+                                                           target:self
                                                            action:@selector(actionDismiss:)];
     [array addObject:item];
     self.navigation.leftBarButtonItems = array;
@@ -116,7 +116,7 @@
     // 编辑状态-切换
     self.barItemEdit = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
                                                        style:UIBarButtonItemStylePlain
-                                                      target:nil
+                                                      target:self
                                                       action:@selector(actionEditPages:)];
     self.barItemEdit.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_CANCEL, nil];
     [array addObject:self.barItemEdit];
@@ -124,7 +124,7 @@
     // 恢复按钮 - desc.json覆盖desc.json.swp
     self.barItemRestore = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
                                                           style:UIBarButtonItemStylePlain
-                                                         target:nil
+                                                         target:self
                                                          action:@selector(actionRestorePages:)];
     // 对比是否有修改，以此设置[恢复]状态
     [self checkDescSwpContent];
@@ -133,7 +133,7 @@
     // 保存 - 编辑状态下，至少选择一页面时，激活
     self.barItemSave = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
                                                     style:UIBarButtonItemStylePlain
-                                                   target:nil
+                                                   target:self
                                                   action:@selector(actionSavePages:)];
     self.barItemSave.enabled = false;
     [array addObject:self.barItemSave];
@@ -141,7 +141,7 @@
     // 移除 - 编辑状态下，至少选择一页面时，激活
     self.barItemRemove = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_REMOVE]
                                                     style:UIBarButtonItemStylePlain
-                                                   target:nil
+                                                   target:self
                                                    action:@selector(actionRemovePages:)];
     self.barItemRemove.enabled = false;
     [array addObject:self.barItemRemove];

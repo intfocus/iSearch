@@ -17,9 +17,9 @@
  */
 @interface NotificationCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UILabel *cellTitle;
-@property (weak, nonatomic) IBOutlet UILabel *cellMsg;
-@property (weak, nonatomic) IBOutlet UILabel *cellCreatedDate;
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
+@property (weak, nonatomic) IBOutlet UILabel *labelMsg;
+@property (weak, nonatomic) IBOutlet UILabel *labelDate;
 
 /**
  *  设置公告创建日期，如果是今天的则显示[今天]，否则显示[yyyy/MM/dd]

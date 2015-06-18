@@ -13,9 +13,9 @@
 #import "message.h"
 
 @implementation NotificationCell
-@synthesize cellTitle;
-@synthesize cellMsg;
-@synthesize cellCreatedDate;
+@synthesize labelTitle;
+@synthesize labelMsg;
+@synthesize labelDate;
 
 /**
  *  设置公告创建日期，如果是今天的则显示[今天]，否则显示[yyyy/MM/dd]
@@ -25,7 +25,7 @@
 - (void)setCreatedDate:(NSString*)createdDate {
     if(![createdDate length]) {
         // 服务器返回字段无内容，则显示" - "
-        self.cellCreatedDate.text = @" - ";
+        self.labelDate.text = @" - ";
         return;
     }
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
@@ -34,9 +34,9 @@
     
     // 如果是今天则显示"今天", 否则显示[yyyy/MM/dd]
     if([today isEqualToString:createdDate])
-        self.cellCreatedDate.text = NOTIFICATION_I18N_CREATEDDATE;
+        self.labelDate.text = NOTIFICATION_I18N_CREATEDDATE;
     else
-        self.cellCreatedDate.text = createdDate;
+        self.labelDate.text = createdDate;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
