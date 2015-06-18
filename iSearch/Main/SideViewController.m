@@ -12,6 +12,7 @@
 #import "NotificationViewController.h"
 #import "OfflineViewController.h"
 #import "HomeViewController.h"
+#import "FavoriteViewController.h"
 
 
 #import "UserHeadView.h"
@@ -110,7 +111,7 @@
             break;
             
         case EntryButtonFavorite:
-            //vc=[[ContentViewController alloc] initWithNibName:nil bundle:nil];
+            vc=[[FavoriteViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
         case EntryButtonNotification:

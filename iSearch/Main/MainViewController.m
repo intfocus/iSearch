@@ -13,10 +13,11 @@
 #import "SideViewController.h"
 #import "RightSideViewController.h"
 
-#import "HomeViewController.h"
-#import "NotificationViewController.h"
-#import "OfflineViewController.h"
-#import "ContentViewController.h"
+//#import "HomeViewController.h"
+//#import "NotificationViewController.h"
+//#import "OfflineViewController.h"
+//#import "ContentViewController.h"
+//#import "FavoriteViewController.h"
 
 #import "PopupView.h"
 #import "const.h"

@@ -49,32 +49,74 @@
 #import "FileUtils.h"
 #import "DateUtils.h"
 #import "HttpUtils.h"
+#import "ViewUtils.h"
 #import "extendNslogfunctionality.h"
 
+
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UITableView *notificationView;  // 通告列表图
+@property (weak, nonatomic) IBOutlet UITableView *tableViewOne;  // 通告列表图
+@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;  // 预告列表图
 @property (weak, nonatomic) IBOutlet UITextView *notificationZone;  // 显示预告
-@property (strong, nonatomic) NSMutableArray *notifications;        // 通告列表
-@property (strong, nonatomic) NSMutableArray *notificationsAdvance; // 预告列表
-@property (strong, nonatomic) NSMutableArray *notificationsAdvanceDate;    // 预告列表日期去重，为日历控件加效果时使用
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;  // 预告显示布局-按月/
+@property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
+@property (strong, nonatomic) NSMutableDictionary *dataList; // 通告预告混合数据
+@property (strong, nonatomic) NSMutableArray *dataListOne; // 通告数据列表
+@property (strong, nonatomic) NSMutableArray *dataListTwo; // 预告数据列表
+@property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
 @end
 
 @implementation NotificationViewController
-@synthesize notificationView;
+@synthesize tableViewOne;
 @synthesize notificationZone;
-@synthesize notifications;
-@synthesize notificationsAdvance;
-@synthesize notificationsAdvanceDate;
+@synthesize dataListOne;
+@synthesize dataListTwo;
+@synthesize dataListTwoDate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     
-    self.notifications            = [[NSMutableArray alloc] init];
-    self.notificationsAdvance     = [[NSMutableArray alloc] init];
-    self.notificationsAdvanceDate = [[NSMutableArray alloc] init];
+    /**
+     * 实例变量初始化/赋值
+     */
+    self.dataList        = [[NSMutableDictionary alloc] init];
+    self.dataListOne     = [[NSMutableArray alloc] init];
+    self.dataListTwo     = [[NSMutableArray alloc] init];
+    self.dataListTwoDate = [[NSMutableArray alloc] init];
+    // 通知列表
+    self.tableViewOne.delegate   = self;
+    self.tableViewOne.dataSource = self;
+    self.tableViewOne.tag = NotificationTableViewONE;
+    self.tableViewTwo.delegate   = self;
+    self.tableViewTwo.dataSource = self;
+    self.tableViewTwo.tag = NotificationTableViewTWO;
+    // 日历控件
+    [self configCalendar];
+
+    // 服务器取数据
+    [self dealWithData];
     
+    /**
+     * 控件事件
+     */
+    [self.segmentControl addTarget:self action:@selector(actionSegmentControlClick:) forControlEvents:UIControlEventValueChanged];
+}
+
+/**
+ *  界面每次出现时都会被触发，动态加载动作放在这里
+ */
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
+    [self.calendar reloadData]; // Must be call in viewDidAppear
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    _calendar = nil;
+}
+
+- (void)configCalendar {
     self.calendar = [JTCalendar new];
     // All modifications on calendarAppearance have to be done before setMenuMonthsView and setContentView
     // Or you will have to call reloadAppearance
@@ -104,18 +146,45 @@
             else
                 monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
             
-            return [NSString stringWithFormat:@"%@/%ld", monthText, comps.year];
+            return [NSString stringWithFormat:@"%ld年%@", comps.year, monthText];
         };
-
+        
     }
     [self.calendar setMenuMonthsView:self.calendarMenuView];
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
+}
+
+#pragma mark - IBAction
+- (IBAction)actionSegmentControlClick:(id)sender {
+//    NSInteger calendarHeight = self.viewCalendar.bounds.size.height;
+//    CGRect bounds = self.notificationZone.bounds;
     
-    
+    switch (self.segmentControl.selectedSegmentIndex) {
+        case 0: { // 按月
+            self.viewCalendar.hidden = NO;
+//            bounds.size.height = bounds.size.height - calendarHeight;
+        }
+            break;
+        case 1: { // 全部
+            self.viewCalendar.hidden = YES;
+            self.dataListTwo = self.dataList[NOTIFICATION_FIELD_HDDATA]; // 预告数据
+            [self.tableViewTwo reloadData];
+//            bounds.size.height = bounds.size.height + calendarHeight;
+        }
+            break;
+        default:
+            break;
+    }
+//    self.notificationZone.frame = bounds;
+}
+
+#pragma mark - Utils
+
+- (void)dealWithData {
     // 服务器获取成功则写入cache,否则读取cache
     NSString *cachePath = [FileUtils getPathName:NOTIFICATION_DIRNAME FileName:NOTIFICATION_CACHE];
-    
+
     // 从服务器端获取[公告通知], 不判断网络环境，获取不到则取本地cache
     NSString *deptID = @"1";
     NSString *currentDate = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
@@ -127,7 +196,7 @@
     NSMutableDictionary *notificationDatas = [[NSMutableDictionary alloc] init];
     notificationDatas = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     NSErrorPrint(error, @"http get notifications and convert into json.");
-    
+
     // 情况一: 服务器获取公告通知成功
     if(!error) {
         // 有时文件属性原因，能写入但无法读取
@@ -158,55 +227,33 @@
     } else {
         NSLog(@"<# HttpGET and cache all failed!>");
     }
-    
-    
+
+
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
-    self.notifications  = notificationDatas[NOTIFICATION_FIELD_GGDATA];// 公告数据
-    self.notificationsAdvance = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告
-    
-    
+    self.dataList    = notificationDatas;
+    self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
+    self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
+
+
     // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     NSString *occurDate = [[NSString alloc] init];
-    for(dict in self.notificationsAdvance) {
+    for(dict in self.dataListTwo) {
         // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
         occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];
         dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
-        if(![self.notificationsAdvanceDate containsObject:occurDate])
-            [self.notificationsAdvanceDate addObject:occurDate];
+        if(![self.dataListTwoDate containsObject:occurDate])
+            [self.dataListTwoDate addObject:occurDate];
     }
-    
+
     // 公告通知按created_date升序
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
-    [self.notifications sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    [self.dataListOne sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     // 预告通知按occur_date升序
     descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
-    [self.notificationsAdvance sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-
-    
-    // 初始化通知列表视图
-    self.notificationView.delegate   = self;
-    self.notificationView.dataSource = self;
-    [self.notificationView reloadData];
+    [self.dataListTwo sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
 }
-
-/**
- *  界面每次出现时都会被触发，动态加载动作放在这里
- */
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self.calendar reloadData]; // Must be call in viewDidAppear
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    _calendar = nil;
-}
-
-
 #pragma mark - JTCalendarDataSource
 /**
  *  JTCanlendar回调函数；预告通知,自定义状态；有预告的日期在日历控件上加标注。
@@ -226,7 +273,7 @@
         return false;
     
     NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
-    return [self.notificationsAdvanceDate containsObject:dateStr];
+    return [self.dataListTwoDate containsObject:dateStr];
 }
 
 /**
@@ -247,18 +294,8 @@
     NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
     NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
 
-    NSArray *notificationAdvance = [self.notificationsAdvance filteredArrayUsingPredicate:filter];
-    
-    NSString *notificationText = [[NSString alloc] init];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    for(dict in notificationAdvance) {
-        notificationText = [notificationText stringByAppendingString:dict[NOTIFICATION_FIELD_TITLE]];
-        notificationText = [notificationText stringByAppendingString:@"\n"];
-        notificationText = [notificationText stringByAppendingString:dict[NOTIFICATION_FIELD_MSG]];
-        notificationText = [notificationText stringByAppendingString:@"\n"];
-    }
-    
-    self.notificationZone.text = notificationText;
+    self.dataListTwo = [NSMutableArray arrayWithArray:[self.dataListTwo filteredArrayUsingPredicate:filter]];
+    [self.tableViewTwo reloadData];
 }
 
 #pragma mark - Transition examples
@@ -293,7 +330,19 @@
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.notifications count];
+    NSInteger count = 0;
+    switch([tableView tag]) {
+        case NotificationTableViewONE:
+            count = [self.dataListOne count];
+            break;
+        case NotificationTableViewTWO:
+            count = [self.dataListTwo count];
+            break;
+        default:
+            NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
+            break;
+    }
+    return count;
 }
 
 
@@ -306,22 +355,39 @@
         cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
     }
     
-    cell.selectedBackgroundView          = [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+    switch ([tableView tag]) {
+        case NotificationTableViewONE: {
+            cell.selectedBackgroundView          = [[UIView alloc] initWithFrame:cell.frame];
+            cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+            
+            NSMutableDictionary *currentDict = [self.dataListOne objectAtIndex:cellIndex];
+            cell.cellTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            
+            [cell.cellTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+            [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+            cell.cellMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
+            [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+            [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
+        }
+            break;
+        case NotificationTableViewTWO: {
+            cell.selectedBackgroundView          = [[UIView alloc] initWithFrame:cell.frame];
+            cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+            
+            NSMutableDictionary *currentDict = [self.dataListTwo objectAtIndex:cellIndex];
+            cell.cellTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            
+            [cell.cellTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+            [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+            cell.cellMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
+            [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+            [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
+        }
+        default:
+            cell.cellMsg.text = @"Unknow cell.";
+            break;
+    }
     
-    NSMutableDictionary *dict = [self.notifications objectAtIndex:cellIndex];
-    cell.cellTitle.text = dict[NOTIFICATION_FIELD_TITLE];
-    
-    [cell.cellTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-    [cell.cellMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-    [cell.cellMsg setNumberOfLines: 2];
-    [cell.cellCreatedDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-    [cell setCreatedDate:dict[NOTIFICATION_FIELD_CREATEDATE]];
-
-
-        
-    //UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTableViewCellLongPress:)];
-    //[cell addGestureRecognizer:gesture];
     return cell;
 }
 
@@ -334,9 +400,21 @@
  *  @return 当前NotificationCell的高度
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NotificationCell *cell = (NotificationCell*)[self tableView:self.notificationView cellForRowAtIndexPath:indexPath];
-
-    return cell.frame.size.height;
+    NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
+    switch([tableView tag]) {
+        case NotificationTableViewONE:
+            currentDict = [self.dataListOne objectAtIndex:indexPath.row];
+            break;
+        case NotificationTableViewTWO:
+            currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
+            break;
+        default:
+            NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
+            break;
+    }
+    NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
+    CGSize size = [ViewUtils sizeForTableViewCell:text Width:240 FontSize:NOTIFICATION_MSG_FONT];
+    return size.height + 50.0f;
 }
 
 

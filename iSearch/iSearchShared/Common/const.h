@@ -32,6 +32,12 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
     SlideEditPanelShow  = 11
 };
 
+// 通告、预告
+typedef NS_ENUM(NSInteger, NotificationTableViewTag){
+    NotificationTableViewONE = 10,
+    NotificationTableViewTWO = 11
+};
+
 //
 
 /**

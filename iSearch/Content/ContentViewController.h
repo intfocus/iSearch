@@ -6,8 +6,6 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-
-
 #import "RightSideViewController.h"
 
 @interface ContentViewController : RightSideViewController
