@@ -74,8 +74,12 @@
 -(BOOL)shouldAutorotate{
     return YES;
 }
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+#warning#TODO 状态栏 - 黑底白字
 -(UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscape;
@@ -83,7 +87,7 @@
 
 
 ///////////////////////////////////////////////////////////
-/// 屏幕方向设置
+/// 控件事件
 ///////////////////////////////////////////////////////////
 
 - (IBAction)changeVIew:(id)sender {
