@@ -1,6 +1,0 @@
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/JTCalendar" "${PODS_ROOT}/Headers/Public/M13Checkbox" "${PODS_ROOT}/Headers/Public/MMMaterialDesignSpinner" "${PODS_ROOT}/Headers/Public/Reachability" "${PODS_ROOT}/Headers/Public/SKSplashView" "${PODS_ROOT}/Headers/Public/SSZipArchive"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/JTCalendar" -isystem "${PODS_ROOT}/Headers/Public/M13Checkbox" -isystem "${PODS_ROOT}/Headers/Public/MMMaterialDesignSpinner" -isystem "${PODS_ROOT}/Headers/Public/Reachability" -isystem "${PODS_ROOT}/Headers/Public/SKSplashView" -isystem "${PODS_ROOT}/Headers/Public/SSZipArchive"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Pods-JTCalendar" -l"Pods-M13Checkbox" -l"Pods-MMMaterialDesignSpinner" -l"Pods-Reachability" -l"Pods-SKSplashView" -l"Pods-SSZipArchive" -l"z" -framework "CoreGraphics" -framework "Foundation" -framework "SystemConfiguration" -framework "UIKit"
-OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
-PODS_ROOT = ${SRCROOT}/Pods

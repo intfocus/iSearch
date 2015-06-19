@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="OfflineCell">
+            <rect key="frame" x="0.0" y="0.0" width="628" height="70"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="OBL 培训班文件名" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R75-C5-piu">
+                    <rect key="frame" x="8" y="13" width="463" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="分类一" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7lk-ez-aJY">
+                    <rect key="frame" x="8" y="37" width="458" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="未下载" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pit-Kk-Qj2">
+                    <rect key="frame" x="499" y="14" width="64" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="20M" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fnp-mV-ZRw">
+                    <rect key="frame" x="499" y="37" width="64" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="highlightedColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SGu-RV-8s8">
+                    <rect key="frame" x="536" y="0.0" width="84" height="70"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="slideClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="Dt8-Hf-uqx"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="SGu-RV-8s8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Of-w8-UhH"/>
+                <constraint firstItem="R75-C5-piu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="DXC-2b-nc4"/>
+                <constraint firstItem="SGu-RV-8s8" firstAttribute="leading" secondItem="Fnp-mV-ZRw" secondAttribute="trailing" constant="-27" id="EJc-NG-Zke"/>
+                <constraint firstItem="Fnp-mV-ZRw" firstAttribute="top" secondItem="Pit-Kk-Qj2" secondAttribute="bottom" constant="2" id="LB9-dg-3CP"/>
+                <constraint firstItem="Pit-Kk-Qj2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="14" id="Rhn-m6-Zcd"/>
+                <constraint firstAttribute="bottom" secondItem="Fnp-mV-ZRw" secondAttribute="bottom" constant="6" id="Trt-58-3XK"/>
+                <constraint firstAttribute="trailing" secondItem="SGu-RV-8s8" secondAttribute="trailing" constant="8" id="ieZ-re-znq"/>
+                <constraint firstAttribute="bottom" secondItem="7lk-ez-aJY" secondAttribute="bottom" constant="12" id="k3s-pO-LZb"/>
+                <constraint firstItem="7lk-ez-aJY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="lsg-Pq-bva"/>
+                <constraint firstItem="R75-C5-piu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="13" id="qgk-oc-zNo"/>
+                <constraint firstItem="SGu-RV-8s8" firstAttribute="leading" secondItem="Pit-Kk-Qj2" secondAttribute="trailing" constant="-27" id="x3w-md-6vx"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="btnDownloadOrView" destination="SGu-RV-8s8" id="Twq-D9-0if"/>
+                <outlet property="labelCategory" destination="7lk-ez-aJY" id="Abf-uy-XmI"/>
+                <outlet property="labelDownloadState" destination="Pit-Kk-Qj2" id="eGW-Ss-QnQ"/>
+                <outlet property="labelFileName" destination="R75-C5-piu" id="gmG-q0-rYg"/>
+                <outlet property="labelZipSize" destination="Fnp-mV-ZRw" id="BqY-nD-ciw"/>
+            </connections>
+            <point key="canvasLocation" x="505" y="-121"/>
+        </view>
+    </objects>
+</document>
