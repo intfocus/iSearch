@@ -349,7 +349,6 @@
         NSString *pageID = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
         [config setObject:self.fileID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
-        [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
         NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];
         if(self.isFavorite) {
             slideType = [NSNumber numberWithInteger:SlideTypeFavorite];
@@ -357,12 +356,13 @@
         [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
         [config writeToFile:pathName atomically:YES];
         
-        NSString *fileDescSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+        NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
+        NSString *fileDescSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
         if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
             NSLog(@"Config SWP file Exist! last time must be CRASH!");
         } else {
             // 拷贝一份文档描述配置
-            [FileUtils copyFileDescContent:self.fileID];
+            [FileUtils copyFileDescContent:self.fileID Dir:dirName];
         }
         
         // 界面跳转至文档页面编辑界面

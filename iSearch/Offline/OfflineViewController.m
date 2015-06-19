@@ -229,6 +229,7 @@
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
         [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:[NSNumber numberWithInteger:SlideTypeSlide] forKey:SLIDE_DISPLAY_TYPE];
         [configDict writeToFile:configPath atomically:YES];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];

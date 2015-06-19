@@ -104,24 +104,29 @@
 + (NSString *) fileDescContent:(NSString *) fileID Dir:(NSString *)dir;
 
 /**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json(.swp)
- *  klass为FILE_CONFIG_FILENAME、FILE_DISPLAY_CONFIG_FILENAME
+ *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
+ *  Dir为FILE_DIRNAME/FAVORITGE_DIRNAME
+ *  klass为FILE_CONFIG_FILENAME/FILE_DISPLAY_CONFIG_FILENAME
  *
  *  @param fileID fileID
+ *  @param Dir    FILE_DIRNAME/FAVORITE_DIRNAME
+ *  @param Klass  FILE_DESC_FILENAME/FILE_DESC_SWP_FILE_NAME
  *
- *  @return 文档配置档内容;json
+ *  @return 文档配置档路径
  */
-+ (NSString *) fileDescPath:(NSString *) fileID
-                      Klass:(NSString *) klass;
++ (NSString *) fileDescPath:(NSString *)fileID
+                        Dir:(NSString *)dirName
+                      Klass:(NSString *)klass;
 
 /**
  *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
  *
  *  @param fileID fileID
+ *  @param dirName FILE_DIRNAME/FAVORITE_DIRNAME
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) copyFileDescContent:(NSString *) fileID;
++ (NSString *)copyFileDescContent:(NSString *)fileID Dir:(NSString *)dirName;
 
 
 /**

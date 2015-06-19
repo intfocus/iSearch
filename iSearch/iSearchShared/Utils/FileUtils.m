@@ -193,8 +193,8 @@
  *
  *  @return 文档配置档内容;str
  */
-+ (NSString *) fileDescContent:(NSString *)fileID Dir:(NSString *)dir {
-    NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
++ (NSString *) fileDescContent:(NSString *)fileID Dir:(NSString *)dirName {
+    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
     NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
     NSError *error;
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
@@ -204,16 +204,18 @@
 }
 
 /**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json(.swp)
- *  klass为FILE_CONFIG_FILENAME、FILE_DISPLAY_CONFIG_FILENAME
+ *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
+ *  Dir为FILE_DIRNAME/FAVORITGE_DIRNAME
+ *  klass为FILE_CONFIG_FILENAME/FILE_DISPLAY_CONFIG_FILENAME
  *
  *  @param fileID fileID
  *
  *  @return 文档配置档路径
  */
 + (NSString *) fileDescPath:(NSString *)fileID
+                        Dir:(NSString *)dirName
                       Klass:(NSString *)klass {
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
     NSString *descPath = [filePath stringByAppendingPathComponent:klass];
     
     return descPath;
@@ -223,12 +225,13 @@
  *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
  *
  *  @param fileID fileID
+ *  @param dirName FILE_DIRNAME/FAVORITE_DIRNAME
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *)copyFileDescContent:(NSString *) fileID {
-    NSString *descContent = [FileUtils fileDescContent:fileID Dir: FILE_DIRNAME];
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
++ (NSString *)copyFileDescContent:(NSString *)fileID Dir:(NSString *)dirName {
+    NSString *descContent = [FileUtils fileDescContent:fileID Dir: dirName];
+    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
     NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
     
     NSError *error;
