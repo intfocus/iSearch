@@ -10,10 +10,12 @@
 #define iSearch_OneViewController_h
 
 #import <UIKit/UIKit.h>
+@class HomeViewController;
 /**
  *  HomePage第一栏 - 我的分类
  */
 @interface OneViewController : UIViewController
+@property (nonatomic , nonatomic) HomeViewController *masterViewController;
 @end
 
 

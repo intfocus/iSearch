@@ -8,16 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "OneViewController.h"
+#import "HomeViewController.h"
 
 #import "GMGridView.h"
 #import "GMGridViewLayoutStrategies.h"
 #import "const.h"
-#import "ViewCategory.h"
+#import "ViewSlide.h"
+#import "FileUtils.h"
 
 @interface OneViewController ()<GMGridViewDataSource> {
-    __gm_weak GMGridView *_gmGridView;
-    UIImageView          *changeBigImageView;
-    NSMutableArray       *_data;
+    __gm_weak GMGridView *_gridView;
+    NSMutableArray       *_dataList;
 }
 
 @end
@@ -27,17 +28,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _data = [[NSMutableArray alloc] init];
-    NSInteger i = 0;
-    for(i=0; i< 13; i++) {
-        [_data addObject:[NSString stringWithFormat:@"我的收藏-%ld", (long)i]];
-    }
-    
+    _dataList = [[NSMutableArray alloc] init];
     // GMGridView Configuration
     [self configGMGridView];
 }
 
--(void)viewDidLayoutSubviews{
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    _dataList = [FileUtils favoriteFileList];
+    [_gridView reloadData];
+}
+
+- (void)viewDidLayoutSubviews{
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width *2, self.view.frame.size.height)];
     self.view.layer.masksToBounds = NO;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -47,7 +50,6 @@
 }
 
 - (void) configGMGridView {
-    
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.style = GMGridViewStylePush;
@@ -56,17 +58,17 @@
     gmGridView.centerGrid = YES;
     gmGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontal];
     [self.view addSubview:gmGridView];
-    _gmGridView = gmGridView;
+    _gridView = gmGridView;
     
     
-    _gmGridView.dataSource = self;
-    _gmGridView.mainSuperView = self.view;
+    _gridView.dataSource = self;
+    _gridView.mainSuperView = self.view;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    _gmGridView = nil;
+    _gridView = nil;
 }
 
 
@@ -79,7 +81,7 @@
 }
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
-    return [_data count];
+    return [_dataList count];
 }
 
 // GridViewCell界面 - 目录界面
@@ -88,16 +90,41 @@
     
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-        viewCategory.labelTitle.text = [_data objectAtIndex:index];
+        ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] lastObject];
+        NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+        slide.isFavoriteFile = YES;
+        slide.dict = currentDict;
+        if([FileUtils checkSlideExist:currentDict[FILE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
+            NSError *error;
+            NSString *descContent = [FileUtils fileDescContent:currentDict[FILE_DESC_ID] Dir:FAVORITE_DIRNAME];
+            NSMutableDictionary *descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                                            options:NSJSONReadingMutableContainers
+                                                                              error:&error];
+            
+            if(error == nil && descData[FILE_DESC_ORDER] && [descData[FILE_DESC_ORDER] count] > 0) {
+                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[FILE_DESC_ID] PageID:[descData[FILE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
+                [slide loadThumbnail:thumbnailPath];
+            }
+        }
+        slide.btnFileInfo.tag = index;
+        [slide.btnFileInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
         
-        [viewCategory setImageWith:@"0" CategoryID:@"1"];
-        [cell setContentView: viewCategory];
+        [cell setContentView: slide];
     }
     return cell;
 }
 
 - (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {
-    [_data removeObjectAtIndex:index];
+    [_dataList removeObjectAtIndex:index];
+}
+
+/**
+ *  控件事件
+ */
+- (IBAction)actionPopupSlideInfo:(UIButton *)sender {
+    NSInteger index = [sender tag];
+    NSMutableDictionary *dict = _dataList[index];
+    HomeViewController *homeViewController = [self masterViewController];
+    [homeViewController actionPopupSlideInfo:dict];
 }
 @end

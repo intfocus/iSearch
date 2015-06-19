@@ -16,7 +16,7 @@
  *  文档[信息]显示该文档的标题、描述、查看等信息及操作
  */
 @interface SlideInfoView : UIViewController
-@property (strong, nonatomic) NSMutableDictionary *dict; // 该文件的信息，json格式
+@property (strong, nonatomic) NSMutableDictionary *dict;
 @property (nonatomic , nonatomic) UIViewController *masterViewController;
 
 @end
