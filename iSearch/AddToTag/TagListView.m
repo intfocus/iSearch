@@ -50,6 +50,10 @@
     // 有勾选标签则激活
 //    self.barItemSubmit.enabled = NO;
     [self.btnAddNewTag addTarget:self action:@selector(actionAddNewTag:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     /**
      *  标签列表为单选，手工点击[提交]
@@ -57,31 +61,31 @@
      */
     NSMutableArray *fileList = [FileUtils favoriteFileList];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    // firstRadioButton
-    NSInteger index = 0;
-    dict = [fileList objectAtIndex:index];
-    DLRadioButton *firstRadioButton = [self createRadioButton:dict[FILE_DESC_NAME] Index:index];
-    [firstRadioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
-    [self checkNewTagNameInList:firstRadioButton];
-    
-    [self.scrollView addSubview:firstRadioButton];
-    // otherButtons
+    DLRadioButton *firstRadioButton;
     NSMutableArray *otherButtons = [[NSMutableArray alloc] init];
-    for (index = 1; index < [fileList count]; index++) {
+    NSInteger index = 0;
+    // firstRadioButton
+    if([fileList count] >= 1) {
         dict = [fileList objectAtIndex:index];
-        DLRadioButton *radioButton = [self createRadioButton:dict[FILE_DESC_NAME] Index:index];
-        [radioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
-        [self checkNewTagNameInList:radioButton];
-        [self.scrollView addSubview:radioButton];
-        [otherButtons addObject:radioButton];
+        firstRadioButton = [self createRadioButton:dict[FILE_DESC_NAME] Index:index];
+        [firstRadioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
+        [self checkNewTagNameInList:firstRadioButton];
+        [self.scrollView addSubview:firstRadioButton];
+        self.arrayTagName = @[firstRadioButton];
     }
-    firstRadioButton.otherButtons = otherButtons;
-    self.arrayTagName = [@[firstRadioButton] arrayByAddingObjectsFromArray:otherButtons];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
+    // otherButtons
+    if([fileList count] >= 2) {
+        for (index = 1; index < [fileList count]; index++) {
+            dict = [fileList objectAtIndex:index];
+            DLRadioButton *radioButton = [self createRadioButton:dict[FILE_DESC_NAME] Index:index];
+            [radioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
+            [self checkNewTagNameInList:radioButton];
+            [self.scrollView addSubview:radioButton];
+            [otherButtons addObject:radioButton];
+        }
+        firstRadioButton.otherButtons = otherButtons;
+        self.arrayTagName = [@[firstRadioButton] arrayByAddingObjectsFromArray:otherButtons];
+    }
 }
 
 #pragma mark - @Selector

@@ -17,6 +17,7 @@
 @interface MainViewController : UIViewController <UIGestureRecognizerDelegate>
 
 
+@property(nonatomic,strong)UIViewController *leftViewController;
 
 - (void)hideLeftView;
 - (void)showLeftView;

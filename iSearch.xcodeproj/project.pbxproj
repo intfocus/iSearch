@@ -21,6 +21,7 @@
 		C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8811B28908B000F84EF /* NotificationViewController.xib */; };
 		C42EC8901B289392000F84EF /* OfflineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC88E1B289392000F84EF /* OfflineViewController.m */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
+		C44841001B33E9510076B1FE /* iconSlideInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = C44840FF1B33E9510076B1FE /* iconSlideInfo.png */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
 		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
@@ -83,7 +84,6 @@
 		C4D253D01B326B410033F697 /* TagListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D253CA1B326B410033F697 /* TagListView.xib */; };
 		C4D253D21B326B640033F697 /* FavoriteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D253D11B326B640033F697 /* FavoriteViewController.xib */; };
 		C4D253D41B326B780033F697 /* FavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D253D31B326B780033F697 /* FavoriteViewController.m */; };
-		C4D253D91B32E59C0033F697 /* iconFileInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = C4D253D81B32E59C0033F697 /* iconFileInfo.png */; };
 		C4D253E51B32FE030033F697 /* ViewSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D253DC1B32FE030033F697 /* ViewSlide.m */; };
 		C4D253E61B32FE030033F697 /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D253DD1B32FE030033F697 /* ViewSlide.xib */; };
 		C4D253E71B32FE030033F697 /* PaintView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D253E01B32FE030033F697 /* PaintView.m */; };
@@ -129,6 +129,7 @@
 		C42EC88D1B289392000F84EF /* OfflineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineViewController.h; sourceTree = "<group>"; };
 		C42EC88E1B289392000F84EF /* OfflineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineViewController.m; sourceTree = "<group>"; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		C44840FF1B33E9510076B1FE /* iconSlideInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconSlideInfo.png; sourceTree = "<group>"; };
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
@@ -230,7 +231,6 @@
 		C4D253D11B326B640033F697 /* FavoriteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteViewController.xib; sourceTree = "<group>"; };
 		C4D253D31B326B780033F697 /* FavoriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteViewController.m; sourceTree = "<group>"; };
 		C4D253D61B326B8D0033F697 /* FavoriteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavoriteViewController.h; sourceTree = "<group>"; };
-		C4D253D81B32E59C0033F697 /* iconFileInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconFileInfo.png; sourceTree = "<group>"; };
 		C4D253DB1B32FE030033F697 /* ViewSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlide.h; sourceTree = "<group>"; };
 		C4D253DC1B32FE030033F697 /* ViewSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlide.m; sourceTree = "<group>"; };
 		C4D253DD1B32FE030033F697 /* ViewSlide.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlide.xib; sourceTree = "<group>"; };
@@ -297,7 +297,7 @@
 		C42BD5591B2BCAC1006DB157 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				C4D253D81B32E59C0033F697 /* iconFileInfo.png */,
+				C44840FF1B33E9510076B1FE /* iconSlideInfo.png */,
 				C4BFEF491B2E92A80080D7EE /* covers */,
 				C46497511B2DB108005E3903 /* ToView.png */,
 				C464974D1B2D9B93005E3903 /* PlayFile.png */,
@@ -802,7 +802,6 @@
 				C4D253D01B326B410033F697 /* TagListView.xib in Resources */,
 				C4D253D21B326B640033F697 /* FavoriteViewController.xib in Resources */,
 				C4BFEF481B2E6AF60080D7EE /* OfflineViewController.xib in Resources */,
-				C4D253D91B32E59C0033F697 /* iconFileInfo.png in Resources */,
 				C4D253CE1B326B410033F697 /* MainAddNewTagView.xib in Resources */,
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
 				C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */,
@@ -813,6 +812,7 @@
 				C46497341B2D8244005E3903 /* OneViewController.xib in Resources */,
 				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,
 				C4BFEF511B2E92A80080D7EE /* 0-4.png in Resources */,
+				C44841001B33E9510076B1FE /* iconSlideInfo.png in Resources */,
 				C4D253E91B32FE030033F697 /* ViewCategory.xib in Resources */,
 				C4BFEF4F1B2E92A80080D7EE /* 0-2.png in Resources */,
 				C4D253E61B32FE030033F697 /* ViewSlide.xib in Resources */,

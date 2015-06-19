@@ -28,7 +28,6 @@
 @property(nonatomic,strong)IBOutlet UIView *leftView;
 @property(nonatomic,strong)IBOutlet UIView *rightView;
 
-@property(nonatomic,strong)UIViewController *leftViewController;
 @property(nonatomic,strong)UIViewController *rightViewController;
 
 // 头像设置
