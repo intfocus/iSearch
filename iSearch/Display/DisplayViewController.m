@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *redNoteBtn;  // 笔记 - 红色
 @property (weak, nonatomic) IBOutlet UIButton *greenNoteBtn;// 笔记 - 绿色
 @property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
+@property (nonatomic, nonatomic) PopupView      *popupView;
 
 @property (nonatomic, nonatomic) NSInteger  currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
@@ -162,6 +163,32 @@
     isYES = NSErrorPrint(error, @"desc content convert into json");
     if(!isYES) { abort(); }
     
+}
+
+- (IBAction)addSlideToFavorite:(UIButton *)sender {
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.fileID];
+    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:self.fileID];
+    [fileManager copyItemAtPath:filePath toPath:favoritePath error:&error];
+    NSErrorPrint(error, @"copy file#%@ to favorite", filePath);
+    
+    // 信息提示
+    self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+    
+    self.popupView.ParentView = self.view;
+    NSString *popupInfo = @"";
+    if(error) {
+        popupInfo = [NSString stringWithFormat:@"拷贝失败:\n%@", [error localizedDescription]];
+    } else {
+        popupInfo = @"拷贝成功.";
+    }
+    [self showPopupView: popupInfo];
+    
+}
+- (void) showPopupView: (NSString*) text {
+    [self.popupView setText: text];
+    [self.view addSubview:self.popupView];
 }
 
 - (void) extractResource {
