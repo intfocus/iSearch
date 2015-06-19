@@ -41,13 +41,6 @@
     // GMGridView Configuration
     [self configGMGridView];
     
-    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width*2, self.view.frame.size.height)];
-    self.view.layer.masksToBounds = NO;
-    self.view.layer.shadowColor = [UIColor greenColor].CGColor;
-    self.view.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
-    self.view.layer.shadowOpacity = 0.2f;
-    self.view.layer.shadowPath = shadowPath.CGPath;
-    
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //NSActionLogger(@"主界面加载", @"successfully");
@@ -59,6 +52,15 @@
         }
 
     });
+}
+
+-(void)viewDidLayoutSubviews{
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width *2, self.view.frame.size.height)];
+    self.view.layer.masksToBounds = NO;
+    self.view.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.view.layer.shadowOffset = CGSizeMake(0.0f, 2.0f);
+    self.view.layer.shadowOpacity = 0.2f;
+    self.view.layer.shadowPath = shadowPath.CGPath;
 }
 
 - (void) configGMGridView {

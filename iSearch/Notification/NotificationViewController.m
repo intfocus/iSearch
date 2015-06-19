@@ -57,6 +57,10 @@
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOne;  // 通告列表图
 @property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;  // 预告列表图
+@property (weak, nonatomic) IBOutlet UITableView *tableViewThree;
+@property (weak, nonatomic) IBOutlet UILabel *tableViewThreeTitleLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewThreeTitleLabelHeightConstraint;
+
 @property (weak, nonatomic) IBOutlet UITextView *notificationZone;  // 显示预告
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;  // 预告显示布局-按月/
 @property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
@@ -65,6 +69,8 @@
 @property (strong, nonatomic) NSMutableArray *dataListOne; // 通告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwo; // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
+
 @end
 
 @implementation NotificationViewController
@@ -93,6 +99,11 @@
     self.tableViewTwo.delegate   = self;
     self.tableViewTwo.dataSource = self;
     self.tableViewTwo.tag = NotificationTableViewTWO;
+    self.tableViewTwo.alpha = 0;
+    self.tableViewThree.delegate   = self;
+    self.tableViewThree.dataSource = self;
+    self.tableViewThree.tag = NotificationTableViewTHREE;
+
     // 日历控件
     [self configCalendar];
     
@@ -100,6 +111,10 @@
      * 控件事件
      */
     [self.segmentControl addTarget:self action:@selector(actionSegmentControlClick:) forControlEvents:UIControlEventValueChanged];
+    NSDictionary *dict = @{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:14.0]};
+    NSDictionary *dict2 = @{NSForegroundColorAttributeName:[UIColor grayColor], NSFontAttributeName: [UIFont systemFontOfSize:14.0]};
+    [self.segmentControl  setTitleTextAttributes:dict forState:UIControlStateSelected];
+    [self.segmentControl  setTitleTextAttributes:dict2 forState:UIControlStateNormal];
     
     // 导航栏标题
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-8, 0, 144, 44)];
@@ -183,6 +198,13 @@
         };
         
     }
+    self.calendar.calendarAppearance.weekDayTextColor = [UIColor blackColor];
+    self.calendar.calendarAppearance.dayCircleRatio = 0.5;
+    self.calendar.calendarAppearance.dayCircleColorSelected = [UIColor colorWithRed:230/255.0 green:0 blue:18/255.0 alpha:1];
+    self.calendar.calendarAppearance.dayCircleColorToday = [UIColor colorWithRed:230/255.0 green:0 blue:18/255.0 alpha:1];
+    self.calendar.calendarAppearance.dayDotColor = [UIColor colorWithRed:0 green:160/255.0 blue:233/255.0 alpha:1];
+    self.calendar.calendarAppearance.dayTextFont = [UIFont systemFontOfSize:16.0];
+    self.calendar.calendarAppearance.weekDayTextFont = [UIFont systemFontOfSize:16.0];
     [self.calendar setMenuMonthsView:self.calendarMenuView];
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
@@ -201,15 +223,36 @@
     
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0: { // 按月
-            self.viewCalendar.hidden = NO;
+            //self.viewCalendar.hidden = NO;
+            self.calendarHeightConstraint.constant = 430;
+            self.tableViewThreeTitleLabelHeightConstraint.constant = 50;
+            [UIView animateWithDuration:.5
+                             animations:^{
+                                 self.viewCalendar.alpha = 1;
+                                 self.tableViewThree.alpha = 1;
+                                 self.tableViewTwo.alpha = 0;
+                                 self.tableViewThreeTitleLabel.alpha = 1;
+                                 [self.view layoutIfNeeded];
+                             }];
             // bounds.size.height = bounds.size.height - calendarHeight;
         }
             break;
         case 1: { // 全部
-            self.viewCalendar.hidden = YES;
+            //self.viewCalendar.hidden = YES;
             self.dataListTwo = self.dataList[NOTIFICATION_FIELD_HDDATA]; // 预告数据
             [self.tableViewTwo reloadData];
             // bounds.size.height = bounds.size.height + calendarHeight;
+            self.calendarHeightConstraint.constant = 0;
+            self.tableViewThreeTitleLabelHeightConstraint.constant = 0;
+            [UIView animateWithDuration:.5
+                             animations:^{
+                                 self.viewCalendar.alpha = 0;
+                                 self.tableViewThree.alpha = 0;
+                                 self.tableViewTwo.alpha = 1;
+                                 self.tableViewThreeTitleLabel.alpha = 0;
+                                 [self.view layoutIfNeeded];
+                             }];
+            
         }
             break;
         default:
@@ -378,6 +421,10 @@
         case NotificationTableViewTWO:
             count = [self.dataListTwo count];
             break;
+        case NotificationTableViewTHREE:
+            count = 2;
+            break;
+
         default:
             NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
             break;
@@ -391,38 +438,43 @@
     NSInteger cellIndex = indexPath.row;
     
     NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
-    }
-    
+
     switch ([tableView tag]) {
         case NotificationTableViewONE: {
-            cell.selectedBackgroundView          = [[UIView alloc] initWithFrame:cell.frame];
-            cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-            
-            NSMutableDictionary *currentDict = [self.dataListOne objectAtIndex:cellIndex];
-            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
+            }
             
             [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
             [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-            cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
             [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+            NSMutableDictionary *currentDict = [self.dataListOne objectAtIndex:cellIndex];
+            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
             break;
         case NotificationTableViewTWO: {
-            cell.selectedBackgroundView          = [[UIView alloc] initWithFrame:cell.frame];
-            cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-            
-            NSMutableDictionary *currentDict = [self.dataListTwo objectAtIndex:cellIndex];
-            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
+            }
             
             [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
             [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+            [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+            NSMutableDictionary *currentDict = [self.dataListTwo objectAtIndex:cellIndex];
+            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
             cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
-            cell.labelDate.hidden = YES;
+            [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
             break;
+        case NotificationTableViewTHREE: {
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationTodayTableViewCell" owner:self options:nil] lastObject];
+            }
+            cell.separatorInset = UIEdgeInsetsMake(0, 1920, 0, 0);
+            break;
+        }
         default:
             cell.labelMsg.text = @"Unknow cell.";
             break;
@@ -448,6 +500,10 @@
         case NotificationTableViewTWO:
             currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
             break;
+        case NotificationTableViewTHREE:
+            return 100;
+            break;
+
         default:
             NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
             break;
