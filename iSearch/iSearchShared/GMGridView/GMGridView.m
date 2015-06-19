@@ -249,7 +249,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     self.style = GMGridViewStyleSwap;
     self.minimumPressDuration = 0.2;
     self.showFullSizeViewWithAlphaWhenTransforming = YES;
-    self.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    self.minEdgeInsets = UIEdgeInsetsMake(0,0,0,0);//UIEdgeInsetsMake(5, 5, 5, 5);
     self.clipsToBounds = NO;
     
     _sortFuturePosition = GMGV_INVALID_POSITION;

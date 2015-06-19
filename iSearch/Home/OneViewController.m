@@ -15,6 +15,7 @@
 #import "const.h"
 #import "ViewSlide.h"
 #import "FileUtils.h"
+#import "DisplayViewController.h"
 
 @interface OneViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gridView;
@@ -106,8 +107,9 @@
                 [slide loadThumbnail:thumbnailPath];
             }
         }
-        slide.btnFileInfo.tag = index;
-        [slide.btnFileInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
+        slide.btnSlideInfo.tag = index;
+        [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
+        [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell setContentView: slide];
     }
@@ -126,5 +128,36 @@
     NSMutableDictionary *dict = _dataList[index];
     HomeViewController *homeViewController = [self masterViewController];
     [homeViewController actionPopupSlideInfo:dict];
+}
+
+
+/**
+ *  本viewController中为服务端所有文件列表；
+ *  如果已经下载，则可以[演示], 否则需要下载, 所下载文件在FILE_DIRNAME/下
+ *
+ *  与DisplayViewController传递文件ID通过CONFIG_DIRNAME/CONETNT_CONFIG_FILENAME[@CONTENT_KEY_DISPLAYID]
+ *
+ *  @param IBAction [演示]按钮点击事件
+ *
+ *  @return 演示界面
+ */
+// 如果文件已经下载，文档原[下载]按钮显示为[演示]
+- (IBAction)actionDisplaySlide:(UIButton *)sender {
+    NSInteger index = [sender tag];
+    NSMutableDictionary *currentDict = _dataList[index];
+    NSString *fileID = currentDict[FILE_DESC_ID];
+    
+    // 如果文档已经下载，即可执行演示效果，
+    // 否则需要下载，该功能在FileSlide内部处理
+    if([FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) {
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+        [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:[NSNumber numberWithInt:SlideDisplayFavorite] forKey:SLIDE_DISPLAY_TYPE];
+        [configDict writeToFile:configPath atomically:YES];
+        
+        DisplayViewController *showVC = [[DisplayViewController alloc] init];
+        [self presentViewController:showVC animated:NO completion:nil];
+    }
 }
 @end

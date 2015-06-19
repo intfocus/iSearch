@@ -65,6 +65,7 @@
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
+@property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, assign) BOOL selectState;   // 编辑状态
 @property (nonatomic, nonatomic) NSString  *fileID;
 @property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
@@ -200,9 +201,9 @@
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
-    self.fileID = config[@"FileID"];
-    self.pageID = config[@"PageID"];
-    //NSLog(@"reorganize:\n%@", config);
+    self.fileID = config[CONTENT_KEY_EDITID1];
+    self.pageID = config[CONTENT_KEY_EDITID1];
+    self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 }
 
 

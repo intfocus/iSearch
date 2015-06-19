@@ -15,7 +15,7 @@
 @implementation ViewSlide
 @synthesize labelTitle;
 @synthesize btnDownloadOrDisplay;
-@synthesize btnFileInfo;
+@synthesize btnSlideInfo;
 @synthesize webViewThumbnail;
 
 
@@ -41,10 +41,10 @@
     
     // 收藏文件，说明已下载
     if(self.isFavoriteFile) {
-        self.btnDownloadOrDisplay.hidden = YES;
-        
+        self.btnDownloadOrDisplay.hidden = NO;
+        [self bringSubviewToFront:self.btnDownloadOrDisplay];
     } else {
-        self.btnDownloadOrDisplay.hidden = YES;
+        self.btnDownloadOrDisplay.hidden = NO;
         [self checkSlideDownloadBtn];
     }
     
@@ -52,7 +52,8 @@
 }
 
 - (IBAction) actionDownloadFile:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:FILE_DIRNAME Force:NO]) {
+    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
         [self downloadZip:self.dict[CONTENT_FIELD_URL]];
     //} else {
@@ -64,7 +65,8 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:FILE_DIRNAME Force:NO]) {
+    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
     } else {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];
@@ -78,6 +80,8 @@
  *  @param webView      UIWebView
  */
 - (void)loadThumbnail:(NSString *)thumbnailPath {
+    self.webViewThumbnail.hidden = YES;
+    return;
     NSString *extName = [thumbnailPath pathExtension];
     
     if([extName isEqualToString:@"pdf"]) {

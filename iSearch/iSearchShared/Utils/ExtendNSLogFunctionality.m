@@ -33,8 +33,8 @@ void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSS
             lineNumber, [body UTF8String]);
 }
 
-void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName, BOOL isPrintSuccessfully, NSError *error, NSString *format, ...) {
-    if(!isPrintSuccessfully && !error) return;
+BOOL ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName, BOOL isPrintSuccessfully, NSError *error, NSString *format, ...) {
+    if(!isPrintSuccessfully && error == nil) return YES;
     
     // Type to hold information about variable arguments.
     va_list ap;
@@ -57,6 +57,7 @@ void ExtendNSLogPrintError(const char *file, int lineNumber, const char *functio
     
     NSString *fileName = [[NSString stringWithUTF8String:file] lastPathComponent];
     fprintf(stderr, "(%s) (%s:%d) %s", functionName, [fileName UTF8String], lineNumber, [body UTF8String]);
+    return (error == nil);
 }
 
 /**

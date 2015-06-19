@@ -72,7 +72,7 @@
     
     _gridView.style = GMGridViewStyleSwap;
     _gridView.itemSpacing = 50;
-    _gridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
+    _gridView.minEdgeInsets = UIEdgeInsetsMake(0,0,0,0);//UIEdgeInsetsMake(30, 10, -5, 10);
     _gridView.centerGrid = YES;
     _gridView.dataSource = self;
     _gridView.backgroundColor = [UIColor clearColor];
@@ -119,9 +119,9 @@
                 [slide loadThumbnail:thumbnailPath];
             }
         }
-        slide.btnFileInfo.tag = index;
-        [slide.btnFileInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
-        
+        slide.btnSlideInfo.tag = index;
+        [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
+        [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
         [cell setContentView: slide];
     }
     
@@ -139,6 +139,7 @@
     NSMutableDictionary *dict = _dataList[index];
     SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
     slideInfoView.masterViewController = self;
+    slideInfoView.isFavoriteFile = YES;
     slideInfoView.dict = dict;
     [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
         NSLog(@"popup view presented");

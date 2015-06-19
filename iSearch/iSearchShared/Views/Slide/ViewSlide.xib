@@ -11,63 +11,59 @@
             <rect key="frame" x="0.0" y="0.0" width="184" height="184"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2D-sb-vCm">
+                <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wDW-fv-6hN">
+                    <rect key="frame" x="0.0" y="0.0" width="184" height="134"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="184" id="4iA-AZ-2TP"/>
+                        <constraint firstAttribute="height" constant="134" id="Flh-C2-yPr"/>
+                    </constraints>
+                </webView>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2D-sb-vCm">
                     <rect key="frame" x="0.0" y="0.0" width="184" height="134"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="134" id="NNk-Js-fcs"/>
-                        <constraint firstAttribute="width" constant="184" id="kHT-ay-4TJ"/>
+                        <constraint firstAttribute="width" constant="184" id="uze-Q1-4qF"/>
+                        <constraint firstAttribute="height" constant="134" id="xYW-AU-KYh"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <state key="normal" title="下载|演示">
+                    <state key="normal" title="下载|演示" image="iconSlideDisplay.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <connections>
-                        <action selector="slideClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="8dc-BJ-S2t"/>
-                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT" userLabel="SlideInfo">
+                    <rect key="frame" x="0.0" y="134" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="ef7-tG-0qW"/>
+                        <constraint firstAttribute="width" constant="50" id="yQU-Na-i65"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="iconSlideInfo.png"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="文件名称" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULh-Fg-i9c">
                     <rect key="frame" x="50" y="134" width="134" height="50"/>
                     <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="134" id="GUU-hv-X2X"/>
-                        <constraint firstAttribute="height" constant="50" id="eai-ci-51b"/>
+                        <constraint firstAttribute="width" constant="134" id="1iR-4N-zru"/>
+                        <constraint firstAttribute="height" constant="50" id="8LJ-qb-7xg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT">
-                    <rect key="frame" x="0.0" y="134" width="50" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="50" id="WsX-WO-oH9"/>
-                        <constraint firstAttribute="height" constant="50" id="lUb-da-a9D"/>
-                    </constraints>
-                    <state key="normal" title="Button" image="iconSlideInfo.png"/>
-                </button>
-                <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wDW-fv-6hN">
-                    <rect key="frame" x="0.0" y="0.0" width="184" height="134"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="134" id="8U8-KI-4l0"/>
-                        <constraint firstAttribute="width" constant="184" id="w8I-M6-S2G"/>
-                    </constraints>
-                </webView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.1504390001" green="0.1199390575" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="66f-Y5-S70"/>
-                <constraint firstItem="h2D-sb-vCm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="GZR-yX-1Zx"/>
-                <constraint firstItem="h2D-sb-vCm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="SOF-7a-vgG"/>
-                <constraint firstAttribute="bottomMargin" secondItem="sbb-9z-gdT" secondAttribute="bottom" id="SmL-12-Qwe"/>
-                <constraint firstItem="wDW-fv-6hN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="aw3-aA-vDH"/>
-                <constraint firstAttribute="bottomMargin" secondItem="ULh-Fg-i9c" secondAttribute="bottom" id="ehH-zj-YrD"/>
-                <constraint firstItem="wDW-fv-6hN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="fFw-mE-mmY"/>
-                <constraint firstAttribute="trailingMargin" secondItem="ULh-Fg-i9c" secondAttribute="trailing" id="qw7-eX-cxX"/>
+                <constraint firstItem="wDW-fv-6hN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="3bD-PT-uDj"/>
+                <constraint firstItem="wDW-fv-6hN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="a7e-ok-Vfx"/>
+                <constraint firstAttribute="bottomMargin" secondItem="sbb-9z-gdT" secondAttribute="bottom" id="are-D7-FQN"/>
+                <constraint firstAttribute="trailingMargin" secondItem="ULh-Fg-i9c" secondAttribute="trailing" id="e5B-Yk-TTE"/>
+                <constraint firstItem="h2D-sb-vCm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="eVA-VE-x0W"/>
+                <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="ill-Q7-Sdu"/>
+                <constraint firstAttribute="bottomMargin" secondItem="ULh-Fg-i9c" secondAttribute="bottom" id="jTd-4l-MkF"/>
+                <constraint firstItem="h2D-sb-vCm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="sy2-pb-5oG"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="btnDownloadOrDisplay" destination="h2D-sb-vCm" id="zFf-TZ-aBr"/>
-                <outlet property="btnFileInfo" destination="sbb-9z-gdT" id="OQh-cj-BR9"/>
+                <outlet property="btnSlideInfo" destination="sbb-9z-gdT" id="IFa-8W-lYZ"/>
                 <outlet property="labelTitle" destination="ULh-Fg-i9c" id="ATE-QO-qkC"/>
                 <outlet property="webViewThumbnail" destination="wDW-fv-6hN" id="FAP-ay-hjs"/>
             </connections>
@@ -75,6 +71,7 @@
         </view>
     </objects>
     <resources>
+        <image name="iconSlideDisplay.png" width="184" height="134"/>
         <image name="iconSlideInfo.png" width="50" height="50"/>
     </resources>
 </document>

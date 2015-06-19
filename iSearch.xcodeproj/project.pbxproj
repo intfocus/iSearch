@@ -38,7 +38,8 @@
 		C464974F1B2D9B93005E3903 /* PlayFile.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974D1B2D9B93005E3903 /* PlayFile.png */; };
 		C46497501B2D9B93005E3903 /* ToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C464974E1B2D9B93005E3903 /* ToDownload.png */; };
 		C46497521B2DB108005E3903 /* ToView.png in Resources */ = {isa = PBXBuildFile; fileRef = C46497511B2DB108005E3903 /* ToView.png */; };
-		C4A3AF0E1B2B0CCB00A12170 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */; };
+		C495D8721B34050300C98FB4 /* iconSlideDisplay.png in Resources */ = {isa = PBXBuildFile; fileRef = C495D8711B34050300C98FB4 /* iconSlideDisplay.png */; };
+		C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C495D8731B341EE700C98FB4 /* DisplayViewController.m */; };
 		C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */; };
 		C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */; };
 		C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */; };
@@ -153,8 +154,9 @@
 		C464974D1B2D9B93005E3903 /* PlayFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayFile.png; sourceTree = "<group>"; };
 		C464974E1B2D9B93005E3903 /* ToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToDownload.png; sourceTree = "<group>"; };
 		C46497511B2DB108005E3903 /* ToView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToView.png; sourceTree = "<group>"; };
+		C495D8711B34050300C98FB4 /* iconSlideDisplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconSlideDisplay.png; sourceTree = "<group>"; };
+		C495D8731B341EE700C98FB4 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
-		C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
 		C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReViewController.h; sourceTree = "<group>"; };
 		C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReViewController.m; sourceTree = "<group>"; };
@@ -297,6 +299,7 @@
 		C42BD5591B2BCAC1006DB157 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C495D8711B34050300C98FB4 /* iconSlideDisplay.png */,
 				C44840FF1B33E9510076B1FE /* iconSlideInfo.png */,
 				C4BFEF491B2E92A80080D7EE /* covers */,
 				C46497511B2DB108005E3903 /* ToView.png */,
@@ -471,7 +474,7 @@
 				C42EE8281B317ED500C1CA0B /* PageView */,
 				C42EE8271B317EBE00C1CA0B /* EditPages */,
 				C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */,
-				C4A3AF091B2B0CCB00A12170 /* DisplayViewController.m */,
+				C495D8731B341EE700C98FB4 /* DisplayViewController.m */,
 				C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */,
 			);
 			path = Display;
@@ -796,6 +799,7 @@
 				C4BFEF501B2E92A80080D7EE /* 0-3.png in Resources */,
 				C46497501B2D9B93005E3903 /* ToDownload.png in Resources */,
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
+				C495D8721B34050300C98FB4 /* iconSlideDisplay.png in Resources */,
 				C4BFEF4E1B2E92A80080D7EE /* 0-1.png in Resources */,
 				C46497521B2DB108005E3903 /* ToView.png in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
@@ -881,11 +885,11 @@
 				C4A618F01B2C7AEC00D0E91B /* NewsListTabView.m in Sources */,
 				C4BED08C1B2FFEE2000147A2 /* ViewUtils.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
+				C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */,
 				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
 				C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */,
 				C4BED0851B2FFEE2000147A2 /* DatabaseUtils.m in Sources */,
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
-				C4A3AF0E1B2B0CCB00A12170 /* DisplayViewController.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
 				C4BED08B1B2FFEE2000147A2 /* PopupView.m in Sources */,

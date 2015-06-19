@@ -15,11 +15,11 @@
 @interface ViewSlide : UIView
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
-@property (weak, nonatomic) IBOutlet UIButton *btnFileInfo;
+@property (weak, nonatomic) IBOutlet UIButton *btnSlideInfo; // 展示文档信息,弹出框
 @property (weak, nonatomic) IBOutlet UIButton *btnDownloadOrDisplay;
 @property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail;
 
-@property (nonatomic, nonatomic) BOOL  isFavoriteFile;   // 收藏文件: 本地已下载
+@property (nonatomic, nonatomic) BOOL isFavoriteFile;   // 收藏文件: 本地已下载
 @property (strong, nonatomic) NSMutableDictionary *dict; // 文件配置信息，json格式
 
 

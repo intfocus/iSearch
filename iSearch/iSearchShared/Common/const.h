@@ -38,8 +38,11 @@ typedef NS_ENUM(NSInteger, NotificationTableViewTag){
     NotificationTableViewTWO = 11,
     NotificationTableViewTHREE = 12
 };
-
-//
+// 文档演示/编辑类型:收藏、正常文档
+typedef NS_ENUM(NSInteger, SlideType){
+    SlideTypeSlide = 10,
+    SlideTypeFavorite = 11
+};
 
 /**
  *  TextFieldTag
@@ -121,6 +124,10 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
+#define SLIDE_DISPLAY_TYPE      @"FavoriteOrSlide" // 下载文档位置不同
+#define SLIDE_EDIT_TYPE         @"FavoriteOrSlide" // 下载文档位置不同
+#define CONTENT_KEY_EDITID1      @"EditFileID" // 演示档时，[编辑]进入文档页面界面
+#define CONTENT_KEY_EDITID2      @"EditPageID" // 演示档时，[编辑]进入文档页面界面
 // 目录中文件类型
 #define CONTENT_CATEGORY   @"0" // 分类，可以点击再进入
 #define CONTENT_SLIDE      @"1" // 文献 （待确认)
