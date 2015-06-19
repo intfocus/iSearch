@@ -23,7 +23,7 @@
  *  @param createdDate 公告创建日期字符串
  */
 - (void)setCreatedDate:(NSString*)createdDate {
-    if(![createdDate length]) {
+    if(createdDate && ![createdDate length]) {
         // 服务器返回字段无内容，则显示" - "
         self.labelDate.text = @" - ";
         return;

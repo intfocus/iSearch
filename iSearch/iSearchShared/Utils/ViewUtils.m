@@ -56,7 +56,7 @@
 + (CGSize) sizeForTableViewCell:(NSString *)text
                           Width:(NSInteger)width
                        FontSize:(NSInteger)fontSize {
-    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 240.0, 50000)];
+    UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width, 50000)];
     textLabel.text=text;
     textLabel.numberOfLines=0;
     textLabel.textColor = [UIColor whiteColor];

@@ -55,11 +55,9 @@
 
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UITableView *tableViewOne;  // 通告列表图
-@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;  // 预告列表图
-@property (weak, nonatomic) IBOutlet UITableView *tableViewThree;
-@property (weak, nonatomic) IBOutlet UILabel *tableViewThreeTitleLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewThreeTitleLabelHeightConstraint;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewOne;   // 通告列表图
+@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;   // 预告列表图-全部
+@property (weak, nonatomic) IBOutlet UITableView *tableViewThree; // 预告列表图-按月
 
 @property (weak, nonatomic) IBOutlet UITextView *notificationZone;  // 显示预告
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;  // 预告显示布局-按月/
@@ -111,9 +109,9 @@
      * 控件事件
      */
     [self.segmentControl addTarget:self action:@selector(actionSegmentControlClick:) forControlEvents:UIControlEventValueChanged];
-    NSDictionary *dict = @{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:14.0]};
+    NSDictionary *dict1 = @{NSForegroundColorAttributeName:[UIColor darkGrayColor], NSFontAttributeName: [UIFont systemFontOfSize:14.0]};
     NSDictionary *dict2 = @{NSForegroundColorAttributeName:[UIColor grayColor], NSFontAttributeName: [UIFont systemFontOfSize:14.0]};
-    [self.segmentControl  setTitleTextAttributes:dict forState:UIControlStateSelected];
+    [self.segmentControl  setTitleTextAttributes:dict1 forState:UIControlStateSelected];
     [self.segmentControl  setTitleTextAttributes:dict2 forState:UIControlStateNormal];
     
     // 导航栏标题
@@ -208,57 +206,48 @@
     [self.calendar setMenuMonthsView:self.calendarMenuView];
     [self.calendar setContentView:self.calendarContentView];
     [self.calendar setDataSource:self];
+    [self.view bringSubviewToFront:self.viewCalendar];
+    [self.view bringSubviewToFront:self.calendarMenuView];
+    [self.view bringSubviewToFront:self.calendarContentView];
 }
 
 #pragma mark - IBAction
-#warning#TODO UI
 /**
  *  日历控件事件处理-按月/全部
  *
  *  @param sender <#sender description#>
  */
 - (IBAction)actionSegmentControlClick:(id)sender {
-//    NSInteger calendarHeight = self.viewCalendar.bounds.size.height;
-//    CGRect bounds = self.notificationZone.bounds;
-    
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0: { // 按月
-            //self.viewCalendar.hidden = NO;
-            self.calendarHeightConstraint.constant = 430;
-            self.tableViewThreeTitleLabelHeightConstraint.constant = 50;
+            self.calendarHeightConstraint.constant = 1;
+            [self.view sendSubviewToBack:self.tableViewTwo];
+            [self.view bringSubviewToFront:self.viewCalendar];
+            [self.view bringSubviewToFront:self.calendarMenuView];
+            [self.view bringSubviewToFront:self.calendarContentView];
             [UIView animateWithDuration:.5
                              animations:^{
                                  self.viewCalendar.alpha = 1;
                                  self.tableViewThree.alpha = 1;
                                  self.tableViewTwo.alpha = 0;
-                                 self.tableViewThreeTitleLabel.alpha = 1;
                                  [self.view layoutIfNeeded];
                              }];
-            // bounds.size.height = bounds.size.height - calendarHeight;
         }
             break;
         case 1: { // 全部
-            //self.viewCalendar.hidden = YES;
-            self.dataListTwo = self.dataList[NOTIFICATION_FIELD_HDDATA]; // 预告数据
-            [self.tableViewTwo reloadData];
-            // bounds.size.height = bounds.size.height + calendarHeight;
             self.calendarHeightConstraint.constant = 0;
-            self.tableViewThreeTitleLabelHeightConstraint.constant = 0;
             [UIView animateWithDuration:.5
                              animations:^{
                                  self.viewCalendar.alpha = 0;
                                  self.tableViewThree.alpha = 0;
                                  self.tableViewTwo.alpha = 1;
-                                 self.tableViewThreeTitleLabel.alpha = 0;
                                  [self.view layoutIfNeeded];
                              }];
-            
         }
             break;
         default:
             break;
     }
-//    self.notificationZone.frame = bounds;
 }
 
 #pragma mark - Utils
@@ -378,7 +367,7 @@
 
     NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
     self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
-    [self.tableViewTwo reloadData];
+    [self.tableViewThree reloadData];
 }
 
 #pragma mark - Transition examples
@@ -389,13 +378,11 @@
     if(self.calendar.calendarAppearance.isWeekMode){
         newHeight = 75.;
     }
-    
     [UIView animateWithDuration:.5
                      animations:^{
                          self.calendarContentViewHeight.constant = newHeight;
                          [self.view layoutIfNeeded];
                      }];
-    
     [UIView animateWithDuration:.25
                      animations:^{
                          self.calendarContentView.layer.opacity = 0;
@@ -419,10 +406,8 @@
             count = [self.dataListOne count];
             break;
         case NotificationTableViewTWO:
-            count = [self.dataListTwo count];
-            break;
         case NotificationTableViewTHREE:
-            count = 2;
+            count = [self.dataListTwo count];
             break;
 
         default:
@@ -436,49 +421,34 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellID = @"cellID";
     NSInteger cellIndex = indexPath.row;
-    
+    NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
     NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-
+    if(cell == nil) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
+    }
+    
     switch ([tableView tag]) {
         case NotificationTableViewONE: {
-            if (cell == nil) {
-                cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
-            }
-            
-            [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-            [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-            [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-            NSMutableDictionary *currentDict = [self.dataListOne objectAtIndex:cellIndex];
-            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
-            cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
+            currentDict = [self.dataListOne objectAtIndex:cellIndex];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
             break;
-        case NotificationTableViewTWO: {
-            if (cell == nil) {
-                cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
-            }
-            
-            [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-            [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-            [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-            NSMutableDictionary *currentDict = [self.dataListTwo objectAtIndex:cellIndex];
-            cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
-            cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
-            [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
-        }
-            break;
+        case NotificationTableViewTWO:
         case NotificationTableViewTHREE: {
-            if (cell == nil) {
-                cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationTodayTableViewCell" owner:self options:nil] lastObject];
-            }
-            cell.separatorInset = UIEdgeInsetsMake(0, 1920, 0, 0);
-            break;
+            currentDict = [self.dataListTwo objectAtIndex:cellIndex];
+            [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_OCCURDATE]];
         }
+            break;
         default:
-            cell.labelMsg.text = @"Unknow cell.";
+            [currentDict setObject:@"unkown Title" forKey:NOTIFICATION_FIELD_TITLE];
+            [currentDict setObject:@"unkown Message" forKey:NOTIFICATION_FIELD_TITLE];
             break;
     }
+    [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+    [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+    [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+    cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
+    cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
     
     return cell;
 }
@@ -493,15 +463,15 @@
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
+    NSInteger width = self.viewCalendar.bounds.size.width;
     switch([tableView tag]) {
         case NotificationTableViewONE:
             currentDict = [self.dataListOne objectAtIndex:indexPath.row];
+            width = self.view.bounds.size.width - width;
             break;
         case NotificationTableViewTWO:
-            currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
-            break;
         case NotificationTableViewTHREE:
-            return 100;
+            currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
             break;
 
         default:
@@ -509,7 +479,7 @@
             break;
     }
     NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
-    CGSize size = [ViewUtils sizeForTableViewCell:text Width:240 FontSize:NOTIFICATION_MSG_FONT];
+    CGSize size = [ViewUtils sizeForTableViewCell:text Width:width FontSize:NOTIFICATION_MSG_FONT];
     return size.height + 50.0f;
 }
 
