@@ -66,7 +66,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
-@property (nonatomic, assign) BOOL selectState;   // 编辑状态
+@property (nonatomic, nonatomic) BOOL selectState;   // 编辑状态
 @property (nonatomic, nonatomic) NSString  *fileID;
 @property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemEdit; // 是否切换至编辑状态
@@ -583,7 +583,7 @@
 
 
 - (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
+    return CGSizeMake(213, 234);
 }
 
 // GridViewCell界面 - 文件各页面展示界面
@@ -610,9 +610,9 @@
 
         NSString *currentFileID = self.fileID;
         NSString *keyName = [NSString stringWithFormat:@"page-%@", currentFileID];
+        NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
         // self.tmpPageInfo - 为了减少重复扫描本地信息
         if(![[self.pageInfoTmp allKeys] containsObject:keyName]) {
-            NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
             NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
             NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
             NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
@@ -630,7 +630,7 @@
         filePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", currentDescSwpDict[FILE_DESC_NAME]];
         filePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页#%@", (long)index, [currentDescSwpDict[FILE_DESC_ORDER] objectAtIndex:index]];
         
-        NSString *thumbnailPath = [FileUtils fileThumbnail:self.fileID PageID:currentPageID Dir:FILE_DIRNAME];
+        NSString *thumbnailPath = [FileUtils fileThumbnail:self.fileID PageID:currentPageID Dir:dirName];
         [filePage loadThumbnail: thumbnailPath];
         
         

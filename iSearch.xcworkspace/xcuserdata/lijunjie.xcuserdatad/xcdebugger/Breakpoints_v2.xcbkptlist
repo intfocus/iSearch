@@ -10,28 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "iSearch/Display/ReViewController.m"
-            timestampString = "456409175.82462"
+            timestampString = "456409958.412075"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
-            landmarkName = "-refreshGridView"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "iSearch/Display/DisplayViewController.m"
-            timestampString = "456409289.765126"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
-            landmarkName = "-enterFilePagesView:"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "-actionEditPages:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
