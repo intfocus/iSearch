@@ -28,8 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *greenNoteBtn;// 笔记 - 绿色
 @property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
 
-@property (nonatomic, nonatomic) NSInteger  htmlFileCount;
-@property (nonatomic, nonatomic) NSInteger  htmlCurrentIndex;
+@property (nonatomic, nonatomic) NSInteger  currentPageIndex;
+@property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL  isDrawing; // 作笔记状态
 @property (nonatomic, nonatomic) BOOL  isLasering;// 激光笔状态
 @property (nonatomic, nonatomic) PaintView  *paintView; // 笔记、激光笔画布
@@ -48,10 +48,10 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self loadConfigInfo];
-    NSLog(@"device: %@", NSStringFromCGRect([[UIScreen mainScreen] bounds]));
-    self.htmlCurrentIndex    = 0;
+    
+    self.currentPageIndex    = 0;
     self.isDrawing           = false;
-    self.paintView            = nil;
+    self.paintView           = nil;
     self.editPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
    
@@ -97,60 +97,73 @@
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self demoExtract];
+//    [self demoExtract];
     [self extractResource];
     
     [self loadHtml];
 
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/**
+ *  控件事件
+ */
+- (void) loadHtml {
+    NSString *htmlName = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex: self.currentPageIndex];
+    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.filePath, htmlName, PAGE_HTML_FORMAT];
+    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    
+    //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
+    //NSLog(@"%@", htmlFile);
+    NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];;
+    NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+    
+    [self.webView loadHTMLString:htmlString baseURL:baseURL];
+}
+
 - (void) loadConfigInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
-    self.fileID = [configDict objectForKey:CONTENT_KEY_DISPLAYID];
-    //NSLog(@"reorganize:\n%@", config);
+    // Basic Key Check
+    if(configDict[CONTENT_KEY_DISPLAYID] == nil) {
+        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Not Set!");
+        abort();
+    }
+    if(configDict[SLIDE_DISPLAY_TYPE] == nil) {
+        NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
+        abort();
+    }
+    self.fileID = configDict[CONTENT_KEY_DISPLAYID];
+    self.isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
+    
+    if([self.fileID length] == 0) {
+        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
+        abort();
+    }
+    
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    self.filePath = [FileUtils getPathName:dirName FileName:self.fileID];
+    NSString *descPath = [self.filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSError *error;
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    BOOL isYES = NSErrorPrint(error, @"read slide desc content#%@", descPath);
+    if(!isYES) { abort(); }
+    
+    self.fileDesc = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+    isYES = NSErrorPrint(error, @"desc content convert into json");
+    if(!isYES) { abort(); }
+    
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    NSLog(@"welcome come back, it's viewWillApper.");
-}
-- (void) demoExtract {
-    // Files
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *filesPath = [documentPath stringByAppendingPathComponent:@"Files"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    // Remove ExtractPath clear cache
-    // [fileManager removeItemAtPath:filesPath error:nil];
-    BOOL isDir = TRUE;
-    BOOL isDirExist = [fileManager fileExistsAtPath:filesPath isDirectory:&isDir];
-    if(!isDirExist)
-        [fileManager createDirectoryAtPath:filesPath withIntermediateDirectories:YES attributes:nil error:nil];
-    
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString *zipPathName = [bundlePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.zip", self.fileID]];
-    self.filePath = [filesPath stringByAppendingPathComponent:self.fileID];
-    
-    
-    isDirExist = [fileManager fileExistsAtPath:self.filePath isDirectory:&isDir];
-    if(!isDirExist) {
-        // 解压
-        BOOL state = [SSZipArchive unzipFileAtPath:zipPathName toDestination:filesPath];
-        NSLog(@"%@", [NSString stringWithFormat:@"File解压zip: %@", state ? @"成功" : @"失败"]);
-    }
-    NSError *error;
-    NSString *descPath = [self.filePath stringByAppendingPathComponent:@"desc.json"];
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-    if(error)
-        NSLog(@"read desc failed: %@", [error localizedDescription]);
-    self.fileDesc = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
-    if(error)
-        NSLog(@"string to json: %@", [error localizedDescription]);
-    
-    NSLog(@"file desc: %@", self.fileDesc);
-}
 - (void) extractResource {
     NSString *zipName = @"pdfJS";
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -172,6 +185,10 @@
         NSLog(@"%@", [NSString stringWithFormat:@"pdfJS解压zip: %@", state ? @"成功" : @"失败"]);
     }
 }
+/**
+ *  编辑面板功能代码
+ */
+
 /**
  *  编辑按钮, 回调函数 - 编辑面板切换显示、隐藏
  *  编辑按钮的tag值，指示当前状态: 0 隐藏编辑面板(默认值), 1 显示编辑面板
@@ -289,9 +306,9 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
-    self.htmlCurrentIndex = (self.htmlCurrentIndex + 1) % [[self.fileDesc objectForKey:@"order"] count];
+    self.currentPageIndex = (self.currentPageIndex + 1) % [[self.fileDesc objectForKey:@"order"] count];
     [self loadHtml];
-    NSLog(@"next - current page index: %ld", (long)self.htmlCurrentIndex);
+    NSLog(@"next - current page index: %ld", (long)self.currentPageIndex);
 }
 /**
  *  浏览文档时[上一页], 触发手势: 向右滑动
@@ -300,9 +317,9 @@
  */
 - (IBAction)lastPage: (id)sender {
     NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
-    self.htmlCurrentIndex = (self.htmlCurrentIndex - 1 + pageCount) % pageCount;
+    self.currentPageIndex = (self.currentPageIndex - 1 + pageCount) % pageCount;
     [self loadHtml];
-    NSLog(@"next - current page index: %ld", (long)self.htmlCurrentIndex);
+    NSLog(@"next - current page index: %ld", (long)self.currentPageIndex);
 }
 
 
@@ -323,14 +340,21 @@
 - (IBAction) enterFilePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:self.fileID Dir:FILE_DIRNAME Force:YES]) {
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    if([FileUtils checkSlideExist:self.fileID Dir:dirName Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [[self.fileDesc objectForKey:@"order"] objectAtIndex:self.htmlCurrentIndex];
-        [config setObject:self.fileID forKey:@"FileID"];
-        [config setObject:pageID forKey:@"PageID"];
+        NSString *pageID = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
+        [config setObject:self.fileID forKey:CONTENT_KEY_EDITID1];
+        [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
+        [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
+        NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];
+        if(self.isFavorite) {
+            slideType = [NSNumber numberWithInteger:SlideTypeFavorite];
+        }
+        [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
         [config writeToFile:pathName atomically:YES];
         
         NSString *fileDescSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
@@ -348,23 +372,6 @@
 }
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void) loadHtml {
-    NSString *htmlName = [[self.fileDesc objectForKey:@"order"] objectAtIndex: self.htmlCurrentIndex];
-    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.html", self.filePath, htmlName];
-    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-    
-    //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
-    //NSLog(@"%@", htmlFile);
-    NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];;
-    NSURL *baseURL = [NSURL fileURLWithPath:basePath];
-    
-    [self.webView loadHTMLString:htmlString baseURL:baseURL];
-}
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     // Disable user selection

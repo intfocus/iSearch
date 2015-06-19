@@ -10,8 +10,8 @@
 #define Pods_FavoriteViewController_h
 
 #import "RightSideViewController.h"
-@interface FavoriteViewController : RightSideViewController
-
+@interface FavoriteViewController : RightSideViewController <UIGestureRecognizerDelegate>
+- (void)dismissPopup;
 @end
 
 

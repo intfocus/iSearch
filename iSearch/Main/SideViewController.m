@@ -104,7 +104,6 @@
 
 -(UIViewController *)viewControllerForTag:(NSInteger)tag{
     UIViewController *vc = nil;
-    NSLog(@"click tag - %ld", (long)tag);
     switch (tag) {
         case EntryButtonHomePage:
             vc=[[HomeViewController alloc] initWithNibName:nil bundle:nil];

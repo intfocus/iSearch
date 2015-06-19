@@ -65,6 +65,7 @@
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
+@property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, assign) BOOL selectState;   // 编辑状态
 @property (nonatomic, nonatomic) NSString  *fileID;
 @property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
@@ -200,9 +201,9 @@
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
-    self.fileID = config[@"FileID"];
-    self.pageID = config[@"PageID"];
-    //NSLog(@"reorganize:\n%@", config);
+    self.fileID = config[CONTENT_KEY_EDITID1];
+    self.pageID = config[CONTENT_KEY_EDITID1];
+    self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 }
 
 
@@ -382,15 +383,8 @@
  *  @param buttonIndex 弹出框按钮序号
  */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSString *input = [[alertView textFieldAtIndex:0] text];
-    
-    // buttonIndex == 0 -> cancel
-    // tag == 100 => [保存]
-    if(alertView.tag == 100 && buttonIndex == 1) {
-        [self selectAndSavePages:input];
-        
     // tag == 101 => [移除]
-    } else if(alertView.tag == 101 && buttonIndex == 1) {
+    if(alertView.tag == 101 && buttonIndex == 1) {
         [self removePagesFromDescSwpFile];
     } else {
         NSLog(@"BUG: alertView.tag=%d; buttonIndex: %d", alertView.tag, buttonIndex);
@@ -425,107 +419,6 @@
     descJSON[@"order"] = _data;
     [self writeJSON:descJSON Into:descSwpPath];
     [self refreshGridView];
-}
-/**
- *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
- *
- // step1: 判断name=text是否存在
- // 重组内容文件名称格式: r150501010101
- *      检测已经内容重组的文件名称
- *      初始化重组内容文件的配置档
- *  step2.1 若不存在,则创建
- *  @param tagName 输入的新标签名称
- */
-- (void)selectAndSavePages: (NSString*)tagName {
-    NSString *searchFileName = tagName;
-    searchFileName = [searchFileName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    // 输入文件名称为空，不做操作
-    if(!searchFileName.length) return;
-    
-    // step1: 判断name=text是否存在
-    // 重组内容文件名称格式: r150501010101
-    NSError *error;
-    NSString *searchFileID;
-    NSMutableArray *reorganizeNames = [FileUtils favoriteFileList];
-    NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    // 检测扫描收藏目录，检测是否存在
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
-    for(dict in reorganizeNames) {
-        if([dict[FILE_DESC_NAME] isEqualToString:searchFileName]) {
-            searchFileID = dict[FILE_DESC_ID];
-            break;
-        }
-    }
-    
-    // 初始化重组内容文件的配置档
-    NSMutableDictionary *descData = [NSMutableDictionary dictionaryWithCapacity:0];
-    
-    NSString *descPath  = [[NSString alloc] init];
-    NSNumber *pageIndex = [[NSNumber alloc] init];
-    NSString *pageName  = [[NSString alloc] init];
-    NSMutableArray *pages = [[NSMutableArray alloc] init];
-    
-    // step1.1 若不存在,则创建
-    if(![searchFileID length]) {
-        // 内容重组文件新名称，名称格式: r150501010101
-        NSString *newFileID = [NSString stringWithFormat:@"r%@", [ViewUtils dateToStr:[NSDate date] Format:NEW_TAG_FORMAT]];
-        NSString *newFilePath = [filesPath stringByAppendingPathComponent:newFileID];
-        descPath = [newFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
-        
-        // 检测newFileID路径是否不存在，否则创建
-        if(![FileUtils checkFileExist:newFilePath isDir:true])
-            [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
-        
-        // 创建配置档内容
-        [descData setObject:newFileID forKey:FILE_DESC_ID];
-        [descData setObject:searchFileName forKey:FILE_DESC_NAME];
-        [descData setObject:searchFileName forKey:FILE_DESC_DESC];
-        
-        // 把选中的页面复制到内容重组文件中
-        // _select存放的为GridView序号
-        for(pageIndex in _select) {
-            pageName = [_data objectAtIndex:[pageIndex intValue]];
-            // 拷贝文件page/image
-            [self copyFilePage:pageName FromFileId:self.fileID ToFileId:newFileID];
-            
-            [pages addObject:pageName];
-        }
-        [descData setObject:pages forKey:FILE_DESC_ORDER];
-        
-        // step2.2 收藏夹中原已存在，修改原配置档，复制页面
-    } else {
-        // 读取原有配置档信息
-        NSString *searchFilePath = [filesPath stringByAppendingPathComponent:searchFileID];
-        descPath = [searchFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
-        
-        NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"read desc file");
-        descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:&error];
-        NSErrorPrint(error, @"desc content convert into json");
-        
-        pages = descData[FILE_DESC_ORDER];
-        for(pageIndex in _select) {
-            pageName = [_data objectAtIndex:[pageIndex intValue]];
-            
-            // 如果该页面已经存在，则跳过。
-            if([pages containsObject:pageName]) continue;
-            
-            // 拷贝文件page/image
-            [self copyFilePage:pageName FromFileId:self.fileID ToFileId:searchFileID];
-            
-            [pages addObject:pageName];
-        }
-        // 重新赋值order
-        [descData setObject:pages forKey:FILE_DESC_ORDER];
-    }
-    
-    // 配置信息写入文件
-    [self writeJSON:descData Into:descPath];
 }
 /**
  *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）

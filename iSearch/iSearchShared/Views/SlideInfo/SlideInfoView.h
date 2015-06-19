@@ -15,17 +15,10 @@
 /**
  *  文档[信息]显示该文档的标题、描述、查看等信息及操作
  */
-@interface SlideInfoView : UIView
-@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
-@property (weak, nonatomic) IBOutlet UILabel *labelDesc;
-@property (weak, nonatomic) IBOutlet UILabel *labelEditTime;
-@property (weak, nonatomic) IBOutlet UILabel *labelPageNum;
-@property (weak, nonatomic) IBOutlet UILabel *labelZipSize;
-@property (weak, nonatomic) IBOutlet UILabel *labelCategory;
-@property (weak, nonatomic) IBOutlet UIButton *btnDisplay;
-@property (weak, nonatomic) IBOutlet UIButton *btnEdit;
-@property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
-@property (weak, nonatomic) IBOutlet UIButton *btnRemove;
+@interface SlideInfoView : UIViewController
+@property (strong, nonatomic) NSMutableDictionary *dict;
+@property (nonatomic , nonatomic) UIViewController *masterViewController;
+@property (nonatomic, nonatomic) BOOL isFavoriteFile;   // 收藏文件: 本地已下载
 
 @end
 

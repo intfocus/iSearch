@@ -9,11 +9,13 @@
                 <outlet property="btnAddToTag" destination="8Ro-dP-TAy" id="2Wh-CZ-lz8"/>
                 <outlet property="btnDisplay" destination="Wd1-po-1gt" id="nGv-9g-Uzk"/>
                 <outlet property="btnEdit" destination="Ovv-e7-dj2" id="XBC-9w-nFY"/>
+                <outlet property="btnRemove" destination="U1q-5S-ztg" id="4kn-pv-HDw"/>
                 <outlet property="labelCategory" destination="bI4-kD-ekT" id="loP-c0-I7y"/>
                 <outlet property="labelDesc" destination="gmP-sx-TCa" id="6uP-pp-2TB"/>
                 <outlet property="labelPageNum" destination="FwQ-Zf-nXD" id="TOz-DS-X4L"/>
                 <outlet property="labelTitle" destination="JBP-Hy-5hR" id="qmV-EE-lyB"/>
                 <outlet property="labelZipSize" destination="wxj-td-ir5" id="haO-ff-EPK"/>
+                <outlet property="view" destination="iN0-l3-epB" id="s7k-lX-QSB"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -21,118 +23,143 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="500"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="标题:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vq-6Q-dnz">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="标题:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vq-6Q-dnz">
                     <rect key="frame" x="10" y="5" width="40" height="20"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="这是一个很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长很长的标题" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBP-Hy-5hR">
-                    <rect key="frame" x="50" y="5" width="1547" height="53"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="标题" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBP-Hy-5hR">
+                    <rect key="frame" x="50" y="5" width="330" height="53"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="分类：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nft-0x-XBV">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="分类：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nft-0x-XBV">
                     <rect key="frame" x="8" y="85" width="51" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="页数：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="It3-Vn-hwq">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="页数：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="It3-Vn-hwq">
                     <rect key="frame" x="8" y="108" width="51" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="上架时间:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fe-YE-7Kk">
-                    <rect key="frame" x="8" y="131" width="73" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Zip大小：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5fe-YE-7Kk">
+                    <rect key="frame" x="8" y="131" width="76" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Zip大小：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uw5-f6-deX">
-                    <rect key="frame" x="8" y="151" width="76" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="上架时间:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uw5-f6-deX">
+                    <rect key="frame" x="8" y="152" width="73" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="摘要:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9a-sX-4U3">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="摘要:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U9a-sX-4U3">
                     <rect key="frame" x="8" y="173" width="39" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="文档" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zh-jh-LqU">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="文档" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zh-jh-LqU">
                     <rect key="frame" x="61" y="85" width="331" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="属性：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK0-ct-BWt">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="属性：" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK0-ct-BWt">
                     <rect key="frame" x="8" y="62" width="51" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="文档" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhc-5J-lgf">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="文档" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhc-5J-lgf">
                     <rect key="frame" x="61" y="62" width="331" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="分类1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bI4-kD-ekT">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="分类1" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bI4-kD-ekT">
                     <rect key="frame" x="61" y="108" width="331" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FwQ-Zf-nXD">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="12" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FwQ-Zf-nXD">
                     <rect key="frame" x="102" y="131" width="290" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1434K" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxj-td-ir5">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="1434K" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxj-td-ir5">
                     <rect key="frame" x="102" y="151" width="290" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wd1-po-1gt">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wd1-po-1gt">
                     <rect key="frame" x="13" y="386" width="379" height="30"/>
                     <state key="normal" title="播放">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="89b-HH-j56" customClass="SlidInfoView">
-                    <rect key="frame" x="8" y="462" width="379" height="30"/>
-                    <state key="normal" title="删除">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovv-e7-dj2">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovv-e7-dj2">
                     <rect key="frame" x="13" y="424" width="145" height="30"/>
                     <state key="normal" title="编辑">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ro-dP-TAy">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ro-dP-TAy">
                     <rect key="frame" x="247" y="424" width="145" height="30"/>
                     <state key="normal" title="收藏">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="摘要很长" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gmP-sx-TCa">
-                    <rect key="frame" x="13" y="202" width="379" height="151"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="摘要很长" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gmP-sx-TCa">
+                    <rect key="frame" x="13" y="202" width="379" height="176"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1q-5S-ztg">
+                    <rect key="frame" x="13" y="462" width="374" height="30"/>
+                    <state key="normal" title="移除">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="vhc-5J-lgf" secondAttribute="trailing" constant="8" id="1dE-Gb-3dd"/>
+                <constraint firstItem="U9a-sX-4U3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="3in-gr-0Iu"/>
+                <constraint firstAttribute="bottom" secondItem="U1q-5S-ztg" secondAttribute="bottom" constant="8" id="6aH-l9-XOR"/>
+                <constraint firstAttribute="trailing" secondItem="8Ro-dP-TAy" secondAttribute="trailing" constant="8" id="7er-b8-aUa"/>
+                <constraint firstAttribute="trailing" secondItem="wxj-td-ir5" secondAttribute="trailing" constant="8" id="BFy-aI-kn0"/>
+                <constraint firstItem="5fe-YE-7Kk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="D8u-3C-UXe"/>
+                <constraint firstItem="Ovv-e7-dj2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="13" id="DEe-1k-Hf0"/>
+                <constraint firstItem="TK0-ct-BWt" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="F6A-cL-DNG"/>
+                <constraint firstItem="It3-Vn-hwq" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="MsU-fR-TPD"/>
+                <constraint firstItem="1vq-6Q-dnz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="NAa-ec-FCI"/>
+                <constraint firstAttribute="trailing" secondItem="Wd1-po-1gt" secondAttribute="trailing" constant="8" id="Z9T-B0-cef"/>
+                <constraint firstAttribute="trailing" secondItem="bI4-kD-ekT" secondAttribute="trailing" constant="8" id="aRf-ds-0Au"/>
+                <constraint firstAttribute="trailing" secondItem="JBP-Hy-5hR" secondAttribute="trailing" constant="20" id="bMm-Be-nGE"/>
+                <constraint firstItem="JBP-Hy-5hR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="bTZ-BQ-gdp"/>
+                <constraint firstAttribute="trailing" secondItem="3zh-jh-LqU" secondAttribute="trailing" constant="8" id="bco-rQ-477"/>
+                <constraint firstItem="Uw5-f6-deX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="c5A-TP-JC0"/>
+                <constraint firstAttribute="trailing" secondItem="gmP-sx-TCa" secondAttribute="trailing" constant="8" id="dqe-Xq-kki"/>
+                <constraint firstAttribute="trailing" secondItem="FwQ-Zf-nXD" secondAttribute="trailing" constant="8" id="jTC-Xc-rdI"/>
+                <constraint firstItem="Nft-0x-XBV" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="oLQ-AK-rFB"/>
+                <constraint firstItem="U1q-5S-ztg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="13" id="peX-Tz-Sxq"/>
+                <constraint firstItem="1vq-6Q-dnz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="sPc-P0-CpK"/>
+                <constraint firstItem="gmP-sx-TCa" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="13" id="vdB-0k-0cT"/>
+                <constraint firstAttribute="trailing" secondItem="U1q-5S-ztg" secondAttribute="trailing" constant="13" id="yn9-jH-mDl"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="350" y="309"/>
+            <point key="canvasLocation" x="310" y="196"/>
         </view>
     </objects>
 </document>
