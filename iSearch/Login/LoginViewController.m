@@ -66,7 +66,7 @@
 #import "ViewUtils.h"
 #import "MainViewController.h"
 #import "SKSplashIcon.h"
-// #import "M13Checkbox.h"
+#import "SSZipArchive.h"
 
 @interface LoginViewController ()
 // i18n controls
@@ -212,6 +212,7 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
+    [self downloadCategoryThumbnail];
     NSString *configPath1 = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     NSMutableDictionary *userDict1 =[FileUtils readConfigFile:configPath1];
     [userDict1 setObject:@"10" forKey:USER_DEPTID];
@@ -325,6 +326,20 @@
     [self switchCtlStateWhenLogin:true];
 }
 
+- (void)downloadCategoryThumbnail {
+    NSString *downloadUrl = @"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip";
+    NSString *zipName = [downloadUrl lastPathComponent];
+    NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
+    if([FileUtils checkFileExist:zipPath isDir:NO]) {
+        return;
+    }
+    NSURL *url = [NSURL URLWithString:downloadUrl];
+    NSData *zipData = [NSData dataWithContentsOfURL:url];
+    NSString *thumbnailPath = [FileUtils getPathName:THUMBNAIL_DIRNAME];
+    [zipData writeToFile:zipPath atomically:YES];
+    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:thumbnailPath];
+    NSLog(@"解压%@  %@", zipPath, state ? @"成功" : @"失败");
+}
 /**
  *  集中管理界面控件是否禁用
  *

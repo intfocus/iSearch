@@ -12,6 +12,10 @@
 #import "HttpUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
+#import "GMGridView.h"
+#import "ViewSlide.h"
+#import "ViewCategory.h"
+
 @interface ContentUtils()
 
 @end
@@ -278,6 +282,45 @@
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:key ascending:asceding];
     NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     return [NSMutableArray arrayWithArray:array];
+}
+
++ (void)gridViewCellContentView:(GMGridViewCell *)cell
+                           Dict:(NSMutableDictionary *)currentDict
+                          Index:(NSInteger)index
+                            SEL:(NSArray *)methods {
+    NSString *name = currentDict[CONTENT_FIELD_NAME];
+
+    NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
+    
+    // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+    if([categoryType isEqualToString:CONTENT_CATEGORY]) {
+        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+        viewCategory.labelTitle.text = name;
+        
+        [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
+        viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell setContentView: viewCategory];
+    } else {
+        ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+        slide.labelTitle.text = name;
+        NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
+                                 BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, currentDict[CONTENT_FIELD_ID]];
+        currentDict[CONTENT_FIELD_URL] = downloadUrl;
+        slide.dict = currentDict;
+        // 数据初始化操作，须在initWithFrame操作前，因为该操作会触发slide内部处理
+        slide = [slide initWithFrame:CGRectMake(0, 0, 230, 150)];
+        
+        slide.btnSlideInfo.tag = index;
+        [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
+        // 如果文件已经下载，文档原[下载]按钮显示为[演示]
+        slide.btnDownloadOrDisplay.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+        [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell setContentView: slide];
+    }
+
 }
 
 @end

@@ -13,6 +13,7 @@
 
 #import "const.h"
 #import "FileUtils.h"
+#import "ViewSlide.h"
 #import "ViewCategory.h"
 #import "ContentUtils.h"
 
@@ -52,7 +53,6 @@
         NSMutableArray *data = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
         if([data count] > 0) {
             _dataList = [ContentUtils sortArray:data Key:CONTENT_FIELD_ID Ascending:YES];
-            
             [self configGMGridView];
         }
     });
@@ -84,6 +84,7 @@
     gmGridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     gmGridView.centerGrid = YES;
     gmGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontal];
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.view addSubview:gmGridView];
     _gridView = gmGridView;
     
@@ -112,6 +113,7 @@
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
         
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+        NSString *name = currentDict[CONTENT_FIELD_NAME];
         NSLog(@"%ld - %@\n\n", (long)index, currentDict);
         
         // 服务器端Category没有ID值
@@ -120,12 +122,21 @@
             [_dataList objectAtIndex:index][CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
         }
         
-        viewCategory.labelTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
-        [viewCategory setImageWith:[_dataList objectAtIndex:index][CONTENT_FIELD_TYPE] CategoryID:[currentDict objectForKey:CONTENT_FIELD_ID]];
-        viewCategory.btnImageCover.tag = [[currentDict objectForKey:CONTENT_FIELD_ID] intValue];
-        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+        NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
         
-        [cell setContentView: viewCategory];
+        // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+        if([categoryType isEqualToString:CONTENT_CATEGORY]) {
+            ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+            viewCategory.labelTitle.text = name;
+            
+            [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
+            viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+            [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell setContentView: viewCategory];
+        } else {
+            NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
+        }
     }
     return cell;
 }

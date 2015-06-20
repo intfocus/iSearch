@@ -71,6 +71,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DATABASE_DIRNAME       @"Database" // 数据库文件存放的文件夹名称
 #define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 #define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
+#define THUMBNAIL_DIRNAME      @"Thumbails" // 分类缩略图
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"

@@ -252,7 +252,6 @@ NSMutableArray       *_dataList;
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     
     GMGridViewCell *cell = [gridView dequeueReusableCell];
-    
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
         
