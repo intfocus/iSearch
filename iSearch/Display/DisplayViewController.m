@@ -374,7 +374,7 @@
         [config writeToFile:pathName atomically:YES];
         
         NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-        NSString *fileDescSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+        NSString *fileDescSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
         if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
             NSLog(@"Config SWP file Exist! last time must be CRASH!");
         } else {

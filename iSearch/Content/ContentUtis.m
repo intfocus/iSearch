@@ -63,17 +63,18 @@
     return [NSMutableArray arrayWithArray:array];
 }
 
-+ (NSMutableArray*)loadContentDataFromServer:(NSString *) type
-                                      DeptID:(NSString *) deptID
-                                  CategoryID:(NSString *) categoryID {
++ (NSMutableArray*)loadContentDataFromServer:(NSString *)type
+                                      DeptID:(NSString *)deptID
+                                  CategoryID:(NSString *)categoryID {
     NSError *error;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     NSString *urlPath = [[NSString alloc] init];
     NSString *response = [[NSString alloc] init];
     
     // 无网络直接返回空值
-    if(![HttpUtils isNetworkAvailable])
+    if(![HttpUtils isNetworkAvailable]) {
         return mutableArray;
+    }
     
     if([type isEqualToString:CONTENT_CATEGORY]) {
         urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_PARENTID, categoryID];
@@ -92,6 +93,42 @@
     
     mutableArray = responseJSON[CONTENT_FIELD_DATA];
     
+    // 服务器获取的文档信息更新本地已下载文档配置信息
+    if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
+        NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
+        NSString *descPath = [[NSString alloc] init];
+        for(tmpDict in mutableArray) {
+            // skip when not download
+            if(![FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO])
+                continue;
+            
+            descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+            tmpDesc = [FileUtils readConfigFile:descPath];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
+            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_NAME] forKey:SLIDE_DESC_NAME];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_DESC] forKey:SLIDE_DESC_DESC];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TYPE] forKey:SLIDE_DESC_TYPE];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TITLE] forKey:CONTENT_FIELD_TITLE];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_ZIPSIZE] forKey:CONTENT_FIELD_ZIPSIZE];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CATEGORYID] forKey:CONTENT_FIELD_CATEGORYID];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_PAGENUM] forKey:CONTENT_FIELD_PAGENUM];
+//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CREATEDATE] forKey:CONTENT_FIELD_CREATEDATE];
+            
+            [FileUtils writeJSON:tmpDesc Into:descPath];
+            /**
+             *  warning: 此处不更新desc的SLIDE_DESC_LOCAL_UPDATEDAT,该信息用来记录用户的操作时候
+             */
+        }
+    }
+    
     NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
     
     // 解析成功、获取数据不为空时，写入本地缓存
@@ -104,7 +141,27 @@
     return mutableArray;
 }
 
-
+/**
+ *  NSMutableDictionary#setObject,forKey
+ *  只有object不为nil才赋值
+ *
+ *  @param dict <#dict description#>
+ *  @param obj  <#obj description#>
+ *  @param key  <#key description#>
+ *
+ *  @return <#return value description#>
+ */
++ (NSMutableDictionary *)mySet:(NSMutableDictionary *)dict
+                        Object:(id)obj
+                           Key:(NSString *)key {
+    if(obj) {
+        [dict setObject:obj forKey:key];
+    } else {
+        NSLog(@"Key#%@ is nil", key);
+    }
+    return dict;
+    
+}
 + (NSMutableArray*)loadContentDataFromLocal:(NSString *) type
                                      DeptID:(NSString *) deptID
                                  CategoryID:(NSString *) categoryID {
@@ -113,8 +170,9 @@
     NSString *cacheContent = [[NSString alloc] init];
     NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
     
-    if(![FileUtils checkFileExist:cacheFilePath isDir:false])
+    if(![FileUtils checkFileExist:cacheFilePath isDir:false]) {
         return mutableArray;
+    }
     
     cacheContent = [NSString stringWithContentsOfFile:cacheFilePath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read cache#%@ %@", type, cacheContent);

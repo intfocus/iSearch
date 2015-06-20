@@ -140,12 +140,17 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_PARAM_FILE_CATEGORYID @"cid" // 待加载分类ID
 #define CONTENT_PARAM_FILE_DWONLOADID @"fid" // 下载文件ID
 // 目录API字段
-#define CONTENT_FIELD_DATA      @"data" // 数据数组
-#define CONTENT_FIELD_ID        @"Id" // 分类ID
-#define CONTENT_FIELD_NAME      @"Name" // 分类名称
+#define CONTENT_FIELD_DATA       @"data" // 数据数组
+#define CONTENT_FIELD_ID         @"Id" // 分类ID
+#define CONTENT_FIELD_NAME       @"Name" // 分类名称
+#define CONTENT_FIELD_TITLE      @"Title" // 分类名称
+#define CONTENT_FIELD_DESC       @"Desc" // 创建时间
 #define CONTENT_FIELD_CREATEDATE @"EditTime" // 创建时间
-#define CONTENT_FIELD_TYPE      @"Type" // 类型: 0为目录，1为文件
-#define CONTENT_FIELD_URL       @"DownloadUrl" // 文件下载链接，代码拼接而成
+#define CONTENT_FIELD_TYPE       @"Type" // 类型: 0为目录，1为文件
+#define CONTENT_FIELD_CATEGORYID @"CategoryId"
+#define CONTENT_FIELD_ZIPSIZE    @"ZipSize"
+#define CONTENT_FIELD_PAGENUM    @"PageNo"
+#define CONTENT_FIELD_URL        @"DownloadUrl" // 文件下载链接，代码拼接而成
 
 // 离线搜索/批量下载
 #define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用

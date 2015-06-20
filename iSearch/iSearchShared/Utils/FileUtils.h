@@ -48,13 +48,14 @@
 + (BOOL) checkFileExist: (NSString*) pathname isDir: (BOOL) isDir;
 
 /**
- *  读取登陆信息配置档，有则读取，无则使用默认值
+ *  读取配置档，有则读取。
+ *  默认为NSMutableDictionary，若读取后为空，则按JSON字符串转NSMutableDictionary处理。
  *
- *  @param pathname 配置档沙盒绝对路径
+ *  @param pathname 配置档路径
  *
  *  @return 返回配置信息NSMutableDictionary
  */
-+ (NSMutableDictionary*) readConfigFile:(NSString*) pathname;
++ (NSMutableDictionary*) readConfigFile: (NSString*) pathName;
 
 
 /**
@@ -101,7 +102,7 @@
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) fileDescContent:(NSString *) fileID Dir:(NSString *)dir;
++ (NSString *) slideDescContent:(NSString *) fileID Dir:(NSString *)dir;
 
 /**
  *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
@@ -114,7 +115,7 @@
  *
  *  @return 文档配置档路径
  */
-+ (NSString *) fileDescPath:(NSString *)fileID
++ (NSString *) slideDescPath:(NSString *)fileID
                         Dir:(NSString *)dirName
                       Klass:(NSString *)klass;
 

@@ -75,9 +75,10 @@
 }
 
 /**
- *  读取登陆信息配置档，有则读取，无则使用默认值
+ *  读取配置档，有则读取。
+ *  默认为NSMutableDictionary，若读取后为空，则按JSON字符串转NSMutableDictionary处理。
  *
- *  @param pathname 配置档沙盒绝对路径
+ *  @param pathname 配置档路径
  *
  *  @return 返回配置信息NSMutableDictionary
  */
@@ -86,6 +87,17 @@
     //NSLog(@"pathname: %@", pathname);
     if([self checkFileExist:pathName isDir:false]) {
         dict = [dict initWithContentsOfFile:pathName];
+        // 若为空，则为JSON字符串
+        if(dict == nil) {
+            NSError *error;
+            BOOL isSuccessfully;
+            NSString *descContent = [NSString stringWithContentsOfFile:pathName encoding:NSUTF8StringEncoding error:&error];
+            isSuccessfully = NSErrorPrint(error, @"read desc file: %@", pathName);
+            if(isSuccessfully) {
+                dict= [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+                NSErrorPrint(error, @"convert string into json: \n%@", descContent);
+            }
+        }
     } else {
         dict = [dict init];
     }
@@ -193,7 +205,7 @@
  *
  *  @return 文档配置档内容;str
  */
-+ (NSString *) fileDescContent:(NSString *)fileID Dir:(NSString *)dirName {
++ (NSString *) slideDescContent:(NSString *)fileID Dir:(NSString *)dirName {
     NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
     NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     NSError *error;
@@ -212,7 +224,7 @@
  *
  *  @return 文档配置档路径
  */
-+ (NSString *) fileDescPath:(NSString *)fileID
++ (NSString *) slideDescPath:(NSString *)fileID
                         Dir:(NSString *)dirName
                       Klass:(NSString *)klass {
     NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
@@ -230,7 +242,7 @@
  *  @return 文档配置档内容;jsonStr
  */
 + (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName {
-    NSString *descContent = [FileUtils fileDescContent:slideID Dir: dirName];
+    NSString *descContent = [FileUtils slideDescContent:slideID Dir: dirName];
     NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
     NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
     
@@ -486,7 +498,7 @@
     NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
     
     if(isSuccessfully) {
-        descPath = [FileUtils fileDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        descPath = [FileUtils slideDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
         descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
         isSuccessfully = NSErrorPrint(error, @"read slide config at %@", descPath)
     }

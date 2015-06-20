@@ -230,7 +230,7 @@
     // 用户可以通过[恢复]实现还原最原始的状态
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass: FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass: FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc.swp file");
     descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
@@ -257,8 +257,8 @@
 - (IBAction)actionDismiss:(UIGestureRecognizer *)gesture {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     
     [descSwpContent writeToFile:descPath atomically:true encoding:NSUTF8StringEncoding error:&error];
@@ -281,14 +281,14 @@
 - (void)checkDescSwpContent {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc file");
     NSMutableDictionary *descDict = [NSMutableDictionary alloc];
     descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     NSErrorPrint(error, @"desc content convert to json");
     
-    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc swp file");
     NSMutableDictionary *descSwpDict = [NSMutableDictionary alloc];
@@ -307,10 +307,10 @@
 - (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc file");
-    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
 
     [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"[restore] desc content write into desc swp file");
@@ -444,7 +444,7 @@
         NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
         // self.tmpPageInfo - 为了减少重复扫描本地信息
         if(![[self.pageInfoTmp allKeys] containsObject:keyName]) {
-            NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+            NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
             NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
             NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
             
@@ -702,7 +702,7 @@
     NSError *error;
     NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"[移除] read desc.swp file");
     descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
@@ -729,7 +729,7 @@
     NSMutableDictionary *descDict = [NSMutableDictionary dictionaryWithCapacity:0];
     
     // read Slide config information
-    NSString *descPath = [FileUtils fileDescPath:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [FileUtils slideDescPath:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
     
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc file");
@@ -802,7 +802,7 @@
     
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc.swp file");
@@ -829,7 +829,7 @@
               Index:(NSInteger)index {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc.swp file");

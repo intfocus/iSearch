@@ -17,6 +17,10 @@
  *  此功能函数为什么不放在HttpUtils.h?
  *      代码中涉及到文件操作，需要引用FileUtils.h, 而FileUtils.h中如果有网络操作也引用HttpUtils.h的话，就会成为死循环。
  *      *Utils.h中函数尽量不要引用其他*Utils.h文件。
+ *
+ *  为什么每次从服务器取文档信息时，要更新本地已经文档配置？
+ *      用户上传文档后，一但压缩后，再修改文档的名称或描述，则压缩包内的配置档信息则无法修改。
+ *      所以从服务器端取得文档列表时，检测本地是否已下载，若已下载则更新name/desc字段
  */
 @interface ContentUtils : NSObject
 
@@ -50,5 +54,19 @@
 + (NSMutableDictionary *)readCategoryInfo:(NSString *)categoryID
                                  ParentID:(NSString *)parentID
                                   DepthID:(NSString *)deptID;
+
+/**
+ *  NSMutableDictionary#setObject,forKey
+ *  只有object不为nil才赋值
+ *
+ *  @param dict <#dict description#>
+ *  @param obj  <#obj description#>
+ *  @param key  <#key description#>
+ *
+ *  @return <#return value description#>
+ */
++ (NSMutableDictionary *)mySet:(NSMutableDictionary *)dict
+                        Object:(id)obj
+                           Key:(NSString *)key;
 @end
 #endif

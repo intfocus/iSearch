@@ -109,7 +109,7 @@
         
         if([FileUtils checkSlideExist:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
             NSError *error;
-            NSString *descContent = [FileUtils fileDescContent:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
+            NSString *descContent = [FileUtils slideDescContent:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
             NSMutableDictionary *descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
                                                                               options:NSJSONReadingMutableContainers
                                                                                 error:&error];
