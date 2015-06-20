@@ -36,24 +36,29 @@
      */
     self.deptID = @"10";
     _dataList = [[NSMutableArray alloc] init];
-    _dataList = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL];
 
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    _dataList = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL];
+    // sort by id ascending by default.
+    _dataList = [ContentUtils sortArray:_dataList Key:CONTENT_FIELD_ID Ascending:YES];
     [self configGMGridView];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //NSActionLogger(@"主界面加载", @"successfully");
-        
         NSMutableArray *data = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
         if([data count] > 0) {
-            _dataList = data;
-            [_gridView reloadData];
+            _dataList = [ContentUtils sortArray:data Key:CONTENT_FIELD_ID Ascending:YES];
+            
+            [self configGMGridView];
         }
-
     });
 }
 
--(void)viewDidLayoutSubviews{
+- (void)viewDidLayoutSubviews{
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width *2, self.view.frame.size.height)];
     self.view.layer.masksToBounds = NO;
     self.view.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -61,6 +66,15 @@
     self.view.layer.shadowOpacity = 0.2f;
     self.view.layer.shadowPath = shadowPath.CGPath;
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    _gridView = nil;
+}
+
+
+#pragma mark - controls configuration
 
 - (void) configGMGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
@@ -75,11 +89,6 @@
     
     _gridView.dataSource = self;
     _gridView.mainSuperView = self.view;
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    _gridView = nil;
 }
 
 //////////////////////////////////////////////////////////////
@@ -98,12 +107,12 @@
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
 
-    
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
         
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+        NSLog(@"%ld - %@\n\n", (long)index, currentDict);
         
         // 服务器端Category没有ID值
         if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
@@ -118,7 +127,6 @@
         
         [cell setContentView: viewCategory];
     }
-    
     return cell;
 }
 

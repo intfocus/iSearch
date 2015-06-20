@@ -17,6 +17,7 @@
 #import "FileUtils.h"
 #import "DisplayViewController.h"
 #import "MainViewController.h"
+#import "ContentUtils.h"
 
 @interface OneViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gridView;
@@ -29,21 +30,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    /**
+     * 实例变量初始化
+     */
     _dataList = [[NSMutableArray alloc] init];
-    // GMGridView Configuration
-    [self configGMGridView];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    // order by updated_at
     _dataList = [FileUtils favoriteFileList];
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:SLIDE_DESC_LOCAL_UPDATEAT ascending:NO];
-    NSArray *array = [_dataList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-    _dataList = [NSMutableArray arrayWithArray:array];
-    [_gridView reloadData];
+    // order by updated_at by default.
+    _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+    [self configGMGridView];
 }
 
 - (void)viewDidLayoutSubviews{

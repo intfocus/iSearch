@@ -78,5 +78,19 @@
  */
 + (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDesc
                                   To:(NSMutableDictionary *)tmpDict;
+
+/**
+ *  给元素为字典的数组排序；
+ *  需求: 为目录列表按ID/名称/更新日期排序
+ *
+ *  @param mutableArray mutableArray
+ *  @param key          数组元素的key
+ *  @param asceding     是否升序
+ *
+ *  @return 排序过的数组
+ */
++ (NSMutableArray *)sortArray:(NSMutableArray *)mutableArray
+                          Key:(NSString *)key
+                    Ascending:(BOOL)asceding;
 @end
 #endif
