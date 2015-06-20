@@ -590,12 +590,12 @@
 		C4D253C11B326B410033F697 /* AddToTag */ = {
 			isa = PBXGroup;
 			children = (
-				C4D253C21B326B410033F697 /* AddNewTagView.h */,
-				C4D253C31B326B410033F697 /* AddNewTagView.m */,
-				C4D253C41B326B410033F697 /* AddNewTagView.xib */,
 				C4D253C51B326B410033F697 /* MainAddNewTagView.h */,
 				C4D253C61B326B410033F697 /* MainAddNewTagView.m */,
 				C4D253C71B326B410033F697 /* MainAddNewTagView.xib */,
+				C4D253C21B326B410033F697 /* AddNewTagView.h */,
+				C4D253C31B326B410033F697 /* AddNewTagView.m */,
+				C4D253C41B326B410033F697 /* AddNewTagView.xib */,
 				C4D253C81B326B410033F697 /* TagListView.h */,
 				C4D253C91B326B410033F697 /* TagListView.m */,
 				C4D253CA1B326B410033F697 /* TagListView.xib */,

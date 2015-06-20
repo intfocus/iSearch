@@ -287,6 +287,8 @@ NSMutableArray       *_dataList;
             // 数据初始化操作，须在initWithFrame操作前，因为该操作会触发slide内部处理
             slide = [slide initWithFrame:CGRectMake(0, 0, 230, 150)];
             
+            slide.btnSlideInfo.tag = index;
+            [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
             // 如果文件已经下载，文档原[下载]按钮显示为[演示]
             slide.btnDownloadOrDisplay.tag = [currentDict[CONTENT_FIELD_ID] intValue];
             [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
@@ -326,6 +328,13 @@ NSMutableArray       *_dataList;
     ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
     contentViewController.masterViewController = mainViewController;
     [mainViewController setRightViewController:contentViewController withNav:NO];
+}
+
+- (IBAction)actionPopupSlideInfo:(UIButton *)sender {
+    NSInteger index = [sender tag];
+    NSMutableDictionary *dict = _dataList[index];
+    MainViewController *mainViewController = [self masterViewController];
+    [mainViewController poupSlideInfo:dict[CONTENT_FIELD_ID] Dir:CONTENT_DIRNAME];
 }
 
 /**

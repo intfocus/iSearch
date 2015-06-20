@@ -11,8 +11,8 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
-#import "FavoriteViewController.h"
 #import "DisplayViewController.h"
+#import "MainViewController.h"
 
 @interface SlideInfoView()
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnEdit;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
 @property (weak, nonatomic) IBOutlet UIButton *btnRemove;
+@property (weak, nonatomic) IBOutlet UIButton *btnDismiss;
 
 @end
 
@@ -32,12 +33,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    /**
+     *  导航栏控件
+     */
+//    self.navigationItem.title = self.dict[SLIDE_DESC_NAME];
+//    UIBarButtonItem *barItemDismiss = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"取消"]
+//                                                         style:UIBarButtonItemStylePlain
+//                                                        target:self
+//                                                        action:@selector(actionDismissPopupView:)];
+//    self.navigationItem.rightBarButtonItem = barItemDismiss;
     /**
      *  控件事件
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnDismiss addTarget:self action:@selector(actionDismissPopupView:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -60,8 +70,7 @@
     NSErrorPrint(error, @"remove file#%@", filePath);
     
     if(error == nil) {
-        FavoriteViewController *masterView = (FavoriteViewController *)[self masterViewController];
-        [masterView dismissPopup];
+        [self performSelector:@selector(actionDismissPopupView:) withObject:self afterDelay:0.1];
     }
 }
 - (IBAction)actionDisplaySlide:(id)sender {
@@ -79,5 +88,10 @@
         DisplayViewController *showVC = [[DisplayViewController alloc] init];
         [self presentViewController:showVC animated:NO completion:nil];
     }
+}
+
+- (IBAction)actionDismissPopupView:(UIBarButtonItem *)sender {
+    MainViewController *mainViewController = [self masterViewController];
+    [mainViewController dismissPopup];
 }
 @end

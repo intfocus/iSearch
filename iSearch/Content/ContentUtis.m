@@ -98,31 +98,21 @@
         NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
         NSString *descPath = [[NSString alloc] init];
+        NSString *cacheName = [[NSString alloc] init];
+        NSString *cachePath = [[NSString alloc] init];
         for(tmpDict in mutableArray) {
-            // skip when not download
-            if(![FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO])
-                continue;
-            
-            descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-            tmpDesc = [FileUtils readConfigFile:descPath];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
-            [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_NAME] forKey:SLIDE_DESC_NAME];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_DESC] forKey:SLIDE_DESC_DESC];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TYPE] forKey:SLIDE_DESC_TYPE];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TITLE] forKey:CONTENT_FIELD_TITLE];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_ZIPSIZE] forKey:CONTENT_FIELD_ZIPSIZE];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CATEGORYID] forKey:CONTENT_FIELD_CATEGORYID];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_PAGENUM] forKey:CONTENT_FIELD_PAGENUM];
-//            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CREATEDATE] forKey:CONTENT_FIELD_CREATEDATE];
-            
-            [FileUtils writeJSON:tmpDesc Into:descPath];
+            // update local slide desc when already download
+            if([FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
+                descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+                tmpDesc = [FileUtils readConfigFile:descPath];
+                tmpDesc = [ContentUtils descConvert:tmpDict To:tmpDesc];
+
+                [FileUtils writeJSON:tmpDesc Into:descPath];
+            }
+            // write into cache then [view] slide info with popup view
+            cacheName = [NSString stringWithFormat:@"%@-%@.cache", CONTENT_SLIDE, tmpDict[CONTENT_FIELD_ID]];
+            cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
+            [FileUtils writeJSON:tmpDict Into:cachePath];
             /**
              *  warning: 此处不更新desc的SLIDE_DESC_LOCAL_UPDATEDAT,该信息用来记录用户的操作时候
              */
@@ -162,9 +152,39 @@
     return dict;
     
 }
-+ (NSMutableArray*)loadContentDataFromLocal:(NSString *) type
-                                     DeptID:(NSString *) deptID
-                                 CategoryID:(NSString *) categoryID {
+
+/**
+ *  获取获取信息格式统一转化为文档格式
+ *
+ *  @param dict 服务器文档信息
+ *
+ *  @return 文档格式
+ */
++ (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDict
+                                  To:(NSMutableDictionary *)tmpDesc {
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYNAME] Key:OFFLINE_FIELD_CATEGORYNAME];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
+    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_NAME] forKey:SLIDE_DESC_NAME];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_DESC] forKey:SLIDE_DESC_DESC];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TYPE] forKey:SLIDE_DESC_TYPE];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TITLE] forKey:CONTENT_FIELD_TITLE];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_ZIPSIZE] forKey:CONTENT_FIELD_ZIPSIZE];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CATEGORYID] forKey:CONTENT_FIELD_CATEGORYID];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_PAGENUM] forKey:CONTENT_FIELD_PAGENUM];
+    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CREATEDATE] forKey:CONTENT_FIELD_CREATEDATE];
+    return tmpDesc;
+}
+
++ (NSMutableArray*)loadContentDataFromLocal:(NSString *)type
+                                     DeptID:(NSString *)deptID
+                                 CategoryID:(NSString *)categoryID {
     NSError *error;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     NSString *cacheContent = [[NSString alloc] init];

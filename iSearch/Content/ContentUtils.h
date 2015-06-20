@@ -68,5 +68,15 @@
 + (NSMutableDictionary *)mySet:(NSMutableDictionary *)dict
                         Object:(id)obj
                            Key:(NSString *)key;
+
+/**
+ *  获取获取信息格式统一转化为文档格式
+ *
+ *  @param dict 服务器文档信息
+ *
+ *  @return 文档格式
+ */
++ (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDesc
+                                  To:(NSMutableDictionary *)tmpDict;
 @end
 #endif

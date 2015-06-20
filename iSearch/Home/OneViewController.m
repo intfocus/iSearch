@@ -16,6 +16,7 @@
 #import "ViewSlide.h"
 #import "FileUtils.h"
 #import "DisplayViewController.h"
+#import "MainViewController.h"
 
 @interface OneViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gridView;
@@ -131,7 +132,8 @@
     NSInteger index = [sender tag];
     NSMutableDictionary *dict = _dataList[index];
     HomeViewController *homeViewController = [self masterViewController];
-    [homeViewController actionPopupSlideInfo:dict];
+    MainViewController *mainViewController = [homeViewController masterViewController];
+    [mainViewController poupSlideInfo:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
 }
 
 
