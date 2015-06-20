@@ -177,6 +177,7 @@
     _rightViewController=right;
     [self addChildViewController:right];
     [self.rightView addSubview:right.view];
+    [self.view sendSubviewToBack:self.rightView];
 
     right.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     right.view.frame=self.rightView.bounds;
