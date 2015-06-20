@@ -26,14 +26,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    /**
+     * 实例变量初始化
+     */
     _data = [[NSMutableArray alloc] init];
+
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     NSInteger i = 0;
     for(i=0; i< 13; i++) {
         [_data addObject:[NSString stringWithFormat:@"我的记录-%ld", (long)i]];
     }
-    
-    // GMGridView Configuration
     [self configGMGridView];
 }
 
@@ -55,6 +61,7 @@
     gmGridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     gmGridView.centerGrid = YES;
     gmGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontal];
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.view addSubview:gmGridView];
     _gmGridView = gmGridView;
     

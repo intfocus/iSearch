@@ -67,7 +67,7 @@
     // firstRadioButton
     if([fileList count] >= 1) {
         dict = [fileList objectAtIndex:index];
-        firstRadioButton = [self createRadioButton:dict[FILE_DESC_NAME] Index:index];
+        firstRadioButton = [self createRadioButton:dict[SLIDE_DESC_NAME] Index:index];
         [firstRadioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
         [self checkNewTagNameInList:firstRadioButton];
         [self.scrollView addSubview:firstRadioButton];
@@ -77,7 +77,7 @@
     if([fileList count] >= 2) {
         for (index = 1; index < [fileList count]; index++) {
             dict = [fileList objectAtIndex:index];
-            DLRadioButton *radioButton = [self createRadioButton:dict[FILE_DESC_NAME] Index:index];
+            DLRadioButton *radioButton = [self createRadioButton:dict[SLIDE_DESC_NAME] Index:index];
             [radioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
             [self checkNewTagNameInList:radioButton];
             [self.scrollView addSubview:radioButton];
@@ -96,26 +96,26 @@
  *  @param sender 召唤先祖，dismiss自己；自杀的权力都没有，CWPopup插件待弃！
  */
 - (IBAction)actionDismissPopup:(UIBarButtonItem *)sender {
-    NSLog(@"cancel");
     MainAddNewTagView *masterView1 = [self masterViewController];
     ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
     [masterView2 dismissPopup];
 }
 
 /**
- *  选中标签后，提交
+ *  导航栏[完成]按钮；选中标签后，处理于激活状态.
+ *  真正的物理操作逻辑在ReViewController中，so masterViewController is necessary!
  *
- *  @param sender <#sender description#>
+ *  @param sender UIBarButtonItem
  */
 - (IBAction)actionSave:(UIBarButtonItem *)sender {
     NSString *fileName = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
     NSMutableDictionary *descDict = [FileUtils getDescFromFavoriteWithName:fileName];
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:ADDTAG_CONFIG_FILENAME];
-    [FileUtils writeJSON:descDict Into:configPath];
+//    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:ADDTAG_CONFIG_FILENAME];
+//    [FileUtils writeJSON:descDict Into:configPath];
     
     MainAddNewTagView *masterView1 = [self masterViewController];
     ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-    [masterView2 actionSavePagesWithMoveFiles:descDict];
+    [masterView2 actionSavePagesAndMoveFiles:descDict];
     [masterView2 dismissPopup];
 }
 
@@ -135,9 +135,9 @@
 - (void)checkNewTagNameInList:(DLRadioButton *)radioButton {
     MainAddNewTagView *masterView = [self masterViewController];
     NSMutableDictionary *descDict = masterView.descDict;
-    if(descDict[FILE_DESC_NAME] &&
-       [descDict[FILE_DESC_NAME] length] >0 &&
-       [descDict[FILE_DESC_NAME] isEqualToString:radioButton.titleLabel.text]) {
+    if(descDict[SLIDE_DESC_NAME] &&
+       [descDict[SLIDE_DESC_NAME] length] >0 &&
+       [descDict[SLIDE_DESC_NAME] isEqualToString:radioButton.titleLabel.text]) {
         radioButton.selected = YES;
         self.barItemSubmit.enabled = YES;
     }

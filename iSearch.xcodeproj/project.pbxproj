@@ -97,6 +97,7 @@
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
 		C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCEA1B184E530067B762 /* LaunchScreen.xib */; };
 		C4E3CCF81B184E530067B762 /* iSearchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCF71B184E530067B762 /* iSearchTests.m */; };
+		C4EB5F0E1B354960009ADFF5 /* category-default.png in Resources */ = {isa = PBXBuildFile; fileRef = C4EB5F0D1B354960009ADFF5 /* category-default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -254,6 +255,7 @@
 		C4E3CCF11B184E530067B762 /* iSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCF61B184E530067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCF71B184E530067B762 /* iSearchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iSearchTests.m; sourceTree = "<group>"; };
+		C4EB5F0D1B354960009ADFF5 /* category-default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "category-default.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +301,7 @@
 		C42BD5591B2BCAC1006DB157 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4EB5F0D1B354960009ADFF5 /* category-default.png */,
 				C495D8711B34050300C98FB4 /* iconSlideDisplay.png */,
 				C44840FF1B33E9510076B1FE /* iconSlideInfo.png */,
 				C4BFEF491B2E92A80080D7EE /* covers */,
@@ -587,12 +590,12 @@
 		C4D253C11B326B410033F697 /* AddToTag */ = {
 			isa = PBXGroup;
 			children = (
-				C4D253C21B326B410033F697 /* AddNewTagView.h */,
-				C4D253C31B326B410033F697 /* AddNewTagView.m */,
-				C4D253C41B326B410033F697 /* AddNewTagView.xib */,
 				C4D253C51B326B410033F697 /* MainAddNewTagView.h */,
 				C4D253C61B326B410033F697 /* MainAddNewTagView.m */,
 				C4D253C71B326B410033F697 /* MainAddNewTagView.xib */,
+				C4D253C21B326B410033F697 /* AddNewTagView.h */,
+				C4D253C31B326B410033F697 /* AddNewTagView.m */,
+				C4D253C41B326B410033F697 /* AddNewTagView.xib */,
 				C4D253C81B326B410033F697 /* TagListView.h */,
 				C4D253C91B326B410033F697 /* TagListView.m */,
 				C4D253CA1B326B410033F697 /* TagListView.xib */,
@@ -812,6 +815,7 @@
 				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
 				C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */,
 				C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */,
+				C4EB5F0E1B354960009ADFF5 /* category-default.png in Resources */,
 				C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */,
 				C46497341B2D8244005E3903 /* OneViewController.xib in Resources */,
 				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,

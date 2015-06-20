@@ -15,8 +15,7 @@
 
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
-@property (weak, nonatomic) IBOutlet UIImageView *imageCover;
-@property (weak, nonatomic) IBOutlet UIButton *btnEvent;
+@property (weak, nonatomic) IBOutlet UIButton *btnImageCover;
 
 - (void)setImageWith:(NSString *)typeID CategoryID:(NSString *)categoryID;
 @end

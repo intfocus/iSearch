@@ -71,6 +71,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DATABASE_DIRNAME       @"Database" // 数据库文件存放的文件夹名称
 #define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 #define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
+#define THUMBNAIL_DIRNAME      @"Thumbails" // 分类缩略图
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -80,6 +81,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 //  w:427  h:375 间距:20
 #define SIZE_GRID_VIEW_PAGE_WIDTH     184 // 文档页面编辑时GridView Cell width
 #define SIZE_GRID_VIEW_PAGE_HEIGHT    184 // 文档页面编辑时GridView Cell height
+#define SIZE_IMAGE_COVER_HEIGHT       134 // Cell由imageCover/labelTitle上下两部分组成
+#define SIZE_LABEL_TITLE_HEIGHT       50
 #define SIZE_GRID_VIEW_PAGE_MARGIN    20/2 // 文档页面编辑时GridView Cell 间距
 
 #define GRID_VIEW_DELETE_BTN_OFFSET_X -15 // GridView Delete按钮平移位置
@@ -117,9 +120,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_URL_PATH        @"/uat/api/Categories_Api.php" // 请求目录的url路径
 #define CONTENT_FILE_URL_PATH   @"/uat/api/Files_Api.php" // 请求目录的url路径
 #define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
-#define CONTENT_DIRNAME         @"Content" // [目录]成功取得后，写入本地缓存文件夹
-#define DOWNLOAD_DIRNAME        @"Download"// [目录]中[文件]压缩包下载文件夹
-#define FILE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
+#define CONTENT_DIRNAME         @"Contents" // [目录]成功取得后，写入本地缓存文件夹
+#define DOWNLOAD_DIRNAME        @"Downloads"// [目录]中[文件]压缩包下载文件夹
+#define SLIDE_DIRNAME            @"Slides"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
@@ -138,12 +141,17 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_PARAM_FILE_CATEGORYID @"cid" // 待加载分类ID
 #define CONTENT_PARAM_FILE_DWONLOADID @"fid" // 下载文件ID
 // 目录API字段
-#define CONTENT_FIELD_DATA      @"data" // 数据数组
-#define CONTENT_FIELD_ID        @"Id" // 分类ID
-#define CONTENT_FIELD_NAME      @"Name" // 分类名称
+#define CONTENT_FIELD_DATA       @"data" // 数据数组
+#define CONTENT_FIELD_ID         @"Id" // 分类ID
+#define CONTENT_FIELD_NAME       @"Name" // 分类名称
+#define CONTENT_FIELD_TITLE      @"Title" // 分类名称
+#define CONTENT_FIELD_DESC       @"Desc" // 创建时间
 #define CONTENT_FIELD_CREATEDATE @"EditTime" // 创建时间
-#define CONTENT_FIELD_TYPE      @"Type" // 类型: 0为目录，1为文件
-#define CONTENT_FIELD_URL       @"DownloadUrl" // 文件下载链接，代码拼接而成
+#define CONTENT_FIELD_TYPE       @"Type" // 类型: 0为目录，1为文件
+#define CONTENT_FIELD_CATEGORYID @"CategoryId"
+#define CONTENT_FIELD_ZIPSIZE    @"ZipSize"
+#define CONTENT_FIELD_PAGENUM    @"PageNo"
+#define CONTENT_FIELD_URL        @"DownloadUrl" // 文件下载链接，代码拼接而成
 
 // 离线搜索/批量下载
 #define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
@@ -177,16 +185,17 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
 #define ADDTAG_CONFIG_FILENAME     @"add_tag.json" // 编辑界面，选择页面后，保存信息
 #define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
-#define FAVORITE_DIRNAME           @"Favorite"
+#define FAVORITE_DIRNAME           @"Favorites"
 // 文档描述desc.json相关
 // TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
-#define FILE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
-#define FILE_DESC_ID               @"id"
-#define FILE_DESC_TYPE             @"type"
-#define FILE_DESC_NAME             @"name"
-#define FILE_DESC_DESC             @"desc"
-#define FILE_DESC_ORDER            @"order"
-#define FILE_DESC_MODIFY           @"updated_at" // 本地更新时间
+#define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define SLIDE_DESC_ID               @"id"
+#define SLIDE_DESC_TYPE             @"type"
+#define SLIDE_DESC_NAME             @"name"
+#define SLIDE_DESC_DESC             @"desc"
+#define SLIDE_DESC_ORDER            @"order"
+#define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
+#define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
 #define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"

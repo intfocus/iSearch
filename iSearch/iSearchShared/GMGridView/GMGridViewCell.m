@@ -341,7 +341,6 @@
                                              selectButtonIcon.size.height);
         
         [self.selectButton setTitle:nil forState:UIControlStateNormal];
-        [self.selectButton setBackgroundColor:[UIColor blackColor]];
     }
 }
 

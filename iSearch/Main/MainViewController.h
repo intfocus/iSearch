@@ -26,7 +26,14 @@
 -(void)onUserHeadClick:(id)sender;
 
 - (void)backToLoginViewController;
-- (void)helloWorld;
+
+/**
+ *  点击文档[明细]，弹出框显示文档信息，及操作
+ *
+ *  @param slideID 文档ID
+ *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
+ */
+- (void)poupSlideInfo:(NSString *)slideID Dir:(NSString *)dirName;
 - (void)dismissPopup;
 
 

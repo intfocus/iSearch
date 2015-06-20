@@ -10,10 +10,12 @@
 #define iSearch_ThreeViewController_h
 
 #import <UIKit/UIKit.h>
+@class HomeViewController;
 /**
  *  HomePage第三栏 - 我的记录
  */
 @interface ThreeViewController : UIViewController
+@property (nonatomic , nonatomic) HomeViewController *masterViewController;
 
 @end
 

@@ -27,13 +27,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *redNoteBtn;  // 笔记 - 红色
 @property (weak, nonatomic) IBOutlet UIButton *greenNoteBtn;// 笔记 - 绿色
 @property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
+@property (nonatomic, nonatomic) PopupView      *popupView;
 
 @property (nonatomic, nonatomic) NSInteger  currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL  isDrawing; // 作笔记状态
 @property (nonatomic, nonatomic) BOOL  isLasering;// 激光笔状态
 @property (nonatomic, nonatomic) PaintView  *paintView; // 笔记、激光笔画布
-@property (nonatomic, nonatomic) NSString *fileID;
+@property (nonatomic, nonatomic) NSString *slideID;
 @property (nonatomic, nonatomic) NSString *filePath;
 @property (nonatomic, nonatomic) NSMutableDictionary *fileDesc;
 @property (nonatomic, nonatomic) NSString *forbidCss;
@@ -117,7 +118,7 @@
  *  控件事件
  */
 - (void) loadHtml {
-    NSString *htmlName = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex: self.currentPageIndex];
+    NSString *htmlName = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex: self.currentPageIndex];
     NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.filePath, htmlName, PAGE_HTML_FORMAT];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
@@ -142,17 +143,17 @@
         NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
         abort();
     }
-    self.fileID = configDict[CONTENT_KEY_DISPLAYID];
+    self.slideID = configDict[CONTENT_KEY_DISPLAYID];
     self.isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
     
-    if([self.fileID length] == 0) {
+    if([self.slideID length] == 0) {
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
         abort();
     }
     
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
-    self.filePath = [FileUtils getPathName:dirName FileName:self.fileID];
-    NSString *descPath = [self.filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    self.filePath = [FileUtils getPathName:dirName FileName:self.slideID];
+    NSString *descPath = [self.filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     NSError *error;
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     BOOL isYES = NSErrorPrint(error, @"read slide desc content#%@", descPath);
@@ -161,7 +162,23 @@
     self.fileDesc = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     isYES = NSErrorPrint(error, @"desc content convert into json");
     if(!isYES) { abort(); }
+}
+
+- (IBAction)addSlideToFavorite:(UIButton *)sender {
+    BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
+        [DateUtils updateSlideTimestamp:dict];
+    }];
+    // 信息提示
+    self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
     
+    self.popupView.ParentView = self.view;
+    NSString *popupInfo = [NSString stringWithFormat:@"拷贝%@", isSuccessfully ? @"成功" : @"失败"];
+    [self showPopupView: popupInfo];
+    
+}
+- (void) showPopupView: (NSString*) text {
+    [self.popupView setText: text];
+    [self.view addSubview:self.popupView];
 }
 
 - (void) extractResource {
@@ -340,15 +357,14 @@
 - (IBAction) enterFilePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
-    if([FileUtils checkSlideExist:self.fileID Dir:dirName Force:YES]) {
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    if([FileUtils checkSlideExist:self.slideID Dir:dirName Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
-        [config setObject:self.fileID forKey:CONTENT_KEY_EDITID1];
-        [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
+        NSString *pageID = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
+        [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
         NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];
         if(self.isFavorite) {
@@ -357,12 +373,13 @@
         [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
         [config writeToFile:pathName atomically:YES];
         
-        NSString *fileDescSwpPath = [FileUtils fileDescPath:self.fileID Klass:FILE_CONFIG_SWP_FILENAME];
+        NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+        NSString *fileDescSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
         if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
             NSLog(@"Config SWP file Exist! last time must be CRASH!");
         } else {
             // 拷贝一份文档描述配置
-            [FileUtils copyFileDescContent:self.fileID];
+            [FileUtils copyFileDescContent:self.slideID Dir:dirName];
         }
         
         // 界面跳转至文档页面编辑界面

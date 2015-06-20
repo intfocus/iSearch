@@ -18,10 +18,14 @@
 //#import "OfflineViewController.h"
 //#import "ContentViewController.h"
 //#import "FavoriteViewController.h"
-
+#import "FileUtils.h"
 #import "PopupView.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
+
+#import "SlideInfoView.h"
+#import "UIViewController+CWPopup.h"
+#import "ContentUtils.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -42,6 +46,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
+    // CWPopup 事件
+    self.useBlurForPopup = YES;
+//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
+//    tapRecognizer.numberOfTapsRequired = 1;
+//    tapRecognizer.delegate = self;
+//    [self.view addGestureRecognizer:tapRecognizer];
+    
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //NSActionLogger(@"主界面加载", @"successfully");
@@ -166,6 +177,7 @@
     _rightViewController=right;
     [self addChildViewController:right];
     [self.rightView addSubview:right.view];
+    [self.view sendSubviewToBack:self.rightView];
 
     right.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     right.view.frame=self.rightView.bounds;
@@ -189,10 +201,6 @@
     LoginViewController *login = [[LoginViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
     window.rootViewController = login;
-}
-
--(void)helloWorld {
-    NSLog(@"hello world");
 }
 
 #pragma mark - 头像上传功能函数
@@ -264,4 +272,47 @@
     }];
 }
 
+#pragma mark - CWPoup methods
+/**
+ *  已下载文件点击[明细]，弹出框显示文档信息，及操作
+ *
+ *  @param slideID 文档ID
+ *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
+ */
+- (void)poupSlideInfo:(NSString *)slideID Dir:(NSString *)dirName {
+    NSString *descPath = [[NSString alloc] init];
+    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
+    // 在线浏览文档时
+    if([dirName isEqualToString:CONTENT_DIRNAME]) {
+        NSString *cacheName = [NSString stringWithFormat:@"%@-%@.cache", CONTENT_SLIDE, slideID];
+        descPath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];;
+        descDict = [FileUtils readConfigFile:descPath];
+        NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
+        tmpDesc = [ContentUtils descConvert:descDict To:tmpDesc];
+        descDict = tmpDesc;
+    } else {
+        descPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+        descDict = [FileUtils readConfigFile:descPath];
+    }
+    
+    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
+    slideInfoView.masterViewController = self;
+    slideInfoView.dict = descDict;
+    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
+}
+
+/**
+ *  关闭弹出框；
+ *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
+ *  强制刷新[收藏界面]；
+ */
+- (void)dismissPopup {
+    if (self.popupViewController != nil) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissed");
+        }];
+    }
+}
 @end

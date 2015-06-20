@@ -13,7 +13,6 @@
 #import "ThreeViewController.h"
 
 #import "MainViewController.h"
-#import "UIViewController+CWPopup.h"
 #import "SlideInfoView.h"
 
 @interface HomeViewController ()
@@ -38,9 +37,10 @@
     one.masterViewController   = self;
     self.oneViewController     = one;
     TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
-    //    two.masterViewController   = self.masterViewController;
+    two.masterViewController   = self;
     self.twoViewController     = two;
     ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
+    three.masterViewController   = self;
     self.threeViewController   = three;
     
     //导航栏标题
@@ -53,14 +53,6 @@
     containerView.layer.masksToBounds = NO;
     UIBarButtonItem *leftTitleBI = [[UIBarButtonItem alloc] initWithCustomView:containerView];
     self.navigationItem.leftBarButtonItem = leftTitleBI;
-    
-    
-    // CWPopup 事件
-    self.useBlurForPopup = YES;
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
-    tapRecognizer.numberOfTapsRequired = 1;
-    tapRecognizer.delegate = self;
-    [self.view addGestureRecognizer:tapRecognizer];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -118,12 +110,12 @@
  *  收藏页面，点击文件[明细]，弹出框显示文档信息，及操作
  */
 - (void)actionPopupSlideInfo:(NSMutableDictionary *)dict {
-    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
-    slideInfoView.masterViewController = self;
-    slideInfoView.dict = dict;
-    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
-    }];
+//    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
+//    slideInfoView.masterViewController = self;
+//    slideInfoView.dict = dict;
+//    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
+//        NSLog(@"popup view presented");
+//    }];
 }
 
 /**
@@ -132,14 +124,14 @@
  *  强制刷新[收藏界面]；
  */
 - (void)dismissPopup {
-    if (self.popupViewController != nil) {
-        [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
-        }];
-    }
-    OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
-    one.masterViewController   = self;
-    self.oneViewController     = one;
+//    if (self.popupViewController != nil) {
+//        [self dismissPopupViewControllerAnimated:YES completion:^{
+//            NSLog(@"popup view dismissed");
+//        }];
+//    }
+//    OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
+//    one.masterViewController   = self;
+//    self.oneViewController     = one;
 }
 
 @end

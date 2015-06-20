@@ -48,13 +48,14 @@
 + (BOOL) checkFileExist: (NSString*) pathname isDir: (BOOL) isDir;
 
 /**
- *  读取登陆信息配置档，有则读取，无则使用默认值
+ *  读取配置档，有则读取。
+ *  默认为NSMutableDictionary，若读取后为空，则按JSON字符串转NSMutableDictionary处理。
  *
- *  @param pathname 配置档沙盒绝对路径
+ *  @param pathname 配置档路径
  *
  *  @return 返回配置信息NSMutableDictionary
  */
-+ (NSMutableDictionary*) readConfigFile:(NSString*) pathname;
++ (NSMutableDictionary*) readConfigFile: (NSString*) pathName;
 
 
 /**
@@ -76,7 +77,7 @@
  *  @return 存在即true, 否则false
  */
 
-+ (BOOL) checkSlideExist: (NSString *) fileID
++ (BOOL) checkSlideExist: (NSString *) slideID
                      Dir:(NSString *)dir
                    Force:(BOOL)isForce;
 
@@ -101,27 +102,32 @@
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) fileDescContent:(NSString *) fileID Dir:(NSString *)dir;
++ (NSString *) slideDescContent:(NSString *) fileID Dir:(NSString *)dir;
 
 /**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json(.swp)
- *  klass为FILE_CONFIG_FILENAME、FILE_DISPLAY_CONFIG_FILENAME
+ *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
+ *  Dir为FILE_DIRNAME/FAVORITGE_DIRNAME
+ *  klass为FILE_CONFIG_FILENAME/FILE_DISPLAY_CONFIG_FILENAME
  *
  *  @param fileID fileID
+ *  @param Dir    FILE_DIRNAME/FAVORITE_DIRNAME
+ *  @param Klass  FILE_DESC_FILENAME/FILE_DESC_SWP_FILE_NAME
  *
- *  @return 文档配置档内容;json
+ *  @return 文档配置档路径
  */
-+ (NSString *) fileDescPath:(NSString *) fileID
-                      Klass:(NSString *) klass;
++ (NSString *) slideDescPath:(NSString *)fileID
+                        Dir:(NSString *)dirName
+                      Klass:(NSString *)klass;
 
 /**
  *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；
  *
  *  @param fileID fileID
+ *  @param dirName FILE_DIRNAME/FAVORITE_DIRNAME
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) copyFileDescContent:(NSString *) fileID;
++ (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName;
 
 
 /**
@@ -193,6 +199,18 @@
 + (NSString*) fileThumbnail:(NSString *)FileID
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
+
+/**
+ *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
+ *  使用block是为了保持FileUtils一方净土
+ *
+ *  @param slideID                   文档ID
+ *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
+ *
+ *  @return 操作成功否
+ */
++ (BOOL) copySlideToFavorite:(NSString *)slideID
+                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
 @end
 
 

@@ -32,7 +32,7 @@
 
 - (void) initControls {
     NSString *fileID = self.dict[OFFLINE_COLUMN_FILEID];
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *filePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:fileID];
 
     NSString *imageName = [[NSString alloc] init];
     NSString *downloadState = @"未下载";
@@ -54,8 +54,9 @@
 }
 
 - (IBAction) slideClick:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:FAVORITE_DIRNAME Force:NO]) {
+    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:SLIDE_DIRNAME Force:NO]) {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@", BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.dict[OFFLINE_COLUMN_FILEID]];
+        self.labelDownloadState.text = @"下载中...";
         [self downloadZip:downloadUrl];
         //} else {
         //     演示文稿功能在主界面代码中处理
@@ -66,7 +67,7 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:FAVORITE_DIRNAME Force:NO]) {
+    if([FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:SLIDE_DIRNAME Force:NO]) {
         self.labelDownloadState.text = @"已下载";
     } else {
         self.labelDownloadState.text = @"未下载";
@@ -127,7 +128,7 @@
 - (void) extractZipFile {
     NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.dict[OFFLINE_COLUMN_FILEID]];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSString *filesPath = [FileUtils getPathName:SLIDE_DIRNAME];
     NSString *filePath = [filesPath stringByAppendingPathComponent:self.dict[OFFLINE_COLUMN_FILEID]];
     
     // 解压

@@ -11,10 +11,13 @@
 
 #import <UIKit/UIKit.h>
 #import "RightSideViewController.h"
+
+@class HomeViewController;
 /**
  *  HomePage第二栏 - 我的分类
  */
-@interface TwoViewController : RightSideViewController
+@interface TwoViewController : UIViewController
+@property (nonatomic , nonatomic) HomeViewController *masterViewController;
 
 @end
 

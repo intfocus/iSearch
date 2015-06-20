@@ -16,6 +16,8 @@
 #import "ViewSlide.h"
 #import "FileUtils.h"
 #import "DisplayViewController.h"
+#import "MainViewController.h"
+#import "ContentUtils.h"
 
 @interface OneViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gridView;
@@ -28,17 +30,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    /**
+     * 实例变量初始化
+     */
     _dataList = [[NSMutableArray alloc] init];
-    // GMGridView Configuration
-    [self configGMGridView];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     _dataList = [FileUtils favoriteFileList];
-    [_gridView reloadData];
+    // order by updated_at by default.
+    _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+    [self configGMGridView];
 }
 
 - (void)viewDidLayoutSubviews{
@@ -58,6 +62,7 @@
     gmGridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     gmGridView.centerGrid = YES;
     gmGridView.layoutStrategy = [GMGridViewLayoutStrategyFactory strategyFromType:GMGridViewLayoutHorizontal];
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.view addSubview:gmGridView];
     _gridView = gmGridView;
     
@@ -95,15 +100,15 @@
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
         slide.isFavoriteFile = YES;
         slide.dict = currentDict;
-        if([FileUtils checkSlideExist:currentDict[FILE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
+        if([FileUtils checkSlideExist:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
             NSError *error;
-            NSString *descContent = [FileUtils fileDescContent:currentDict[FILE_DESC_ID] Dir:FAVORITE_DIRNAME];
+            NSString *descContent = [FileUtils slideDescContent:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
             NSMutableDictionary *descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
                                                                             options:NSJSONReadingMutableContainers
                                                                               error:&error];
             
-            if(error == nil && descData[FILE_DESC_ORDER] && [descData[FILE_DESC_ORDER] count] > 0) {
-                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[FILE_DESC_ID] PageID:[descData[FILE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
+            if(error == nil && descData[SLIDE_DESC_ORDER] && [descData[SLIDE_DESC_ORDER] count] > 0) {
+                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[SLIDE_DESC_ID] PageID:[descData[SLIDE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
                 [slide loadThumbnail:thumbnailPath];
             }
         }
@@ -127,7 +132,8 @@
     NSInteger index = [sender tag];
     NSMutableDictionary *dict = _dataList[index];
     HomeViewController *homeViewController = [self masterViewController];
-    [homeViewController actionPopupSlideInfo:dict];
+    MainViewController *mainViewController = [homeViewController masterViewController];
+    [mainViewController poupSlideInfo:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
 }
 
 
@@ -145,7 +151,7 @@
 - (IBAction)actionDisplaySlide:(UIButton *)sender {
     NSInteger index = [sender tag];
     NSMutableDictionary *currentDict = _dataList[index];
-    NSString *fileID = currentDict[FILE_DESC_ID];
+    NSString *fileID = currentDict[SLIDE_DESC_ID];
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
@@ -153,7 +159,7 @@
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
         [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
-        [configDict setObject:[NSNumber numberWithInt:SlideDisplayFavorite] forKey:SLIDE_DISPLAY_TYPE];
+        [configDict setObject:[NSNumber numberWithInt:SlideTypeFavorite] forKey:SLIDE_DISPLAY_TYPE];
         [configDict writeToFile:configPath atomically:YES];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];

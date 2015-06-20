@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,42 +11,43 @@
             <rect key="frame" x="0.0" y="0.0" width="184" height="184"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cMz-58-2Mc">
-                    <rect key="frame" x="0.0" y="0.0" width="184" height="154"/>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件夹名称" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zkm-rY-7Vb">
-                    <rect key="frame" x="0.0" y="154" width="184" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BXk-g5-0id" userLabel="imageCover">
+                    <rect key="frame" x="0.0" y="0.0" width="184" height="134"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="hWF-c8-a7G"/>
+                        <constraint firstAttribute="width" constant="184" id="20E-7v-RyL"/>
+                        <constraint firstAttribute="height" constant="134" id="thK-Ds-XyM"/>
+                    </constraints>
+                    <state key="normal" image="category-default.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="分类名称" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zkm-rY-7Vb">
+                    <rect key="frame" x="0.0" y="134" width="184" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="184" id="gER-fX-Ejh"/>
+                        <constraint firstAttribute="height" constant="50" id="uBC-8C-Eyf"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BXk-g5-0id">
-                    <rect key="frame" x="0.0" y="0.0" width="187" height="187"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="zkm-rY-7Vb" secondAttribute="bottom" id="7UV-KJ-c8r"/>
-                <constraint firstAttribute="trailing" secondItem="zkm-rY-7Vb" secondAttribute="trailing" id="KlI-rB-170"/>
-                <constraint firstItem="cMz-58-2Mc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Nkc-ln-9TP"/>
-                <constraint firstItem="zkm-rY-7Vb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SsJ-8x-qeU"/>
-                <constraint firstItem="zkm-rY-7Vb" firstAttribute="top" secondItem="cMz-58-2Mc" secondAttribute="bottom" id="Yiw-Z3-ABy"/>
-                <constraint firstItem="cMz-58-2Mc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="crf-32-YXk"/>
-                <constraint firstAttribute="trailing" secondItem="cMz-58-2Mc" secondAttribute="trailing" id="z88-h8-0Hg"/>
+                <constraint firstAttribute="bottomMargin" secondItem="zkm-rY-7Vb" secondAttribute="bottom" id="Kge-mU-dM2"/>
+                <constraint firstItem="zkm-rY-7Vb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="hfJ-cm-qYl"/>
+                <constraint firstItem="BXk-g5-0id" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="txY-cq-gHp"/>
+                <constraint firstItem="BXk-g5-0id" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="wHF-rp-6Br"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="btnEvent" destination="BXk-g5-0id" id="gtg-rk-hCx"/>
-                <outlet property="imageCover" destination="cMz-58-2Mc" id="oTI-GC-iFj"/>
+                <outlet property="btnImageCover" destination="BXk-g5-0id" id="pwM-Xo-Kqc"/>
                 <outlet property="labelTitle" destination="zkm-rY-7Vb" id="tRZ-G7-ZOR"/>
             </connections>
             <point key="canvasLocation" x="62.5" y="137.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="category-default.png" width="184" height="134"/>
+    </resources>
 </document>
