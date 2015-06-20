@@ -51,7 +51,7 @@
  *
  *  @return 更新后的配置档
  */
-+ (NSMutableDictionary *) updateDescTimestamp:(NSMutableDictionary *)dict {
++ (NSMutableDictionary *) updateSlideTimestamp:(NSMutableDictionary *)dict {
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
     
     if(!dict[SLIDE_DESC_LOCAL_CREATEAT]) {

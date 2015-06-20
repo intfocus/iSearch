@@ -46,7 +46,7 @@
  *
  *  @return 更新后的配置档
  */
-+ (NSMutableDictionary *) updateDescTimestamp:(NSMutableDictionary *)dict;
++ (NSMutableDictionary *) updateSlideTimestamp:(NSMutableDictionary *)dict;
 
 @end
 

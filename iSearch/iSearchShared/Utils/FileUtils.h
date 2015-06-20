@@ -199,6 +199,17 @@
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
+/**
+ *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
+ *  使用block是为了保持FileUtils一方净土
+ *
+ *  @param slideID                   文档ID
+ *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
+ *
+ *  @return 操作成功否
+ */
++ (BOOL) copySlideToFavorite:(NSString *)slideID
+                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
 @end
 
 

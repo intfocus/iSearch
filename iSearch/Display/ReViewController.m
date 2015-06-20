@@ -59,7 +59,6 @@
 
 @interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewTransformationDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
-    UIImageView          *changeBigImageView;
     NSMutableArray       *_dataList;   // 文件的页面信息
     NSMutableArray       *_selectedList; // 内容重组选择的页面序号
 }
@@ -67,7 +66,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL selectState;   // 编辑状态
-@property (nonatomic, nonatomic) NSString  *fileID;
+@property (nonatomic, nonatomic) NSString  *slideID;
 @property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemEdit; // 是否切换至编辑状态
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemRestore; // 恢复至初始状态，desc.json覆盖desc.json.swp
@@ -78,7 +77,7 @@
 @end
 
 @implementation ReViewController
-@synthesize fileID;
+@synthesize slideID;
 @synthesize pageID;
 @synthesize barItemRestore;
 @synthesize barItemEdit;
@@ -89,16 +88,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     
-    // 任何@property对象都需要初始化,否则直接赋值失败
+    /**
+     实例变量初始化
+     */
+    self.selectState = false;
     self.pageInfoTmp = [[NSMutableDictionary alloc] init];
     _dataList = [[NSMutableArray alloc] init];
     _selectedList = [[NSMutableArray alloc] init];
-    self.selectState = false;
     // 必须放前排 for 后面一些设置需要用到fileID/pageID
     [self loadConfigInfo];
 
+    /**
+     *  导航栏控件
+     */
     // 导航左侧按钮区
     NSMutableArray* array = [NSMutableArray array];
     UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"< 返回"]
@@ -146,13 +149,9 @@
     [array addObject:self.barItemRemove];
     self.navigation.rightBarButtonItems = [[array reverseObjectEnumerator] allObjects];
     
-    // 选择页面后，保存
-//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
-//    tapRecognizer.numberOfTapsRequired = 1;
-//    tapRecognizer.delegate = self;
-//    [self.view addGestureRecognizer:tapRecognizer];
-//    
-    // CWPopup 事件
+    /**
+     *  CWPopup 事件
+     */
     self.useBlurForPopup = YES;
     
     // 配置创建 GMGridView
@@ -199,7 +198,7 @@
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
-    self.fileID = config[CONTENT_KEY_EDITID1];
+    self.slideID = config[CONTENT_KEY_EDITID1];
     self.pageID = config[CONTENT_KEY_EDITID1];
     self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 }
@@ -231,7 +230,7 @@
     // 用户可以通过[恢复]实现还原最原始的状态
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass: FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass: FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc.swp file");
     descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
@@ -255,11 +254,11 @@
  *  bad方法: copy then remove or move; 各种问题
  *  @param gesture UIGestureRecognizer
  */
-- (void)actionDismiss:(UIGestureRecognizer *)gesture {
+- (IBAction)actionDismiss:(UIGestureRecognizer *)gesture {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     
     [descSwpContent writeToFile:descPath atomically:true encoding:NSUTF8StringEncoding error:&error];
@@ -282,14 +281,14 @@
 - (void)checkDescSwpContent {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc file");
     NSMutableDictionary *descDict = [NSMutableDictionary alloc];
     descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     NSErrorPrint(error, @"desc content convert to json");
     
-    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc swp file");
     NSMutableDictionary *descSwpDict = [NSMutableDictionary alloc];
@@ -308,10 +307,10 @@
 - (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc file");
-    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
 
     [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"[restore] desc content write into desc swp file");
@@ -389,186 +388,6 @@
     [alertView show];
 }
 
-// TODO 已经创建重组夹列表
-// 名称、描述
-/**
- *  选择页面后，点击[保存]按钮后，弹出对话框选择内容重组文件名称列表，或新建文件名称及描述
- *
- *  @param alertView   弹出框实现
- *  @param buttonIndex 弹出框按钮序号
- */
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    // tag == 101 => [移除]
-    if(alertView.tag == 101 && buttonIndex == 1) {
-        [self removePagesFromDescSwpFile];
-    } else {
-        NSLog(@"BUG: alertView.tag=%d; buttonIndex: %d", alertView.tag, buttonIndex);
-    }
-}
-
-/**
- *  选择页面后，点击[移除]按钮后，确认后，重置desc.swp[@order]
- *  **重点** 必须倒序removeObjectAtIndex
- */
-- (void)removePagesFromDescSwpFile {
-    NSNumber *pageIndex = [[NSNumber alloc] init];
-    NSSortDescriptor *highestToLowest = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:NO];
-    NSLog(@"before sort: %@", _selectedList);
-    [_selectedList sortUsingDescriptors:[NSArray arrayWithObject:highestToLowest]];
-    NSLog(@"after sort: %@", _selectedList);
-    
-    NSLog(@"before remove: %@", _dataList);
-    for(pageIndex in _selectedList)
-        [_dataList removeObjectAtIndex:[pageIndex integerValue]];
-    NSLog(@"after remove: %@", _dataList);
-    
-    NSError *error;
-    NSMutableDictionary *descJSON = [[NSMutableDictionary alloc] init];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"[移除] read desc.swp file");
-    descJSON = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
-                                               options:NSJSONReadingMutableContainers
-                                                 error:&error];
-    NSErrorPrint(error, @"[移除] desc.swp convert into json");
-    descJSON[@"order"] = _dataList;
-    [FileUtils writeJSON:descJSON Into:descSwpPath];
-    [self refreshGridView];
-}
-/**
- *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
- *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
- *
- *  并把当前选择的页面拷贝到目标文件ID(FAVORITE_DIRNAME)文件夹下
- *
- *  @param dict 目标文件配置
- */
-- (void)actionSavePagesAndMoveFiles:(NSMutableDictionary *)dict {
-    NSError *error;
-    NSNumber *pageIndex           = [[NSNumber alloc] init];
-    NSString *pageName            = [[NSString alloc] init];
-    NSMutableArray *pages         = [[NSMutableArray alloc] init];
-    NSMutableDictionary *descDict = [NSMutableDictionary dictionaryWithCapacity:0];
-
-    // read Slide config information
-    NSString *descPath = [FileUtils fileDescPath:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-        
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read desc file");
-    descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                               options:NSJSONReadingMutableContainers
-                                                 error:&error];
-    NSErrorPrint(error, @"desc content convert into json");
-    
-    pages = descDict[SLIDE_DESC_ORDER];
-    for(pageIndex in _selectedList) {
-        pageName = [_dataList objectAtIndex:[pageIndex intValue]];
-        
-        // skip when not exist
-        if([pages containsObject:pageName]) continue;
-        
-        // copy page/image
-        [self copyFilePage:pageName FromFileId:self.fileID ToFileId:dict[SLIDE_DESC_ID]];
-        
-        [pages addObject:pageName];
-    }
-    // update Slide created_at/updated_at
-    descDict = [DateUtils updateDescTimestamp:descDict];
-    // rewrite Slide config information into local file
-    [descDict setObject:pages forKey:SLIDE_DESC_ORDER];
-    [FileUtils writeJSON:descDict Into:descPath];
-}
-
-/**
- *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
- *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
- *
- *  @param pageName   页面名称fildId_pageId.html
- *  @param fromFileId 源文件id
- *  @param toFileId   目标文件id
- */
-- (void)copyFilePage:(NSString *)pageName
-          FromFileId:(NSString *)fromFileId
-            ToFileId:(NSString *)toFileId {
-    NSError *error;
-    NSString *filePath, *newFilePath, *pagePath, *newPagePath, *imagePath, *newImagePath;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *filesPath = [FileUtils getPathName:dirName];
-    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
-    
-    filePath      = [filesPath stringByAppendingPathComponent:fromFileId];
-    newFilePath   = [favoritePath stringByAppendingPathComponent:toFileId];
-    // 复制html文件
-    pagePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
-    newPagePath = [newFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
-    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
-    NSErrorPrint(error, @"copy page html from %@ -> %@", fromFileId, toFileId);
-    // 复制文件夹
-    imagePath = [filePath stringByAppendingPathComponent:pageName];
-    newImagePath = [newFilePath stringByAppendingPathComponent:pageName];
-    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
-    NSErrorPrint(error, @"copy page folder from %@ -> %@", fromFileId, toFileId);
-}
-
-/**
- *  交换文件fildId的页面序号index1与index2的顺序，并修改FILE_COFNIG_FILENAME文件
- *
- *  @param fileId 文件id
- *  @param index1 exchangePageIndex
- *  @param index2 withPageIndex
- */
-- (void) excangePageOrder:(NSString *)fileId
-                FromIndex:(NSInteger)index1
-                  ToIndex:(NSInteger)index2 {
-    
-    NSError *error;
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
-    
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read desc.swp file");
-    NSMutableDictionary *descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
-                                               options:NSJSONReadingMutableContainers
-                                                    error:&error];
-    NSErrorPrint(error, @"desc.swp content convert into json");
-    
-    NSMutableArray *pageOrder = descDict[SLIDE_DESC_ORDER];
-    [pageOrder exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
-    
-    // 重置order内容并写入配置档
-    [descDict setObject:pageOrder forKey:SLIDE_DESC_ORDER];
-    [FileUtils writeJSON:descDict Into:descSwpPath];
-}
-
-/**
- *  移除文件页面序号为index的页面
- *
- *  @param fileId 文件id
- *  @param index  页面序号
- */
-- (void) removePage:(NSString *)fileId
-              Index:(NSInteger)index {
-    NSError *error;
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils fileDescPath:fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
-    
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read desc.swp file");
-    NSMutableDictionary *descDict= [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                  options:NSJSONReadingMutableContainers
-                                                    error:&error];
-    NSErrorPrint(error, @"desc.swp content convert into json");
-    
-    NSMutableArray *pageOrder = descDict[SLIDE_DESC_ORDER];
-    [pageOrder removeObjectAtIndex:index];
-    
-    // 重置order内容并写入配置档
-    [descDict setObject:pageOrder forKey:SLIDE_DESC_ORDER];
-    [FileUtils writeJSON:descDict Into:descSwpPath];
-}
-
 
 
 //////////////////////////////////////////////////////////////
@@ -620,12 +439,12 @@
         // TODO: 根据fileID_pageID分解出fileID，然后到CONTENT/fileID/desc.json中读取name;
         // 文档页面可能是从其他文档重组过来的，所以fileID_pageID中的fileID不一定与文档ID一致;
 
-        NSString *currentFileID = self.fileID;
+        NSString *currentFileID = self.slideID;
         NSString *keyName = [NSString stringWithFormat:@"page-%@", currentFileID];
         NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
         // self.tmpPageInfo - 为了减少重复扫描本地信息
         if(![[self.pageInfoTmp allKeys] containsObject:keyName]) {
-            NSString *descSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+            NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
             NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
             NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
             
@@ -642,7 +461,7 @@
         filePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", currentDescSwpDict[SLIDE_DESC_NAME]];
         filePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页#%@", (long)index, [currentDescSwpDict[SLIDE_DESC_ORDER] objectAtIndex:index]];
         
-        NSString *thumbnailPath = [FileUtils fileThumbnail:self.fileID PageID:currentPageID Dir:dirName];
+        NSString *thumbnailPath = [FileUtils fileThumbnail:self.slideID PageID:currentPageID Dir:dirName];
         [filePage loadThumbnail: thumbnailPath];
         
         
@@ -773,7 +592,7 @@
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
     NSLog(@"%ld => %ld",(long)index1, (long)index2);
-    [self excangePageOrder:self.fileID FromIndex:index1 ToIndex:index2];
+    [self excangePageOrder:self.slideID FromIndex:index1 ToIndex:index2];
     [_dataList exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
 }
 
@@ -833,6 +652,199 @@
 }
 
 - (void)GMGridView:(GMGridView *)gridView didEnterFullSizeForCell:(UIView *)cell { }
+
+
+#pragma mark - Private methods
+/**
+ *  封装自己的writeJSON，需要操作DateUtils/FileUtils
+ *
+ *  @param dict desc config information with NSMutableDictionary format
+ *  @param path the path that write into
+ */
+- (void) writeJSON:(NSMutableDictionary *)dict Into:(NSString *)path {
+    dict = [DateUtils updateSlideTimestamp:dict];
+    [FileUtils writeJSON:dict Into:path];
+}
+
+// TODO 已经创建重组夹列表
+// 名称、描述
+/**
+ *  选择页面后，点击[保存]按钮后，弹出对话框选择内容重组文件名称列表，或新建文件名称及描述
+ *
+ *  @param alertView   弹出框实现
+ *  @param buttonIndex 弹出框按钮序号
+ */
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    // tag == 101 => [移除]
+    if(alertView.tag == 101 && buttonIndex == 1) {
+        [self removePagesFromDescSwpFile];
+    } else {
+        NSLog(@"BUG: alertView.tag=%d; buttonIndex: %d", alertView.tag, buttonIndex);
+    }
+}
+
+/**
+ *  选择页面后，点击[移除]按钮后，确认后，重置desc.swp[@order]
+ *  **重点** 必须倒序removeObjectAtIndex
+ */
+- (void)removePagesFromDescSwpFile {
+    NSNumber *pageIndex = [[NSNumber alloc] init];
+    NSSortDescriptor *highestToLowest = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:NO];
+    NSLog(@"before sort: %@", _selectedList);
+    [_selectedList sortUsingDescriptors:[NSArray arrayWithObject:highestToLowest]];
+    NSLog(@"after sort: %@", _selectedList);
+    
+    NSLog(@"before remove: %@", _dataList);
+    for(pageIndex in _selectedList)
+        [_dataList removeObjectAtIndex:[pageIndex integerValue]];
+    NSLog(@"after remove: %@", _dataList);
+    
+    NSError *error;
+    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *descSwpPath = [FileUtils fileDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"[移除] read desc.swp file");
+    descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
+                                               options:NSJSONReadingMutableContainers
+                                                 error:&error];
+    NSErrorPrint(error, @"[移除] desc.swp convert into json");
+    descDict[@"order"] = _dataList;
+    [self writeJSON:descDict Into:descSwpPath];
+    [self refreshGridView];
+}
+/**
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
+ *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
+ *
+ *  并把当前选择的页面拷贝到目标文件ID(FAVORITE_DIRNAME)文件夹下
+ *
+ *  @param dict 目标文件配置
+ */
+- (void)actionSavePagesAndMoveFiles:(NSMutableDictionary *)dict {
+    NSError *error;
+    NSNumber *pageIndex           = [[NSNumber alloc] init];
+    NSString *pageName            = [[NSString alloc] init];
+    NSMutableArray *pages         = [[NSMutableArray alloc] init];
+    NSMutableDictionary *descDict = [NSMutableDictionary dictionaryWithCapacity:0];
+    
+    // read Slide config information
+    NSString *descPath = [FileUtils fileDescPath:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+    
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"read desc file");
+    descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                               options:NSJSONReadingMutableContainers
+                                                 error:&error];
+    NSErrorPrint(error, @"desc content convert into json");
+    
+    pages = descDict[SLIDE_DESC_ORDER];
+    for(pageIndex in _selectedList) {
+        pageName = [_dataList objectAtIndex:[pageIndex intValue]];
+        
+        // skip when not exist
+        if([pages containsObject:pageName]) continue;
+        
+        // copy page/image
+        [self copyFilePage:pageName FromFileId:self.slideID ToFileId:dict[SLIDE_DESC_ID]];
+        
+        [pages addObject:pageName];
+    }
+    // update Slide created_at/updated_at
+    descDict = [DateUtils updateSlideTimestamp:descDict];
+    // rewrite Slide config information into local file
+    [descDict setObject:pages forKey:SLIDE_DESC_ORDER];
+    [self writeJSON:descDict Into:descPath];
+}
+
+/**
+ *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
+ *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
+ *
+ *  @param pageName   页面名称fildId_pageId.html
+ *  @param fromFileId 源文件id
+ *  @param toFileId   目标文件id
+ */
+- (void)copyFilePage:(NSString *)pageName
+          FromFileId:(NSString *)fromFileId
+            ToFileId:(NSString *)toFileId {
+    NSError *error;
+    NSString *filePath, *newFilePath, *pagePath, *newPagePath, *imagePath, *newImagePath;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *filesPath = [FileUtils getPathName:dirName];
+    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
+    
+    filePath      = [filesPath stringByAppendingPathComponent:fromFileId];
+    newFilePath   = [favoritePath stringByAppendingPathComponent:toFileId];
+    // 复制html文件
+    pagePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
+    newPagePath = [newFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
+    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
+    NSErrorPrint(error, @"copy page html from %@ -> %@", fromFileId, toFileId);
+    // 复制文件夹
+    imagePath = [filePath stringByAppendingPathComponent:pageName];
+    newImagePath = [newFilePath stringByAppendingPathComponent:pageName];
+    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
+    NSErrorPrint(error, @"copy page folder from %@ -> %@", fromFileId, toFileId);
+}
+
+/**
+ *  交换文件fildId的页面序号index1与index2的顺序，并修改FILE_COFNIG_FILENAME文件
+ *
+ *  @param fileId 文件id
+ *  @param index1 exchangePageIndex
+ *  @param index2 withPageIndex
+ */
+- (void) excangePageOrder:(NSString *)fileId
+                FromIndex:(NSInteger)index1
+                  ToIndex:(NSInteger)index2 {
+    
+    NSError *error;
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *descSwpPath = [FileUtils fileDescPath:slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"read desc.swp file");
+    NSMutableDictionary *descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                                    options:NSJSONReadingMutableContainers
+                                                                      error:&error];
+    NSErrorPrint(error, @"desc.swp content convert into json");
+    
+    NSMutableArray *pageOrder = descDict[SLIDE_DESC_ORDER];
+    [pageOrder exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
+    
+    // 重置order内容并写入配置档
+    [descDict setObject:pageOrder forKey:SLIDE_DESC_ORDER];
+    [self writeJSON:descDict Into:descSwpPath];
+}
+
+/**
+ *  移除文件页面序号为index的页面
+ *
+ *  @param fileId 文件id
+ *  @param index  页面序号
+ */
+- (void) removePage:(NSString *)fileId
+              Index:(NSInteger)index {
+    NSError *error;
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *descSwpPath = [FileUtils fileDescPath:slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+    
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"read desc.swp file");
+    NSMutableDictionary *descDict= [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                                   options:NSJSONReadingMutableContainers
+                                                                     error:&error];
+    NSErrorPrint(error, @"desc.swp content convert into json");
+    
+    NSMutableArray *pageOrder = descDict[SLIDE_DESC_ORDER];
+    [pageOrder removeObjectAtIndex:index];
+    
+    // 重置order内容并写入配置档
+    [descDict setObject:pageOrder forKey:SLIDE_DESC_ORDER];
+    [self writeJSON:descDict Into:descSwpPath];
+}
 
 @end
 

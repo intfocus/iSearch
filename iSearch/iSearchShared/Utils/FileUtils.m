@@ -462,5 +462,50 @@
     return thumbnailPath;
 }
 
+/**
+ *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
+ *  使用block是为了保持FileUtils一方净土
+ *
+ *  @param slideID                   文档ID
+ *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
+ *
+ *  @return 操作成功否
+ */
++ (BOOL) copySlideToFavorite:(NSString *)slideID
+                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock {
+    NSError *error;
+    BOOL isSuccessfully = YES;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:slideID];
+    NSString *slidePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:slideID];
+    [fileManager copyItemAtPath:slidePath toPath:favoritePath error:&error];
+    isSuccessfully = NSErrorPrint(error, @"copy slide#%@ from %@ to %@", slideID, favoritePath, slidePath)
+    
+    NSString *descPath = [[NSString alloc] init];
+    NSString *descContent = [[NSString alloc] init];
+    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
+    
+    if(isSuccessfully) {
+        descPath = [FileUtils fileDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+        isSuccessfully = NSErrorPrint(error, @"read slide config at %@", descPath)
+    }
+    
+    if(isSuccessfully) {
+       descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        options:NSJSONReadingMutableContainers
+                                                    error:&error];
+        isSuccessfully = NSErrorPrint(error, @"convert string into json use data:\n %@", descContent)
+    }
+    
+    if(isSuccessfully) {
+        // modifiy updated_at/created_at with DateUtils
+        // keep clean environment with Block
+        updateSlideTimestampBlock(descDict);
+        [FileUtils writeJSON:descDict Into:descPath];
+    }
+    
+    return isSuccessfully;
+}
 
 @end
