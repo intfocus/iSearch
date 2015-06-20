@@ -56,6 +56,7 @@
 - (IBAction) slideClick:(id)sender {
     if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:FAVORITE_DIRNAME Force:NO]) {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@", BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.dict[OFFLINE_COLUMN_FILEID]];
+        self.labelDownloadState.text = @"下载中...";
         [self downloadZip:downloadUrl];
         //} else {
         //     演示文稿功能在主界面代码中处理

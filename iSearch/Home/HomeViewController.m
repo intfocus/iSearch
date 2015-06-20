@@ -38,9 +38,10 @@
     one.masterViewController   = self;
     self.oneViewController     = one;
     TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
-    //    two.masterViewController   = self.masterViewController;
+    two.masterViewController   = self;
     self.twoViewController     = two;
     ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
+    three.masterViewController   = self;
     self.threeViewController   = three;
     
     //导航栏标题

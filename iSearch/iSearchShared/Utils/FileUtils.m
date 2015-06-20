@@ -110,12 +110,12 @@
  *
  *  @return 存在即true, 否则false
  */
-+ (BOOL) checkSlideExist:(NSString *) fileID
++ (BOOL) checkSlideExist:(NSString *) slideID
                      Dir:(NSString *) dir
                    Force:(BOOL) isForce {
     NSError *error;
     NSMutableArray *errors = [[NSMutableArray alloc] init];
-    NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
+    NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
     // 1. Files/fileID/文件是否存在
     if(![FileUtils checkFileExist:filePath isDir:YES]) {
         [errors addObject:@"fileID文件夹不存在."];
@@ -229,9 +229,9 @@
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *)copyFileDescContent:(NSString *)fileID Dir:(NSString *)dirName {
-    NSString *descContent = [FileUtils fileDescContent:fileID Dir: dirName];
-    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
++ (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName {
+    NSString *descContent = [FileUtils fileDescContent:slideID Dir: dirName];
+    NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
     NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
     
     NSError *error;
@@ -330,7 +330,7 @@
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (NSMutableDictionary *)findOrCreateTag:(NSString*)tagName
++ (NSMutableDictionary *)findOrCreateTag:(NSString *)tagName
                                     Desc:(NSString *)tagDesc
                                Timestamp:(NSString *)timestamp {
     tagName = [tagName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -448,10 +448,10 @@
  *
  *  @return pdf/gif文档路径
  */
-+ (NSString*) fileThumbnail:(NSString *)fileID
++ (NSString*) fileThumbnail:(NSString *)slideID
                      PageID:(NSString *)pageID
                         Dir:(NSString *)dir {
-    NSString *filePath = [FileUtils getPathName:dir FileName:fileID];
+    NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
     NSString *pagePath = [filePath stringByAppendingPathComponent:pageID];
     NSString *thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.pdf", pageID]];
     

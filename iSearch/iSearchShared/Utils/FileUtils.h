@@ -76,7 +76,7 @@
  *  @return 存在即true, 否则false
  */
 
-+ (BOOL) checkSlideExist: (NSString *) fileID
++ (BOOL) checkSlideExist: (NSString *) slideID
                      Dir:(NSString *)dir
                    Force:(BOOL)isForce;
 
@@ -126,7 +126,7 @@
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *)copyFileDescContent:(NSString *)fileID Dir:(NSString *)dirName;
++ (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName;
 
 
 /**

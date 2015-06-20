@@ -43,10 +43,10 @@
     else {
         NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
     }
-    if([categoryArray count]) {
+    if([categoryArray count] > 0) {
         categoryArray = [ContentUtils arraySortByID:categoryArray];
     }
-    if([fileArray count]) {
+    if([fileArray count] > 0) {
         fileArray = [ContentUtils arraySortByID:fileArray];
     }
     
