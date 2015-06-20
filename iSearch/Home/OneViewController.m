@@ -37,7 +37,11 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    // order by updated_at
     _dataList = [FileUtils favoriteFileList];
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:SLIDE_DESC_LOCAL_UPDATEAT ascending:NO];
+    NSArray *array = [_dataList sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    _dataList = [NSMutableArray arrayWithArray:array];
     [_gridView reloadData];
 }
 
