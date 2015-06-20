@@ -114,9 +114,10 @@ NSMutableArray       *_dataList;
      */
     _dataList = [[NSMutableArray alloc] init];
     self.categoryDict = [[NSMutableDictionary alloc] init];
-    
-    // 获取该目录视图的分类信息
-    self.deptID = @"10";
+
+    // deptID
+    [self assignUserInfo];
+    // nav behaviour stack
     [self assignCategoryInfo:self.deptID];
     
     /**
@@ -133,48 +134,18 @@ NSMutableArray       *_dataList;
     [super viewWillAppear:animated];
     
     //  1. 读取本地缓存，优先加载界面
-    NSString *categoryID = [self loadNavStack];
-    _dataList = [ContentUtils loadContentData:self.deptID CategoryID:categoryID Type:LOCAL_OR_SERVER_LOCAL];
+    _dataList = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:LOCAL_OR_SERVER_LOCAL];
     
     self.view.backgroundColor=[UIColor blackColor];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:categoryID Type:LOCAL_OR_SERVER_SREVER];
+        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:LOCAL_OR_SERVER_SREVER];
         if([tmpArray count]) {
             _dataList = tmpArray;
             [_gridView reloadData];
         }
     });
-}
-
-/**
- *  取得当前目录视图下的分类ID
- *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
- *  栈中最后一个对象即当前目录的分类ID
- * 
- *  强制使用deptID作为参数，以避免先使用后赋值。
- *
- */
-- (void)assignCategoryInfo:(NSString *)deptID {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    NSString *categoryID = [mutableArray lastObject];
-    if([categoryID length] == 0) {
-        NSLog(@"BUG - 此目录下未取得CategoryID: %@", mutableArray);
-        categoryID = CONTENT_ROOT_ID;
-    }
-    
-    NSString *parentID = CONTENT_ROOT_ID;
-    if([mutableArray count] >= 2) {
-        // 倒数第二个为父ID
-        NSInteger index = [mutableArray count] - 2;
-        parentID = [mutableArray objectAtIndex:index];
-    }
-    
-    self.categoryID = categoryID;
-    self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
 }
 
 /**
@@ -361,24 +332,47 @@ NSMutableArray       *_dataList;
     }
 }
 
+#pragma mark - private methods
 /**
- *  获取当前目录的分类ID
- *
- *  @return <#return value description#>
+ *  读取配置档，获取用户信息
  */
-- (NSString *)loadNavStack {
-    // 点击分类导航行为记录
+- (void)assignUserInfo {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
+    self.deptID = userDict[USER_DEPTID];
+    
+    if(self.deptID == nil || [self.deptID length] == 0) {
+        NSLog(@"Fail read DeptID!");
+        abort();
+    }
+}
+/**
+ *  取得当前目录视图下的分类ID
+ *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
+ *  栈中最后一个对象即当前目录的分类ID
+ *
+ *  强制使用deptID作为参数，以避免先使用后赋值。
+ *
+ */
+- (void)assignCategoryInfo:(NSString *)deptID {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-
-    // 当前分类 lastObject
-    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    NSString *categoryId = CONTENT_ROOT_ID;
-    if([navStack count] > 0) {
-        categoryId = [navStack lastObject];
-    } else {
-        NSLog(@"It's Bug, navStack is empty!");
+    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    NSString *categoryID = [mutableArray lastObject];
+    if([categoryID length] == 0) {
+        NSLog(@"BUG - 此目录下未取得CategoryID: %@", mutableArray);
+        categoryID = CONTENT_ROOT_ID;
     }
-    return categoryId;
+    
+    NSString *parentID = CONTENT_ROOT_ID;
+    if([mutableArray count] >= 2) {
+        // 倒数第二个为父ID
+        NSInteger index = [mutableArray count] - 2;
+        parentID = [mutableArray objectAtIndex:index];
+    }
+    
+    self.categoryID = categoryID;
+    self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
 }
+
 @end

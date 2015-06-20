@@ -212,6 +212,11 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
+    NSString *configPath1 = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+    NSMutableDictionary *userDict1 =[FileUtils readConfigFile:configPath1];
+    [userDict1 setObject:@"10" forKey:USER_DEPTID];
+    [userDict1 writeToFile:configPath1 atomically:YES];
+    
     // 跳至主界面
     [self enterMainViewController];
     return;
@@ -281,18 +286,19 @@
                 //          password = remember_password ? 控件内容 : @""
                 //          把user/password/last/remember_password写入login.plist文件
                 // 界面输入信息
-                NSMutableDictionary *data = [[NSMutableDictionary alloc] init];
-                [data setObject:username forKey:USER_LOGIN_USERNAME];
-                [data setObject:password forKey:USER_LOGIN_PASSWORD];
-                [data setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
-                [data setObject:[ViewUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
+                NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+                NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
+                [userDict setObject:username forKey:USER_LOGIN_USERNAME];
+                [userDict setObject:password forKey:USER_LOGIN_PASSWORD];
+                [userDict setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
+                [userDict setObject:[ViewUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
                 // 服务器信息
-                [data setObject:[responseDict objectForKey:LOGIN_FIELD_ID] forKey:USER_ID];
-                [data setObject:[responseDict objectForKey:LOGIN_FIELD_NAME] forKey:USER_NAME];
-                [data setObject:[responseDict objectForKey:LOGIN_FIELD_EMAIL] forKey:USER_EMAIL];
-                [data setObject:[responseDict objectForKey:LOGIN_FIELD_DEPTID] forKey:USER_DEPTID];
-                [data setObject:[responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID] forKey:USER_EMPLOYEEID];
-                [data writeToFile:[self loginConfigPath] atomically:YES];
+                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_ID] forKey:USER_ID];
+                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_NAME] forKey:USER_NAME];
+                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_EMAIL] forKey:USER_EMAIL];
+                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_DEPTID] forKey:USER_DEPTID];
+                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID] forKey:USER_EMPLOYEEID];
+                [userDict writeToFile:configPath atomically:YES];
                 
                 // 跳至主界面
                 [self enterMainViewController];
@@ -338,9 +344,9 @@
  *           存在且 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
  *     D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
  */
-- (NSMutableArray *) loginOfflineAction:(NSMutableDictionary *)dict
-                       User:(NSString *) user
-                        Pwd:(NSString *) pwd {
+- (NSMutableArray *)loginOfflineAction:(NSMutableDictionary *)dict
+                                  User:(NSString *)user
+                                   Pwd:(NSString *)pwd {
     
     NSMutableArray *errors = [self checkEnableLoginOffline:dict User:user Pwd:pwd];
     
@@ -361,17 +367,17 @@
  *
  *  @return login配置档路径
  */
-- (NSString *) loginConfigPath {
-    return [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-}
+//- (NSString *) loginConfigPath {
+//    return [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+//}
 
 /**
  *  读取用户上次登陆信息，有则读取，无则使用默认值
  *
  *  @return 上次登陆信息
  */
-- (NSMutableDictionary*) readLoginConfigFile {
-    NSString *configPath = [self loginConfigPath];
+- (NSMutableDictionary*)readLoginConfigFile {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     NSMutableDictionary *dict = [NSMutableDictionary alloc];
     if([FileUtils checkFileExist:configPath isDir:false]) {
         dict = [dict initWithContentsOfFile:configPath];
