@@ -113,8 +113,8 @@
         
         viewCategory.labelTitle.text = [currentDict objectForKey:CONTENT_FIELD_NAME];
         [viewCategory setImageWith:[_dataList objectAtIndex:index][CONTENT_FIELD_TYPE] CategoryID:[currentDict objectForKey:CONTENT_FIELD_ID]];
-        viewCategory.btnEvent.tag = [[currentDict objectForKey:CONTENT_FIELD_ID] intValue];
-        [viewCategory.btnEvent addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+        viewCategory.btnImageCover.tag = [[currentDict objectForKey:CONTENT_FIELD_ID] intValue];
+        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
         
         [cell setContentView: viewCategory];
     }

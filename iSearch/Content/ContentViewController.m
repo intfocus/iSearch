@@ -236,18 +236,6 @@ NSMutableArray       *_dataList;
  // 代码抽取放在ContentUtils.h文件中
 
 //////////////////////////////////////////////////////////////
-#pragma mark orientation management
-//////////////////////////////////////////////////////////////
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    
-    return YES;//(interfaceOrientation == UIInterfaceOrientationLandscapeLeft||
-    // interfaceOrientation==UIInterfaceOrientationLandscapeRight);
-    
-}
-
-
-//////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
 //////////////////////////////////////////////////////////////
 
@@ -277,16 +265,18 @@ NSMutableArray       *_dataList;
             currentDict[CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
             [_dataList objectAtIndex:index][CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
         }
-        NSString *type = [currentDict objectForKey:CONTENT_FIELD_TYPE];
+        NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
         
         // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
-        if([type isEqualToString:@"0"]) {
+        if([categoryType isEqualToString:CONTENT_CATEGORY]) {
             ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
             viewCategory.labelTitle.text = name;
             
-            [viewCategory setFrame:CGRectMake(0, 0, 76,107)];
+            [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
+            viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+            [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+            
             [cell setContentView: viewCategory];
-            NSLog(@"%@ - %@", name, type);
         } else {
             ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
             slide.labelTitle.text = name;
@@ -307,6 +297,35 @@ NSMutableArray       *_dataList;
     //[[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     return cell;
+}
+
+#pragma mark - controls action
+/**
+ *  分类列表鼠标点击事件。
+ *  进入目录界面;
+ *  用户点击分类导航行为记录CONTENT_CONFIG_FILENAME[@CONTENT_KEY_NAVSTACK], 类型为NSMutableArray
+ *  进入push, 返回是pop
+ *
+ *  @param sender UIButton
+ */
+- (IBAction)actionCategoryClick:(UIButton *)sender {
+    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    
+    // 点击分类导航行为记录
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
+    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    // push current categoryID
+    [navStack addObject:categoryID];
+    [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
+    [configDict writeToFile:configPath atomically:true];
+    
+    // enter ContentViewController
+    MainViewController *mainViewController = [self masterViewController];
+    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+    contentViewController.masterViewController = mainViewController;
+    [mainViewController setRightViewController:contentViewController withNav:NO];
 }
 
 /**
