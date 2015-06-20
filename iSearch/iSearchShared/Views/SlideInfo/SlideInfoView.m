@@ -43,9 +43,9 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.labelTitle.text = self.dict[FILE_DESC_NAME];
-    self.labelDesc.text = self.dict[FILE_DESC_DESC];
-    self.labelEditTime.text = self.dict[FILE_DESC_NAME];
+    self.labelTitle.text = self.dict[SLIDE_DESC_NAME];
+    self.labelDesc.text = self.dict[SLIDE_DESC_DESC];
+    self.labelEditTime.text = self.dict[SLIDE_DESC_NAME];
     self.labelPageNum.text = @"TODO"; //self.dict[FILE_DESC_NAME];
     self.labelZipSize.text = @"TODO"; //self.dict[FILE_DESC_NAME];
     self.labelCategory.text = @"TODO"; //self.dict[FILE_DESC_NAME];
@@ -53,7 +53,7 @@
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
-    NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[FILE_DESC_ID]];
+    NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     [fileManager removeItemAtPath:filePath error:&error];
@@ -65,8 +65,8 @@
     }
 }
 - (IBAction)actionDisplaySlide:(id)sender {
-    NSString *fileID = self.dict[FILE_DESC_ID];
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    NSString *fileID = self.dict[SLIDE_DESC_ID];
+    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
 
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理

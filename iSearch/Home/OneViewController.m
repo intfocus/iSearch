@@ -95,15 +95,15 @@
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
         slide.isFavoriteFile = YES;
         slide.dict = currentDict;
-        if([FileUtils checkSlideExist:currentDict[FILE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
+        if([FileUtils checkSlideExist:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
             NSError *error;
-            NSString *descContent = [FileUtils fileDescContent:currentDict[FILE_DESC_ID] Dir:FAVORITE_DIRNAME];
+            NSString *descContent = [FileUtils fileDescContent:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
             NSMutableDictionary *descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
                                                                             options:NSJSONReadingMutableContainers
                                                                               error:&error];
             
-            if(error == nil && descData[FILE_DESC_ORDER] && [descData[FILE_DESC_ORDER] count] > 0) {
-                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[FILE_DESC_ID] PageID:[descData[FILE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
+            if(error == nil && descData[SLIDE_DESC_ORDER] && [descData[SLIDE_DESC_ORDER] count] > 0) {
+                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[SLIDE_DESC_ID] PageID:[descData[SLIDE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
                 [slide loadThumbnail:thumbnailPath];
             }
         }
@@ -145,7 +145,7 @@
 - (IBAction)actionDisplaySlide:(UIButton *)sender {
     NSInteger index = [sender tag];
     NSMutableDictionary *currentDict = _dataList[index];
-    NSString *fileID = currentDict[FILE_DESC_ID];
+    NSString *fileID = currentDict[SLIDE_DESC_ID];
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理

@@ -118,7 +118,7 @@
  *  控件事件
  */
 - (void) loadHtml {
-    NSString *htmlName = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex: self.currentPageIndex];
+    NSString *htmlName = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex: self.currentPageIndex];
     NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.filePath, htmlName, PAGE_HTML_FORMAT];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
@@ -151,9 +151,9 @@
         abort();
     }
     
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     self.filePath = [FileUtils getPathName:dirName FileName:self.fileID];
-    NSString *descPath = [self.filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSString *descPath = [self.filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     NSError *error;
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     BOOL isYES = NSErrorPrint(error, @"read slide desc content#%@", descPath);
@@ -162,14 +162,13 @@
     self.fileDesc = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
     isYES = NSErrorPrint(error, @"desc content convert into json");
     if(!isYES) { abort(); }
-    
 }
 
 - (IBAction)addSlideToFavorite:(UIButton *)sender {
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.fileID];
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:self.fileID];
+    NSString *filePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:self.fileID];
     [fileManager copyItemAtPath:filePath toPath:favoritePath error:&error];
     NSErrorPrint(error, @"copy file#%@ to favorite", filePath);
     
@@ -367,13 +366,13 @@
 - (IBAction) enterFilePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     if([FileUtils checkSlideExist:self.fileID Dir:dirName Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.fileDesc[FILE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
+        NSString *pageID = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
         [config setObject:self.fileID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
         NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];
@@ -383,7 +382,7 @@
         [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
         [config writeToFile:pathName atomically:YES];
         
-        NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : FILE_DIRNAME;
+        NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
         NSString *fileDescSwpPath = [FileUtils fileDescPath:self.fileID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
         if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
             NSLog(@"Config SWP file Exist! last time must be CRASH!");

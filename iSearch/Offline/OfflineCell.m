@@ -32,7 +32,7 @@
 
 - (void) initControls {
     NSString *fileID = self.dict[OFFLINE_COLUMN_FILEID];
-    NSString *filePath = [FileUtils getPathName:FILE_DIRNAME FileName:fileID];
+    NSString *filePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:fileID];
 
     NSString *imageName = [[NSString alloc] init];
     NSString *downloadState = @"未下载";
@@ -127,7 +127,7 @@
 - (void) extractZipFile {
     NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.dict[OFFLINE_COLUMN_FILEID]];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSString *filesPath = [FileUtils getPathName:SLIDE_DIRNAME];
     NSString *filePath = [filesPath stringByAppendingPathComponent:self.dict[OFFLINE_COLUMN_FILEID]];
     
     // 解压

@@ -36,7 +36,17 @@
  *  @return 指定格式的日期字符串
  */
 + (NSString *) dateToStr: (NSDate *)date Format:(NSString*) format;
-
+/**
+ *  操作文档配置时修改时间戳。
+ *  创建日期无，则添加。
+ *  更新日期必须更新。
+ *
+ *  @param dict      配置档
+ *  @param timestamp 当前时间
+ *
+ *  @return 更新后的配置档
+ */
++ (NSMutableDictionary *) updateDescTimestamp:(NSMutableDictionary *)dict;
 
 @end
 

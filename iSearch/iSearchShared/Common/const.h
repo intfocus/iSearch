@@ -117,9 +117,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_URL_PATH        @"/uat/api/Categories_Api.php" // 请求目录的url路径
 #define CONTENT_FILE_URL_PATH   @"/uat/api/Files_Api.php" // 请求目录的url路径
 #define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
-#define CONTENT_DIRNAME         @"Content" // [目录]成功取得后，写入本地缓存文件夹
-#define DOWNLOAD_DIRNAME        @"Download"// [目录]中[文件]压缩包下载文件夹
-#define FILE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
+#define CONTENT_DIRNAME         @"Contents" // [目录]成功取得后，写入本地缓存文件夹
+#define DOWNLOAD_DIRNAME        @"Downloads"// [目录]中[文件]压缩包下载文件夹
+#define SLIDE_DIRNAME            @"Slides"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
@@ -177,16 +177,17 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
 #define ADDTAG_CONFIG_FILENAME     @"add_tag.json" // 编辑界面，选择页面后，保存信息
 #define REORGANIZE_DIRNAME         @"Save" // 内容重组后，放置些文件夹中
-#define FAVORITE_DIRNAME           @"Favorite"
+#define FAVORITE_DIRNAME           @"Favorites"
 // 文档描述desc.json相关
 // TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
-#define FILE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
-#define FILE_DESC_ID               @"id"
-#define FILE_DESC_TYPE             @"type"
-#define FILE_DESC_NAME             @"name"
-#define FILE_DESC_DESC             @"desc"
-#define FILE_DESC_ORDER            @"order"
-#define FILE_DESC_MODIFY           @"updated_at" // 本地更新时间
+#define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define SLIDE_DESC_ID               @"id"
+#define SLIDE_DESC_TYPE             @"type"
+#define SLIDE_DESC_NAME             @"name"
+#define SLIDE_DESC_DESC             @"desc"
+#define SLIDE_DESC_ORDER            @"order"
+#define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
+#define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
 #define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"

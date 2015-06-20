@@ -122,7 +122,7 @@
     }
     
     // 2. a)Files/fileID/desc.json是否存在，b)内容是否为空，c)格式是否为json
-    NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     if(isForce && errors && [errors count] == 0) {
         // a)Files/fileID/desc.json是否存在
         if(![FileUtils checkFileExist:descPath isDir:NO]) {
@@ -195,7 +195,7 @@
  */
 + (NSString *) fileDescContent:(NSString *)fileID Dir:(NSString *)dirName {
     NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
-    NSString *descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     NSError *error;
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
     
@@ -296,7 +296,7 @@
     
     for(fileID in files) {
         filePath = [filesPath stringByAppendingPathComponent:fileID];
-        descPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
         
         // 配置档不存在，跳过
         if(![FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) continue;
@@ -346,8 +346,8 @@
     // 若存在则赋值tagFileID，为后面判断依据
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
     for(dict in fileList) {
-        if([dict[FILE_DESC_NAME] isEqualToString:tagName]) {
-            tagFileID = dict[FILE_DESC_ID];
+        if([dict[SLIDE_DESC_NAME] isEqualToString:tagName]) {
+            tagFileID = dict[SLIDE_DESC_ID];
             break;
         }
     }
@@ -363,23 +363,23 @@
         NSString *newFileID = [NSString stringWithFormat:@"r%@", timestamp];
         //[ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
         NSString *newFilePath = [favoritePath stringByAppendingPathComponent:newFileID];
-        descPath = [newFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        descPath = [newFilePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
         
         // 检测newFileID路径是否不存在，否则创建
         if(![FileUtils checkFileExist:newFilePath isDir:true])
             [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
         
         // 创建配置档内容
-        [descData setObject:newFileID forKey:FILE_DESC_ID];
-        [descData setObject:tagName forKey:FILE_DESC_NAME];
-        [descData setObject:tagDesc forKey:FILE_DESC_DESC];
-        [descData setObject:[[NSMutableArray alloc] init] forKey:FILE_DESC_ORDER];
+        [descData setObject:newFileID forKey:SLIDE_DESC_ID];
+        [descData setObject:tagName forKey:SLIDE_DESC_NAME];
+        [descData setObject:tagDesc forKey:SLIDE_DESC_DESC];
+        [descData setObject:[[NSMutableArray alloc] init] forKey:SLIDE_DESC_ORDER];
         
         // step2.2 收藏夹中原已存在，修改原配置档，复制页面
     } else {
         // 读取原有配置档信息
         NSString *tagFilePath = [favoritePath stringByAppendingPathComponent:tagFileID];
-        descPath = [tagFilePath stringByAppendingPathComponent:FILE_CONFIG_FILENAME];
+        descPath = [tagFilePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
         
         NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
         NSErrorPrint(error, @"read desc file");
@@ -389,8 +389,8 @@
         NSErrorPrint(error, @"desc content convert into json");
         
         // 重置name/desc
-        [descData setObject:tagName forKey:FILE_DESC_NAME];
-        [descData setObject:tagDesc forKey:FILE_DESC_DESC];
+        [descData setObject:tagName forKey:SLIDE_DESC_NAME];
+        [descData setObject:tagDesc forKey:SLIDE_DESC_DESC];
     }
     [FileUtils writeJSON:descData Into:descPath];
     
@@ -432,7 +432,7 @@
     NSMutableArray *fileList = [FileUtils favoriteFileList];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     for(dict in fileList) {
-        if(dict[FILE_DESC_NAME] && [dict[FILE_DESC_NAME] isEqualToString:fileName]) {
+        if(dict[SLIDE_DESC_NAME] && [dict[SLIDE_DESC_NAME] isEqualToString:fileName]) {
             break;
         }
     }
@@ -461,4 +461,6 @@
     //NSLog(@"thumbnail: %@", thumbnailPath);
     return thumbnailPath;
 }
+
+
 @end

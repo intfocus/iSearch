@@ -225,7 +225,7 @@
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Dir:FILE_DIRNAME Force:YES]) {
+    if([FileUtils checkSlideExist:fileID Dir:SLIDE_DIRNAME Force:YES]) {
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
         [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];

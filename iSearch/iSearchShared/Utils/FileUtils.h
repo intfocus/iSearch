@@ -198,6 +198,7 @@
 + (NSString*) fileThumbnail:(NSString *)FileID
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
+
 @end
 
 

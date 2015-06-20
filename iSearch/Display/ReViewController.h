@@ -24,7 +24,7 @@
  *
  *  @param dict 目标文件配置
  */
-- (void)actionSavePagesWithMoveFiles:(NSMutableDictionary *)dict;
+- (void)actionSavePagesAndMoveFiles:(NSMutableDictionary *)dict;
 
 @end
 

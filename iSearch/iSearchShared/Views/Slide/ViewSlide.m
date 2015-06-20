@@ -52,7 +52,7 @@
 }
 
 - (IBAction) actionDownloadFile:(id)sender {
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
         [self downloadZip:self.dict[CONTENT_FIELD_URL]];
@@ -65,7 +65,7 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : FILE_DIRNAME;
+    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
     } else {
@@ -156,7 +156,7 @@
 - (void) extractZipFile {
     NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.dict[CONTENT_FIELD_ID]];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    NSString *filesPath = [FileUtils getPathName:FILE_DIRNAME];
+    NSString *filesPath = [FileUtils getPathName:SLIDE_DIRNAME];
     NSString *filePath = [filesPath stringByAppendingPathComponent:self.dict[CONTENT_FIELD_ID]];
     
     // 解压
