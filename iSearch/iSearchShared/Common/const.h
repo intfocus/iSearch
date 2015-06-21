@@ -47,6 +47,12 @@ typedef NS_ENUM(NSInteger, SortType){
     SortByAscending = 10,
     SortByDescending = 11
 };
+// 目录过滤
+typedef NS_ENUM(NSInteger, FilterType){
+    FilterAll = 10,
+    FilterCategory = 11,
+    FilterSlide = 12
+};
 
 /**
  *  TextFieldTag

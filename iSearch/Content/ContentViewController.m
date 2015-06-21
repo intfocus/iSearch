@@ -90,8 +90,8 @@ NSMutableArray       *_dataList;
 @property (weak, nonatomic) IBOutlet UILabel  *navLabel;   // 当前分类名称
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterAll;   // 全部
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterOne;   // 分类
-@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 幻灯片
-@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterThree; // 文献
+@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 文献
+@property (strong, nonatomic) NSNumber        *filterType;        // 依此排序
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortOne; // 按时间排序
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortTwo; // 按名称排序
 
@@ -116,6 +116,8 @@ NSMutableArray       *_dataList;
      */
     _dataList = [[NSMutableArray alloc] init];
     self.categoryDict = [[NSMutableDictionary alloc] init];
+    self.filterType  = [NSNumber numberWithInteger:FilterAll];
+    [self navFilterFont];
 
     // deptID
     [self assignUserInfo];
@@ -135,6 +137,10 @@ NSMutableArray       *_dataList;
     [self.navBtnSortTwo addTarget:self action:@selector(actionNavSortByName:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortTwo.tag = SortByAscending;
     [self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
+    
+    [self.navBtnFilterAll addTarget:self action:@selector(actionNavFilterAll:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBtnFilterOne addTarget:self action:@selector(actionNavFilterOne:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBtnFilterTwo addTarget:self action:@selector(actionNavFilterTwo:) forControlEvents:UIControlEventTouchUpInside];
     
     // current category name
     self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
@@ -220,10 +226,26 @@ NSMutableArray       *_dataList;
         [sender setTitle:@"按日期(升)" forState:UIControlStateNormal];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
-    self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
-    self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
-    NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
-    _dataList = [NSMutableArray arrayWithArray:array];
+    switch ([self.filterType intValue]) {
+        case FilterAll:{
+            self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+            _dataList = [NSMutableArray arrayWithArray:array];
+        }
+            break;
+        case FilterCategory: {
+            _dataList = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+        }
+            break;
+        case FilterSlide: {
+            _dataList = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+        }
+            break;
+        default:
+            break;
+    }
+
     [self configGridView];
 }
 
@@ -236,12 +258,75 @@ NSMutableArray       *_dataList;
         [sender setTitle:@"按名称(升)" forState:UIControlStateNormal];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
-    self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
-    self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+    switch ([self.filterType intValue]) {
+        case FilterAll:{
+            self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+            _dataList = [NSMutableArray arrayWithArray:array];
+        }
+            break;
+        case FilterCategory: {
+            _dataList = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
+        }
+            break;
+        case FilterSlide: {
+            _dataList = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+        }
+            break;
+        default:
+            break;
+    }
+    [self configGridView];
+}
+
+- (IBAction)actionNavFilterAll:(id)sender {
+    self.filterType = [NSNumber numberWithInteger:FilterAll];
+    [self navFilterFont];
     NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
     [self configGridView];
 }
+
+- (IBAction)actionNavFilterOne:(id)sender {
+    self.filterType = [NSNumber numberWithInteger:FilterCategory];
+    [self navFilterFont];
+    _dataList = self.dataListOne;
+    [self configGridView];
+}
+
+- (IBAction)actionNavFilterTwo:(id)sender {
+    self.filterType = [NSNumber numberWithInteger:FilterSlide];
+    [self navFilterFont];
+    _dataList = self.dataListTwo;
+    [self configGridView];
+}
+
+- (void)navFilterFont {
+    self.navBtnFilterAll.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    self.navBtnFilterAll.titleLabel.textColor = [UIColor darkGrayColor];
+    self.navBtnFilterOne.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    self.navBtnFilterOne.titleLabel.textColor = [UIColor darkGrayColor];
+    self.navBtnFilterTwo.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    self.navBtnFilterTwo.titleLabel.textColor = [UIColor darkGrayColor];
+    switch ([self.filterType intValue]) {
+        case FilterAll:
+            self.navBtnFilterAll.titleLabel.font = [UIFont systemFontOfSize:20.0];
+            self.navBtnFilterAll.titleLabel.textColor = [UIColor blackColor];
+            break;
+        case FilterCategory:
+            self.navBtnFilterOne.titleLabel.font = [UIFont systemFontOfSize:20.0];
+            self.navBtnFilterOne.titleLabel.textColor = [UIColor blackColor];
+            break;
+        case FilterSlide:
+            self.navBtnFilterTwo.titleLabel.font = [UIFont systemFontOfSize:20.0];
+            self.navBtnFilterTwo.titleLabel.textColor = [UIColor blackColor];
+            break;
+        default:
+            break;
+    }
+}
+
 /**
  *  配置GridView
  */
