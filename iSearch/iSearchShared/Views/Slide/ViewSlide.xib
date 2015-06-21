@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ViewSlide">
-            <rect key="frame" x="0.0" y="0.0" width="184" height="184"/>
+            <rect key="frame" x="0.0" y="0.0" width="184" height="187"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wDW-fv-6hN">
-                    <rect key="frame" x="0.0" y="0.0" width="184" height="134"/>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wDW-fv-6hN">
+                    <rect key="frame" x="0.0" y="0.0" width="184" height="102"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="184" id="4iA-AZ-2TP"/>
-                        <constraint firstAttribute="height" constant="134" id="Flh-C2-yPr"/>
+                        <constraint firstAttribute="height" constant="102" id="Flh-C2-yPr"/>
                     </constraints>
                 </webView>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2D-sb-vCm">
-                    <rect key="frame" x="0.0" y="0.0" width="184" height="134"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="184" id="uze-Q1-4qF"/>
-                        <constraint firstAttribute="height" constant="134" id="xYW-AU-KYh"/>
-                    </constraints>
-                    <state key="normal" title="下载|演示" image="iconSlideDisplay.png">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2D-sb-vCm">
+                    <rect key="frame" x="0.0" y="0.0" width="184" height="102"/>
+                    <state key="normal" title="下载|演示" image="bgItem">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT" userLabel="SlideInfo">
-                    <rect key="frame" x="0.0" y="134" width="50" height="50"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VgM-Az-8j2">
+                    <rect key="frame" x="0.0" y="102" width="184" height="85"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT" userLabel="SlideInfo">
+                            <rect key="frame" x="8" y="18" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="ef7-tG-0qW"/>
+                                <constraint firstAttribute="width" constant="50" id="yQU-Na-i65"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="iconi"/>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULh-Fg-i9c">
+                            <rect key="frame" x="66" y="0.0" width="118" height="85"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="50" id="ef7-tG-0qW"/>
-                        <constraint firstAttribute="width" constant="50" id="yQU-Na-i65"/>
+                        <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="VgM-Az-8j2" secondAttribute="leading" constant="8" id="AlS-dj-1HH"/>
+                        <constraint firstAttribute="trailing" secondItem="ULh-Fg-i9c" secondAttribute="trailing" id="O4w-cJ-JwJ"/>
+                        <constraint firstAttribute="centerY" secondItem="sbb-9z-gdT" secondAttribute="centerY" id="On8-oc-5tq"/>
+                        <constraint firstItem="ULh-Fg-i9c" firstAttribute="leading" secondItem="sbb-9z-gdT" secondAttribute="trailing" constant="8" symbolic="YES" id="WK4-hP-MaY"/>
+                        <constraint firstAttribute="centerY" secondItem="ULh-Fg-i9c" secondAttribute="centerY" id="fls-PT-Ke5"/>
+                        <constraint firstAttribute="height" secondItem="ULh-Fg-i9c" secondAttribute="height" id="vQg-NC-ZCj"/>
                     </constraints>
-                    <state key="normal" title="Button" image="iconSlideInfo.png"/>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="文件名称" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULh-Fg-i9c">
-                    <rect key="frame" x="50" y="134" width="134" height="50"/>
-                    <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="134" id="1iR-4N-zru"/>
-                        <constraint firstAttribute="height" constant="50" id="8LJ-qb-7xg"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.1504390001" green="0.1199390575" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="wDW-fv-6hN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="3bD-PT-uDj"/>
-                <constraint firstItem="wDW-fv-6hN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="a7e-ok-Vfx"/>
-                <constraint firstAttribute="bottomMargin" secondItem="sbb-9z-gdT" secondAttribute="bottom" id="are-D7-FQN"/>
-                <constraint firstAttribute="trailingMargin" secondItem="ULh-Fg-i9c" secondAttribute="trailing" id="e5B-Yk-TTE"/>
-                <constraint firstItem="h2D-sb-vCm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="eVA-VE-x0W"/>
-                <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="ill-Q7-Sdu"/>
-                <constraint firstAttribute="bottomMargin" secondItem="ULh-Fg-i9c" secondAttribute="bottom" id="jTd-4l-MkF"/>
-                <constraint firstItem="h2D-sb-vCm" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="sy2-pb-5oG"/>
+                <constraint firstItem="h2D-sb-vCm" firstAttribute="height" secondItem="wDW-fv-6hN" secondAttribute="height" id="0mh-qd-Wym"/>
+                <constraint firstAttribute="centerX" secondItem="wDW-fv-6hN" secondAttribute="centerX" id="Eqj-2Z-ANr"/>
+                <constraint firstAttribute="bottom" secondItem="VgM-Az-8j2" secondAttribute="bottom" id="WML-vj-su1"/>
+                <constraint firstItem="h2D-sb-vCm" firstAttribute="width" secondItem="wDW-fv-6hN" secondAttribute="width" id="bhf-Qm-zWD"/>
+                <constraint firstItem="VgM-Az-8j2" firstAttribute="width" secondItem="wDW-fv-6hN" secondAttribute="width" id="dMN-Pd-CFg"/>
+                <constraint firstItem="VgM-Az-8j2" firstAttribute="top" secondItem="wDW-fv-6hN" secondAttribute="bottom" id="eSZ-rc-bl2"/>
+                <constraint firstAttribute="centerX" secondItem="h2D-sb-vCm" secondAttribute="centerX" id="flZ-o8-5bU"/>
+                <constraint firstItem="h2D-sb-vCm" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="lBl-ET-cCk"/>
+                <constraint firstItem="wDW-fv-6hN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="uLl-Ll-Dh5"/>
+                <constraint firstAttribute="centerX" secondItem="VgM-Az-8j2" secondAttribute="centerX" id="uaI-bm-xdZ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -71,7 +77,7 @@
         </view>
     </objects>
     <resources>
-        <image name="iconSlideDisplay.png" width="184" height="134"/>
-        <image name="iconSlideInfo.png" width="50" height="50"/>
+        <image name="bgItem" width="184" height="103"/>
+        <image name="iconi" width="40" height="40"/>
     </resources>
 </document>

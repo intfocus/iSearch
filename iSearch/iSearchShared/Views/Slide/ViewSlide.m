@@ -161,6 +161,6 @@
     
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:filePath];
-    NSLog(@"解压<#id:%@.zip> %@", self.dict[CONTENT_FIELD_ID], state ? @"成功" : @"失败");
+    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.dict[CONTENT_FIELD_ID], state ? @"成功" : @"失败"]);
 }
 @end

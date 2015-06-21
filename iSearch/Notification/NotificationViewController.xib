@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NotificationViewController">
@@ -11,7 +11,6 @@
                 <outlet property="calendarMenuView" destination="iLa-dr-7UU" id="HWf-B6-E2q"/>
                 <outlet property="segmentControl" destination="JPx-ig-5uC" id="ntp-5I-Axu"/>
                 <outlet property="tableViewOne" destination="3l9-dg-JmX" id="EDZ-27-vA1"/>
-                <outlet property="tableViewThree" destination="Lwq-kG-WZb" id="d3R-Rh-T19"/>
                 <outlet property="tableViewTwo" destination="On4-S5-Hgk" id="Z2V-9t-s6a"/>
                 <outlet property="view" destination="iN0-l3-epB" id="2ih-O6-PQL"/>
                 <outlet property="viewCalendar" destination="uZ6-pG-284" id="zxD-GB-3qq"/>
@@ -131,26 +130,19 @@
                             <rect key="frame" x="0.0" y="480" width="480" height="288"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </tableView>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Lwq-kG-WZb">
-                            <rect key="frame" x="0.0" y="530" width="480" height="238"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </tableView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="On4-S5-Hgk" firstAttribute="leading" secondItem="g2m-kY-Kx4" secondAttribute="leading" id="A5O-8t-YK0"/>
-                        <constraint firstItem="On4-S5-Hgk" firstAttribute="top" secondItem="uZ6-pG-284" secondAttribute="bottom" id="AKS-QG-vaM"/>
                         <constraint firstAttribute="bottom" secondItem="On4-S5-Hgk" secondAttribute="bottom" id="DoW-bJ-0yL"/>
                         <constraint firstItem="i9u-Ga-CwW" firstAttribute="leading" secondItem="g2m-kY-Kx4" secondAttribute="leading" id="IaH-h0-rxn"/>
-                        <constraint firstAttribute="bottom" secondItem="Lwq-kG-WZb" secondAttribute="bottom" id="JLB-aO-4Gi"/>
                         <constraint firstItem="i9u-Ga-CwW" firstAttribute="top" secondItem="g2m-kY-Kx4" secondAttribute="top" id="KpM-lG-p14"/>
                         <constraint firstItem="uZ6-pG-284" firstAttribute="top" secondItem="i9u-Ga-CwW" secondAttribute="bottom" id="Pya-Rr-sU8"/>
                         <constraint firstAttribute="trailing" secondItem="On4-S5-Hgk" secondAttribute="trailing" id="XCO-MQ-OFO"/>
                         <constraint firstAttribute="trailing" secondItem="uZ6-pG-284" secondAttribute="trailing" id="bPC-xQ-frg"/>
-                        <constraint firstAttribute="trailing" secondItem="Lwq-kG-WZb" secondAttribute="trailing" id="lpZ-7C-46u"/>
+                        <constraint firstItem="On4-S5-Hgk" firstAttribute="top" secondItem="uZ6-pG-284" secondAttribute="bottom" id="iOp-ba-H7T"/>
                         <constraint firstItem="uZ6-pG-284" firstAttribute="leading" secondItem="g2m-kY-Kx4" secondAttribute="leading" id="sxh-no-36z"/>
                         <constraint firstAttribute="width" constant="480" id="t67-YS-y0t"/>
-                        <constraint firstItem="Lwq-kG-WZb" firstAttribute="leading" secondItem="g2m-kY-Kx4" secondAttribute="leading" id="yNq-NK-BRR"/>
                         <constraint firstAttribute="trailing" secondItem="i9u-Ga-CwW" secondAttribute="trailing" id="zfU-iu-jAK"/>
                     </constraints>
                 </view>

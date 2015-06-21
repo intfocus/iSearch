@@ -11,8 +11,8 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import "FavoriteViewController.h"
 #import "DisplayViewController.h"
-#import "MainViewController.h"
 
 @interface SlideInfoView()
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
@@ -25,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnEdit;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
 @property (weak, nonatomic) IBOutlet UIButton *btnRemove;
-@property (weak, nonatomic) IBOutlet UIButton *btnDismiss;
+@property (weak, nonatomic) IBOutlet UIButton *hideButton;
 
 @end
 
@@ -33,32 +33,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    /**
-     *  导航栏控件
-     */
-//    self.navigationItem.title = self.dict[SLIDE_DESC_NAME];
-//    UIBarButtonItem *barItemDismiss = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"取消"]
-//                                                         style:UIBarButtonItemStylePlain
-//                                                        target:self
-//                                                        action:@selector(actionDismissPopupView:)];
-//    self.navigationItem.rightBarButtonItem = barItemDismiss;
+    
     /**
      *  控件事件
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnDismiss addTarget:self action:@selector(actionDismissPopupView:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     self.labelTitle.text = self.dict[SLIDE_DESC_NAME];
-    self.labelDesc.text = self.dict[SLIDE_DESC_DESC];
+    self.labelDesc.text = @"摘要会很长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长";//self.dict[FILE_DESC_DESC];
+    [self.labelDesc sizeToFit];
+    if (self.labelDesc.frame.size.height > 67) {
+        self.labelDesc.frame = CGRectMake(self.labelDesc.frame.origin.x, self.labelDesc.frame.origin.y, self.labelDesc.frame.size.width, 67);
+    }
     self.labelEditTime.text = self.dict[SLIDE_DESC_NAME];
     self.labelPageNum.text = @"TODO"; //self.dict[FILE_DESC_NAME];
     self.labelZipSize.text = @"TODO"; //self.dict[FILE_DESC_NAME];
     self.labelCategory.text = @"TODO"; //self.dict[FILE_DESC_NAME];
+    
+    [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
@@ -70,7 +67,8 @@
     NSErrorPrint(error, @"remove file#%@", filePath);
     
     if(error == nil) {
-        [self performSelector:@selector(actionDismissPopupView:) withObject:self afterDelay:0.1];
+        FavoriteViewController *masterView = (FavoriteViewController *)[self masterViewController];
+        [masterView dismissPopup];
     }
 }
 - (IBAction)actionDisplaySlide:(id)sender {
@@ -90,8 +88,6 @@
     }
 }
 
-- (IBAction)actionDismissPopupView:(UIBarButtonItem *)sender {
-    MainViewController *mainViewController = [self masterViewController];
-    [mainViewController dismissPopup];
-}
+
+
 @end
