@@ -1431,8 +1431,9 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     self.lastPositionLoaded  = self.lastPositionLoaded == GMGV_INVALID_POSITION ? NSMaxRange(rangeOfPositions) : MAX(self.lastPositionLoaded, (NSInteger)(rangeOfPositions.length + rangeOfPositions.location));
     
     // remove now invisible items
-    [self setSubviewsCacheAsInvalid];
-    [self cleanupUnseenItems];
+#warning comment by junjie.li
+//    [self setSubviewsCacheAsInvalid];
+//    [self cleanupUnseenItems];
     
     // add new cells
     BOOL forceLoad = self.firstPositionLoaded == GMGV_INVALID_POSITION || self.lastPositionLoaded == GMGV_INVALID_POSITION;

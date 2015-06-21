@@ -56,16 +56,14 @@
 
 @interface NotificationViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOne;   // 通告列表图
-@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;   // 预告列表图-全部
-@property (weak, nonatomic) IBOutlet UITableView *tableViewThree; // 预告列表图-按月
+@property (weak, nonatomic) IBOutlet UITableView *tableViewTwo;   // 预告列表图
 
-@property (weak, nonatomic) IBOutlet UITextView *notificationZone;  // 显示预告
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;  // 预告显示布局-按月/
 @property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemTMP;
 @property (strong, nonatomic) NSMutableDictionary *dataList; // 通告预告混合数据
-@property (strong, nonatomic) NSMutableArray *dataListOne; // 通告数据列表
-@property (strong, nonatomic) NSMutableArray *dataListTwo; // 预告数据列表
+@property (strong, nonatomic) NSMutableArray *dataListOne;   // 通告数据列表
+@property (strong, nonatomic) NSMutableArray *dataListTwo;   // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
@@ -73,7 +71,6 @@
 
 @implementation NotificationViewController
 @synthesize tableViewOne;
-@synthesize notificationZone;
 @synthesize dataListOne;
 @synthesize dataListTwo;
 @synthesize dataListTwoDate;
@@ -97,10 +94,6 @@
     self.tableViewTwo.delegate   = self;
     self.tableViewTwo.dataSource = self;
     self.tableViewTwo.tag = NotificationTableViewTWO;
-    self.tableViewTwo.alpha = 0;
-    self.tableViewThree.delegate   = self;
-    self.tableViewThree.dataSource = self;
-    self.tableViewThree.tag = NotificationTableViewTHREE;
 
     // 日历控件
     [self configCalendar];
@@ -220,27 +213,21 @@
 - (IBAction)actionSegmentControlClick:(id)sender {
     switch (self.segmentControl.selectedSegmentIndex) {
         case 0: { // 按月
-            self.calendarHeightConstraint.constant = 1;
-            [self.view sendSubviewToBack:self.tableViewTwo];
-            [self.view bringSubviewToFront:self.viewCalendar];
-            [self.view bringSubviewToFront:self.calendarMenuView];
-            [self.view bringSubviewToFront:self.calendarContentView];
+            self.calendarHeightConstraint.constant = 430;
             [UIView animateWithDuration:.5
                              animations:^{
                                  self.viewCalendar.alpha = 1;
-                                 self.tableViewThree.alpha = 1;
-                                 self.tableViewTwo.alpha = 0;
                                  [self.view layoutIfNeeded];
                              }];
         }
             break;
         case 1: { // 全部
+            self.dataListTwo = self.dataList[NOTIFICATION_FIELD_HDDATA];
+            [self.tableViewTwo reloadData];
             self.calendarHeightConstraint.constant = 0;
             [UIView animateWithDuration:.5
                              animations:^{
                                  self.viewCalendar.alpha = 0;
-                                 self.tableViewThree.alpha = 0;
-                                 self.tableViewTwo.alpha = 1;
                                  [self.view layoutIfNeeded];
                              }];
         }
@@ -364,10 +351,9 @@
     NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
     NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
     NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
-
     NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
     self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
-    [self.tableViewThree reloadData];
+    [self.tableViewTwo reloadData];
 }
 
 #pragma mark - Transition examples
@@ -406,7 +392,7 @@
             count = [self.dataListOne count];
             break;
         case NotificationTableViewTWO:
-        case NotificationTableViewTHREE:
+        //case NotificationTableViewTHREE:
             count = [self.dataListTwo count];
             break;
 
@@ -434,7 +420,8 @@
         }
             break;
         case NotificationTableViewTWO:
-        case NotificationTableViewTHREE: {
+        //case NotificationTableViewTHREE:
+        {
             currentDict = [self.dataListTwo objectAtIndex:cellIndex];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_OCCURDATE]];
         }
@@ -470,7 +457,7 @@
             width = self.view.bounds.size.width - width;
             break;
         case NotificationTableViewTWO:
-        case NotificationTableViewTHREE:
+        //case NotificationTableViewTHREE:
             currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
             break;
 

@@ -12,6 +12,8 @@
 #import "FileUtils.h"
 #import "SSZipArchive.h"
 
+// only used here
+#define OFFLINE_DOWNLOAD_URL @"OFFLINE_DOWNLOAD_URL"
 
 @implementation OfflineCell
 /**
@@ -56,6 +58,8 @@
 - (IBAction) slideClick:(id)sender {
     if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:SLIDE_DIRNAME Force:NO]) {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@", BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.dict[OFFLINE_COLUMN_FILEID]];
+        [self.dict setObject:downloadUrl forKey:OFFLINE_DOWNLOAD_URL];
+        
         self.labelDownloadState.text = @"下载中...";
         [self downloadZip:downloadUrl];
         //} else {
@@ -133,7 +137,7 @@
     
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:filePath];
-    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.dict[OFFLINE_COLUMN_FILEID], state ? @"成功" : @"失败"]);
+    NSLog(@"%@", [NSString stringWithFormat:@"下载#%@ - %@", self.dict[OFFLINE_DOWNLOAD_URL], state ? @"成功" : @"失败"]);
     [self initControls];
 }
 @end

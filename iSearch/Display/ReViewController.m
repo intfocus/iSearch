@@ -154,8 +154,6 @@
      */
     self.useBlurForPopup = YES;
     
-    // 配置创建 GMGridView
-    [self configGridView];
     
     [self refreshGridView];
 }
@@ -164,6 +162,7 @@
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
+    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.scrollView addSubview:gmGridView];
     _gmGridView = gmGridView;
     
@@ -184,8 +183,9 @@
 }
 - (void) refreshGridView {
     // 加载文件各页面
-    _dataList = [self loadFilePages];;
-    [_gmGridView reloadData];
+    _dataList = [self loadFilePages];
+    // 配置创建 GMGridView
+    [self configGridView];
     
     [self checkDescSwpContent];
 }
@@ -199,7 +199,7 @@
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
     self.slideID = config[CONTENT_KEY_EDITID1];
-    self.pageID = config[CONTENT_KEY_EDITID1];
+    self.pageID = config[CONTENT_KEY_EDITID2];
     self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 }
 

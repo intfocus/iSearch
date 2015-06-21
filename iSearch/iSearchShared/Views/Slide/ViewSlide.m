@@ -51,7 +51,7 @@
     
 }
 
-- (IBAction) actionDownloadFile:(id)sender {
+- (IBAction)actionDownloadFile:(id)sender {
     NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
@@ -161,6 +161,6 @@
     
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:filePath];
-    NSLog(@"解压<#id:%@.zip> %@", self.dict[CONTENT_FIELD_ID], state ? @"成功" : @"失败");
+    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.dict[CONTENT_FIELD_ID], state ? @"成功" : @"失败"]);
 }
 @end

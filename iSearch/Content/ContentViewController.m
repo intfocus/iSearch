@@ -82,14 +82,16 @@ NSMutableArray       *_dataList;
 @property (strong, nonatomic) NSString  *deptID;
 @property (strong, nonatomic) NSString  *categoryID; // 与categoryDict并不冲突，以此值来取它对应的信息
 @property (strong, nonatomic) NSMutableDictionary *categoryDict; // 依赖于categoryID
+@property (strong, nonatomic) NSMutableArray *dataListOne; // 分类
+@property (strong, nonatomic) NSMutableArray *dataListTwo; // 文档
 
 // 顶部控件
 @property (weak, nonatomic) IBOutlet UIButton *navBtnBack; // 返回
 @property (weak, nonatomic) IBOutlet UILabel  *navLabel;   // 当前分类名称
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterAll;   // 全部
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterOne;   // 分类
-@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 幻灯片
-@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterThree; // 文献
+@property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 文献
+@property (strong, nonatomic) NSNumber        *filterType;        // 依此排序
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortOne; // 按时间排序
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortTwo; // 按名称排序
 
@@ -114,6 +116,8 @@ NSMutableArray       *_dataList;
      */
     _dataList = [[NSMutableArray alloc] init];
     self.categoryDict = [[NSMutableDictionary alloc] init];
+    self.filterType  = [NSNumber numberWithInteger:FilterAll];
+    [self navFilterFont];
 
     // deptID
     [self assignUserInfo];
@@ -124,7 +128,21 @@ NSMutableArray       *_dataList;
      *  导航栏控件
      */
     [self.navBtnBack setTitle:@"\U000025C0\U0000FE0E返回" forState:UIControlStateNormal];
+    
     [self.navBtnBack addTarget:self action:@selector(actionNavBack:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBtnSortOne addTarget:self action:@selector(actionNavSortByDate:) forControlEvents:UIControlEventTouchUpInside];
+    self.navBtnSortOne.tag = SortByAscending;
+    [self.navBtnSortOne setTitle:@"按时间(升)" forState:UIControlStateNormal];
+    
+    [self.navBtnSortTwo addTarget:self action:@selector(actionNavSortByName:) forControlEvents:UIControlEventTouchUpInside];
+    self.navBtnSortTwo.tag = SortByAscending;
+    [self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
+    
+    [self.navBtnFilterAll addTarget:self action:@selector(actionNavFilterAll:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBtnFilterOne addTarget:self action:@selector(actionNavFilterOne:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navBtnFilterTwo addTarget:self action:@selector(actionNavFilterTwo:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // current category name
     self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
 
     [self configGridView];
@@ -134,20 +152,40 @@ NSMutableArray       *_dataList;
     [super viewWillAppear:animated];
     
     //  1. 读取本地缓存，优先加载界面
-    _dataList = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:LOCAL_OR_SERVER_LOCAL];
-    
+    [self loadContentData:LOCAL_OR_SERVER_LOCAL];
+    [self configGridView];
     self.view.backgroundColor=[UIColor blackColor];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:LOCAL_OR_SERVER_SREVER];
-        if([tmpArray count]) {
-            _dataList = tmpArray;
-            [_gridView reloadData];
-        }
+        [self loadContentData:LOCAL_OR_SERVER_SREVER];
+        [self configGridView];
     });
 }
 
+- (void)loadContentData:(NSString *)type {
+    NSArray *array = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:type];
+    NSMutableArray *arrayOne = [array objectAtIndex:0];
+    NSMutableArray *arrayTwo = [array objectAtIndex:1];
+    
+    if([type isEqualToString:LOCAL_OR_SERVER_LOCAL]) {
+        self.dataListOne = arrayOne;
+        self.dataListTwo = arrayTwo;
+        array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+        _dataList = [NSMutableArray arrayWithArray:array];
+    }
+    
+    if([type isEqualToString:LOCAL_OR_SERVER_SREVER]) {
+        if([arrayOne count] > 0 || [arrayTwo count] > 0) {
+            self.dataListOne = arrayOne;
+            self.dataListTwo = arrayTwo;
+            array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+            _dataList = [NSMutableArray arrayWithArray:array];
+        }
+    }
+}
+
+#pragma mark - 导航栏按钮事件
 /**
  *  导航栏[返回]响应处理；
  *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
@@ -178,6 +216,117 @@ NSMutableArray       *_dataList;
         [mainViewController setRightViewController:contentViewController withNav: NO];
     }
 }
+
+- (IBAction)actionNavSortByDate:(UIButton *)sender {
+    if([sender tag] == SortByAscending) {
+        sender.tag = SortByDescending;
+        [sender setTitle:@"按日期(降)" forState:UIControlStateNormal];
+    } else {
+        sender.tag = SortByAscending;
+        [sender setTitle:@"按日期(升)" forState:UIControlStateNormal];
+    }
+    BOOL isAscending = ([sender tag] == SortByAscending);
+    switch ([self.filterType intValue]) {
+        case FilterAll:{
+            self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+            _dataList = [NSMutableArray arrayWithArray:array];
+        }
+            break;
+        case FilterCategory: {
+            _dataList = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+        }
+            break;
+        case FilterSlide: {
+            _dataList = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+        }
+            break;
+        default:
+            break;
+    }
+
+    [self configGridView];
+}
+
+- (IBAction)actionNavSortByName:(UIButton *)sender {
+    if([sender tag] == SortByAscending) {
+        sender.tag = SortByDescending;
+        [sender setTitle:@"按名称(降)" forState:UIControlStateNormal];
+    } else {
+        sender.tag = SortByAscending;
+        [sender setTitle:@"按名称(升)" forState:UIControlStateNormal];
+    }
+    BOOL isAscending = ([sender tag] == SortByAscending);
+    switch ([self.filterType intValue]) {
+        case FilterAll:{
+            self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+            _dataList = [NSMutableArray arrayWithArray:array];
+        }
+            break;
+        case FilterCategory: {
+            _dataList = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
+        }
+            break;
+        case FilterSlide: {
+            _dataList = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+        }
+            break;
+        default:
+            break;
+    }
+    [self configGridView];
+}
+
+- (IBAction)actionNavFilterAll:(id)sender {
+    self.filterType = [NSNumber numberWithInteger:FilterAll];
+    [self navFilterFont];
+    NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+    _dataList = [NSMutableArray arrayWithArray:array];
+    [self configGridView];
+}
+
+- (IBAction)actionNavFilterOne:(id)sender {
+    self.filterType = [NSNumber numberWithInteger:FilterCategory];
+    [self navFilterFont];
+    _dataList = self.dataListOne;
+    [self configGridView];
+}
+
+- (IBAction)actionNavFilterTwo:(id)sender {
+    self.filterType = [NSNumber numberWithInteger:FilterSlide];
+    [self navFilterFont];
+    _dataList = self.dataListTwo;
+    [self configGridView];
+}
+
+- (void)navFilterFont {
+    self.navBtnFilterAll.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    self.navBtnFilterAll.titleLabel.textColor = [UIColor darkGrayColor];
+    self.navBtnFilterOne.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    self.navBtnFilterOne.titleLabel.textColor = [UIColor darkGrayColor];
+    self.navBtnFilterTwo.titleLabel.font = [UIFont systemFontOfSize:16.0];
+    self.navBtnFilterTwo.titleLabel.textColor = [UIColor darkGrayColor];
+    switch ([self.filterType intValue]) {
+        case FilterAll:
+            self.navBtnFilterAll.titleLabel.font = [UIFont systemFontOfSize:20.0];
+            self.navBtnFilterAll.titleLabel.textColor = [UIColor blackColor];
+            break;
+        case FilterCategory:
+            self.navBtnFilterOne.titleLabel.font = [UIFont systemFontOfSize:20.0];
+            self.navBtnFilterOne.titleLabel.textColor = [UIColor blackColor];
+            break;
+        case FilterSlide:
+            self.navBtnFilterTwo.titleLabel.font = [UIFont systemFontOfSize:20.0];
+            self.navBtnFilterTwo.titleLabel.textColor = [UIColor blackColor];
+            break;
+        default:
+            break;
+    }
+}
+
 /**
  *  配置GridView
  */
@@ -185,6 +334,7 @@ NSMutableArray       *_dataList;
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
+    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.scrollView addSubview:gmGridView];
     _gridView = gmGridView;
     

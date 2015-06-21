@@ -9,10 +9,9 @@
                 <outlet property="navBtnBack" destination="8EH-5x-aId" id="W0h-P0-iIl"/>
                 <outlet property="navBtnFilterAll" destination="TL4-IU-Y9Q" id="Ey3-ci-XaO"/>
                 <outlet property="navBtnFilterOne" destination="9v7-lh-s46" id="Nhe-I7-4Vk"/>
-                <outlet property="navBtnFilterThree" destination="BcX-RS-SOq" id="ZIX-di-jTa"/>
-                <outlet property="navBtnFilterTwo" destination="JA6-0y-Odh" id="kNT-ey-2hm"/>
+                <outlet property="navBtnFilterTwo" destination="BcX-RS-SOq" id="DZG-Dz-g67"/>
                 <outlet property="navBtnSortOne" destination="sQq-tU-DFv" id="Y6w-gq-RiJ"/>
-                <outlet property="navBtnSortTwo" destination="VFy-bB-Eu3" id="iyO-Xe-fy5"/>
+                <outlet property="navBtnSortTwo" destination="VFy-bB-Eu3" id="WN1-5a-e7j"/>
                 <outlet property="navLabel" destination="8Fb-ML-uOL" id="Odi-ef-igI"/>
                 <outlet property="scrollView" destination="vDS-wB-v2s" id="SYg-vw-fkm"/>
                 <outlet property="view" destination="iN0-l3-epB" id="nP7-9L-T38"/>
@@ -38,16 +37,16 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQq-tU-DFv">
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQq-tU-DFv">
                             <rect key="frame" x="492" y="5" width="45" height="30"/>
                             <state key="normal" title="按时间">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFy-bB-Eu3">
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFy-bB-Eu3">
                             <rect key="frame" x="547" y="5" width="45" height="30"/>
-                            <state key="normal" title="按分类">
+                            <state key="normal" title="按名称">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -58,46 +57,44 @@
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5v-Q8-GuA">
+                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5v-Q8-GuA">
                             <rect key="frame" x="200" y="0.0" width="249" height="40"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TL4-IU-Y9Q">
-                                    <rect key="frame" x="18" y="5" width="40" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TL4-IU-Y9Q">
+                                    <rect key="frame" x="41" y="5" width="40" height="30"/>
                                     <state key="normal" title="全部">
                                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-lh-s46">
-                                    <rect key="frame" x="66" y="5" width="44" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <state key="normal" title="分类">
-                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcX-RS-SOq">
-                                    <rect key="frame" x="191" y="5" width="41" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcX-RS-SOq">
+                                    <rect key="frame" x="160" y="5" width="41" height="30"/>
                                     <state key="normal" title="文献">
-                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JA6-0y-Odh">
-                                    <rect key="frame" x="118" y="5" width="65" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <state key="normal" title="幻灯片">
-                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-lh-s46">
+                                    <rect key="frame" x="97" y="5" width="44" height="30"/>
+                                    <state key="normal" title="分类">
+                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.51247160489999999" green="1" blue="0.1445082074" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="BcX-RS-SOq" firstAttribute="top" secondItem="i5v-Q8-GuA" secondAttribute="top" constant="5" id="YOX-fT-Ese"/>
+                                <constraint firstItem="TL4-IU-Y9Q" firstAttribute="top" secondItem="i5v-Q8-GuA" secondAttribute="top" constant="5" id="car-gE-21A"/>
+                                <constraint firstItem="9v7-lh-s46" firstAttribute="top" secondItem="i5v-Q8-GuA" secondAttribute="top" constant="5" id="egH-YP-o88"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="VFy-bB-Eu3" firstAttribute="leading" secondItem="sQq-tU-DFv" secondAttribute="trailing" constant="10" id="RId-eN-3C6"/>
+                        <constraint firstAttribute="trailing" secondItem="VFy-bB-Eu3" secondAttribute="trailing" constant="8" id="TvR-S1-j96"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -112,7 +109,7 @@
                 <constraint firstItem="vDS-wB-v2s" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ncC-ze-irr"/>
                 <constraint firstItem="XAy-YW-7YX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yNs-EX-1DY"/>
             </constraints>
-            <point key="canvasLocation" x="107" y="141"/>
+            <point key="canvasLocation" x="-112" y="140"/>
         </view>
     </objects>
 </document>

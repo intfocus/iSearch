@@ -35,13 +35,23 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 // 通告、预告
 typedef NS_ENUM(NSInteger, NotificationTableViewTag){
     NotificationTableViewONE = 10,
-    NotificationTableViewTWO = 11,
-    NotificationTableViewTHREE = 12
+    NotificationTableViewTWO = 11
 };
 // 文档演示/编辑类型:收藏、正常文档
 typedef NS_ENUM(NSInteger, SlideType){
     SlideTypeSlide = 10,
     SlideTypeFavorite = 11
+};
+// 目录排序
+typedef NS_ENUM(NSInteger, SortType){
+    SortByAscending = 10,
+    SortByDescending = 11
+};
+// 目录过滤
+typedef NS_ENUM(NSInteger, FilterType){
+    FilterAll = 10,
+    FilterCategory = 11,
+    FilterSlide = 12
 };
 
 /**
@@ -91,7 +101,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // 登陆相关
 #define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
-#define LOGIN_CONFIG_FILENAME  @"login.plist" // 用户验证成功后，信息写入该配置档
+#define LOGIN_CONFIG_FILENAME  @"login.json" // 用户验证成功后，信息写入该配置档
 #define LOGIN_KEEP_HOURS       12 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define LOGIN_LAST_DEFAULT     @"1970/01/01 00:00:00" // 用户登陆前的默认登陆成功时间
@@ -122,7 +132,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
 #define CONTENT_DIRNAME         @"Contents" // [目录]成功取得后，写入本地缓存文件夹
 #define DOWNLOAD_DIRNAME        @"Downloads"// [目录]中[文件]压缩包下载文件夹
-#define SLIDE_DIRNAME            @"Slides"   // [目录]中[文件]压缩包下载成功解压至该文件夹
+#define SLIDE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
@@ -155,6 +165,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // 离线搜索/批量下载
 #define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
+#define OFFLINE_DIRNAME          @"Offlines"
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
 // API字段
@@ -165,9 +176,11 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define OFFLINE_FIELD_TAGS       @"Tags"
 #define OFFLINE_FIELD_NAME       @"Name"
 #define OFFLINE_FIELD_TITLE      @"Title"
+#define OFFLINE_FIELD_CATEGORYID @"CategoryId"
 #define OFFLINE_FIELD_CATEGORYNAME @"CategoryName"
 #define OFFLINE_FIELD_ZIPSIZE    @"ZipSize"
 #define OFFLINE_FIELD_PAGENUM    @"PageNo"
+#define OFFLINE_FIELD_CREATEDATE @"EditTime"
 // 数据库表字段
 #define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"

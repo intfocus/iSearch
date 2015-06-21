@@ -288,7 +288,7 @@
         descPath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];;
         descDict = [FileUtils readConfigFile:descPath];
         NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
-        tmpDesc = [ContentUtils descConvert:descDict To:tmpDesc];
+        tmpDesc = [ContentUtils descConvert:descDict To:tmpDesc Type:CONTENT_DIRNAME];
         descDict = tmpDesc;
     } else {
         descPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
