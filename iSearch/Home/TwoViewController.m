@@ -43,16 +43,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    _dataList = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL];
-    // sort by id ascending by default.
-    _dataList = [ContentUtils sortArray:_dataList Key:CONTENT_FIELD_ID Ascending:YES];
+    _dataList = [[ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL] firstObject];
     [self configGMGridView];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *data = [ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER];
+        NSMutableArray *data = [[ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER] firstObject];
         if([data count] > 0) {
-            _dataList = [ContentUtils sortArray:data Key:CONTENT_FIELD_ID Ascending:YES];
+            _dataList = data;
             [self configGMGridView];
         }
     });
@@ -112,7 +110,6 @@
         cell = [[GMGridViewCell alloc] init];
         
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        NSString *name = currentDict[CONTENT_FIELD_NAME];
         
         // 服务器端Category没有ID值
         if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
@@ -127,7 +124,9 @@
             NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
         }
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
         viewCategory.labelTitle.text = name;
+        NSLog(@"%@", name);
         
         [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];

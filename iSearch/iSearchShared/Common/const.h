@@ -35,13 +35,17 @@ typedef NS_ENUM(NSInteger, SlideEditPanelTag){
 // 通告、预告
 typedef NS_ENUM(NSInteger, NotificationTableViewTag){
     NotificationTableViewONE = 10,
-    NotificationTableViewTWO = 11,
-    NotificationTableViewTHREE = 12
+    NotificationTableViewTWO = 11
 };
 // 文档演示/编辑类型:收藏、正常文档
 typedef NS_ENUM(NSInteger, SlideType){
     SlideTypeSlide = 10,
     SlideTypeFavorite = 11
+};
+// 目录排序
+typedef NS_ENUM(NSInteger, SortType){
+    SortByAscending = 10,
+    SortByDescending = 11
 };
 
 /**

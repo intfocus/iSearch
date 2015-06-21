@@ -22,7 +22,8 @@
 
 @implementation ContentUtils
 /**
- *  获取目录通过函数
+ *  获取目录;
+ *  分类在前，文档在后；各自默认按名称升序排序；
  *
  *  @param deptID        <#deptID description#>
  *  @param categoryID    <#categoryID description#>
@@ -30,41 +31,33 @@
  *
  *  @return <#return value description#>
  */
-+ (NSMutableArray*)loadContentData:(NSString *)deptID
++ (NSArray*)loadContentData:(NSString *)deptID
                         CategoryID:(NSString *)categoryID
                               Type:(NSString *)localOrServer {
-    NSMutableArray *categoryArray = [[NSMutableArray alloc] init];
-    NSMutableArray *fileArray = [[NSMutableArray alloc] init];
+    NSMutableArray *categoryList = [[NSMutableArray alloc] init];
+    NSMutableArray *slideList = [[NSMutableArray alloc] init];
     
     if([localOrServer isEqualToString:LOCAL_OR_SERVER_LOCAL]) {
-        categoryArray = [ContentUtils loadContentDataFromLocal:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
-        fileArray     = [ContentUtils loadContentDataFromLocal:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
+        categoryList = [ContentUtils loadContentDataFromLocal:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
+        slideList     = [ContentUtils loadContentDataFromLocal:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
     }
     else if([localOrServer isEqualToString:LOCAL_OR_SERVER_SREVER]) {
-        categoryArray = [ContentUtils loadContentDataFromServer:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
-        fileArray     = [ContentUtils loadContentDataFromServer:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
+        categoryList = [ContentUtils loadContentDataFromServer:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
+        slideList     = [ContentUtils loadContentDataFromServer:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
     }
     else {
         NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
     }
-    if([categoryArray count] > 0) {
-        categoryArray = [ContentUtils arraySortByID:categoryArray];
+    if([categoryList count] > 0) {
+        categoryList = [ContentUtils sortArray:categoryList Key:CONTENT_FIELD_NAME Ascending:YES];
     }
-    if([fileArray count] > 0) {
-        fileArray = [ContentUtils arraySortByID:fileArray];
+    if([slideList count] > 0) {
+        slideList = [ContentUtils sortArray:slideList Key:CONTENT_FIELD_NAME Ascending:YES];
     }
     
-    NSMutableSet *mergeSet = [NSMutableSet setWithArray:categoryArray];
-    [mergeSet addObjectsFromArray:fileArray];
-    NSArray *array = [mergeSet allObjects];
-    
-    return [NSMutableArray arrayWithArray:array];
-}
-
-+ (NSMutableArray *)arraySortByID:(NSMutableArray *)mutableArray {
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:CONTENT_FIELD_ID ascending:YES];
-    NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
-    return [NSMutableArray arrayWithArray:array];
+//    NSArray *array = [categoryList arrayByAddingObjectsFromArray:slideList];
+//    return [NSMutableArray arrayWithArray:array];
+    return @[categoryList, slideList];
 }
 
 + (NSMutableArray*)loadContentDataFromServer:(NSString *)type
@@ -173,7 +166,8 @@
 }
 
 /**
- *  获取获取信息格式统一转化为文档格式
+ *  获取获取信息格式统一转化为文档格式；
+ *  期望CONTENT_* OFFLINE_*字段一致
  *
  *  @param tmpDict source dict
  *  @param tmpDesc target dict
@@ -300,7 +294,7 @@
 
 /**
  *  给元素为字典的数组排序；
- *  需求: 为目录列表按ID/名称/更新日期排序
+ *  需求: 分类、文档顺序排放，然后各自按ID/名称/更新日期排序
  *
  *  @param mutableArray mutableArray
  *  @param key          数组元素的key

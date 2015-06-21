@@ -10,7 +10,6 @@
                 <outlet property="navBtnFilterAll" destination="TL4-IU-Y9Q" id="Ey3-ci-XaO"/>
                 <outlet property="navBtnFilterOne" destination="9v7-lh-s46" id="Nhe-I7-4Vk"/>
                 <outlet property="navBtnFilterThree" destination="BcX-RS-SOq" id="ZIX-di-jTa"/>
-                <outlet property="navBtnFilterTwo" destination="JA6-0y-Odh" id="kNT-ey-2hm"/>
                 <outlet property="navBtnSortOne" destination="sQq-tU-DFv" id="Y6w-gq-RiJ"/>
                 <outlet property="navBtnSortTwo" destination="VFy-bB-Eu3" id="iyO-Xe-fy5"/>
                 <outlet property="navLabel" destination="8Fb-ML-uOL" id="Odi-ef-igI"/>
@@ -38,16 +37,16 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQq-tU-DFv">
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQq-tU-DFv">
                             <rect key="frame" x="492" y="5" width="45" height="30"/>
                             <state key="normal" title="按时间">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFy-bB-Eu3">
+                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFy-bB-Eu3">
                             <rect key="frame" x="547" y="5" width="45" height="30"/>
-                            <state key="normal" title="按分类">
+                            <state key="normal" title="按名称">
                                 <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -69,14 +68,6 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-lh-s46">
-                                    <rect key="frame" x="66" y="5" width="44" height="30"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <state key="normal" title="分类">
-                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BcX-RS-SOq">
                                     <rect key="frame" x="191" y="5" width="41" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -85,10 +76,10 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JA6-0y-Odh">
-                                    <rect key="frame" x="118" y="5" width="65" height="30"/>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9v7-lh-s46">
+                                    <rect key="frame" x="102" y="8" width="44" height="30"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <state key="normal" title="幻灯片">
+                                    <state key="normal" title="分类">
                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -98,6 +89,10 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="VFy-bB-Eu3" firstAttribute="leading" secondItem="sQq-tU-DFv" secondAttribute="trailing" constant="10" id="RId-eN-3C6"/>
+                        <constraint firstAttribute="trailing" secondItem="VFy-bB-Eu3" secondAttribute="trailing" constant="8" id="TvR-S1-j96"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
