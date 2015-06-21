@@ -171,7 +171,7 @@
                     [FileUtils writeJSON:tmpDesc Into:descPath];
                 }
                 // write into cache then [view] slide info with popup view
-                cacheName = [NSString stringWithFormat:@"%@-%@.cache", CONTENT_SLIDE, tmpDict[OFFLINE_FIELD_ID]];
+                cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:deptID ID:tmpDict[OFFLINE_FIELD_ID]];
                 cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
                 [FileUtils writeJSON:dict Into:cachePath];
                 /**
@@ -247,14 +247,14 @@
  */
 // 如果文件已经下载，文档原[下载]按钮显示为[演示]
 - (IBAction) actionDisplaySlide:(id)sender {
-    NSString *fileID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    NSString *slideID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Dir:SLIDE_DIRNAME Force:YES]) {
+    if([FileUtils checkSlideExist:slideID Dir:SLIDE_DIRNAME Force:YES]) {
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
         [configDict setObject:[NSNumber numberWithInteger:SlideTypeSlide] forKey:SLIDE_DISPLAY_TYPE];
         [configDict writeToFile:configPath atomically:YES];
         

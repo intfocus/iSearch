@@ -367,7 +367,7 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex:self.currentPageIndex];
+        NSString *pageID = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex:[self.currentPageIndex integerValue]];
         [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
         NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];

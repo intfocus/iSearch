@@ -114,7 +114,7 @@
                 [FileUtils writeJSON:tmpDesc Into:descPath];
             }
             // write into cache then [view] slide info with popup view
-            cacheName = [NSString stringWithFormat:@"%@-%@.cache", CONTENT_SLIDE, tmpDict[CONTENT_FIELD_ID]];
+            cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
             cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
             [FileUtils writeJSON:tmpDict Into:cachePath];
             /**
@@ -122,14 +122,14 @@
              */
         }
     }
-    
-    NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
+    NSString *cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
+    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     
     // 解析成功、获取数据不为空时，写入本地缓存
-    if(!error && [mutableArray count]) {
+    if(!error && [mutableArray count] > 0) {
         // 1. 请求目录返回josn字符串写入CONTENT_DIRNAME/deptID-categoryID-file.json
-        [response writeToFile:cacheFilePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"content category write into %@", cacheFilePath);
+        [response writeToFile:cachePath atomically:true encoding:NSUTF8StringEncoding error:&error];
+        NSErrorPrint(error, @"content category write into %@", cachePath);
     }
     
     return mutableArray;
@@ -155,6 +155,21 @@
     }
     return dict;
     
+}
+
+/**
+ *  缓存文件名称
+ *
+ *  @param type       category,slide?
+ *  @param deptID     deptID
+ *  @param categoryID categoryID
+ *
+ *  @return cacheName
+ */
++ (NSString *)contentCacheName:(NSString *)type
+                        DeptID:(NSString *)deptID
+                    ID:(NSString *)categoryID {
+    return [NSString stringWithFormat:@"%@-%@-%@.cache",deptID, categoryID, type];
 }
 
 /**
@@ -200,7 +215,8 @@
     NSError *error;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     NSString *cacheContent = [[NSString alloc] init];
-    NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, categoryID, type]];
+    NSString *cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
+    NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     
     if(![FileUtils checkFileExist:cacheFilePath isDir:false]) {
         return mutableArray;
@@ -255,13 +271,22 @@
                                   DepthID:(NSString *)deptID {
     NSError *error;
     NSMutableDictionary *categoryDict = [[NSMutableDictionary alloc] init];
-    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:[NSString stringWithFormat:@"%@-%@-%@",deptID, parentID, CONTENT_CATEGORY]];
+    NSString *cacheName = [ContentUtils contentCacheName:CONTENT_CATEGORY DeptID:deptID ID:parentID];
+    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read category cache");
+    BOOL isSuccessfully = NSErrorPrint(error, @"read category cache");
+    if(!isSuccessfully) {
+        return categoryDict;
+    }
+    
     NSMutableDictionary *cacheDict = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
                                                                      options:NSJSONReadingMutableContainers
                                                                        error:&error];
-    NSErrorPrint(error, @"parese category cache info json");
+    isSuccessfully = NSErrorPrint(error, @"parese category cache info json");
+    if(!isSuccessfully) {
+        return categoryDict;
+    }
+    
     NSMutableArray *cacheData = [cacheDict objectForKey:CONTENT_FIELD_DATA];
     
     // 过滤

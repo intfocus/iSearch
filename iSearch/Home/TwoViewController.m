@@ -113,7 +113,6 @@
         
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
         NSString *name = currentDict[CONTENT_FIELD_NAME];
-        NSLog(@"%ld - %@\n\n", (long)index, currentDict);
         
         // 服务器端Category没有ID值
         if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {

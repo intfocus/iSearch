@@ -68,7 +68,18 @@
 + (NSMutableDictionary *)mySet:(NSMutableDictionary *)dict
                         Object:(id)obj
                            Key:(NSString *)key;
-
+/**
+*  缓存文件名称
+*
+*  @param type       category,slide?
+*  @param deptID     deptID
+*  @param ID         slideID,categoryID
+*
+*  @return cacheName
+*/
++ (NSString *)contentCacheName:(NSString *)type
+                        DeptID:(NSString *)deptID
+                    ID:(NSString *)categoryID;
 /**
  *  获取获取信息格式统一转化为文档格式
  *

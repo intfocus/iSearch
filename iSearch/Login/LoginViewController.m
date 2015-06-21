@@ -423,7 +423,7 @@
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
     [userDict setObject:username forKey:USER_LOGIN_USERNAME];
-    [userDict setObject:username forKey:USER_LOGIN_PASSWORD];
+    [userDict setObject:password forKey:USER_LOGIN_PASSWORD];
     [userDict setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
     [userDict setObject:password forKey:USER_DEPTID];
     [FileUtils writeJSON:userDict Into:configPath];

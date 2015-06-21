@@ -135,7 +135,7 @@ NSMutableArray       *_dataList;
     
     //  1. 读取本地缓存，优先加载界面
     _dataList = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:LOCAL_OR_SERVER_LOCAL];
-    
+    [self configGridView];
     self.view.backgroundColor=[UIColor blackColor];
     
     // 耗时间的操作放在些block中
@@ -143,7 +143,7 @@ NSMutableArray       *_dataList;
         NSMutableArray *tmpArray = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:LOCAL_OR_SERVER_SREVER];
         if([tmpArray count]) {
             _dataList = tmpArray;
-            [_gridView reloadData];
+            [self configGridView];
         }
     });
 }
@@ -185,6 +185,7 @@ NSMutableArray       *_dataList;
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
+    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.scrollView addSubview:gmGridView];
     _gridView = gmGridView;
     
