@@ -12,7 +12,7 @@
 #import <UIKit/UIKit.h>
 
 /**
- *  获取目录的一些能用函数，在[首页]也会使用到同样功能代码。
+ *  获取目录的一些通用函数 - [首页][我的分类][离线下载]。
  *
  *  此功能函数为什么不放在HttpUtils.h?
  *      代码中涉及到文件操作，需要引用FileUtils.h, 而FileUtils.h中如果有网络操作也引用HttpUtils.h的话，就会成为死循环。
@@ -72,12 +72,15 @@
 /**
  *  获取获取信息格式统一转化为文档格式
  *
- *  @param dict 服务器文档信息
+ *  @param tmpDict source dict
+ *  @param tmpDesc target dict
+ *  @param convertType 目录/离线下载
  *
  *  @return 文档格式
  */
-+ (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDesc
-                                  To:(NSMutableDictionary *)tmpDict;
++ (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDict
+                                  To:(NSMutableDictionary *)tmpDesc
+                                Type:(NSString *)convertType;
 
 /**
  *  给元素为字典的数组排序；

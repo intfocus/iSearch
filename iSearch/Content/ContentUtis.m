@@ -97,7 +97,7 @@
     
     mutableArray = responseJSON[CONTENT_FIELD_DATA];
     
-    // 服务器获取的文档信息更新本地已下载文档配置信息
+    // update local slide cache info
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
         NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
@@ -109,7 +109,7 @@
             if([FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
                 descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
                 tmpDesc = [FileUtils readConfigFile:descPath];
-                tmpDesc = [ContentUtils descConvert:tmpDict To:tmpDesc];
+                tmpDesc = [ContentUtils descConvert:tmpDict To:tmpDesc Type:CONTENT_DIRNAME];
 
                 [FileUtils writeJSON:tmpDesc Into:descPath];
             }
@@ -160,29 +160,37 @@
 /**
  *  获取获取信息格式统一转化为文档格式
  *
- *  @param dict 服务器文档信息
+ *  @param tmpDict source dict
+ *  @param tmpDesc target dict
+ *  @param convertType 目录/离线下载
  *
  *  @return 文档格式
  */
 + (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDict
-                                  To:(NSMutableDictionary *)tmpDesc {
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYNAME] Key:OFFLINE_FIELD_CATEGORYNAME];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
-    [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_NAME] forKey:SLIDE_DESC_NAME];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_DESC] forKey:SLIDE_DESC_DESC];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TYPE] forKey:SLIDE_DESC_TYPE];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_TITLE] forKey:CONTENT_FIELD_TITLE];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_ZIPSIZE] forKey:CONTENT_FIELD_ZIPSIZE];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CATEGORYID] forKey:CONTENT_FIELD_CATEGORYID];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_PAGENUM] forKey:CONTENT_FIELD_PAGENUM];
-    //            [tmpDesc setObject:tmpDict[CONTENT_FIELD_CREATEDATE] forKey:CONTENT_FIELD_CREATEDATE];
+                                  To:(NSMutableDictionary *)tmpDesc
+                                Type:(NSString *)convertType {
+    if([convertType isEqualToString:CONTENT_DIRNAME]) {
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYNAME] Key:OFFLINE_FIELD_CATEGORYNAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
+    }
+    if([convertType isEqualToString:OFFLINE_DIRNAME]) {
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_NAME] Key:SLIDE_DESC_NAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_DESC] Key:SLIDE_DESC_DESC];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYNAME] Key:OFFLINE_FIELD_CATEGORYNAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
+    }
     return tmpDesc;
 }
 
@@ -217,18 +225,17 @@
  *  @return 目录数据
  */
 + (NSMutableArray *)loadContentFromLocal:(NSString *)pathName {
-    NSLog(@"%@", pathName);
     NSError *error;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     NSString *fileContent = [NSString stringWithContentsOfFile:pathName encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read file content");
-    NSLog(@"loadContentFromLocal: %@", pathName);
     mutableArray = [NSJSONSerialization JSONObjectWithData:[fileContent dataUsingEncoding:NSUTF8StringEncoding]
                                                    options:NSJSONReadingMutableContainers
                                                      error:&error];
     NSErrorPrint(error, @"string convert into json");
     return mutableArray;
 }
+
 /**
  *  获取某分类的基本信息。
  *  首页目录为指定CONTENT_ROOT_ID -> level1
@@ -282,45 +289,6 @@
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:key ascending:asceding];
     NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     return [NSMutableArray arrayWithArray:array];
-}
-
-+ (void)gridViewCellContentView:(GMGridViewCell *)cell
-                           Dict:(NSMutableDictionary *)currentDict
-                          Index:(NSInteger)index
-                            SEL:(NSArray *)methods {
-    NSString *name = currentDict[CONTENT_FIELD_NAME];
-
-    NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
-    
-    // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
-    if([categoryType isEqualToString:CONTENT_CATEGORY]) {
-        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-        viewCategory.labelTitle.text = name;
-        
-        [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
-        viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell setContentView: viewCategory];
-    } else {
-        ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-        slide.labelTitle.text = name;
-        NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                 BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, currentDict[CONTENT_FIELD_ID]];
-        currentDict[CONTENT_FIELD_URL] = downloadUrl;
-        slide.dict = currentDict;
-        // 数据初始化操作，须在initWithFrame操作前，因为该操作会触发slide内部处理
-        slide = [slide initWithFrame:CGRectMake(0, 0, 230, 150)];
-        
-        slide.btnSlideInfo.tag = index;
-        [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
-        // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-        slide.btnDownloadOrDisplay.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-        [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell setContentView: slide];
-    }
-
 }
 
 @end

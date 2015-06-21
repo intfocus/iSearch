@@ -213,7 +213,6 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
-    
     // 跳至主界面
     [self enterMainViewController];
     return;

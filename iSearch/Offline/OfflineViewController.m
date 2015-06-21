@@ -33,6 +33,7 @@
 #import "PopupView.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
+#import "ContentUtils.h"
 #import "ExtendNSLogFunctionality.h"
 #import "OfflineCell.h"
 #import "DisplayViewController.h"
@@ -58,7 +59,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
                                               initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                               target:self
-                                              action:@selector(reDownloadFilesList)];
+                                              action:@selector(refreshSlideList:)];
     
     
     self.tableView.delegate   = self;
@@ -90,7 +91,7 @@
  *
  *  @param notifice notifice
  */
-- (void)SearchValueChanged:(NSNotification*)notifice {
+- (void)SearchValueChanged:(NSNotification *)notifice {
     UITextField *field = [notifice object];
     // 本指定TextField，则放弃监听
     if([field tag] != TextFieldSearchDB) return;
@@ -105,12 +106,16 @@
     [self showPopupView: [NSString stringWithFormat:@"筛选: %lu行", (unsigned long)self.dataList.count]];
 }
 
-- (void)reDownloadFilesList {
+/**
+ *  更新本地文档列表；
+ *  先删除后插入；
+ */
+- (IBAction)refreshSlideList:(UIBarButtonItem *)sender {
     NSString *deptID = @"10";
     NSError *error;
     NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", OFFLINE_URL_PATH, PARAM_LANG, APP_LANG, OFFLINE_PARAM_DEPTID, deptID];
     NSString *response = [HttpUtils httpGet:urlPath];
-    NSLog(@"url: %@\response: %@", urlPath, response);
+
     NSMutableDictionary *mutableDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
                                                                options:NSJSONReadingMutableContainers
                                                                  error:&error];
@@ -121,14 +126,12 @@
         [self showPopupView: [NSString stringWithFormat:@"刷新: %lu行", (unsigned long)mutableArray.count]];
         // 插入前先删除
         [self.database executeSQL:[NSString stringWithFormat:@"delete from %@;" , OFFLINE_TABLE_NAME]];
-        
-        NSLog(@"Get %@ successfully.", urlPath);
-        NSLog(@"DataList count: %lu", (unsigned long)mutableArray.count);
 
         NSString *tmpSql = [[NSString alloc] init];
         NSMutableString *insertSql = [[NSMutableString alloc]init];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         for(dict in mutableArray) {
+            // append `insert` sql sentences.
             tmpSql = [NSString stringWithFormat:@"insert into %@(%@,    %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@)  \
                                                           values('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@');\n",
                       OFFLINE_TABLE_NAME,
@@ -151,8 +154,31 @@
                       dict[OFFLINE_FIELD_ID],// ZipUrl由FileID拼接
                       dict[OFFLINE_FIELD_ZIPSIZE]];
             [insertSql appendString:tmpSql];
+            
+            // update local slide cache info
+            if([dict[OFFLINE_FIELD_TYPE] isEqualToString:CONTENT_SLIDE]) {
+                NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
+                NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
+                NSString *descPath = [[NSString alloc] init];
+                NSString *cacheName = [[NSString alloc] init];
+                NSString *cachePath = [[NSString alloc] init];
+                // update local slide desc when already download
+                if([FileUtils checkSlideExist:dict[OFFLINE_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
+                    descPath = [FileUtils slideDescPath:dict[OFFLINE_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+                    tmpDesc = [FileUtils readConfigFile:descPath];
+                    tmpDesc = [ContentUtils descConvert:dict To:tmpDesc Type:OFFLINE_DIRNAME];
+                    
+                    [FileUtils writeJSON:tmpDesc Into:descPath];
+                }
+                // write into cache then [view] slide info with popup view
+                cacheName = [NSString stringWithFormat:@"%@-%@.cache", CONTENT_SLIDE, tmpDict[OFFLINE_FIELD_ID]];
+                cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
+                [FileUtils writeJSON:dict Into:cachePath];
+                /**
+                 *  warning: 此处不更新desc的SLIDE_DESC_LOCAL_UPDATEDAT,该信息用来记录用户的操作时候
+                 */
+            }
         }
-        //NSLog(@"DataList: %@", insertSql);
         [self.database executeSQL:insertSql];
         
         self.dataList = [self.database searchFilesWithKeywords:@[]];

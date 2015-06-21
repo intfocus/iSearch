@@ -155,6 +155,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // 离线搜索/批量下载
 #define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
+#define OFFLINE_DIRNAME          @"Offlines"
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
 // API字段
@@ -165,9 +166,11 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define OFFLINE_FIELD_TAGS       @"Tags"
 #define OFFLINE_FIELD_NAME       @"Name"
 #define OFFLINE_FIELD_TITLE      @"Title"
+#define OFFLINE_FIELD_CATEGORYID @"CategoryId"
 #define OFFLINE_FIELD_CATEGORYNAME @"CategoryName"
 #define OFFLINE_FIELD_ZIPSIZE    @"ZipSize"
 #define OFFLINE_FIELD_PAGENUM    @"PageNo"
+#define OFFLINE_FIELD_CREATEDATE @"EditTime"
 // 数据库表字段
 #define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"
