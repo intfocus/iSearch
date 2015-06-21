@@ -19,6 +19,7 @@
 #import "ExtendNSLogFunctionality.h"
 
 @interface DisplayViewController ()
+
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 展示html5
 @property (weak, nonatomic) IBOutlet UIButton *editBtn; // 切换显示编辑状态面板的显示
 @property (weak, nonatomic) IBOutlet UIView *editPanel; // 编辑状态面板
@@ -29,7 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
 @property (nonatomic, nonatomic) PopupView      *popupView;
 
-@property (nonatomic, nonatomic) NSInteger  currentPageIndex;
+@property (nonatomic, nonatomic) NSNumber *currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL  isDrawing; // 作笔记状态
 @property (nonatomic, nonatomic) BOOL  isLasering;// 激光笔状态
@@ -50,7 +51,7 @@
     
     [self loadConfigInfo];
     
-    self.currentPageIndex    = 0;
+    self.currentPageIndex    = [NSNumber numberWithInt:0];
     self.isDrawing           = false;
     self.paintView           = nil;
     self.editPanel.layer.zPosition = MAXFLOAT;
@@ -118,7 +119,7 @@
  *  控件事件
  */
 - (void) loadHtml {
-    NSString *htmlName = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex: self.currentPageIndex];
+    NSString *htmlName = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex: [self.currentPageIndex intValue]];
     NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.filePath, htmlName, PAGE_HTML_FORMAT];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
@@ -323,7 +324,9 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
-    self.currentPageIndex = (self.currentPageIndex + 1) % [[self.fileDesc objectForKey:@"order"] count];
+    NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
+    NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
+    self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
     NSLog(@"next - current page index: %ld", (long)self.currentPageIndex);
 }
@@ -334,7 +337,8 @@
  */
 - (IBAction)lastPage: (id)sender {
     NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
-    self.currentPageIndex = (self.currentPageIndex - 1 + pageCount) % pageCount;
+    NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
+    self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
     NSLog(@"next - current page index: %ld", (long)self.currentPageIndex);
 }

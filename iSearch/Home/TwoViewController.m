@@ -110,7 +110,6 @@
 
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
         
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
         NSString *name = currentDict[CONTENT_FIELD_NAME];
@@ -125,18 +124,17 @@
         NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
         
         // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
-        if([categoryType isEqualToString:CONTENT_CATEGORY]) {
-            ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-            viewCategory.labelTitle.text = name;
-            
-            [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
-            viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-            [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [cell setContentView: viewCategory];
-        } else {
+        if(![categoryType isEqualToString:CONTENT_CATEGORY]) {
             NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
         }
+        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+        viewCategory.labelTitle.text = name;
+        
+        [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
+        viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [cell setContentView: viewCategory];
     }
     return cell;
 }

@@ -51,7 +51,7 @@
     
 }
 
-- (IBAction) actionDownloadFile:(id)sender {
+- (IBAction)actionDownloadFile:(id)sender {
     NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];

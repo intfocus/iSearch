@@ -126,11 +126,12 @@
         //      B.1 TextField-User输入框信息放置上次登陆成功时输入信息，默认为空字符串
         //      B.2 TextField-PWD输入框，如果上次登陆成功有勾选[记住密码]则预填充密码显示为*，否则置空
         //      B.3 Switch-RememberPassword控件设置上次登陆成功配置，默认@"0" (don't remember password)
-        NSMutableDictionary *dict = [self readLoginConfigFile];
-        self.fieldUser.text = dict[@"user"];
+        
+        NSMutableDictionary *dict = [FileUtils readConfigFile:configPath];
+        self.fieldUser.text = dict[USER_LOGIN_USERNAME];
         [self.switchRememberPwd setOn:NO];
-        if([dict[@"remember_password"] isEqualToString:@"1"]) {
-            self.fieldPwd.text  = dict[@"password"];
+        if([dict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"]) {
+            self.fieldPwd.text  = dict[USER_LOGIN_PASSWORD];
             [self.switchRememberPwd setOn:YES];
         }
     }
@@ -212,11 +213,6 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
-    [self downloadCategoryThumbnail];
-    NSString *configPath1 = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *userDict1 =[FileUtils readConfigFile:configPath1];
-    [userDict1 setObject:@"10" forKey:USER_DEPTID];
-    [userDict1 writeToFile:configPath1 atomically:YES];
     
     // 跳至主界面
     [self enterMainViewController];
@@ -237,7 +233,8 @@
     
     // C.2 如果无网络环境，跳至步骤D[离线登陆]
     if(![HttpUtils isNetworkAvailable]) {
-        NSMutableDictionary *configDict = [self readLoginConfigFile];
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
         loginErrors = [self loginOfflineAction:configDict User:username Pwd:password];
         
         
@@ -377,31 +374,6 @@
     return errors;
 }
 
-/**
- *  取得login配置档路径
- *
- *  @return login配置档路径
- */
-//- (NSString *) loginConfigPath {
-//    return [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-//}
-
-/**
- *  读取用户上次登陆信息，有则读取，无则使用默认值
- *
- *  @return 上次登陆信息
- */
-- (NSMutableDictionary*)readLoginConfigFile {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *dict = [NSMutableDictionary alloc];
-    if([FileUtils checkFileExist:configPath isDir:false]) {
-        dict = [dict initWithContentsOfFile:configPath];
-    } else {
-        dict = [dict initWithObjectsAndKeys:@"user", @"", @"password", @"", @"last", LOGIN_LAST_DEFAULT, @"remember_password",@"0", nil];
-    }
-    
-    return dict;
-}
 
 /**
  *  无网络环境时，检测是否符合离线登陆条件
@@ -443,6 +415,21 @@
 
 // pragm mark - 进入主界面
 -(void)enterMainViewController{
+    [self downloadCategoryThumbnail];
+    
+    // C.3 取得输入内容，并作去除前后空格等处理
+    NSString *username = [self.fieldUser.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *password = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
+    [userDict setObject:username forKey:USER_LOGIN_USERNAME];
+    [userDict setObject:username forKey:USER_LOGIN_PASSWORD];
+    [userDict setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
+    [userDict setObject:password forKey:USER_DEPTID];
+    [FileUtils writeJSON:userDict Into:configPath];
+    
+    
     // 这里最好换成import，不要用NSClassFromString
     UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
     //MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
