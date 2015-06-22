@@ -10,10 +10,9 @@
 #import "FavoriteViewController.h"
 #import "GMGridView.h"
 #import "ViewSlide.h"
-
 #import "FileUtils.h"
+
 #import "const.h"
-#import "SlideInfoView.h"
 
 #import "MainViewController.h"
 #import "SideViewController.h"
@@ -95,11 +94,11 @@
         cell = [[GMGridViewCell alloc] init];
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
         
-        ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-        slide.isFavorite = YES;
-        slide.dict = currentDict;
-        slide.masterViewController = [self masterViewController];
-        [cell setContentView: slide];
+        ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+        viewSlide.isFavorite = YES;
+        viewSlide.dict = currentDict;
+        viewSlide.masterViewController = [self masterViewController];
+        [cell setContentView:viewSlide];
     }
     
     return cell;

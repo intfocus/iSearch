@@ -260,7 +260,35 @@
     self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
 }
 
-#pragma mark - 导航栏按钮事件
+#pragma mark - controls action
+/**
+ *  分类列表鼠标点击事件。
+ *  进入目录界面;
+ *  用户点击分类导航行为记录CONTENT_CONFIG_FILENAME[@CONTENT_KEY_NAVSTACK], 类型为NSMutableArray
+ *  进入push, 返回是pop
+ *
+ *  @param sender UIButton
+ */
+- (IBAction)actionCategoryClick:(UIButton *)sender {
+    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    
+    // 点击分类导航行为记录
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
+    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    // push current categoryID
+    [navStack addObject:categoryID];
+    [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
+    [FileUtils writeJSON:configDict Into:configPath];
+    
+    // enter ContentViewController
+    MainViewController *mainViewController = [self masterViewController];
+    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+    contentViewController.masterViewController = mainViewController;
+    [mainViewController setRightViewController:contentViewController withNav:NO];
+}
+
 /**
  *  导航栏[返回]响应处理；
  *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
@@ -278,7 +306,7 @@
     
     [mutableArray removeLastObject];
     [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
-    [configDict writeToFile:configPath atomically:true];
+    [FileUtils writeJSON:configDict Into:configPath];
     
     MainViewController *mainViewController = (MainViewController *)[self masterViewController];
     if([mutableArray count] == 0) {
@@ -292,6 +320,8 @@
     }
 }
 
+
+#pragma mark - 导航栏按钮事件
 - (IBAction)actionNavSortByDate:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
@@ -495,32 +525,5 @@
 
 
 
-#pragma mark - controls action
-/**
- *  分类列表鼠标点击事件。
- *  进入目录界面;
- *  用户点击分类导航行为记录CONTENT_CONFIG_FILENAME[@CONTENT_KEY_NAVSTACK], 类型为NSMutableArray
- *  进入push, 返回是pop
- *
- *  @param sender UIButton
- */
-- (IBAction)actionCategoryClick:(UIButton *)sender {
-    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    
-    // 点击分类导航行为记录
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
-    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    // push current categoryID
-    [navStack addObject:categoryID];
-    [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
-    [configDict writeToFile:configPath atomically:true];
-    
-    // enter ContentViewController
-    MainViewController *mainViewController = [self masterViewController];
-    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-    contentViewController.masterViewController = mainViewController;
-    [mainViewController setRightViewController:contentViewController withNav:NO];
-}
+#
 @end

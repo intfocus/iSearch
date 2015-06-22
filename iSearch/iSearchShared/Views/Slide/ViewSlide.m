@@ -8,7 +8,9 @@
 
 #import "ViewSlide.h"
 #import "const.h"
+#import "Slide.h"
 #import "message.h"
+
 #import "FileUtils.h"
 #import "SSZipArchive.h"
 
@@ -24,16 +26,11 @@
 # pragma mark - rewrite setter
 
 - (void)setDict:(NSMutableDictionary *)dict {
-    // 收藏文件，说明已下载
-    if(self.isFavorite) {
-        _slideID = dict[SLIDE_DESC_ID];
-        _dirName = FAVORITE_DIRNAME;
-    } else {
-        _slideID = dict[CONTENT_FIELD_ID];
-        _dirName = SLIDE_DIRNAME;
-        dict = [self checkSlideDownloadOrNot:dict];
-    }
-    _dict = dict;
+    self.slide = [[Slide alloc] init];
+    self.slide = [Slide initWith:dict Favorite:self.isFavorite];
+    self.slideID = self.slide.slideID;
+    self.dirName = self.slide.dirName;
+    _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
     
     [self loadThumbnail];
     [self updateBtnDownloadOrDisplayIcon];
@@ -63,29 +60,26 @@
 }
 
 - (IBAction)actionDisplaySlideInfo:(UIButton *)sender {
-    NSString *slideID = self.dict[SLIDE_DESC_ID];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    
     MainViewController *mainViewController = [self masterViewController];
-    [mainViewController poupSlideInfo:slideID Dir:dirName];
+    [mainViewController poupSlideInfo:self.slideID Dir:self.dirName];
 }
 
 
 - (IBAction)actionDisplaySlide:(UIButton *)sender {
     //  this slide display or not;
     NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
-    if(self.dict[SLIDE_DESC_ISDISPLAY] == nil) {
+    if(self.slide.isDisplay) {
         [self.dict setObject:@"1" forKey:SLIDE_DESC_ISDISPLAY];
         [FileUtils writeJSON:self.dict Into:descPath];
     }
     
     // tell DisplayViewController somthing it need.
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
     [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
     [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
-    [configDict writeToFile:configPath atomically:YES];
+    [FileUtils writeJSON:configDict Into:configPath];
     
     DisplayViewController *showVC = [[DisplayViewController alloc] init];
     [self.masterViewController presentViewController:showVC animated:NO completion:nil];
@@ -102,9 +96,8 @@
  *  @return dict
  */
 - (NSMutableDictionary *)checkSlideDownloadOrNot:(NSMutableDictionary *)dict {
-    NSString *slideID = dict[CONTENT_FIELD_ID];
-    if([FileUtils checkSlideExist:slideID Dir:SLIDE_DIRNAME Force:NO]) {
-        NSString *descPath = [FileUtils slideDescPath:slideID Dir:SLIDE_DIRNAME Klass:CONFIG_DIRNAME];
+    if([FileUtils checkSlideExist:self.slideID Dir:SLIDE_DIRNAME Force:NO]) {
+        NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:SLIDE_DIRNAME Klass:CONFIG_DIRNAME];
         dict = [FileUtils readConfigFile:descPath];
     }
     return dict;
@@ -187,18 +180,18 @@
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
-    NSLog(@"Received data: %@", self.dict[CONTENT_FIELD_ID]);
+    NSLog(@"Received data: %@", self.slideID);
     [self.downloadConnectionData appendData:data];
 }
 
 - (void) connectionDidFinishLoading: (NSURLConnection *)connection{
     /* 下载的数据 */
-    NSLog(@"%@", [NSString stringWithFormat:@"下载<#id:%@ url:%@> 成功", self.dict[CONTENT_FIELD_ID], self.dict[CONTENT_FIELD_URL]]);
-    NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.dict[CONTENT_FIELD_ID]];
+    NSLog(@"%@", [NSString stringWithFormat:@"下载<#id:%@ url:%@> 成功", self.slideID, self.dict[CONTENT_FIELD_URL]]);
+    NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.slideID];
     NSString *pathName = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
     
     BOOL state = [self.downloadConnectionData writeToFile:pathName atomically:YES];
-    NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.dict[CONTENT_FIELD_ID], self.dict[CONTENT_FIELD_URL], state ? @"成功" : @"失败"]);
+    NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.slideID, self.dict[CONTENT_FIELD_URL], state ? @"成功" : @"失败"]);
     
     // 下载zip动作为异步，解压动作应该放在此处
     if(state) [self extractZipFile];
@@ -213,13 +206,13 @@
  *  DOWNLOAD_DIRNAME/id.zip 解压至 CONTENT_DIRNAME/id
  */
 - (void) extractZipFile {
-    NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.dict[CONTENT_FIELD_ID]];
+    NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.slideID];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
     NSString *filesPath = [FileUtils getPathName:SLIDE_DIRNAME];
-    NSString *filePath = [filesPath stringByAppendingPathComponent:self.dict[CONTENT_FIELD_ID]];
+    NSString *filePath = [filesPath stringByAppendingPathComponent:self.slideID];
     
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:filePath];
-    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.dict[CONTENT_FIELD_ID], state ? @"成功" : @"失败"]);
+    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slideID, state ? @"成功" : @"失败"]);
 }
 @end

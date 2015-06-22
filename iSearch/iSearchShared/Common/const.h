@@ -159,6 +159,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_FIELD_CREATEDATE @"EditTime" // 创建时间
 #define CONTENT_FIELD_TYPE       @"Type" // 类型: 0为目录，1为文件
 #define CONTENT_FIELD_CATEGORYID @"CategoryId"
+#define CONTENT_FIELD_CATEGORYNAME @"CategoryName"
 #define CONTENT_FIELD_ZIPSIZE    @"ZipSize"
 #define CONTENT_FIELD_PAGENUM    @"PageNo"
 #define CONTENT_FIELD_URL        @"DownloadUrl" // 文件下载链接，代码拼接而成
@@ -169,18 +170,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
 // API字段
-#define OFFLINE_FIELD_DATA       @"data"
-#define OFFLINE_FIELD_ID         @"Id"
-#define OFFLINE_FIELD_TYPE       @"Type"
-#define OFFLINE_FIELD_DESC       @"Desc"
-#define OFFLINE_FIELD_TAGS       @"Tags"
-#define OFFLINE_FIELD_NAME       @"Name"
-#define OFFLINE_FIELD_TITLE      @"Title"
-#define OFFLINE_FIELD_CATEGORYID @"CategoryId"
-#define OFFLINE_FIELD_CATEGORYNAME @"CategoryName"
-#define OFFLINE_FIELD_ZIPSIZE    @"ZipSize"
-#define OFFLINE_FIELD_PAGENUM    @"PageNo"
-#define OFFLINE_FIELD_CREATEDATE @"EditTime"
+// shared with CONTENT_FIELD_*
 // 数据库表字段
 #define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"

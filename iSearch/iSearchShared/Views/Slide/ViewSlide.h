@@ -11,13 +11,14 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 @class MainViewController;
+@class Slide;
 
 @interface ViewSlide : UIView
 
 // necessary! then do anything through masterViewController
 @property (nonatomic, nonatomic) MainViewController *masterViewController;
-@property (nonatomic, nonatomic) BOOL isFavorite;   // 收藏文件: 本地已下载
-@property (strong, nonatomic) NSMutableDictionary *dict; // 文件配置信息，json格式
+@property (nonatomic, nonatomic) BOOL isFavorite;
+@property (strong, nonatomic) NSMutableDictionary *dict;
 
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
@@ -29,6 +30,7 @@
 // simple operation
 @property (strong, nonatomic) NSString *slideID;
 @property (strong, nonatomic) NSString *dirName;
+@property (strong, nonatomic) Slide *slide;
 
 // http download variables begin
 @property (strong, nonatomic) NSURLConnection *downloadConnection;

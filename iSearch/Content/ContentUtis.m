@@ -99,13 +99,14 @@
         NSString *cachePath = [[NSString alloc] init];
         for(tmpDict in mutableArray) {
             // update local slide desc when already download
-            if([FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
-                descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-                tmpDesc = [FileUtils readConfigFile:descPath];
-                tmpDesc = [ContentUtils descConvert:tmpDict To:tmpDesc Type:CONTENT_DIRNAME];
-
-                [FileUtils writeJSON:tmpDesc Into:descPath];
-            }
+#warning slide.rewrite
+//            if([FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
+//                descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+//                tmpDesc = [FileUtils readConfigFile:descPath];
+//                tmpDesc = [ContentUtils descConvert:tmpDict To:tmpDesc Type:CONTENT_DIRNAME];
+//
+//                [FileUtils writeJSON:tmpDesc Into:descPath];
+//            }
             // write into cache then [view] slide info with popup view
             cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
             cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
@@ -185,20 +186,20 @@
         [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
         [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
         [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYNAME] Key:OFFLINE_FIELD_CATEGORYNAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYNAME] Key:CONTENT_FIELD_CATEGORYNAME];
         [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
         [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
     }
     if([convertType isEqualToString:OFFLINE_DIRNAME]) {
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_NAME] Key:SLIDE_DESC_NAME];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_DESC] Key:SLIDE_DESC_DESC];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CATEGORYNAME] Key:OFFLINE_FIELD_CATEGORYNAME];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[OFFLINE_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYNAME] Key:CONTENT_FIELD_CATEGORYNAME];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
+        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
     }
     return tmpDesc;
 }

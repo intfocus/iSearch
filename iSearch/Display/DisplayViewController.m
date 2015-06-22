@@ -414,7 +414,7 @@
             slideType = [NSNumber numberWithInteger:SlideTypeFavorite];
         }
         [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
-        [config writeToFile:pathName atomically:YES];
+        [FileUtils writeJSON:config Into:pathName];
         
         NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
         NSString *fileDescSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];

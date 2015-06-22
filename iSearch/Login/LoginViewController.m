@@ -295,7 +295,7 @@
                 [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_EMAIL] forKey:USER_EMAIL];
                 [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_DEPTID] forKey:USER_DEPTID];
                 [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID] forKey:USER_EMPLOYEEID];
-                [userDict writeToFile:configPath atomically:YES];
+                [FileUtils writeJSON:userDict Into:configPath];
                 
                 // 跳至主界面
                 [self enterMainViewController];

@@ -119,7 +119,7 @@
     NSMutableDictionary *mutableDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
                                                                options:NSJSONReadingMutableContainers
                                                                  error:&error];
-    NSMutableArray *mutableArray = mutableDict[OFFLINE_FIELD_DATA];
+    NSMutableArray *mutableArray = mutableDict[CONTENT_FIELD_DATA];
     
     NSErrorPrint(error, @"string convert into json");
     if(!error) {
@@ -144,34 +144,34 @@
                       OFFLINE_COLUMN_CATEGORYNAME,
                       OFFLINE_COLUMN_ZIPURL,
                       OFFLINE_COLUMN_ZIPSIZE,
-                      dict[OFFLINE_FIELD_ID],
-                      dict[OFFLINE_FIELD_NAME],
-                      dict[OFFLINE_FIELD_TYPE],
-                      dict[OFFLINE_FIELD_DESC],
-                      dict[OFFLINE_FIELD_TYPE],
-                      dict[OFFLINE_FIELD_PAGENUM],
-                      dict[OFFLINE_FIELD_CATEGORYNAME],
-                      dict[OFFLINE_FIELD_ID],// ZipUrl由FileID拼接
-                      dict[OFFLINE_FIELD_ZIPSIZE]];
+                      dict[CONTENT_FIELD_ID],
+                      dict[CONTENT_FIELD_NAME],
+                      dict[CONTENT_FIELD_TYPE],
+                      dict[CONTENT_FIELD_DESC],
+                      dict[CONTENT_FIELD_TYPE],
+                      dict[CONTENT_FIELD_PAGENUM],
+                      dict[CONTENT_FIELD_CATEGORYNAME],
+                      dict[CONTENT_FIELD_ID],// ZipUrl由FileID拼接
+                      dict[CONTENT_FIELD_ZIPSIZE]];
             [insertSql appendString:tmpSql];
             
             // update local slide cache info
-            if([dict[OFFLINE_FIELD_TYPE] isEqualToString:CONTENT_SLIDE]) {
+            if([dict[CONTENT_FIELD_TYPE] isEqualToString:CONTENT_SLIDE]) {
                 NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
                 NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
                 NSString *descPath = [[NSString alloc] init];
                 NSString *cacheName = [[NSString alloc] init];
                 NSString *cachePath = [[NSString alloc] init];
                 // update local slide desc when already download
-                if([FileUtils checkSlideExist:dict[OFFLINE_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
-                    descPath = [FileUtils slideDescPath:dict[OFFLINE_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+                if([FileUtils checkSlideExist:dict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
+                    descPath = [FileUtils slideDescPath:dict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
                     tmpDesc = [FileUtils readConfigFile:descPath];
                     tmpDesc = [ContentUtils descConvert:dict To:tmpDesc Type:OFFLINE_DIRNAME];
                     
                     [FileUtils writeJSON:tmpDesc Into:descPath];
                 }
                 // write into cache then [view] slide info with popup view
-                cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:deptID ID:tmpDict[OFFLINE_FIELD_ID]];
+                cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:deptID ID:tmpDict[CONTENT_FIELD_ID]];
                 cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
                 [FileUtils writeJSON:dict Into:cachePath];
                 /**
@@ -256,7 +256,7 @@
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
         [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
         [configDict setObject:[NSNumber numberWithInteger:SlideTypeSlide] forKey:SLIDE_DISPLAY_TYPE];
-        [configDict writeToFile:configPath atomically:YES];
+        [FileUtils writeJSON:configDict Into:configPath];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];
         [self presentViewController:showVC animated:NO completion:nil];
