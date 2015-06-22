@@ -6,8 +6,8 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#ifndef WebStructure_ViewSlide_h
-#define WebStructure_ViewSlide_h
+#ifndef iSearch_ViewSlide_h
+#define iSearch_ViewSlide_h
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
@@ -31,14 +31,6 @@
 @property (strong, nonatomic) NSMutableData   *downloadConnectionData;
 // http download variables end
 
-
-/**
- *  UIWebView浏览PDF或GIF文档
- *
- *  @param documentName PDF文档路径
- *  @param webView      UIWebView
- */
-- (void)loadThumbnail:(NSString *)thumbnailPath;
 
 @end
 

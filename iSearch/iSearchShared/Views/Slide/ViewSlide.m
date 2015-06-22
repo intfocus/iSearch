@@ -41,22 +41,23 @@
     
     // 收藏文件，说明已下载
     if(self.isFavoriteFile) {
-        self.btnDownloadOrDisplay.hidden = NO;
-        [self bringSubviewToFront:self.btnDownloadOrDisplay];
         _slideID = dict[SLIDE_DESC_ID];
         _dirName = FAVORITE_DIRNAME;
-    } else {
         self.btnDownloadOrDisplay.hidden = NO;
-        [self checkSlideDownloadBtn];
+        [self bringSubviewToFront:self.btnDownloadOrDisplay];
+    } else {
         _slideID = dict[CONTENT_FIELD_ID];
         _dirName = SLIDE_DIRNAME;
+        self.btnDownloadOrDisplay.hidden = NO;
+        [self checkSlideDownloadBtn];
     }
+    
+    [self loadThumbnail];
     
 }
 
 - (IBAction)actionDownloadFile:(id)sender {
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
+    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:self.dirName Force:NO]) {
         [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
         [self downloadZip:self.dict[CONTENT_FIELD_URL]];
     //} else {
@@ -68,8 +69,7 @@
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:dir Force:NO]) {
+    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:self.dirName Force:NO]) {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
     } else {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];
@@ -82,23 +82,23 @@
  *  @param documentName PDF文档路径
  *  @param webView      UIWebView
  */
-- (void)loadThumbnail:(NSString *)thumbnailPath {
-    self.webViewThumbnail.hidden = YES;
-    return;
-    NSString *extName = [thumbnailPath pathExtension];
+- (void)loadThumbnail {
+    self.webViewThumbnail.hidden = NO;
+    NSString *thumbnailName = [NSString stringWithFormat:@"%@.png", self.slideID];
+    NSString *slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
+    NSString *thumbanilPath = [slidePath stringByAppendingPathComponent:thumbnailName];
     
-    if([extName isEqualToString:@"pdf"]) {
-        NSURL *url = [NSURL fileURLWithPath:thumbnailPath];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [self.webViewThumbnail loadRequest:request];
-        
-    } else if([extName isEqualToString:@"gif"]) {
-        
-        NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", thumbnailPath];
-        [self.webViewThumbnail loadHTMLString:html baseURL:nil];
+    NSString *htmlContent, *basePath;
+    NSURL *baseURL;
+    if([FileUtils checkFileExist:thumbanilPath isDir:NO]) {
+        basePath = slidePath;
     } else {
-        NSLog(@"Load default thumbnail.");
+        thumbnailName = @"slide-default.png";
+        basePath =  [[NSBundle mainBundle] bundlePath];
     }
+    baseURL = [NSURL fileURLWithPath:basePath];
+    htmlContent = [NSString stringWithFormat:@"<html><body><img src ='%@'></body></html>", thumbnailName];
+    [self.webViewThumbnail loadHTMLString:htmlContent baseURL:baseURL];
 }
 
 //////////////////////////////////////////////////////////////

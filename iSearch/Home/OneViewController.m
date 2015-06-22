@@ -100,18 +100,6 @@
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
         slide.isFavoriteFile = YES;
         slide.dict = currentDict;
-        if([FileUtils checkSlideExist:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
-            NSError *error;
-            NSString *descContent = [FileUtils slideDescContent:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
-            NSMutableDictionary *descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                            options:NSJSONReadingMutableContainers
-                                                                              error:&error];
-            
-            if(error == nil && descData[SLIDE_DESC_ORDER] && [descData[SLIDE_DESC_ORDER] count] > 0) {
-                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[SLIDE_DESC_ID] PageID:[descData[SLIDE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
-                [slide loadThumbnail:thumbnailPath];
-            }
-        }
         slide.btnSlideInfo.tag = index;
         [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
         [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];

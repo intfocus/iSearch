@@ -105,20 +105,6 @@
         ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
         slide.isFavoriteFile = YES;
         slide.dict = currentDict;
-        // 数据初始化操作，须在initWithFrame操作前，因为该操作会触发slide内部处理
-        
-        if([FileUtils checkSlideExist:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME Force:YES]) {
-            NSError *error;
-            NSString *descContent = [FileUtils slideDescContent:currentDict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
-            NSMutableDictionary *descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                              options:NSJSONReadingMutableContainers
-                                                                                error:&error];
-            
-            if(error == nil && descData[SLIDE_DESC_ORDER] && [descData[SLIDE_DESC_ORDER] count] > 0) {
-                NSString *thumbnailPath = [FileUtils fileThumbnail:currentDict[SLIDE_DESC_ID] PageID:[descData[SLIDE_DESC_ORDER] firstObject] Dir:FAVORITE_DIRNAME];
-                [slide loadThumbnail:thumbnailPath];
-            }
-        }
         slide.btnSlideInfo.tag = index;
         [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
         [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
