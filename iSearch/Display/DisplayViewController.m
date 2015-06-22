@@ -131,7 +131,7 @@
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    //    [self demoExtract];
+    // [self demoExtract];
     // [self extractResource];
     
     [self loadHtml];
@@ -264,7 +264,6 @@
             break;
             
         case SlideEditPanelShow: {
-            
             [self.editBtn setTag:SlideEditPanelHiden];
             [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
             self.editPanelBgView.hidden = NO;
@@ -308,6 +307,8 @@
         [self.drawBtn setEnabled:false];
     }
     
+    [self.view sendSubviewToBack:self.colorView];
+    self.colorView.hidden = YES;
     [self.view bringSubviewToFront:self.editPanel];
     [self.view bringSubviewToFront:self.editBtn];
 }
@@ -325,8 +326,12 @@
 -(void)noteBtnClick:(UIButton*) sender{
     // 关闭switch控件，并触发自身函数
     [self.laserSwitch setOn:false];
+    [self stopLaser];
     [self startNote];
     self.paintView.paintColor = sender.backgroundColor;
+    
+    [self.view sendSubviewToBack:self.colorView];
+    self.colorView.hidden = YES;
 }
 
 /**
@@ -451,11 +456,9 @@
         self.paintView.laser = false;
         [self.view addSubview:self.paintView];
         self.isDrawing = true;
-        [self.drawBtn setTitle:@"取消" forState:UIControlStateNormal];
     } else {
         [self.paintView removeFromSuperview];
         self.isDrawing = false;
-        [self.drawBtn setTitle:@"作笔记" forState:UIControlStateNormal];
         
     }
 }
@@ -472,6 +475,9 @@
 - (IBAction)colorButtonTouched:(UIButton *)sender {
     self.colorView.hidden = !self.colorView.hidden;
     self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
+    if(!self.colorView.hidden) {
+        [self.view bringSubviewToFront:self.colorView];
+    }
 }
 
 

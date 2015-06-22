@@ -57,23 +57,9 @@
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 25);
-    //NSLog(@"color:%@",_paintColor);
 
-    // 激光笔状态
-    if(self.laser) {
-        //[[linesArray reverseObjectEnumerator] allObjects];
-        NSDictionary *lineDic = [linesArray lastObject];
-//        UIColor *lineColor = [lineDic objectForKey:@"color"];
-        CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-        //NSArray *linePointArray = [[[lineDic objectForKey:@"line"] reverseObjectEnumerator] allObjects];
-        NSMutableArray *linePointArray = [lineDic objectForKey:@"line"];
-
-        CGPoint point = [[linePointArray lastObject]CGPointValue];
-        //[self.laserIcon drawAtPoint:point];
-//        CGContextFillEllipseInRect(context, CGRectMake(point.x-20, point.y-40, 20, 20));
-//        CGContextSetRGBFillColor(context, 0, 0, 255, 1.0);
-
-    } else {
+    // 绘图
+    if(!self.laser) {
         for (NSDictionary *lineDic in linesArray) {
             UIColor *lineColor = [lineDic objectForKey:@"color"];
             CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
@@ -111,7 +97,6 @@
                 CGContextStrokePath(context);
             }
         }
-        
     }
 }
 
@@ -145,33 +130,34 @@
             }
         }
         //[self eraseLine:currentLineDic erase:[thePan locationInView:self]];
-    // 绘图状态
+    // 绘图/激光笔
     } else {
-//        if (thePan.state==UIGestureRecognizerStateBegan) {
-//            NSMutableArray *currentLineArray = [NSMutableArray arrayWithObject:[NSValue valueWithCGPoint:touchPoint]];
-//            NSMutableDictionary *lineDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentLineArray,@"line",_paintColor,@"color", nil];
-//            NSLog(@"panGesture: <x=%f, y=%f>", touchPoint.x, touchPoint.y);
-//            [linesArray addObject:lineDic];
-//        } else if(thePan.state==UIGestureRecognizerStateChanged){
-//            NSMutableDictionary *lineDic = [linesArray lastObject];
-//            NSMutableArray *currentLineArray = [lineDic objectForKey:@"line"];
-//            [currentLineArray addObject:[NSValue valueWithCGPoint:touchPoint]];
-//            CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
-//            [self setNeedsDisplayInRect:paintRect];
-//        } else if(thePan.state==UIGestureRecognizerStateEnded){
-//            //TODO:激光笔状态，结束时应该把屏幕所以痕迹清空
-//        }
-        
-        CGPoint point = [thePan locationInView:self];
-        if (thePan.state == UIGestureRecognizerStateBegan) {
-            self.penIV.hidden = NO;
-        }
-        else if (thePan.state == UIGestureRecognizerStateChanged) {
-            NSLog(@"%f, %f",point.x,point.y);
-            self.penIV.frame = CGRectMake(point.x - 11, point.y - 11, 22, 22);
-        }
-        else if (thePan.state == UIGestureRecognizerStateEnded) {
-            self.penIV.hidden = YES;
+        if(self.laser) {
+            CGPoint point = [thePan locationInView:self];
+            if (thePan.state == UIGestureRecognizerStateBegan) {
+                self.penIV.hidden = NO;
+            }
+            else if (thePan.state == UIGestureRecognizerStateChanged) {
+                NSLog(@"%f, %f",point.x,point.y);
+                self.penIV.frame = CGRectMake(point.x - 11, point.y - 11, 22, 22);
+            }
+            else if (thePan.state == UIGestureRecognizerStateEnded) {
+                self.penIV.hidden = YES;
+            }
+        } else {
+            if (thePan.state==UIGestureRecognizerStateBegan) {
+                NSMutableArray *currentLineArray = [NSMutableArray arrayWithObject:[NSValue valueWithCGPoint:touchPoint]];
+                NSMutableDictionary *lineDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentLineArray,@"line",_paintColor,@"color", nil];
+                NSLog(@"panGesture: <x=%f, y=%f>", touchPoint.x, touchPoint.y);
+                [linesArray addObject:lineDic];
+            } else if(thePan.state==UIGestureRecognizerStateChanged){
+                NSMutableDictionary *lineDic = [linesArray lastObject];
+                NSMutableArray *currentLineArray = [lineDic objectForKey:@"line"];
+                [currentLineArray addObject:[NSValue valueWithCGPoint:touchPoint]];
+                CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
+                [self setNeedsDisplayInRect:paintRect];
+            } else if(thePan.state==UIGestureRecognizerStateEnded){
+            }
         }
     }
 }
