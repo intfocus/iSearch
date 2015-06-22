@@ -96,28 +96,32 @@
 + (BOOL) removeFile:(NSString *)filePath;
 
 /**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
- *  Dir: FILE_DIRNAME/FAVORITE_DIRNAME
- *  @param fileID fileID
- *
- *  @return 文档配置档内容;jsonStr
- */
-+ (NSString *) slideDescContent:(NSString *) slideID Dir:(NSString *)dir;
-
-/**
  *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
- *  Dir为FILE_DIRNAME/FAVORITGE_DIRNAME
- *  klass为FILE_CONFIG_FILENAME/FILE_DISPLAY_CONFIG_FILENAME
  *
- *  @param fileID fileID
- *  @param Dir    FILE_DIRNAME/FAVORITE_DIRNAME
- *  @param Klass  FILE_DESC_FILENAME/FILE_DESC_SWP_FILE_NAME
+ *  @param slideID slideID
+ *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
+ *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
  *
  *  @return 文档配置档路径
  */
 + (NSString *) slideDescPath:(NSString *)fileID
-                        Dir:(NSString *)dirName
-                      Klass:(NSString *)klass;
+                         Dir:(NSString *)dirName
+                       Klass:(NSString *)klass;
+
+/**
+ *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
+ *
+ *
+ *  @param slideID slideID
+ *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
+ *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
+ *
+ *
+ *  @return 文档配置档内容;str
+ */
++ (NSString *) slideDescContent:(NSString *)slideID
+                            Dir:(NSString *)dirName
+                          Klass:(NSString *)klass;
 
 /**
  *  专用函数; 由文档演示界面进入文档页面编辑界面时，会拷贝一份描述文件，以实现[恢复]功能；

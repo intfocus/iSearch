@@ -492,15 +492,9 @@
     return cell;
 }
 #pragma mark - assistant methods
-- (NSMutableDictionary *)checkSlideDownloadOrNot:(NSMutableDictionary *)dict {
-    NSString *slideID = dict[CONTENT_FIELD_ID];
-    if([FileUtils checkSlideExist:slideID Dir:SLIDE_DIRNAME Force:NO]) {
-        NSString *descPath = [FileUtils slideDescPath:slideID Dir:SLIDE_DIRNAME Klass:CONFIG_DIRNAME];
-        NSString *descContent = [FileUtils slideDescContent:slideID Dir:SLIDE_DIRNAME];
-        dict = [FileUtils ]
-    }
-    return dict;
-}
+
+
+
 #pragma mark - controls action
 /**
  *  分类列表鼠标点击事件。

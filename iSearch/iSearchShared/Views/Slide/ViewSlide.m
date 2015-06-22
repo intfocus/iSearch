@@ -24,18 +24,16 @@
 # pragma mark - rewrite setter
 
 - (void)setDict:(NSMutableDictionary *)dict {
-    _dict = dict;
-    
     // 收藏文件，说明已下载
     if(self.isFavorite) {
         _slideID = dict[SLIDE_DESC_ID];
         _dirName = FAVORITE_DIRNAME;
-
     } else {
         _slideID = dict[CONTENT_FIELD_ID];
         _dirName = SLIDE_DIRNAME;
-        self.btnDownloadOrDisplay.hidden = NO;
+        dict = [self checkSlideDownloadOrNot:dict];
     }
+    _dict = dict;
     
     [self loadThumbnail];
     [self updateBtnDownloadOrDisplayIcon];
@@ -96,6 +94,21 @@
 
 #pragma mark - assistant methods
 
+/**
+ *  read local slide's desc when already download.
+ *
+ *  @param dict slide's desc from server
+ *
+ *  @return dict
+ */
+- (NSMutableDictionary *)checkSlideDownloadOrNot:(NSMutableDictionary *)dict {
+    NSString *slideID = dict[CONTENT_FIELD_ID];
+    if([FileUtils checkSlideExist:slideID Dir:SLIDE_DIRNAME Force:NO]) {
+        NSString *descPath = [FileUtils slideDescPath:slideID Dir:SLIDE_DIRNAME Klass:CONFIG_DIRNAME];
+        dict = [FileUtils readConfigFile:descPath];
+    }
+    return dict;
+}
 
 /**
  *  图标 - 需求

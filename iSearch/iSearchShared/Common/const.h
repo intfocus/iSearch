@@ -202,6 +202,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 文档描述desc.json相关
 // TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
 #define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define SLIDE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 #define SLIDE_DESC_ID               @"id"
 #define SLIDE_DESC_TYPE             @"type"
 #define SLIDE_DESC_NAME             @"name"
@@ -210,7 +211,6 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
 #define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
 #define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
-#define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"
 #define PAGE_IMAGE_FORMAT          @"gif"
