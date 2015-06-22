@@ -12,13 +12,15 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 @class MainViewController;
+@class Slide;
 /**
  *  文档[信息]显示该文档的标题、描述、查看等信息及操作
  */
 @interface SlideInfoView : UIViewController
-@property (strong, nonatomic) NSMutableDictionary *dict;
 @property (nonatomic , nonatomic) MainViewController *masterViewController;
-@property (nonatomic, nonatomic) BOOL isFavorite;   // 收藏文件: 本地已下载
+@property (nonatomic, nonatomic) BOOL isFavorite;
+@property (strong, nonatomic) NSMutableDictionary *dict;
+@property (strong, nonatomic) Slide *slide;
 
 @end
 

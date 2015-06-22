@@ -43,6 +43,7 @@
 @property (nonatomic, nonatomic) BOOL isDisplay;
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
+@property (nonatomic, strong) NSString *typeName;
 
 // class methods
 + (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;

@@ -279,7 +279,7 @@
  *  @param slideID 文档ID
  *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
  */
-- (void)poupSlideInfo:(NSString *)slideID Dir:(NSString *)dirName {
+- (void)poupSlideInfo_old:(NSString *)slideID Dir:(NSString *)dirName {
     NSString *descPath = [[NSString alloc] init];
     NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
     // 在线浏览文档时
@@ -302,7 +302,15 @@
         NSLog(@"popup view presented");
     }];
 }
-
+- (void)poupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
+    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
+    slideInfoView.masterViewController = self;
+    slideInfoView.isFavorite = isFavorite;
+    slideInfoView.dict = dict;
+    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
+}
 /**
  *  关闭弹出框；
  *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。

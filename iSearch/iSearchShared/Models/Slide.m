@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 @implementation Slide
 @synthesize slideID,name,title,type,tags,desc,pages,pageNum,createdDate;
 @synthesize zipSize,zipUrl,localCreatedDate,localUpdatedDate;
-@synthesize categoryID,categoryName;
+@synthesize categoryID,categoryName,typeName;
 
 + (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite {
     Slide *slide = [[Slide alloc] init];
@@ -75,7 +75,8 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     // local fields
     slide.localCreatedDate = [slide defaultWhenNil:dict[SLIDE_DESC_LOCAL_CREATEAT] Type:SlideFieldDate];
     slide.localUpdatedDate = [slide defaultWhenNil:dict[SLIDE_DESC_LOCAL_UPDATEAT] Type:SlideFieldDate];
-
+    
+    slide.typeName = @"文档";
     return slide;
 }
 

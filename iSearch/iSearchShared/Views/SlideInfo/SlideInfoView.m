@@ -10,9 +10,11 @@
 #import "SlideInfoView.h"
 #import "const.h"
 #import "FileUtils.h"
+
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 #import "DisplayViewController.h"
+#import "Slide.h"
 
 @interface SlideInfoView()
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
@@ -21,6 +23,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelPageNum;
 @property (strong, nonatomic) IBOutlet UILabel *labelZipSize;
 @property (strong, nonatomic) IBOutlet UILabel *labelCategory;
+@property (strong, nonatomic) IBOutlet UILabel *labelTypeName;
 @property (weak, nonatomic) IBOutlet UIButton *btnDisplay;
 @property (weak, nonatomic) IBOutlet UIButton *btnEdit;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
@@ -40,23 +43,24 @@
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.labelTitle.text = self.dict[SLIDE_DESC_NAME];
-    self.labelDesc.text = @"摘要会很长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长";//self.dict[FILE_DESC_DESC];
+    self.labelTitle.text = self.slide.title;
+    self.labelDesc.text  = self.slide.desc;
+    self.labelTypeName.text = self.slide.typeName;
     [self.labelDesc sizeToFit];
     if (self.labelDesc.frame.size.height > 67) {
         self.labelDesc.frame = CGRectMake(self.labelDesc.frame.origin.x, self.labelDesc.frame.origin.y, self.labelDesc.frame.size.width, 67);
     }
-    self.labelEditTime.text = self.dict[SLIDE_DESC_NAME];
-    self.labelPageNum.text = @"TODO"; //self.dict[FILE_DESC_NAME];
-    self.labelZipSize.text = @"TODO"; //self.dict[FILE_DESC_NAME];
-    self.labelCategory.text = @"TODO"; //self.dict[FILE_DESC_NAME];
+    self.labelEditTime.text = self.slide.createdDate;
+    self.labelPageNum.text  = self.slide.pageNum;
+    self.labelZipSize.text  = self.slide.zipSize;
+    self.labelCategory.text = self.slide.categoryName;
     
     [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
-    
 }
+
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
     NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
@@ -70,8 +74,16 @@
 //        [masterView dismissPopup];
     }
 }
-#pragma mark - control action
 
+#pragma mark - setter rewrite
+- (void)setDict:(NSMutableDictionary *)dict {
+    self.slide = [[Slide alloc] init];
+    self.slide = [Slide initWith:dict Favorite:self.isFavorite];
+    _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
+
+}
+
+#pragma mark - control action
 - (IBAction)actionDisplaySlide:(id)sender {
     NSString *slideID = self.dict[SLIDE_DESC_ID];
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
