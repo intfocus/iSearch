@@ -209,6 +209,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DESC_ORDER            @"order"
 #define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
 #define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
+#define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
 #define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"

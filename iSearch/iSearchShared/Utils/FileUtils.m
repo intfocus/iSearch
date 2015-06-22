@@ -205,8 +205,8 @@
  *
  *  @return 文档配置档内容;str
  */
-+ (NSString *) slideDescContent:(NSString *)fileID Dir:(NSString *)dirName {
-    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
++ (NSString *) slideDescContent:(NSString *)slideID Dir:(NSString *)dirName {
+    NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
     NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     NSError *error;
     NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];

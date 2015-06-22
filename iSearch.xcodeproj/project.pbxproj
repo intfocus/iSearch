@@ -21,6 +21,8 @@
 		C42EC8851B28908B000F84EF /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8811B28908B000F84EF /* NotificationViewController.xib */; };
 		C42EC8901B289392000F84EF /* OfflineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC88E1B289392000F84EF /* OfflineViewController.m */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
+		C4357C141B37D86D00854524 /* slideUnDisplay.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C121B37D86D00854524 /* slideUnDisplay.png */; };
+		C4357C151B37D86D00854524 /* slideToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C131B37D86D00854524 /* slideToDownload.png */; };
 		C44841001B33E9510076B1FE /* iconSlideInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = C44840FF1B33E9510076B1FE /* iconSlideInfo.png */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
@@ -131,6 +133,8 @@
 		C42EC88D1B289392000F84EF /* OfflineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineViewController.h; sourceTree = "<group>"; };
 		C42EC88E1B289392000F84EF /* OfflineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineViewController.m; sourceTree = "<group>"; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		C4357C121B37D86D00854524 /* slideUnDisplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideUnDisplay.png; sourceTree = "<group>"; };
+		C4357C131B37D86D00854524 /* slideToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideToDownload.png; sourceTree = "<group>"; };
 		C44840FF1B33E9510076B1FE /* iconSlideInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconSlideInfo.png; sourceTree = "<group>"; };
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
@@ -301,6 +305,8 @@
 		C42BD5591B2BCAC1006DB157 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4357C121B37D86D00854524 /* slideUnDisplay.png */,
+				C4357C131B37D86D00854524 /* slideToDownload.png */,
 				C4EB5F0D1B354960009ADFF5 /* category-default.png */,
 				C495D8711B34050300C98FB4 /* iconSlideDisplay.png */,
 				C44840FF1B33E9510076B1FE /* iconSlideInfo.png */,
@@ -805,6 +811,7 @@
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
 				C495D8721B34050300C98FB4 /* iconSlideDisplay.png in Resources */,
 				C4BFEF4E1B2E92A80080D7EE /* 0-1.png in Resources */,
+				C4357C141B37D86D00854524 /* slideUnDisplay.png in Resources */,
 				C46497521B2DB108005E3903 /* ToView.png in Resources */,
 				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
 				C4D253D01B326B410033F697 /* TagListView.xib in Resources */,
@@ -822,6 +829,7 @@
 				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,
 				C4BFEF511B2E92A80080D7EE /* 0-4.png in Resources */,
 				C44841001B33E9510076B1FE /* iconSlideInfo.png in Resources */,
+				C4357C151B37D86D00854524 /* slideToDownload.png in Resources */,
 				C4D253E91B32FE030033F697 /* ViewCategory.xib in Resources */,
 				C4BFEF4F1B2E92A80080D7EE /* 0-2.png in Resources */,
 				C4D253E61B32FE030033F697 /* ViewSlide.xib in Resources */,

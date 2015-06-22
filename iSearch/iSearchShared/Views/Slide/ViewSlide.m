@@ -30,17 +30,16 @@
     if(self.isFavorite) {
         _slideID = dict[SLIDE_DESC_ID];
         _dirName = FAVORITE_DIRNAME;
-        self.btnDownloadOrDisplay.hidden = NO;
-        [self bringSubviewToFront:self.btnDownloadOrDisplay];
+
     } else {
         _slideID = dict[CONTENT_FIELD_ID];
         _dirName = SLIDE_DIRNAME;
         self.btnDownloadOrDisplay.hidden = NO;
-        [self checkSlideDownloadBtn];
     }
     
     [self loadThumbnail];
-    
+    [self updateBtnDownloadOrDisplayIcon];
+    [self bringSubviewToFront:self.btnDownloadOrDisplay];
 }
 
 - (IBAction)setMasterViewController:(MainViewController *)masterViewController {
@@ -49,16 +48,7 @@
     [self.btnSlideInfo addTarget:self action:@selector(actionDisplaySlideInfo:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDownloadOrDisplay addTarget:self action:@selector(actionDownloadOrDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
 }
-/**
- *  检测 CONTENT_DIRNAME/id 是否存在
- */
-- (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
-    } else {
-        [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];
-    }
-}
+
 
 
 #pragma mark - control action
@@ -66,8 +56,11 @@
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
     if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
         [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
+        [self updateBtnDownloadOrDisplayIcon];
     } else {
-        NSLog(@"TODO Download.");
+        NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
+                                 BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
+        [self downloadZip:downloadUrl];
     }
 }
 
@@ -79,17 +72,16 @@
     [mainViewController poupSlideInfo:slideID Dir:dirName];
 }
 
-#pragma mark - assistant methods
-- (IBAction)actionDownloadSlide:(UIButton *)sender {
-    if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
-        [self downloadZip:self.dict[CONTENT_FIELD_URL]];
-        //} else {
-        //     演示文稿功能在主界面代码中处理
-    }
-}
 
 - (IBAction)actionDisplaySlide:(UIButton *)sender {
+    //  this slide display or not;
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
+    if(self.dict[SLIDE_DESC_ISDISPLAY] == nil) {
+        [self.dict setObject:@"1" forKey:SLIDE_DESC_ISDISPLAY];
+        [FileUtils writeJSON:self.dict Into:descPath];
+    }
+    
+    // tell DisplayViewController somthing it need.
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
     NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
@@ -100,6 +92,30 @@
     DisplayViewController *showVC = [[DisplayViewController alloc] init];
     [self.masterViewController presentViewController:showVC animated:NO completion:nil];
 
+}
+
+#pragma mark - assistant methods
+
+
+/**
+ *  图标 - 需求
+ *  未下载: slideToDownload.png
+ *  已下载:
+ *      未曾演示: slideUnDisplay.png
+ *      演示过: slideToDisplay.png
+ */
+- (void) updateBtnDownloadOrDisplayIcon {
+    UIImage *image;
+    if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
+        image = [UIImage imageNamed:@"slideToDownload.png"];
+    } else {
+        if(self.dict[SLIDE_DESC_ISDISPLAY] == nil) {
+            image = [UIImage imageNamed:@"slideUnDisplay.png"];
+        } else {
+            image = [UIImage imageNamed:@"slideToDisplay.png"];
+        }
+    }
+    [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
 }
 
 /**
@@ -174,7 +190,7 @@
     // 下载zip动作为异步，解压动作应该放在此处
     if(state) [self extractZipFile];
     
-    [self checkSlideDownloadBtn];
+    [self updateBtnDownloadOrDisplayIcon];
 }
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
     [self.downloadConnectionData setLength:0];

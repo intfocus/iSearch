@@ -102,7 +102,7 @@
  *
  *  @return 文档配置档内容;jsonStr
  */
-+ (NSString *) slideDescContent:(NSString *) fileID Dir:(NSString *)dir;
++ (NSString *) slideDescContent:(NSString *) slideID Dir:(NSString *)dir;
 
 /**
  *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
