@@ -139,14 +139,14 @@
 - (IBAction)actionDisplaySlide:(UIButton *)sender {
     NSInteger index = [sender tag];
     NSMutableDictionary *currentDict = _dataList[index];
-    NSString *fileID = currentDict[SLIDE_DESC_ID];
+    NSString *slideID = currentDict[SLIDE_DESC_ID];
     
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) {
+    if([FileUtils checkSlideExist:slideID Dir:FAVORITE_DIRNAME Force:YES]) {
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
         [configDict setObject:[NSNumber numberWithInt:SlideTypeFavorite] forKey:SLIDE_DISPLAY_TYPE];
         [configDict writeToFile:configPath atomically:YES];
         

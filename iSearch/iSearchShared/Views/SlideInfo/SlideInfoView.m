@@ -11,7 +11,7 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
-#import "FavoriteViewController.h"
+#import "MainViewController.h"
 #import "DisplayViewController.h"
 
 @interface SlideInfoView()
@@ -67,8 +67,8 @@
     NSErrorPrint(error, @"remove file#%@", filePath);
     
     if(error == nil) {
-        FavoriteViewController *masterView = (FavoriteViewController *)[self masterViewController];
-        [masterView dismissPopup];
+//        FavoriteViewController *masterView = (FavoriteViewController *)[self masterViewController];
+//        [masterView dismissPopup];
     }
 }
 - (IBAction)actionDisplaySlide:(id)sender {

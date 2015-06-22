@@ -13,11 +13,11 @@
 
 #import "FileUtils.h"
 #import "const.h"
-#import "UIViewController+CWPopup.h"
 #import "SlideInfoView.h"
 
 #import "MainViewController.h"
 #import "SideViewController.h"
+#import "DisplayViewController.h"
 
 @interface FavoriteViewController () <GMGridViewDataSource> {
     __gm_weak GMGridView *_gridView;
@@ -35,13 +35,6 @@
     _dataList = [[NSMutableArray alloc] init];
     
     [self configGridView];
-    
-    // CWPopup 事件
-    self.useBlurForPopup = YES;
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
-    tapRecognizer.numberOfTapsRequired = 1;
-    tapRecognizer.delegate = self;
-    [self.view addGestureRecognizer:tapRecognizer];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -117,34 +110,47 @@
     [_dataList removeObjectAtIndex:index];
 }
 
+
+#pragma mark - controls action
+
 /**
- *  控件事件
+ *  本viewController中为服务端所有文件列表；
+ *  如果已经下载，则可以[演示], 否则需要下载, 所下载文件在FILE_DIRNAME/下
+ *
+ *  与DisplayViewController传递文件ID通过CONFIG_DIRNAME/CONETNT_CONFIG_FILENAME[@CONTENT_KEY_DISPLAYID]
+ *
+ *  @param IBAction [演示]按钮点击事件
+ *
+ *  @return 演示界面
+ */
+// 如果文件已经下载，文档原[下载]按钮显示为[演示]
+- (IBAction)actionDisplaySlide:(UIButton *)sender {
+    NSInteger index = [sender tag];
+    NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+    NSString *slideID = currentDict[SLIDE_DESC_ID];
+    
+    // 如果文档已经下载，即可执行演示效果，
+    // 否则需要下载，该功能在FileSlide内部处理
+    if([FileUtils checkSlideExist:slideID Dir:FAVORITE_DIRNAME Force:YES]) {
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:[NSNumber numberWithInt:SlideTypeFavorite] forKey:SLIDE_DISPLAY_TYPE];
+        [configDict writeToFile:configPath atomically:YES];
+        
+        DisplayViewController *showVC = [[DisplayViewController alloc] init];
+        [self presentViewController:showVC animated:NO completion:nil];
+    }
+}
+/**
+ *  poupView display Slide info.
+ *
+ *  @param sender UIButton
  */
 - (IBAction)actionPopupSlideInfo:(UIButton *)sender {
     NSInteger index = [sender tag];
     NSMutableDictionary *dict = _dataList[index];
-    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
-    slideInfoView.masterViewController = self;
-    slideInfoView.isFavoriteFile = YES;
-    slideInfoView.dict = dict;
-    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
-    }];
-}
-
-/**
- *  关闭弹出框；
- *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
- *  强制刷新本界面；
- */
-- (void)dismissPopup {
-    if (self.popupViewController != nil) {
-        [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
-        }];
-    }
     MainViewController *mainViewController = [self masterViewController];
-    FavoriteViewController *favoriteViewController = [[FavoriteViewController alloc] init];
-    [mainViewController setRightViewController:favoriteViewController withNav:YES];
+    [mainViewController poupSlideInfo:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
 }
 @end

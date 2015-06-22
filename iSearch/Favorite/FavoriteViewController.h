@@ -6,12 +6,12 @@
 //
 //
 
-#ifndef Pods_FavoriteViewController_h
-#define Pods_FavoriteViewController_h
+#ifndef iSearch_FavoriteViewController_h
+#define iSearch_FavoriteViewController_h
 
 #import "RightSideViewController.h"
-@interface FavoriteViewController : RightSideViewController <UIGestureRecognizerDelegate>
-- (void)dismissPopup;
+
+@interface FavoriteViewController : RightSideViewController
 @end
 
 
