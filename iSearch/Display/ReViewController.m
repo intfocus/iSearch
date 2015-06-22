@@ -64,6 +64,8 @@
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
+
+@property (weak, nonatomic) IBOutlet UIView *navBarContainerView;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL selectState;   // 编辑状态
 @property (nonatomic, nonatomic) NSString  *slideID;
@@ -73,6 +75,12 @@
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemSave;   // 编辑状态下至少选择一个页面时激活
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemRemove; // 编辑状态下至少选择一个页面时激活
 @property (nonatomic, nonatomic) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
+
+@property (weak, nonatomic) IBOutlet UIButton *removeButton;
+@property (weak, nonatomic) IBOutlet UIButton *saveToButton;
+@property (weak, nonatomic) IBOutlet UIButton *restoreButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+
 
 @end
 
@@ -104,12 +112,21 @@
      */
     // 导航左侧按钮区
     NSMutableArray* array = [NSMutableArray array];
-    UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"< 返回"]
+    UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"返回"]
                                                             style:UIBarButtonItemStylePlain
                                                            target:self
                                                            action:@selector(actionDismiss:)];
+    [item setBackgroundImage:[UIImage imageNamed:@"iconBack"] forState:UIControlStateNormal style:UIBarButtonItemStylePlain barMetrics:UIBarMetricsDefault];
     [array addObject:item];
-    self.navigation.leftBarButtonItems = array;
+    
+//    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 66, 44)];
+//    [backButton setImage:[UIImage imageNamed:@"iconBack"] forState:UIControlStateNormal];
+//    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+//    [backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [backButton addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *backBBI = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+//    self.navigation.leftBarButtonItem = backBBI;
+    //self.navigation.leftBarButtonItems = array;
     
     // 导航右侧按钮区
     [array removeAllObjects];
@@ -158,6 +175,10 @@
     [self refreshGridView];
 }
 
+//- (BOOL)prefersStatusBarHidden {
+//    return YES;
+//}
+
 - (void) configGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -174,11 +195,11 @@
     _gmGridView.sortingDelegate = self;
     _gmGridView.transformDelegate = self;
     _gmGridView.dataSource = self;
-    self.scrollView.backgroundColor = [UIColor redColor];
-    _gmGridView.backgroundColor = [UIColor greenColor];
+    //self.scrollView.backgroundColor = [UIColor greenColor];
+    //_gmGridView.backgroundColor = [UIColor greenColor];
     
     _gmGridView.mainSuperView = self.scrollView;
-    self.view.backgroundColor = [UIColor blueColor];
+    //self.view.backgroundColor = [UIColor blueColor];
     _gmGridView.selectState = self.selectState;
 }
 - (void) refreshGridView {
@@ -230,7 +251,7 @@
     // 用户可以通过[恢复]实现还原最原始的状态
     NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass: SLIDE_CONFIG_SWP_FILENAME];
     NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
     NSErrorPrint(error, @"read desc.swp file");
     descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
@@ -270,7 +291,9 @@
         NSErrorPrint(error, @"remove desc swp file");
     }
     
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewControllerAnimated:NO completion:^{
+    
+    }];
 }
 
 /**
@@ -296,7 +319,8 @@
     NSErrorPrint(error, @"desc swp content convert to json");
     
     BOOL isSame = [descDict isEqualToDictionary:descSwpDict];
-    self.barItemRestore.enabled = !isSame;
+    //self.barItemRestore.enabled = !isSame;
+    self.restoreButton.enabled = !isSame;
 }
 
 /**
@@ -333,8 +357,10 @@
         
         // 导航栏按钮样式
         [self.barItemEdit setTitle: BTN_CANCEL];
-        self.barItemSave.enabled = false;
-        self.barItemRemove.enabled = false;
+        //self.barItemSave.enabled = false;
+        self.saveToButton.enabled = NO;
+        //self.barItemRemove.enabled = false;
+        self.removeButton.enabled = NO;
     } else {
         self.selectState = false;
         _gmGridView.selectState = self.selectState;
@@ -342,8 +368,10 @@
         [self.barItemEdit setTitle: BTN_EDIT];
         // 在有选择多个页面情况下，[保存][移除]是激活的，
         // 但直接[取消]编辑状态时, 就需要手工禁用
-        self.barItemSave.enabled = false;
-        self.barItemRemove.enabled = false;
+        //self.barItemSave.enabled = false;
+        self.saveToButton.enabled = NO;
+        //self.barItemRemove.enabled = false;
+        self.removeButton.enabled = NO;
     }
     
 }
@@ -501,11 +529,15 @@
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
     if([_selectedList count]) {
-        self.barItemSave.enabled = true;
-        self.barItemRemove.enabled = true;
+        //self.barItemSave.enabled = true;
+        self.saveToButton.enabled = YES;
+        //self.barItemRemove.enabled = true;
+        self.removeButton.enabled = YES;
     } else {
-        self.barItemSave.enabled = false;
-        self.barItemRemove.enabled = false;
+        //self.barItemSave.enabled = false;
+        self.saveToButton.enabled = NO;
+        //self.barItemRemove.enabled = false;
+        self.removeButton.enabled = NO;
     }
 }
 
@@ -844,6 +876,96 @@
     // 重置order内容并写入配置档
     [descDict setObject:pageOrder forKey:SLIDE_DESC_ORDER];
     [self writeJSON:descDict Into:descSwpPath];
+}
+
+
+- (IBAction)back:(UIButton *)sender {
+    NSError *error;
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
+    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
+    
+    [descSwpContent writeToFile:descPath atomically:true encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"desc swp info write into desc");
+    
+    if(!error) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager removeItemAtPath:descSwpPath error:&error];
+        NSErrorPrint(error, @"remove desc swp file");
+    }
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (IBAction)remove:(UIButton *)sender {
+    NSString *message = @"确认移除以下页面:\n";
+    NSNumber *i = [[NSNumber alloc] init];
+    for(i in _selectedList)
+        message = [message stringByAppendingString:[NSString stringWithFormat:@"第%@页 ", i]];
+    
+    message = [message stringByAppendingString:@"\n未关闭当前界面时，可选择[恢复]此操作。"];
+    
+    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"移除"
+                                                         message:message
+                                                        delegate:self
+                                               cancelButtonTitle:BTN_CANCEL
+                                               otherButtonTitles:BTN_SURE, nil];
+    alertView.alertViewStyle = UIAlertViewStyleDefault;
+    alertView.tag = 101; // 区分alwrtView, for 所有alertView共用同一个回调函数
+    [alertView show];
+}
+
+- (IBAction)saveTo:(UIButton *)sender {
+    MainAddNewTagView *popupView = [[MainAddNewTagView alloc] init];
+    popupView.masterViewController = self;
+    [self presentPopupViewController:popupView animated:YES completion:^(void) {
+        NSLog(@"popup view presented");
+    }];
+}
+
+- (IBAction)restore:(UIButton *)sender {
+    NSError *error;
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"read desc file");
+    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
+    
+    [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"[restore] desc content write into desc swp file");
+    // 重新加载文档页面
+    if(!error) {
+        [self refreshGridView];
+        [self checkDescSwpContent];
+    }
+}
+
+- (IBAction)editButtonTouched:(UIButton *)sender {
+    if(!self.selectState) {
+        self.selectState = true;
+        _gmGridView.selectState = self.selectState;
+        
+        // 导航栏按钮样式
+        //[self.barItemEdit setTitle: BTN_CANCEL];
+        //self.barItemSave.enabled = false;
+        self.saveToButton.enabled = NO;
+        //self.barItemRemove.enabled = false;
+        self.removeButton.enabled = NO;
+        [self.editButton setImage:[UIImage imageNamed:@"iconCancel"] forState:UIControlStateNormal];
+    } else {
+        self.selectState = false;
+        _gmGridView.selectState = self.selectState;
+        
+        //[self.barItemEdit setTitle: BTN_EDIT];
+        // 在有选择多个页面情况下，[保存][移除]是激活的，
+        // 但直接[取消]编辑状态时, 就需要手工禁用
+        //self.barItemSave.enabled = false;
+        self.saveToButton.enabled = NO;
+        //self.barItemRemove.enabled = false;
+        self.removeButton.enabled = NO;
+        [self.editButton setImage:[UIImage imageNamed:@"iconEdit2"] forState:UIControlStateNormal];
+    }
 }
 
 @end

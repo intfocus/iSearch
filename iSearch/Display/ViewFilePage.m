@@ -54,7 +54,7 @@
 }
 
 - (void)hightLight {
-    self.layer.borderWidth = 10.0f;
-    self.layer.borderColor = [UIColor redColor].CGColor;
+    self.webViewThumbnail.layer.borderWidth = 2.0f;
+    self.webViewThumbnail.layer.borderColor = [UIColor colorWithRed:229/255.0 green:118/255.0 blue:127/255.0 alpha:1].CGColor;
 }
 @end

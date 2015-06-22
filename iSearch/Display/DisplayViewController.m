@@ -132,7 +132,7 @@
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     //    [self demoExtract];
-    [self extractResource];
+    // [self extractResource];
     
     [self loadHtml];
     

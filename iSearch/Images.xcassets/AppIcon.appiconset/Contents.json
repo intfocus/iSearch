@@ -1,39 +1,35 @@
 {
   "images" : [
     {
-      "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "iSearch APP ICON29.png",
+      "size" : "29x29",
       "scale" : "1x"
     },
     {
-      "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "iSearch APP ICON29@2X.png",
+      "size" : "29x29",
       "scale" : "2x"
     },
     {
-      "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "iSearch APP ICON40.png",
+      "size" : "40x40",
       "scale" : "1x"
     },
     {
-      "size" : "40x40",
       "idiom" : "ipad",
-      "filename" : "iSearch APP ICON40@2X.png",
+      "size" : "40x40",
       "scale" : "2x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "iSearch APP ICON76.png",
+      "filename" : "ICON-76.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "iSearch APP ICON76@2X.png",
+      "filename" : "ICON-76@2X.png",
       "scale" : "2x"
     }
   ],
