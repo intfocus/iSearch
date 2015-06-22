@@ -33,6 +33,8 @@
 @property(nonatomic,strong)IBOutlet UIView *rightView;
 
 @property(nonatomic,strong)UIViewController *rightViewController;
+@property(nonatomic,strong)SlideInfoView *slideInfoView;
+
 
 // 头像设置
 @property (nonatomic) UIActionSheet *imagePickerActionSheet;
@@ -303,11 +305,13 @@
     }];
 }
 - (void)poupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
-    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
-    slideInfoView.masterViewController = self;
-    slideInfoView.isFavorite = isFavorite;
-    slideInfoView.dict = dict;
-    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
+    if(self.slideInfoView == nil) {
+        self.slideInfoView = [[SlideInfoView alloc] init];
+        self.slideInfoView.masterViewController = self;
+    }
+    self.slideInfoView.isFavorite = isFavorite;
+    self.slideInfoView.dict = dict;
+    [self presentPopupViewController:self.slideInfoView animated:YES completion:^(void) {
         NSLog(@"popup view presented");
     }];
 }

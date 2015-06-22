@@ -17,6 +17,10 @@
 #import "MainViewController.h"
 #import "DisplayViewController.h"
 
+@interface ViewSlide()
+@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
+@end
+
 @implementation ViewSlide
 @synthesize labelTitle;
 @synthesize btnDownloadOrDisplay;
@@ -82,8 +86,10 @@
     [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
     [FileUtils writeJSON:configDict Into:configPath];
     
-    DisplayViewController *showVC = [[DisplayViewController alloc] init];
-    [self.masterViewController presentViewController:showVC animated:NO completion:nil];
+    if(self.displayViewController == nil) {
+        self.displayViewController = [[DisplayViewController alloc] init];
+    }
+    [self.masterViewController presentViewController:self.displayViewController animated:NO completion:nil];
 
 }
 

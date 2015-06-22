@@ -124,9 +124,9 @@
             NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
         }
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
-        viewCategory.labelTitle.text = name;
-        NSLog(@"%@", name);
+//        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
+        viewCategory.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
+
         
         [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];

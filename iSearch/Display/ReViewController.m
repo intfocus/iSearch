@@ -75,6 +75,7 @@
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemSave;   // 编辑状态下至少选择一个页面时激活
 @property (nonatomic, nonatomic) UIBarButtonItem *barItemRemove; // 编辑状态下至少选择一个页面时激活
 @property (nonatomic, nonatomic) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
+@property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 
 @property (weak, nonatomic) IBOutlet UIButton *removeButton;
 @property (weak, nonatomic) IBOutlet UIButton *saveToButton;
@@ -366,9 +367,11 @@
  *  @param sender UIBarButtonItem
  */
 - (IBAction)actionSavePages:(UIBarButtonItem *)sender {
-    MainAddNewTagView *popupView = [[MainAddNewTagView alloc] init];
-    popupView.masterViewController = self;
-    [self presentPopupViewController:popupView animated:YES completion:^(void) {
+    if(self.mainAddNewTagView == nil) {
+        self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
+        self.mainAddNewTagView.masterViewController = self;
+    }
+    [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
         NSLog(@"popup view presented");
     }];
 }

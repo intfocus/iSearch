@@ -43,6 +43,7 @@
 @property (nonatomic, nonatomic) NSString *filePath;
 @property (nonatomic, nonatomic) NSMutableDictionary *fileDesc;
 @property (nonatomic, nonatomic) NSString *forbidCss;
+@property (nonatomic, nonatomic) ReViewController *reViewController;
 
 @end
 
@@ -430,8 +431,10 @@
         }
         
         // 界面跳转至文档页面编辑界面
-        ReViewController *showVC = [[ReViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
+        if(self.reViewController == nil) {
+            self.reViewController = [[ReViewController alloc] init];
+        }
+        [self presentViewController:self.reViewController animated:NO completion:nil];
     }
 }
 

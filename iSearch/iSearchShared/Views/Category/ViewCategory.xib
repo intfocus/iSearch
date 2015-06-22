@@ -48,6 +48,6 @@
         </view>
     </objects>
     <resources>
-        <image name="category-default.png" width="184" height="134"/>
+        <image name="category-default.png" width="130" height="90"/>
     </resources>
 </document>
