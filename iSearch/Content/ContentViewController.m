@@ -75,8 +75,8 @@
 //////////////////////////////////////////////////////////////
 
 @interface ContentViewController () <GMGridViewDataSource> {
-__gm_weak GMGridView *_gridView;
-NSMutableArray       *_dataList;
+    __gm_weak GMGridView *_gridView;
+    NSMutableArray       *_dataList;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
 @property (strong, nonatomic) NSString  *deptID;
@@ -121,7 +121,7 @@ NSMutableArray       *_dataList;
     self.categoryDict = [[NSMutableDictionary alloc] init];
     self.filterType  = [NSNumber numberWithInteger:FilterAll];
     [self navFilterFont];
-
+    
     // deptID
     [self assignUserInfo];
     // nav behaviour stack
@@ -129,18 +129,17 @@ NSMutableArray       *_dataList;
     
     /**
      *  导航栏控件
-     *  <|  \U000025C0\U0000FE0E
      */
     [self.navBtnBack setTitle:@"返回" forState:UIControlStateNormal];
     
     [self.navBtnBack addTarget:self action:@selector(actionNavBack:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnSortOne addTarget:self action:@selector(actionNavSortByDate:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortOne.tag = SortByAscending;
-    //[self.navBtnSortOne setTitle:@"按时间(升)" forState:UIControlStateNormal];
+    //    [self.navBtnSortOne setTitle:@"按时间(升)" forState:UIControlStateNormal];
     
     [self.navBtnSortTwo addTarget:self action:@selector(actionNavSortByName:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortTwo.tag = SortByAscending;
-    //[self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
+    //    [self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
     
     [self.navBtnFilterAll addTarget:self action:@selector(actionNavFilterAll:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnFilterOne addTarget:self action:@selector(actionNavFilterOne:) forControlEvents:UIControlEventTouchUpInside];
@@ -148,8 +147,10 @@ NSMutableArray       *_dataList;
     
     // current category name
     self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
-
+    
     [self configGridView];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -204,7 +205,7 @@ NSMutableArray       *_dataList;
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-
+    
     [mutableArray removeLastObject];
     [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
     [configDict writeToFile:configPath atomically:true];
@@ -224,8 +225,10 @@ NSMutableArray       *_dataList;
 - (IBAction)actionNavSortByDate:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
+        self.dateSortImageView.image = [UIImage imageNamed:@"iconDescending"];
     } else {
         sender.tag = SortByAscending;
+        self.dateSortImageView.image = [UIImage imageNamed:@"iconAscending"];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
@@ -247,15 +250,17 @@ NSMutableArray       *_dataList;
         default:
             break;
     }
-
+    
     [self configGridView];
 }
 
 - (IBAction)actionNavSortByName:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
+        self.nameSortImageView.image = [UIImage imageNamed:@"iconDescending"];
     } else {
         sender.tag = SortByAscending;
+        self.nameSortImageView.image = [UIImage imageNamed:@"iconAscending"];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
@@ -339,8 +344,8 @@ NSMutableArray       *_dataList;
     _gridView = gmGridView;
     
     _gridView.style = GMGridViewStyleSwap;
-    _gridView.itemSpacing = 50;
-    _gridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
+    _gridView.itemSpacing = 10;
+    _gridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     _gridView.centerGrid = YES;
     _gridView.dataSource = self;
     _gridView.backgroundColor = [UIColor clearColor];
@@ -383,13 +388,19 @@ NSMutableArray       *_dataList;
  *  @param fid  文件在服务器上的id
  *  @param type 文件类型
  */
- // 代码抽取放在ContentUtils.h文件中
+// 代码抽取放在ContentUtils.h文件中
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
 //////////////////////////////////////////////////////////////
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
+    if (_dataList.count == 0) {
+        self.nothingLabel.hidden = NO;
+    }
+    else {
+        self.nothingLabel.hidden = YES;
+    }
     return [_dataList count];
 }
 
@@ -407,7 +418,6 @@ NSMutableArray       *_dataList;
         
         // 根据服务器返回的JSON数据显示文件夹或文档。
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        NSString *name = currentDict[CONTENT_FIELD_NAME];
         
         // 服务器端Category没有ID值
         if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
@@ -416,10 +426,14 @@ NSMutableArray       *_dataList;
         }
         NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
         
-        // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+
+        /**
+         *  目录: 0; 文档: 1; 直文档: 2; 视频: 4
+         *  category: name; slide: title;(name is origin upload filename)
+         */
         if([categoryType isEqualToString:CONTENT_CATEGORY]) {
             ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-            viewCategory.labelTitle.text = name;
+            viewCategory.labelTitle.text =  currentDict[CONTENT_FIELD_NAME];
             
             [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
             viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
@@ -428,7 +442,7 @@ NSMutableArray       *_dataList;
             [cell setContentView: viewCategory];
         } else {
             ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-            slide.labelTitle.text = name;
+            slide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
             NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
                                      BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, currentDict[CONTENT_FIELD_ID]];
             currentDict[CONTENT_FIELD_URL] = downloadUrl;
