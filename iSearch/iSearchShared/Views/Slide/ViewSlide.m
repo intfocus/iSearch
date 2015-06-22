@@ -43,11 +43,14 @@
     if(self.isFavoriteFile) {
         self.btnDownloadOrDisplay.hidden = NO;
         [self bringSubviewToFront:self.btnDownloadOrDisplay];
+        _slideID = dict[SLIDE_DESC_ID];
+        _dirName = FAVORITE_DIRNAME;
     } else {
         self.btnDownloadOrDisplay.hidden = NO;
         [self checkSlideDownloadBtn];
+        _slideID = dict[CONTENT_FIELD_ID];
+        _dirName = SLIDE_DIRNAME;
     }
-    
     
 }
 

@@ -22,6 +22,9 @@
 @property (nonatomic, nonatomic) BOOL isFavoriteFile;   // 收藏文件: 本地已下载
 @property (strong, nonatomic) NSMutableDictionary *dict; // 文件配置信息，json格式
 
+// simple operation
+@property (strong, nonatomic) NSString *slideID;
+@property (strong, nonatomic) NSString *dirName;
 
 // http download variables begin
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
