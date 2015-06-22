@@ -22,6 +22,10 @@
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 展示html5
 @property (weak, nonatomic) IBOutlet UIButton *editBtn; // 切换显示编辑状态面板的显示
+@property (weak, nonatomic) IBOutlet UIView *editPanelBgView;
+@property (weak, nonatomic) IBOutlet UIButton *colorButton;
+@property (weak, nonatomic) IBOutlet UIView *colorView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconTriangleImageView;
 @property (weak, nonatomic) IBOutlet UIView *editPanel; // 编辑状态面板
 @property (weak, nonatomic) IBOutlet UIButton *drawBtn;
 @property (weak, nonatomic) IBOutlet UISwitch *laserSwitch; // 激光笔状态切换
@@ -56,26 +60,54 @@
     self.paintView           = nil;
     self.editPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
-   
-    self.editPanel.backgroundColor = [UIColor blackColor];
+    
+    //self.editPanel.backgroundColor = [UIColor blackColor];
     [self.editPanel setHidden: true];
     
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editPanel.frame.size.width, self.editPanel.frame.size.height)];
+    self.editPanel.layer.masksToBounds = NO;
+    self.editPanel.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.editPanel.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.editPanel.layer.shadowOpacity = 0.8;
+    self.editPanel.layer.shadowPath = shadowPath.CGPath;
+    
+    UIBezierPath *shadowPath2 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.colorView.frame.size.width, self.colorView.frame.size.height)];
+    self.colorView.layer.masksToBounds = NO;
+    self.colorView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.colorView.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.colorView.layer.shadowOpacity = 0.8;
+    self.colorView.layer.shadowPath = shadowPath2.CGPath;
+    
+    UIBezierPath *shadowPath3 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editBtn.frame.size.width, self.editBtn.frame.size.height)];
+    self.editBtn.layer.masksToBounds = NO;
+    self.editBtn.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.editBtn.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.editBtn.layer.shadowOpacity = 0;
+    self.editBtn.layer.shadowPath = shadowPath3.CGPath;
+    
+    self.editPanel.layer.cornerRadius = 4;
+    self.colorView.layer.cornerRadius = 4;
+    self.colorButton.layer.cornerRadius = 4;
+    self.blueNoteBtn.layer.cornerRadius = 4;
+    self.redNoteBtn.layer.cornerRadius = 4;
+    self.greenNoteBtn.layer.cornerRadius = 4;
+    
     [self.editBtn setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
-    [self.editBtn addTarget:self action:@selector(toggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
+    [self.editBtn addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.laserSwitch setOn: false];
-    [self.laserSwitch addTarget:self action:@selector(changeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
+    [self.laserSwitch addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     
     self.forbidCss = @"<style type='text/css'>          \
-                        body { background: black; }     \
-                        * {                             \
-                            -webkit-touch-callout: none;\
-                            -webkit-user-select: none;  \
-                        }                               \
-                        </style>                        \
-                        </head>";
-
+    body { background: black; }     \
+    * {                             \
+    -webkit-touch-callout: none;\
+    -webkit-user-select: none;  \
+    }                               \
+    </style>                        \
+    </head>";
+    
     
     // webView添加手势，向左即上一页，向右即下一页
     UISwipeGestureRecognizer *gestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(lastPage:)];
@@ -99,11 +131,11 @@
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-//    [self demoExtract];
+    //    [self demoExtract];
     [self extractResource];
     
     [self loadHtml];
-
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -213,7 +245,7 @@
  *
  *  @param sender UIButton
  */
-- (IBAction)toggleShowEditPanel:(UIButton *)sender {
+- (IBAction)actionToggleShowEditPanel:(UIButton *)sender {
     NSInteger tag = [sender tag];
     [UIView animateWithDuration:.5f animations:^{
         [self.editPanel setHidden:(tag != SlideEditPanelShow)];
@@ -222,20 +254,26 @@
     switch(tag) {
         case SlideEditPanelHiden: {
             [self.editBtn setTag:SlideEditPanelShow];
-            [self.editBtn setTitle:@"<<" forState:UIControlStateNormal];
+            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
+            self.editPanelBgView.hidden = YES;
+            self.colorView.hidden = YES;
+            self.editBtn.layer.shadowOpacity = 0;
+            [self stopLaser];
+            [self stopNote];
         }
-        break;
+            break;
             
         case SlideEditPanelShow: {
-            [self stopNote];
-            [self stopLaser];
             
             [self.editBtn setTag:SlideEditPanelHiden];
-            [self.editBtn setTitle:@"编辑" forState:UIControlStateNormal];
+            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
+            self.editPanelBgView.hidden = NO;
+            self.editBtn.layer.shadowOpacity = 0.5;
+            
         }
-        break;
+            break;
         default:
-        break;
+            break;
     }
 }
 /**
@@ -243,7 +281,7 @@
  *
  *  @param sender UISwitch
  */
-- (void)changeLaserSwitch:(id)sender{
+- (void)actionChangeLaserSwitch:(id)sender{
     if([sender isOn]){
         [self stopNote];
         [self startLaser];
@@ -261,6 +299,7 @@
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-30)];
         self.paintView.backgroundColor = [UIColor purpleColor];
         self.paintView.paintColor = [UIColor blackColor];
+        self.paintView.laserIcon = [UIImage imageNamed:@"laser.png"];
         self.paintView.alpha = 0.6;
         self.paintView.laser = true;
         self.paintView.erase = false;
@@ -413,7 +452,6 @@
         [self.view addSubview:self.paintView];
         self.isDrawing = true;
         [self.drawBtn setTitle:@"取消" forState:UIControlStateNormal];
-        
     } else {
         [self.paintView removeFromSuperview];
         self.isDrawing = false;
@@ -430,5 +468,11 @@
 - (IBAction)actionDismiss:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
+
+- (IBAction)colorButtonTouched:(UIButton *)sender {
+    self.colorView.hidden = !self.colorView.hidden;
+    self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
+}
+
 
 @end

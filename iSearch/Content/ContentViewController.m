@@ -93,7 +93,10 @@ NSMutableArray       *_dataList;
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 文献
 @property (strong, nonatomic) NSNumber        *filterType;        // 依此排序
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortOne; // 按时间排序
+@property (weak, nonatomic) IBOutlet UIImageView *dateSortImageView;
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortTwo; // 按名称排序
+@property (weak, nonatomic) IBOutlet UIImageView *nameSortImageView;
+@property (weak, nonatomic) IBOutlet UILabel *nothingLabel;
 
 // http download variables begin
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
@@ -126,17 +129,18 @@ NSMutableArray       *_dataList;
     
     /**
      *  导航栏控件
+     *  <|  \U000025C0\U0000FE0E
      */
-    [self.navBtnBack setTitle:@"\U000025C0\U0000FE0E返回" forState:UIControlStateNormal];
+    [self.navBtnBack setTitle:@"返回" forState:UIControlStateNormal];
     
     [self.navBtnBack addTarget:self action:@selector(actionNavBack:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnSortOne addTarget:self action:@selector(actionNavSortByDate:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortOne.tag = SortByAscending;
-    [self.navBtnSortOne setTitle:@"按时间(升)" forState:UIControlStateNormal];
+    //[self.navBtnSortOne setTitle:@"按时间(升)" forState:UIControlStateNormal];
     
     [self.navBtnSortTwo addTarget:self action:@selector(actionNavSortByName:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortTwo.tag = SortByAscending;
-    [self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
+    //[self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
     
     [self.navBtnFilterAll addTarget:self action:@selector(actionNavFilterAll:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnFilterOne addTarget:self action:@selector(actionNavFilterOne:) forControlEvents:UIControlEventTouchUpInside];
@@ -220,10 +224,8 @@ NSMutableArray       *_dataList;
 - (IBAction)actionNavSortByDate:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
-        [sender setTitle:@"按日期(降)" forState:UIControlStateNormal];
     } else {
         sender.tag = SortByAscending;
-        [sender setTitle:@"按日期(升)" forState:UIControlStateNormal];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
@@ -252,10 +254,8 @@ NSMutableArray       *_dataList;
 - (IBAction)actionNavSortByName:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
-        [sender setTitle:@"按名称(降)" forState:UIControlStateNormal];
     } else {
         sender.tag = SortByAscending;
-        [sender setTitle:@"按名称(升)" forState:UIControlStateNormal];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {

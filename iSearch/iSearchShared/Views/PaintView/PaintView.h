@@ -16,4 +16,5 @@
 @property(nonatomic,retain) UIColor *paintColor; // 画皮颜色
 @property(nonatomic,assign) BOOL erase;          // 橡皮擦状态
 @property(nonatomic,assign) BOOL laser;          // 激光笔状态
+@property(nonatomic,strong) UIImage *laserIcon; // 激光笔
 @end
