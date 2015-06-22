@@ -132,7 +132,7 @@
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     // [self demoExtract];
-    // [self extractResource];
+     [self extractResource];
     
     [self loadHtml];
     
@@ -296,9 +296,8 @@
 - (void) startLaser {
     if(!self.isLasering) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-30)];
-        self.paintView.backgroundColor = [UIColor purpleColor];
+        self.paintView.backgroundColor = [UIColor clearColor];
         self.paintView.paintColor = [UIColor blackColor];
-        self.paintView.laserIcon = [UIImage imageNamed:@"laser.png"];
         self.paintView.alpha = 0.6;
         self.paintView.laser = true;
         self.paintView.erase = false;
@@ -340,7 +339,7 @@
 - (void) startNote {
     if(!self.isDrawing) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        self.paintView.backgroundColor = [UIColor purpleColor];
+        self.paintView.backgroundColor = [UIColor clearColor];
         self.paintView.alpha = 0.6;
         self.paintView.erase = false;
         self.paintView.laser = false;
@@ -368,7 +367,7 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
-    NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
+    NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -380,7 +379,7 @@
  *  @param sender UIButton
  */
 - (IBAction)lastPage: (id)sender {
-    NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
+    NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];

@@ -138,7 +138,6 @@
                 self.penIV.hidden = NO;
             }
             else if (thePan.state == UIGestureRecognizerStateChanged) {
-                NSLog(@"%f, %f",point.x,point.y);
                 self.penIV.frame = CGRectMake(point.x - 11, point.y - 11, 22, 22);
             }
             else if (thePan.state == UIGestureRecognizerStateEnded) {

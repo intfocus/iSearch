@@ -41,6 +41,11 @@
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.btnAddToTag.enabled = NO;
+    self.btnDisplay.enabled = NO;
+    self.btnEdit.enabled = NO;
+    self.btnRemove.enabled = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {

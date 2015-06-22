@@ -45,7 +45,6 @@
         [self.webViewThumbnail loadRequest:request];
         
     } else if([extName isEqualToString:@"gif"]) {
-        
         NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", thumbnailPath];
         [self.webViewThumbnail loadHTMLString:html baseURL:nil];
     } else {

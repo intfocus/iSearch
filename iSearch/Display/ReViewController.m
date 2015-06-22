@@ -111,25 +111,17 @@
      *  导航栏控件
      */
     // 导航左侧按钮区
-    NSMutableArray* array = [NSMutableArray array];
-    UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"返回"]
-                                                            style:UIBarButtonItemStylePlain
-                                                           target:self
-                                                           action:@selector(actionDismiss:)];
-    [item setBackgroundImage:[UIImage imageNamed:@"iconBack"] forState:UIControlStateNormal style:UIBarButtonItemStylePlain barMetrics:UIBarMetricsDefault];
-    [array addObject:item];
-    
-//    UIButton *backButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 66, 44)];
-//    [backButton setImage:[UIImage imageNamed:@"iconBack"] forState:UIControlStateNormal];
-//    [backButton setTitle:@"返回" forState:UIControlStateNormal];
-//    [backButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [backButton addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
-//    UIBarButtonItem *backBBI = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-//    self.navigation.leftBarButtonItem = backBBI;
-    //self.navigation.leftBarButtonItems = array;
-    
-    // 导航右侧按钮区
-    [array removeAllObjects];
+//    NSMutableArray* array = [NSMutableArray array];
+//    UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"返回"]
+//                                                            style:UIBarButtonItemStylePlain
+//                                                           target:self
+//                                                           action:@selector(actionDismiss:)];
+//    [item setBackgroundImage:[UIImage imageNamed:@"iconBack"] forState:UIControlStateNormal style:UIBarButtonItemStylePlain barMetrics:UIBarMetricsDefault];
+//    [array addObject:item];
+//
+//    
+//    // 导航右侧按钮区
+//    [array removeAllObjects];
     
     
     // 编辑状态-切换
@@ -138,7 +130,6 @@
                                                       target:self
                                                       action:@selector(actionEditPages:)];
     self.barItemEdit.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_CANCEL, nil];
-    [array addObject:self.barItemEdit];
     
     // 恢复按钮 - desc.json覆盖desc.json.swp
     self.barItemRestore = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
@@ -147,7 +138,6 @@
                                                          action:@selector(actionRestorePages:)];
     // 对比是否有修改，以此设置[恢复]状态
     [self checkDescSwpContent];
-    [array addObject:self.barItemRestore];
     
     // 保存 - 编辑状态下，至少选择一页面时，激活
     self.barItemSave = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
@@ -155,7 +145,6 @@
                                                    target:self
                                                   action:@selector(actionSavePages:)];
     self.barItemSave.enabled = false;
-    [array addObject:self.barItemSave];
     
     // 移除 - 编辑状态下，至少选择一页面时，激活
     self.barItemRemove = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_REMOVE]
@@ -163,21 +152,16 @@
                                                    target:self
                                                    action:@selector(actionRemovePages:)];
     self.barItemRemove.enabled = false;
-    [array addObject:self.barItemRemove];
-    self.navigation.rightBarButtonItems = [[array reverseObjectEnumerator] allObjects];
+    self.navigation.rightBarButtonItems = @[self.barItemEdit,self.barItemRestore,self.barItemSave,self.barItemRemove];
     
     /**
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
     
-    
+    [self configGridView];
     [self refreshGridView];
 }
-
-//- (BOOL)prefersStatusBarHidden {
-//    return YES;
-//}
 
 - (void) configGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
@@ -199,14 +183,12 @@
     //_gmGridView.backgroundColor = [UIColor greenColor];
     
     _gmGridView.mainSuperView = self.scrollView;
-    //self.view.backgroundColor = [UIColor blueColor];
     _gmGridView.selectState = self.selectState;
 }
 - (void) refreshGridView {
     // 加载文件各页面
     _dataList = [self loadFilePages];
-    // 配置创建 GMGridView
-    [self configGridView];
+    [_gmGridView reloadData];
     
     [self checkDescSwpContent];
 }
@@ -491,8 +473,6 @@
         
         NSString *thumbnailPath = [FileUtils fileThumbnail:self.slideID PageID:currentPageID Dir:dirName];
         [filePage loadThumbnail: thumbnailPath];
-        
-        
         
         [cell setContentView: filePage];
     }
