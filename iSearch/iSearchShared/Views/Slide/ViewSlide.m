@@ -12,35 +12,22 @@
 #import "FileUtils.h"
 #import "SSZipArchive.h"
 
+#import "MainViewController.h"
+#import "DisplayViewController.h"
+
 @implementation ViewSlide
 @synthesize labelTitle;
 @synthesize btnDownloadOrDisplay;
 @synthesize btnSlideInfo;
 @synthesize webViewThumbnail;
 
+# pragma mark - rewrite setter
 
-- (id)initWithFrame:(CGRect)theFrame {
-    self = [super initWithFrame:theFrame];
-    if (self) {
-        // 非收藏文件，才有检测的必要
-        if(!self.isFavoriteFile) {
-            [self checkSlideDownloadBtn];
-        }
-    }
-    return self;
-}
-
-/**
- *  给dict赋值时，进行内部操作
- *  1. 非收藏文件，才有检测的必要
- *
- *  @param dict <#dict description#>
- */
 - (void)setDict:(NSMutableDictionary *)dict {
     _dict = dict;
     
     // 收藏文件，说明已下载
-    if(self.isFavoriteFile) {
+    if(self.isFavorite) {
         _slideID = dict[SLIDE_DESC_ID];
         _dirName = FAVORITE_DIRNAME;
         self.btnDownloadOrDisplay.hidden = NO;
@@ -56,24 +43,63 @@
     
 }
 
-- (IBAction)actionDownloadFile:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:self.dirName Force:NO]) {
-        [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
-        [self downloadZip:self.dict[CONTENT_FIELD_URL]];
-    //} else {
-    //     演示文稿功能在主界面代码中处理
-    }
+- (IBAction)setMasterViewController:(MainViewController *)masterViewController {
+    _masterViewController = masterViewController;
+    
+    [self.btnSlideInfo addTarget:self action:@selector(actionDisplaySlideInfo:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnDownloadOrDisplay addTarget:self action:@selector(actionDownloadOrDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
 }
-
 /**
  *  检测 CONTENT_DIRNAME/id 是否存在
  */
 - (void) checkSlideDownloadBtn {
-    if([FileUtils checkSlideExist:self.dict[CONTENT_FIELD_ID] Dir:self.dirName Force:NO]) {
+    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DISPLAY forState:UIControlStateNormal];
     } else {
         [self.btnDownloadOrDisplay setTitle:SLIDE_BTN_DOWNLOAD forState:UIControlStateNormal];
     }
+}
+
+
+#pragma mark - control action
+
+- (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
+    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
+        [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
+    } else {
+        NSLog(@"TODO Download.");
+    }
+}
+
+- (IBAction)actionDisplaySlideInfo:(UIButton *)sender {
+    NSString *slideID = self.dict[SLIDE_DESC_ID];
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    
+    MainViewController *mainViewController = [self masterViewController];
+    [mainViewController poupSlideInfo:slideID Dir:dirName];
+}
+
+#pragma mark - assistant methods
+- (IBAction)actionDownloadSlide:(UIButton *)sender {
+    if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
+        [sender setTitle:SLIDE_BTN_DOWNLOADING forState:UIControlStateNormal];
+        [self downloadZip:self.dict[CONTENT_FIELD_URL]];
+        //} else {
+        //     演示文稿功能在主界面代码中处理
+    }
+}
+
+- (IBAction)actionDisplaySlide:(UIButton *)sender {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+    NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+    [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
+    [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+    [configDict writeToFile:configPath atomically:YES];
+    
+    DisplayViewController *showVC = [[DisplayViewController alloc] init];
+    [self.masterViewController presentViewController:showVC animated:NO completion:nil];
+
 }
 
 /**
@@ -101,8 +127,9 @@
     [self.webViewThumbnail loadHTMLString:htmlContent baseURL:baseURL];
 }
 
+
 //////////////////////////////////////////////////////////////
-#pragma mark 下载文档 格式为zip压缩包
+#pragma mark - 下载文档 格式为zip压缩包
 //////////////////////////////////////////////////////////////
 
 /**

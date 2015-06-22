@@ -33,7 +33,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     /**
      *  控件事件
      */
@@ -71,6 +70,8 @@
 //        [masterView dismissPopup];
     }
 }
+#pragma mark - control action
+
 - (IBAction)actionDisplaySlide:(id)sender {
     NSString *slideID = self.dict[SLIDE_DESC_ID];
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;

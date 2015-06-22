@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "OneViewController.h"
-#import "HomeViewController.h"
 
 #import "GMGridView.h"
 #import "GMGridViewLayoutStrategies.h"
 #import "const.h"
 #import "ViewSlide.h"
 #import "FileUtils.h"
-#import "DisplayViewController.h"
-#import "MainViewController.h"
 #import "ContentUtils.h"
+
+#import "MainViewController.h"
+#import "HomeViewController.h"
 
 @interface OneViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gridView;
@@ -34,7 +34,9 @@
      * 实例变量初始化
      */
     _dataList = [[NSMutableArray alloc] init];
-    
+    // slide need it.
+    HomeViewController *homeViewController = [self masterViewController];
+    self.mainViewController = [homeViewController masterViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -98,60 +100,11 @@
         cell = [[GMGridViewCell alloc] init];
         ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] lastObject];
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        slide.isFavoriteFile = YES;
+        slide.isFavorite = YES;
         slide.dict = currentDict;
-        slide.btnSlideInfo.tag = index;
-        [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
-        [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-        
+        slide.masterViewController = [self mainViewController];
         [cell setContentView: slide];
     }
     return cell;
-}
-
-- (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {
-    [_dataList removeObjectAtIndex:index];
-}
-
-/**
- *  控件事件
- */
-- (IBAction)actionPopupSlideInfo:(UIButton *)sender {
-    NSInteger index = [sender tag];
-    NSMutableDictionary *dict = _dataList[index];
-    HomeViewController *homeViewController = [self masterViewController];
-    MainViewController *mainViewController = [homeViewController masterViewController];
-    [mainViewController poupSlideInfo:dict[SLIDE_DESC_ID] Dir:FAVORITE_DIRNAME];
-}
-
-
-/**
- *  本viewController中为服务端所有文件列表；
- *  如果已经下载，则可以[演示], 否则需要下载, 所下载文件在FILE_DIRNAME/下
- *
- *  与DisplayViewController传递文件ID通过CONFIG_DIRNAME/CONETNT_CONFIG_FILENAME[@CONTENT_KEY_DISPLAYID]
- *
- *  @param IBAction [演示]按钮点击事件
- *
- *  @return 演示界面
- */
-// 如果文件已经下载，文档原[下载]按钮显示为[演示]
-- (IBAction)actionDisplaySlide:(UIButton *)sender {
-    NSInteger index = [sender tag];
-    NSMutableDictionary *currentDict = _dataList[index];
-    NSString *slideID = currentDict[SLIDE_DESC_ID];
-    
-    // 如果文档已经下载，即可执行演示效果，
-    // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:slideID Dir:FAVORITE_DIRNAME Force:YES]) {
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
-        [configDict setObject:[NSNumber numberWithInt:SlideTypeFavorite] forKey:SLIDE_DISPLAY_TYPE];
-        [configDict writeToFile:configPath atomically:YES];
-        
-        DisplayViewController *showVC = [[DisplayViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
-    }
 }
 @end
