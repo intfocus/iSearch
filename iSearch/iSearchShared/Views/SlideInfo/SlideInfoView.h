@@ -18,7 +18,7 @@
 @interface SlideInfoView : UIViewController
 @property (strong, nonatomic) NSMutableDictionary *dict;
 @property (nonatomic , nonatomic) MainViewController *masterViewController;
-@property (nonatomic, nonatomic) BOOL isFavoriteFile;   // 收藏文件: 本地已下载
+@property (nonatomic, nonatomic) BOOL isFavorite;   // 收藏文件: 本地已下载
 
 @end
 

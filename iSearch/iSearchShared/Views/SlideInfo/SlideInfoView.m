@@ -72,15 +72,17 @@
     }
 }
 - (IBAction)actionDisplaySlide:(id)sender {
-    NSString *fileID = self.dict[SLIDE_DESC_ID];
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *slideID = self.dict[SLIDE_DESC_ID];
+    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
 
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Dir:dir Force:YES]) {
+    if([FileUtils checkSlideExist:slideID Dir:dirName Force:YES]) {
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
+        NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+        [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
         [configDict writeToFile:configPath atomically:YES];
         
         DisplayViewController *showVC = [[DisplayViewController alloc] init];
