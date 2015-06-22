@@ -15,8 +15,11 @@
 #import "MainViewController.h"
 #import "DisplayViewController.h"
 #import "Slide.h"
+#import "PopupView.h"
 
 @interface SlideInfoView()
+@property (nonatomic, nonatomic) PopupView *popupView;
+@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UILabel *labelDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
@@ -41,11 +44,8 @@
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.btnAddToTag.enabled = NO;
-    self.btnDisplay.enabled = NO;
-    self.btnEdit.enabled = NO;
-    self.btnRemove.enabled = NO;
+    [self.btnAddToTag addTarget:self action:@selector(actionAddToTag:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnEdit addTarget:self action:@selector(actionEditSlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -67,46 +67,74 @@
 }
 
 
-- (IBAction)actionRemoveSlide:(UIButton *)sender {
-    NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    [fileManager removeItemAtPath:filePath error:&error];
-    NSErrorPrint(error, @"remove file#%@", filePath);
-    
-    if(error == nil) {
-//        FavoriteViewController *masterView = (FavoriteViewController *)[self masterViewController];
-//        [masterView dismissPopup];
+
+#pragma mark - assistant methods
+
+- (void)showPopupView:(NSString*) text {
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.view;
     }
+    
+    [self.popupView setText: text];
+    [self.view addSubview:self.popupView];
 }
 
 #pragma mark - setter rewrite
 - (void)setDict:(NSMutableDictionary *)dict {
     self.slide = [[Slide alloc] init];
     self.slide = [Slide initWith:dict Favorite:self.isFavorite];
+    self.slideID = self.slide.slideID;
+    self.dirName = self.slide.dirName;
     _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
 
 }
 
 #pragma mark - control action
 - (IBAction)actionDisplaySlide:(id)sender {
-    NSString *slideID = self.dict[SLIDE_DESC_ID];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-
     // 如果文档已经下载，即可执行演示效果，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:slideID Dir:dirName Force:YES]) {
+    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
         NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
         [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
         [configDict writeToFile:configPath atomically:YES];
         
-        DisplayViewController *showVC = [[DisplayViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
+        if(self.displayViewController == nil) {
+            self.displayViewController = [[DisplayViewController alloc] init];
+        }
+        [self presentViewController:self.displayViewController animated:NO completion:nil];
+    } else {
+        [self showPopupView:@"未找到文档"];
     }
 }
+
+- (IBAction)actionRemoveSlide:(UIButton *)sender {
+    NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    [fileManager removeItemAtPath:filePath error:&error];
+    BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
+    
+    if(isSuccessfully) {
+        [self showPopupView:@"移除成功"];
+    }
+    [self.masterViewController dismissPopup];
+}
+
+- (IBAction)actionEditSlide:(UIButton *)sender {
+    [self showPopupView:@"TODO"];
+    
+}
+
+- (IBAction)actionAddToTag:(UIButton *)sender {
+    [self showPopupView:@"TODO"];
+    
+}
+
 
 
 

@@ -275,35 +275,7 @@
 }
 
 #pragma mark - CWPoup methods
-/**
- *  已下载文件点击[明细]，弹出框显示文档信息，及操作
- *
- *  @param slideID 文档ID
- *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
- */
-- (void)poupSlideInfo_old:(NSString *)slideID Dir:(NSString *)dirName {
-    NSString *descPath = [[NSString alloc] init];
-    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
-    // 在线浏览文档时
-    if([dirName isEqualToString:CONTENT_DIRNAME]) {
-        NSString *cacheName = [NSString stringWithFormat:@"%@-%@.cache", CONTENT_SLIDE, slideID];
-        descPath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];;
-        descDict = [FileUtils readConfigFile:descPath];
-        NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
-        tmpDesc = [ContentUtils descConvert:descDict To:tmpDesc Type:CONTENT_DIRNAME];
-        descDict = tmpDesc;
-    } else {
-        descPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-        descDict = [FileUtils readConfigFile:descPath];
-    }
-    
-    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
-    slideInfoView.masterViewController = self;
-    slideInfoView.dict = descDict;
-    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
-    }];
-}
+
 - (void)poupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
     if(self.slideInfoView == nil) {
         self.slideInfoView = [[SlideInfoView alloc] init];

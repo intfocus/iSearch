@@ -20,7 +20,10 @@
 @property (nonatomic , nonatomic) MainViewController *masterViewController;
 @property (nonatomic, nonatomic) BOOL isFavorite;
 @property (strong, nonatomic) NSMutableDictionary *dict;
+
 @property (strong, nonatomic) Slide *slide;
+@property (strong, nonatomic) NSString *slideID;
+@property (strong, nonatomic) NSString *dirName;
 
 @end
 
