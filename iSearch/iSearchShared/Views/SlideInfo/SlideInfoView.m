@@ -131,7 +131,15 @@
 }
 
 - (IBAction)actionAddToTag:(UIButton *)sender {
-    [self showPopupView:@"TODO"];
+    if(self.isFavorite) {
+        [self showPopupView:@"已在收藏了"];
+    } else {
+        BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
+            [DateUtils updateSlideTimestamp:dict];
+        }];
+        
+        [self showPopupView:@"收藏成功"];
+    }
     
 }
 
