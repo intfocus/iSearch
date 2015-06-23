@@ -9,14 +9,30 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "iSearch/iSearchShared/Models/Slide.m"
-            timestampString = "456723016.734943"
+            filePath = "iSearch/Home/TwoViewController.m"
+            timestampString = "456733847.438035"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "21"
-            endingLineNumber = "21"
-            landmarkName = "@synthesize slideID,name,title,type,tags,desc,pages,pageNum,createdDate;"
-            landmarkType = "19">
+            startingLineNumber = "158"
+            endingLineNumber = "158"
+            landmarkName = "-actionCategoryClick:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "iSearch/Content/ContentViewController.m"
+            timestampString = "456733859.903861"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "274"
+            endingLineNumber = "274"
+            landmarkName = "-actionCategoryClick:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

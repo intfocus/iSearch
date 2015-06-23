@@ -332,9 +332,11 @@
     [self stopLaser];
     [self startNote];
     self.paintView.paintColor = sender.backgroundColor;
+    self.colorButton.backgroundColor = sender.backgroundColor;
     
     [self.view sendSubviewToBack:self.colorView];
     self.colorView.hidden = YES;
+    
 }
 
 /**
@@ -362,6 +364,7 @@
     if(self.isDrawing) {
         [self.paintView removeFromSuperview];
         self.isDrawing = !self.isDrawing;
+        self.colorButton.backgroundColor = [UIColor whiteColor];
     }
 }
 
@@ -371,6 +374,9 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
+    [self stopLaser];
+    [self stopNote];
+    
     NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
@@ -383,6 +389,9 @@
  *  @param sender UIButton
  */
 - (IBAction)lastPage: (id)sender {
+    [self stopLaser];
+    [self stopNote];
+    
     NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];

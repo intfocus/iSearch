@@ -31,7 +31,7 @@
 
 - (void)setDict:(NSMutableDictionary *)dict {
     self.slide = [[Slide alloc] initWith:dict Favorite:self.isFavorite];
-    self.slideID = self.slide.slideID;
+    self.slideID = self.slide.ID;
     self.dirName = self.slide.dirName;
     self.labelTitle.text = self.slide.title;
     _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
@@ -120,12 +120,12 @@
 - (void) updateBtnDownloadOrDisplayIcon {
     UIImage *image;
     if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        image = [UIImage imageNamed:@"coverSlideToDisplay.png"];
+        image = [UIImage imageNamed:@"coverSlideToDisplay"];
     } else {
         if(self.dict[SLIDE_DESC_ISDISPLAY] == nil) {
-            image = [UIImage imageNamed:@"coverSlideUnDisplay.png"];
+            image = [UIImage imageNamed:@"coverSlideUnDisplay"];
         } else {
-            image = [UIImage imageNamed:@"coverSlideToDownload.png"];
+            image = [UIImage imageNamed:@"coverSlideToDownload"];
         }
     }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];

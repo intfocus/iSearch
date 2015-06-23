@@ -57,6 +57,7 @@
     
 //    NSArray *array = [categoryList arrayByAddingObjectsFromArray:slideList];
 //    return [NSMutableArray arrayWithArray:array];
+#warning make sure return two array
     return @[categoryList, slideList];
 }
 

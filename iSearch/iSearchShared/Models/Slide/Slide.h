@@ -19,13 +19,8 @@
  */
 @interface Slide : NSObject
 
-// backup
-@property (nonatomic, strong) NSString *configPath;
-@property (nonatomic, strong) NSMutableDictionary *configDict;
-@property (nonatomic, nonatomic) BOOL isFavorite;
-
 // attributes
-@property (nonatomic, strong) NSString *slideID;
+@property (nonatomic, strong) NSString *ID;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *title;
@@ -39,14 +34,19 @@
 @property (nonatomic, strong) NSString *createdDate;
 @property (nonatomic, strong) NSMutableArray *pages;
 
-// extend fields
+// backup
+@property (nonatomic, strong) NSString *descPath;
+@property (nonatomic, strong) NSMutableDictionary *descDict;
+@property (nonatomic, nonatomic) BOOL isFavorite;
+
+// local fields
 @property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, nonatomic) BOOL isDisplay;
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 @property (nonatomic, strong) NSString *typeName;
 
-// class methods
+// instance methods
 - (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;
 
 @end

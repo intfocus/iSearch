@@ -56,7 +56,7 @@
 {
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 25);
+    CGContextSetLineWidth(context, 10);
 
     // 绘图
     if(!self.laser) {
@@ -138,7 +138,7 @@
                 self.penIV.hidden = NO;
             }
             else if (thePan.state == UIGestureRecognizerStateChanged) {
-                self.penIV.frame = CGRectMake(point.x - 11, point.y - 11, 22, 22);
+                self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
             }
             else if (thePan.state == UIGestureRecognizerStateEnded) {
                 self.penIV.hidden = YES;

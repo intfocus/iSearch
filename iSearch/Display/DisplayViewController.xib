@@ -82,13 +82,13 @@
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k0K-sj-EFp" userLabel="Color Button">
                             <rect key="frame" x="35" y="13" width="25" height="25"/>
-                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="25" id="aUj-Ll-3H8"/>
                                 <constraint firstAttribute="width" constant="25" id="eNk-5k-k9y"/>
                             </constraints>
-                            <state key="normal" title="Button">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="colorButtonTouched:" destination="-1" eventType="touchUpInside" id="GXA-ZB-aNa"/>
@@ -196,7 +196,7 @@
                             </constraints>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" red="0.1019607843" green="0.80000000000000004" blue="0.76078431369999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="k0K-sj-EFp" firstAttribute="top" secondItem="YQy-az-kOd" secondAttribute="bottom" id="8gk-OR-Xmq"/>
                         <constraint firstItem="YQy-az-kOd" firstAttribute="centerX" secondItem="k0K-sj-EFp" secondAttribute="centerX" id="FpW-wC-fNY"/>
@@ -229,6 +229,7 @@
                         <constraint firstAttribute="width" constant="52" id="Yjq-Y3-8LH"/>
                     </constraints>
                     <state key="normal" backgroundImage="iconPen">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
