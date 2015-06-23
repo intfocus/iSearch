@@ -23,9 +23,9 @@
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
 		C4357C141B37D86D00854524 /* slideUnDisplay.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C121B37D86D00854524 /* slideUnDisplay.png */; };
 		C4357C151B37D86D00854524 /* slideToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C131B37D86D00854524 /* slideToDownload.png */; };
-		C4357C1C1B37F24F00854524 /* Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C1A1B37F24F00854524 /* Slide.m */; };
 		C4357C1F1B38F23A00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C1E1B38F23A00854524 /* ApiUtils.m */; };
-		C4357C211B38F3CD00854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C201B38F3CD00854524 /* User.m */; };
+		C4357C2B1B391B5600854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C251B391B5600854524 /* User.m */; };
+		C4357C2C1B391B5600854524 /* Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C281B391B5600854524 /* Slide.m */; };
 		C44841001B33E9510076B1FE /* iconSlideInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = C44840FF1B33E9510076B1FE /* iconSlideInfo.png */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
@@ -138,12 +138,12 @@
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		C4357C121B37D86D00854524 /* slideUnDisplay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideUnDisplay.png; sourceTree = "<group>"; };
 		C4357C131B37D86D00854524 /* slideToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideToDownload.png; sourceTree = "<group>"; };
-		C4357C1A1B37F24F00854524 /* Slide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Slide.m; sourceTree = "<group>"; };
-		C4357C1B1B37F24F00854524 /* Slide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slide.h; sourceTree = "<group>"; };
 		C4357C1D1B38F23000854524 /* ApiUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
 		C4357C1E1B38F23A00854524 /* ApiUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiUtils.m; sourceTree = "<group>"; };
-		C4357C201B38F3CD00854524 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		C4357C221B38F3D400854524 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		C4357C241B391B5600854524 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		C4357C251B391B5600854524 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C4357C271B391B5600854524 /* Slide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slide.h; sourceTree = "<group>"; };
+		C4357C281B391B5600854524 /* Slide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Slide.m; sourceTree = "<group>"; };
 		C44840FF1B33E9510076B1FE /* iconSlideInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconSlideInfo.png; sourceTree = "<group>"; };
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
@@ -434,12 +434,44 @@
 		C4357C191B37F22100854524 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C4357C1B1B37F24F00854524 /* Slide.h */,
-				C4357C1A1B37F24F00854524 /* Slide.m */,
-				C4357C221B38F3D400854524 /* User.h */,
-				C4357C201B38F3CD00854524 /* User.m */,
+				C4357C231B391B5600854524 /* User */,
+				C4357C261B391B5600854524 /* Slide */,
+				C4357C291B391B5600854524 /* Notification */,
+				C4357C2A1B391B5600854524 /* Category */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		C4357C231B391B5600854524 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				C4357C241B391B5600854524 /* User.h */,
+				C4357C251B391B5600854524 /* User.m */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		C4357C261B391B5600854524 /* Slide */ = {
+			isa = PBXGroup;
+			children = (
+				C4357C271B391B5600854524 /* Slide.h */,
+				C4357C281B391B5600854524 /* Slide.m */,
+			);
+			path = Slide;
+			sourceTree = "<group>";
+		};
+		C4357C291B391B5600854524 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Notification;
+			sourceTree = "<group>";
+		};
+		C4357C2A1B391B5600854524 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		C44923561B2AF72900E3BB65 /* Content */ = {
@@ -919,19 +951,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4A618F01B2C7AEC00D0E91B /* NewsListTabView.m in Sources */,
-				C4357C1C1B37F24F00854524 /* Slide.m in Sources */,
 				C4BED08C1B2FFEE2000147A2 /* ViewUtils.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
 				C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */,
 				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
 				C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */,
 				C4BED0851B2FFEE2000147A2 /* DatabaseUtils.m in Sources */,
-				C4357C211B38F3CD00854524 /* User.m in Sources */,
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
 				C4BED08B1B2FFEE2000147A2 /* PopupView.m in Sources */,
 				C4BED0791B2FFEE2000147A2 /* GMGridView.m in Sources */,
+				C4357C2B1B391B5600854524 /* User.m in Sources */,
 				C4D253CB1B326B410033F697 /* AddNewTagView.m in Sources */,
 				C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */,
 				C4D253ED1B32FE4E0033F697 /* SlideInfoView.m in Sources */,
@@ -958,6 +989,7 @@
 				C4BED0891B2FFEE2000147A2 /* HttpUtils.m in Sources */,
 				C46497371B2D825D005E3903 /* OneViewController.m in Sources */,
 				C4A618F91B2C7B1200D0E91B /* MainViewController.m in Sources */,
+				C4357C2C1B391B5600854524 /* Slide.m in Sources */,
 				C464973E1B2D88CC005E3903 /* ThreeViewController.m in Sources */,
 				C4D253D41B326B780033F697 /* FavoriteViewController.m in Sources */,
 				C4A618F21B2C7AEC00D0E91B /* NewsListCell.m in Sources */,

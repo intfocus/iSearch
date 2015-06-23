@@ -17,7 +17,7 @@
                         <constraint firstAttribute="width" constant="184" id="20E-7v-RyL"/>
                         <constraint firstAttribute="height" constant="134" id="thK-Ds-XyM"/>
                     </constraints>
-                    <state key="normal" image="category-default.png">
+                    <state key="normal" image="thumbnailCategoryDefault">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
@@ -48,6 +48,6 @@
         </view>
     </objects>
     <resources>
-        <image name="category-default.png" width="130" height="90"/>
+        <image name="thumbnailCategoryDefault" width="184" height="102"/>
     </resources>
 </document>

@@ -25,16 +25,11 @@
     UIImage *image;
     if([FileUtils checkFileExist:imagePath isDir:NO]) {
         image = [UIImage imageWithContentsOfFile:imagePath];
-    } else {
-        image = [UIImage imageNamed:@"category-default.png"];
-        NSLog(@"%@ not thumbnail.", categoryID);
+        image = [self imageWithImage:image scaledToSize:CGSizeMake(184, 102)];
+        
+        [self.btnImageCover setImage:image forState:UIControlStateNormal];
+        self.btnImageCover.frame = CGRectMake(0,0, 184, 102);
     }
-    image = [self imageWithImage:image scaledToSize:CGSizeMake(SIZE_GRID_VIEW_CELL_WIDTH, SIZE_IMAGE_COVER_HEIGHT)];
-
-    [self.btnImageCover setImage:image forState:UIControlStateNormal];
-    self.btnImageCover.frame = CGRectMake(0,0,
-                                     SIZE_GRID_VIEW_CELL_WIDTH,
-                                     SIZE_IMAGE_COVER_HEIGHT);
     
     [self bringSubviewToFront:self.btnImageCover];
 }

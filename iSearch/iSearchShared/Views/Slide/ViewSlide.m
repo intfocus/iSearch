@@ -120,12 +120,12 @@
 - (void) updateBtnDownloadOrDisplayIcon {
     UIImage *image;
     if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        image = [UIImage imageNamed:@"slideToDownload.png"];
+        image = [UIImage imageNamed:@"coverSlideToDisplay.png"];
     } else {
         if(self.dict[SLIDE_DESC_ISDISPLAY] == nil) {
-            image = [UIImage imageNamed:@"slideUnDisplay.png"];
+            image = [UIImage imageNamed:@"coverSlideUnDisplay.png"];
         } else {
-            image = [UIImage imageNamed:@"slideToDisplay.png"];
+            image = [UIImage imageNamed:@"coverSlideToDownload.png"];
         }
     }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
@@ -148,7 +148,7 @@
     if([FileUtils checkFileExist:thumbanilPath isDir:NO]) {
         basePath = slidePath;
     } else {
-        thumbnailName = @"slide-default.png";
+        thumbnailName = @"thumbnailSlideDefault.png";
         basePath =  [[NSBundle mainBundle] bundlePath];
     }
     baseURL = [NSURL fileURLWithPath:basePath];

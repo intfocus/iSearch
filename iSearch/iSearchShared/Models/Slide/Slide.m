@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     Slide *slide = [super init];
     
     // backup assign values
-    slide.dict        = [NSMutableDictionary dictionaryWithDictionary:dict];
+    slide.configDict  = [NSMutableDictionary dictionaryWithDictionary:dict];
     slide.isFavorite  = isFavorite;
 
     // deal logic
@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
         
     // <content format>
     } else {
-        slide.slideID = slide.dict[CONTENT_FIELD_ID];
+        slide.slideID = slide.configDict[CONTENT_FIELD_ID];
         
         // when download
         if([FileUtils checkSlideExist:slide.slideID Dir:dirName Force:NO]) {

@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "iSearch/Login/LoginViewController.m"
-            timestampString = "456723906.401549"
+            filePath = "iSearch/iSearchShared/Views/Slide/ViewSlide.m"
+            timestampString = "456729425.842284"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
-            landmarkName = "-submitAction:"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "-loadThumbnail"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

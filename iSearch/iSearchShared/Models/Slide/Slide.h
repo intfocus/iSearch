@@ -20,7 +20,8 @@
 @interface Slide : NSObject
 
 // backup
-@property (nonatomic, strong) NSMutableDictionary *dict;
+@property (nonatomic, strong) NSString *configPath;
+@property (nonatomic, strong) NSMutableDictionary *configDict;
 @property (nonatomic, nonatomic) BOOL isFavorite;
 
 // attributes
