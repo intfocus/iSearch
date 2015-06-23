@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define LOGIN_FIELD_EMAIL      @"Email"
 #define LOGIN_FIELD_EMPLOYEEID @"EmployeeId"
 #define LOGIN_FIELD_DEPTID     @"DeptId"
-#define LOGIN_FIELD_RESULT     @"Result"
+#define LOGIN_FIELD_RESULT     @"result"
 // 通用字段
 #define USER_ID                @"UserID"
 #define USER_NAME              @"UserName"

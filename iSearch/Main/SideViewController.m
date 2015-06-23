@@ -49,6 +49,7 @@
 
 -(void)placeNewsTab{
     NewsListTabView *tab=(id)[ViewUtils loadNibClass:[NewsListTabView class]];
+    tab.sideViewController = self;
     [self.view addSubview:tab];
     self.newsTabView=tab;
 }

@@ -213,11 +213,6 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
-    // 跳至主界面
-    [self enterMainViewController];
-    return;
-    
-    
     // C.1 界面输入框、按钮等控件disabeld
     [self switchCtlStateWhenLogin:false];
 
@@ -229,6 +224,10 @@
     NSString *username = [self.fieldUser.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
+    // 测试期，用户可不输入密码
+    if([password length] == 0) {
+        password = username;
+    }
     
     // C.2 如果无网络环境，跳至步骤D[离线登陆]
     if(![HttpUtils isNetworkAvailable]) {
@@ -260,8 +259,8 @@
         //      code: 1,            -- success: 1; failed: 0
         //      info: { uid: 1 ...} -- success: { uid: 1 ...}; failed: { error: ... }
         //  }
-        NSString *uid = @"1";
-        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, uid];
+
+        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, username];
         NSString *response = [HttpUtils httpGet:urlPath];
         
         NSError *error;
@@ -275,9 +274,11 @@
             // 服务器响应json格式为: { code: 1, info: {} }
             //  code = 1 则表示服务器与客户端交互成功, info为用户信息,格式为JSON
             //  code = 非1 则表示服务器方面查检出有错误， info为错误信息,格式为JSON
-            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
+//            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
+            NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
             // C.5.1 登陆成功,跳至步骤 C.success
-            if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            // if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            if([responseResult length] == 0) {
                 //      3.success
                 //          last为当前时间(格式LOGIN_DATE_FORMAT)
                 //          password = remember_password ? 控件内容 : @""
@@ -288,7 +289,7 @@
                 [userDict setObject:username forKey:USER_LOGIN_USERNAME];
                 [userDict setObject:password forKey:USER_LOGIN_PASSWORD];
                 [userDict setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
-                [userDict setObject:[ViewUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
+                [userDict setObject:[DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
                 // 服务器信息
                 [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_ID] forKey:USER_ID];
                 [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_NAME] forKey:USER_NAME];
@@ -303,7 +304,7 @@
             } else {
                 // C.5.2 服务器端反馈错误信息，跳至步骤 C.alert
                 NSLog(@"登陆失败.");
-                [loginErrors addObject:[NSString stringWithFormat:@"responseResult:%@",[responseDict objectForKey:LOGIN_FIELD_RESULT]]];
+                [loginErrors addObject:[NSString stringWithFormat:@"服务器响应:%@",[responseDict objectForKey:LOGIN_FIELD_RESULT]]];
             }
         // C.5.3 服务器无响应，跳至步骤 C.alert
         } else {

@@ -24,6 +24,8 @@
 		C4357C141B37D86D00854524 /* slideUnDisplay.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C121B37D86D00854524 /* slideUnDisplay.png */; };
 		C4357C151B37D86D00854524 /* slideToDownload.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C131B37D86D00854524 /* slideToDownload.png */; };
 		C4357C1C1B37F24F00854524 /* Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C1A1B37F24F00854524 /* Slide.m */; };
+		C4357C1F1B38F23A00854524 /* ApiUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C1E1B38F23A00854524 /* ApiUtils.m */; };
+		C4357C211B38F3CD00854524 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = C4357C201B38F3CD00854524 /* User.m */; };
 		C44841001B33E9510076B1FE /* iconSlideInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = C44840FF1B33E9510076B1FE /* iconSlideInfo.png */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
@@ -138,6 +140,10 @@
 		C4357C131B37D86D00854524 /* slideToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideToDownload.png; sourceTree = "<group>"; };
 		C4357C1A1B37F24F00854524 /* Slide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Slide.m; sourceTree = "<group>"; };
 		C4357C1B1B37F24F00854524 /* Slide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slide.h; sourceTree = "<group>"; };
+		C4357C1D1B38F23000854524 /* ApiUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApiUtils.h; sourceTree = "<group>"; };
+		C4357C1E1B38F23A00854524 /* ApiUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApiUtils.m; sourceTree = "<group>"; };
+		C4357C201B38F3CD00854524 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		C4357C221B38F3D400854524 /* User.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		C44840FF1B33E9510076B1FE /* iconSlideInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconSlideInfo.png; sourceTree = "<group>"; };
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
@@ -405,9 +411,9 @@
 		C433EA841B2D244300AD9CEB /* NewsList */ = {
 			isa = PBXGroup;
 			children = (
-				C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */,
-				C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */,
 				C4A618E41B2C7AEC00D0E91B /* NewsListTabView.h */,
+				C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */,
+				C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */,
 				C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */,
 				C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */,
 				C4A618E71B2C7AEC00D0E91B /* NewsListCell.h */,
@@ -430,6 +436,8 @@
 			children = (
 				C4357C1B1B37F24F00854524 /* Slide.h */,
 				C4357C1A1B37F24F00854524 /* Slide.m */,
+				C4357C221B38F3D400854524 /* User.h */,
+				C4357C201B38F3CD00854524 /* User.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -570,6 +578,8 @@
 				C4BED06D1B2FFEE2000147A2 /* PopupView.m */,
 				C4BED06E1B2FFEE2000147A2 /* ViewUtils.h */,
 				C4BED06F1B2FFEE2000147A2 /* ViewUtils.m */,
+				C4357C1D1B38F23000854524 /* ApiUtils.h */,
+				C4357C1E1B38F23A00854524 /* ApiUtils.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -916,6 +926,7 @@
 				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
 				C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */,
 				C4BED0851B2FFEE2000147A2 /* DatabaseUtils.m in Sources */,
+				C4357C211B38F3CD00854524 /* User.m in Sources */,
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
@@ -924,6 +935,7 @@
 				C4D253CB1B326B410033F697 /* AddNewTagView.m in Sources */,
 				C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */,
 				C4D253ED1B32FE4E0033F697 /* SlideInfoView.m in Sources */,
+				C4357C1F1B38F23A00854524 /* ApiUtils.m in Sources */,
 				C4BED07B1B2FFEE2000147A2 /* GMGridViewLayoutStrategies.m in Sources */,
 				C4A618F41B2C7AEC00D0E91B /* MainEntryButton.m in Sources */,
 				C4E3CCDE1B184E530067B762 /* main.m in Sources */,
