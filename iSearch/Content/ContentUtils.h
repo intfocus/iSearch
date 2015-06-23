@@ -36,7 +36,6 @@
 + (NSMutableArray*)loadContentDataFromLocal:(NSString *) type
                                      DeptID:(NSString *) deptID
                                  CategoryID:(NSString *) categoryID;
-+ (NSMutableArray *)loadContentFromLocal:(NSString *)pathName;
 
 /**
  *  获取某分类的基本信息。
@@ -56,19 +55,6 @@
                                   DepthID:(NSString *)deptID;
 
 /**
- *  NSMutableDictionary#setObject,forKey
- *  只有object不为nil才赋值
- *
- *  @param dict <#dict description#>
- *  @param obj  <#obj description#>
- *  @param key  <#key description#>
- *
- *  @return <#return value description#>
- */
-+ (NSMutableDictionary *)mySet:(NSMutableDictionary *)dict
-                        Object:(id)obj
-                           Key:(NSString *)key;
-/**
 *  缓存文件名称
 *
 *  @param type       category,slide?
@@ -80,18 +66,7 @@
 + (NSString *)contentCacheName:(NSString *)type
                         DeptID:(NSString *)deptID
                     ID:(NSString *)categoryID;
-/**
- *  获取获取信息格式统一转化为文档格式
- *
- *  @param tmpDict source dict
- *  @param tmpDesc target dict
- *  @param convertType 目录/离线下载
- *
- *  @return 文档格式
- */
-+ (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDict
-                                  To:(NSMutableDictionary *)tmpDesc
-                                Type:(NSString *)convertType;
+
 
 /**
  *  给元素为字典的数组排序；

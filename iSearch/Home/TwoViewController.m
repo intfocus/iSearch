@@ -11,6 +11,7 @@
 #import "GMGridView.h"
 #import "GMGridViewLayoutStrategies.h"
 
+#import "User.h"
 #import "const.h"
 #import "FileUtils.h"
 #import "ViewSlide.h"
@@ -25,7 +26,7 @@
     __gm_weak GMGridView *_gridView;
     NSMutableArray       *_dataList;
 }
-@property (strong, nonatomic) NSString  *deptID;
+@property (strong, nonatomic) User  *user;
 @end
 
 @implementation TwoViewController
@@ -35,7 +36,7 @@
     /**
      *  实例变量初始化
      */
-    self.deptID = @"10";
+    self.user = [[User alloc] init];
     _dataList = [[NSMutableArray alloc] init];
 
     
@@ -43,12 +44,12 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    _dataList = [[ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL] firstObject];
+    _dataList = [[ContentUtils loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL] firstObject];
     [self configGMGridView];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *data = [[ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER] firstObject];
+        NSMutableArray *data = [[ContentUtils loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER] firstObject];
         if([data count] > 0) {
             _dataList = data;
             [self configGMGridView];

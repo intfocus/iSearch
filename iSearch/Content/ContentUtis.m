@@ -12,6 +12,7 @@
 #import "HttpUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
+#import "Slide.h"
 #import "GMGridView.h"
 #import "ViewSlide.h"
 #import "ViewCategory.h"
@@ -90,31 +91,19 @@
     NSErrorPrint(error, @"string convert into json");
     
     mutableArray = responseJSON[CONTENT_FIELD_DATA];
-    
+    Slide *slide = [Slide alloc];
     // update local slide cache info
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
-        NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
-        NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
-        NSString *descPath = [[NSString alloc] init];
-        NSString *cacheName = [[NSString alloc] init];
-        NSString *cachePath = [[NSString alloc] init];
-        for(tmpDict in mutableArray) {
-            // update local slide desc when already download
-#warning slide.rewrite
-//            if([FileUtils checkSlideExist:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
-//                descPath = [FileUtils slideDescPath:tmpDict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-//                tmpDesc = [FileUtils readConfigFile:descPath];
-//                tmpDesc = [ContentUtils descConvert:tmpDict To:tmpDesc Type:CONTENT_DIRNAME];
-//
-//                [FileUtils writeJSON:tmpDesc Into:descPath];
-//            }
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        for(dict in mutableArray) {
+            slide = [slide initWith:dict Favorite:NO];
+            if(slide.isDownload) {
+                [slide save];
+            }
             // write into cache then [view] slide info with popup view
-            cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
-            cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
-            [FileUtils writeJSON:tmpDict Into:cachePath];
-            /**
-             *  warning: 此处不更新desc的SLIDE_DESC_LOCAL_UPDATEDAT,该信息用来记录用户的操作时候
-             */
+            NSString *cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:deptID ID:slide.ID];
+            [slide cached:cacheName];
+
         }
     }
     NSString *cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
@@ -122,129 +111,24 @@
     
     // 解析成功、获取数据不为空时，写入本地缓存
     if(!error && [mutableArray count] > 0) {
-        // 1. 请求目录返回josn字符串写入CONTENT_DIRNAME/deptID-categoryID-file.json
-        [response writeToFile:cachePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"content category write into %@", cachePath);
+        [FileUtils writeJSON:responseJSON Into:cachePath];
     }
     
     return mutableArray;
-}
-
-/**
- *  NSMutableDictionary#setObject,forKey
- *  只有object不为nil才赋值
- *
- *  @param dict <#dict description#>
- *  @param obj  <#obj description#>
- *  @param key  <#key description#>
- *
- *  @return <#return value description#>
- */
-+ (NSMutableDictionary *)mySet:(NSMutableDictionary *)dict
-                        Object:(id)obj
-                           Key:(NSString *)key {
-    if(obj) {
-        [dict setObject:obj forKey:key];
-    } else {
-        NSLog(@"Key#%@ is nil", key);
-    }
-    return dict;
-    
-}
-
-/**
- *  缓存文件名称
- *
- *  @param type       category,slide?
- *  @param deptID     deptID
- *  @param categoryID categoryID
- *
- *  @return cacheName
- */
-+ (NSString *)contentCacheName:(NSString *)type
-                        DeptID:(NSString *)deptID
-                    ID:(NSString *)categoryID {
-    return [NSString stringWithFormat:@"%@-%@-%@.cache",deptID, categoryID, type];
-}
-
-/**
- *  获取获取信息格式统一转化为文档格式；
- *  期望CONTENT_* OFFLINE_*字段一致
- *
- *  @param tmpDict source dict
- *  @param tmpDesc target dict
- *  @param convertType 目录/离线下载
- *
- *  @return 文档格式
- */
-+ (NSMutableDictionary *)descConvert:(NSMutableDictionary *)tmpDict
-                                  To:(NSMutableDictionary *)tmpDesc
-                                Type:(NSString *)convertType {
-    if([convertType isEqualToString:CONTENT_DIRNAME]) {
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYNAME] Key:CONTENT_FIELD_CATEGORYNAME];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
-    }
-    if([convertType isEqualToString:OFFLINE_DIRNAME]) {
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_NAME] Key:SLIDE_DESC_NAME];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_DESC] Key:SLIDE_DESC_DESC];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TYPE] Key:SLIDE_DESC_TYPE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_TITLE] Key:CONTENT_FIELD_TITLE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_ZIPSIZE] Key:CONTENT_FIELD_ZIPSIZE];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYID] Key:CONTENT_FIELD_CATEGORYID];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CATEGORYNAME] Key:CONTENT_FIELD_CATEGORYNAME];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_PAGENUM] Key:CONTENT_FIELD_PAGENUM];
-        [ContentUtils mySet:tmpDesc Object:tmpDict[CONTENT_FIELD_CREATEDATE] Key:CONTENT_FIELD_CREATEDATE];
-    }
-    return tmpDesc;
 }
 
 + (NSMutableArray*)loadContentDataFromLocal:(NSString *)type
                                      DeptID:(NSString *)deptID
                                  CategoryID:(NSString *)categoryID {
-    NSError *error;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *cacheContent = [[NSString alloc] init];
     NSString *cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
-    NSString *cacheFilePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
+    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     
-    if(![FileUtils checkFileExist:cacheFilePath isDir:false]) {
-        return mutableArray;
+    if([FileUtils checkFileExist:cachePath isDir:false]) {
+        NSMutableDictionary *cacheJSON = [FileUtils readConfigFile:cachePath];
+        mutableArray = cacheJSON[CONTENT_FIELD_DATA];
     }
     
-    cacheContent = [NSString stringWithContentsOfFile:cacheFilePath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read cache#%@ %@", type, cacheContent);
-    
-    NSMutableDictionary *cacheJSON = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&error];
-    NSErrorPrint(error, @"string convert into json");
-    mutableArray = cacheJSON[CONTENT_FIELD_DATA];
-    
-    return mutableArray;
-}
-/**
- *  CONTENT_DIRNAME/id.json存在，读取该缓存信息加载目录
- *
- *  @param pathName 目录json缓存文件路径
- *
- *  @return 目录数据
- */
-+ (NSMutableArray *)loadContentFromLocal:(NSString *)pathName {
-    NSError *error;
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *fileContent = [NSString stringWithContentsOfFile:pathName encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read file content");
-    mutableArray = [NSJSONSerialization JSONObjectWithData:[fileContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:&error];
-    NSErrorPrint(error, @"string convert into json");
     return mutableArray;
 }
 
@@ -265,30 +149,16 @@
 + (NSMutableDictionary *)readCategoryInfo:(NSString *)categoryID
                                  ParentID:(NSString *)parentID
                                   DepthID:(NSString *)deptID {
-    NSError *error;
     NSMutableDictionary *categoryDict = [[NSMutableDictionary alloc] init];
     NSString *cacheName = [ContentUtils contentCacheName:CONTENT_CATEGORY DeptID:deptID ID:parentID];
     NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
-    NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath encoding:NSUTF8StringEncoding error:&error];
-    BOOL isSuccessfully = NSErrorPrint(error, @"read category cache");
-    if(!isSuccessfully) {
-        return categoryDict;
-    }
-    
-    NSMutableDictionary *cacheDict = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                     options:NSJSONReadingMutableContainers
-                                                                       error:&error];
-    isSuccessfully = NSErrorPrint(error, @"parese category cache info json");
-    if(!isSuccessfully) {
-        return categoryDict;
-    }
-    
+    NSMutableDictionary *cacheDict = [FileUtils readConfigFile:cachePath];
     NSMutableArray *cacheData = [cacheDict objectForKey:CONTENT_FIELD_DATA];
     
     // 过滤
     NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", CONTENT_FIELD_ID, categoryID];
     NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
-    
+
     categoryDict = [[cacheData filteredArrayUsingPredicate:filter] lastObject];
 
     return categoryDict;
@@ -311,5 +181,18 @@
     NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     return [NSMutableArray arrayWithArray:array];
 }
-
+/**
+ *  缓存文件名称
+ *
+ *  @param type       category,slide?
+ *  @param deptID     deptID
+ *  @param categoryID categoryID
+ *
+ *  @return cacheName
+ */
++ (NSString *)contentCacheName:(NSString *)type
+                        DeptID:(NSString *)deptID
+                            ID:(NSString *)categoryID {
+    return [NSString stringWithFormat:@"%@-%@-%@.cache",deptID, categoryID, type];
+}
 @end

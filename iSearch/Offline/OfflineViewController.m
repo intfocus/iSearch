@@ -118,7 +118,6 @@
  */
 - (IBAction)refreshSlideList:(UIBarButtonItem *)sender {
     User *user = [[User alloc] init];
-    user.deptID = @"10";
     NSError *error;
     NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", OFFLINE_URL_PATH, PARAM_LANG, APP_LANG, OFFLINE_PARAM_DEPTID, user.deptID];
     NSString *response = [HttpUtils httpGet:urlPath];
