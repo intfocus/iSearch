@@ -124,9 +124,9 @@
             NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
         }
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
-        viewCategory.labelTitle.text = name;
-        NSLog(@"%@", name);
+//        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
+        viewCategory.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
+
         
         [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
@@ -150,19 +150,12 @@
     
     // 点击分类导航行为记录
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSLog(@"%@", configPath);
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    if(!configDict[CONTENT_KEY_NAVSTACK]) {
-        [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
-    }
-    // 进入是push
-    mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    // clear and then push, becase hereis root
-    [mutableArray removeAllObjects];
     [mutableArray addObject:categoryID];
     [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
-    [configDict writeToFile:configPath atomically:true];
+    [FileUtils writeJSON:configDict Into:configPath];
     
     // enter ContentViewController
     HomeViewController *homeViewController = [self masterViewController];

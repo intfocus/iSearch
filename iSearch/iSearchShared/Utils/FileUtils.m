@@ -196,41 +196,45 @@
     return removed;
 }
 
-/**
- *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
- *
- *
- *  @param fileID fileID
- *  @param Dir FILE_DIRNAME/FAVORITE_DIRNAME
- *
- *  @return 文档配置档内容;str
- */
-+ (NSString *) slideDescContent:(NSString *)fileID Dir:(NSString *)dirName {
-    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
-    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
-    NSError *error;
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-    
-    if(error) NSLog(@"fileDescContent# read %@ failed for %@", descPath, [error localizedDescription]);
-    return descContent;
-}
 
 /**
  *  专用函数;读取文档描述文件内容；{FILE_DIRNAME,FAVORITE_DIRNAME}/fileID/desc.json(.swp)
- *  Dir为FILE_DIRNAME/FAVORITGE_DIRNAME
- *  klass为FILE_CONFIG_FILENAME/FILE_DISPLAY_CONFIG_FILENAME
  *
- *  @param fileID fileID
+ *  @param slideID slideID
+ *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
+ *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
  *
  *  @return 文档配置档路径
  */
 + (NSString *) slideDescPath:(NSString *)fileID
-                        Dir:(NSString *)dirName
-                      Klass:(NSString *)klass {
-    NSString *filePath = [FileUtils getPathName:dirName FileName:fileID];
-    NSString *descPath = [filePath stringByAppendingPathComponent:klass];
+                         Dir:(NSString *)dirName
+                       Klass:(NSString *)klass {
+    NSString *slidePath = [FileUtils getPathName:dirName FileName:fileID];
+    NSString *descPath = [slidePath stringByAppendingPathComponent:klass];
     
     return descPath;
+}
+
+/**
+ *  专用函数;读取文档描述文件内容；FILE_DIRNAME/fileID/desc.json
+ *
+ *
+ *  @param slideID slideID
+ *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
+ *  @param klass   SLIDE_CONFIG_FILENAME/SLIDE_CONFIG_SWP_FILENAME
+ *
+ *
+ *  @return 文档配置档内容;str
+ */
++ (NSString *) slideDescContent:(NSString *)slideID
+                            Dir:(NSString *)dirName
+                          Klass:(NSString *)klass {
+    NSError *error;
+    NSString *descPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:klass];
+    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"slideID#%@, dirName#%@, klass#%@ - %@", slideID, dirName, klass, descPath);
+    
+    return descContent;
 }
 
 /**
@@ -242,13 +246,12 @@
  *  @return 文档配置档内容;jsonStr
  */
 + (NSString *)copyFileDescContent:(NSString *)slideID Dir:(NSString *)dirName {
-    NSString *descContent = [FileUtils slideDescContent:slideID Dir: dirName];
-    NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
-    NSString *displayDescPath = [filePath stringByAppendingPathComponent:FILE_CONFIG_SWP_FILENAME];
+    NSString *descContent = [FileUtils slideDescContent:slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSString *descSwpPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
     
     NSError *error;
-    [descContent writeToFile:displayDescPath atomically:true encoding:NSUTF8StringEncoding error:&error];
-    if(error) NSLog(@"fileDescContent# read %@ failed for %@", displayDescPath, [error localizedDescription]);
+    [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
+    NSErrorPrint(error, @"slideID#%@, dirName#%@; desc write into desc.swp: %@", slideID, dirName, descSwpPath);
     
     return descContent;
 }

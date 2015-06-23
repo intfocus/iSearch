@@ -114,7 +114,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define LOGIN_FIELD_EMAIL      @"Email"
 #define LOGIN_FIELD_EMPLOYEEID @"EmployeeId"
 #define LOGIN_FIELD_DEPTID     @"DeptId"
-#define LOGIN_FIELD_RESULT     @"Result"
+#define LOGIN_FIELD_RESULT     @"result"
 // 通用字段
 #define USER_ID                @"UserID"
 #define USER_NAME              @"UserName"
@@ -159,6 +159,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_FIELD_CREATEDATE @"EditTime" // 创建时间
 #define CONTENT_FIELD_TYPE       @"Type" // 类型: 0为目录，1为文件
 #define CONTENT_FIELD_CATEGORYID @"CategoryId"
+#define CONTENT_FIELD_CATEGORYNAME @"CategoryName"
 #define CONTENT_FIELD_ZIPSIZE    @"ZipSize"
 #define CONTENT_FIELD_PAGENUM    @"PageNo"
 #define CONTENT_FIELD_URL        @"DownloadUrl" // 文件下载链接，代码拼接而成
@@ -169,18 +170,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
 // API字段
-#define OFFLINE_FIELD_DATA       @"data"
-#define OFFLINE_FIELD_ID         @"Id"
-#define OFFLINE_FIELD_TYPE       @"Type"
-#define OFFLINE_FIELD_DESC       @"Desc"
-#define OFFLINE_FIELD_TAGS       @"Tags"
-#define OFFLINE_FIELD_NAME       @"Name"
-#define OFFLINE_FIELD_TITLE      @"Title"
-#define OFFLINE_FIELD_CATEGORYID @"CategoryId"
-#define OFFLINE_FIELD_CATEGORYNAME @"CategoryName"
-#define OFFLINE_FIELD_ZIPSIZE    @"ZipSize"
-#define OFFLINE_FIELD_PAGENUM    @"PageNo"
-#define OFFLINE_FIELD_CREATEDATE @"EditTime"
+// shared with CONTENT_FIELD_*
 // 数据库表字段
 #define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"
@@ -202,6 +192,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 文档描述desc.json相关
 // TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
 #define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define SLIDE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 #define SLIDE_DESC_ID               @"id"
 #define SLIDE_DESC_TYPE             @"type"
 #define SLIDE_DESC_NAME             @"name"
@@ -209,7 +200,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DESC_ORDER            @"order"
 #define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
 #define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
-#define FILE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
+#define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"
 #define PAGE_IMAGE_FORMAT          @"gif"
@@ -217,7 +208,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
-#define NOTIFICATION_CACHE        @"notifications.json"
+#define NOTIFICATION_CACHE        @"notifications.cache"
 #define NOTIFICATION_DIRNAME      @"notifications"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小

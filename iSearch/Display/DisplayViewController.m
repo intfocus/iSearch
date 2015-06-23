@@ -22,6 +22,10 @@
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 展示html5
 @property (weak, nonatomic) IBOutlet UIButton *editBtn; // 切换显示编辑状态面板的显示
+@property (weak, nonatomic) IBOutlet UIView *editPanelBgView;
+@property (weak, nonatomic) IBOutlet UIButton *colorButton;
+@property (weak, nonatomic) IBOutlet UIView *colorView;
+@property (weak, nonatomic) IBOutlet UIImageView *iconTriangleImageView;
 @property (weak, nonatomic) IBOutlet UIView *editPanel; // 编辑状态面板
 @property (weak, nonatomic) IBOutlet UIButton *drawBtn;
 @property (weak, nonatomic) IBOutlet UISwitch *laserSwitch; // 激光笔状态切换
@@ -39,6 +43,7 @@
 @property (nonatomic, nonatomic) NSString *filePath;
 @property (nonatomic, nonatomic) NSMutableDictionary *fileDesc;
 @property (nonatomic, nonatomic) NSString *forbidCss;
+@property (nonatomic, nonatomic) ReViewController *reViewController;
 
 @end
 
@@ -56,26 +61,54 @@
     self.paintView           = nil;
     self.editPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
-   
-    self.editPanel.backgroundColor = [UIColor blackColor];
+    
+    //self.editPanel.backgroundColor = [UIColor blackColor];
     [self.editPanel setHidden: true];
     
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editPanel.frame.size.width, self.editPanel.frame.size.height)];
+    self.editPanel.layer.masksToBounds = NO;
+    self.editPanel.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.editPanel.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.editPanel.layer.shadowOpacity = 0.8;
+    self.editPanel.layer.shadowPath = shadowPath.CGPath;
+    
+    UIBezierPath *shadowPath2 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.colorView.frame.size.width, self.colorView.frame.size.height)];
+    self.colorView.layer.masksToBounds = NO;
+    self.colorView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.colorView.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.colorView.layer.shadowOpacity = 0.8;
+    self.colorView.layer.shadowPath = shadowPath2.CGPath;
+    
+    UIBezierPath *shadowPath3 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editBtn.frame.size.width, self.editBtn.frame.size.height)];
+    self.editBtn.layer.masksToBounds = NO;
+    self.editBtn.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.editBtn.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.editBtn.layer.shadowOpacity = 0;
+    self.editBtn.layer.shadowPath = shadowPath3.CGPath;
+    
+    self.editPanel.layer.cornerRadius = 4;
+    self.colorView.layer.cornerRadius = 4;
+    self.colorButton.layer.cornerRadius = 4;
+    self.blueNoteBtn.layer.cornerRadius = 4;
+    self.redNoteBtn.layer.cornerRadius = 4;
+    self.greenNoteBtn.layer.cornerRadius = 4;
+    
     [self.editBtn setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
-    [self.editBtn addTarget:self action:@selector(toggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
+    [self.editBtn addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.laserSwitch setOn: false];
-    [self.laserSwitch addTarget:self action:@selector(changeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
+    [self.laserSwitch addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     
     self.forbidCss = @"<style type='text/css'>          \
-                        body { background: black; }     \
-                        * {                             \
-                            -webkit-touch-callout: none;\
-                            -webkit-user-select: none;  \
-                        }                               \
-                        </style>                        \
-                        </head>";
-
+    body { background: black; }     \
+    * {                             \
+    -webkit-touch-callout: none;\
+    -webkit-user-select: none;  \
+    }                               \
+    </style>                        \
+    </head>";
+    
     
     // webView添加手势，向左即上一页，向右即下一页
     UISwipeGestureRecognizer *gestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(lastPage:)];
@@ -99,11 +132,11 @@
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-//    [self demoExtract];
-    [self extractResource];
+    // [self demoExtract];
+     [self extractResource];
     
     [self loadHtml];
-
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -169,10 +202,13 @@
     BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
         [DateUtils updateSlideTimestamp:dict];
     }];
-    // 信息提示
-    self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
     
-    self.popupView.ParentView = self.view;
+    // 信息提示
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.view;
+    }
     NSString *popupInfo = [NSString stringWithFormat:@"拷贝%@", isSuccessfully ? @"成功" : @"失败"];
     [self showPopupView: popupInfo];
     
@@ -213,7 +249,7 @@
  *
  *  @param sender UIButton
  */
-- (IBAction)toggleShowEditPanel:(UIButton *)sender {
+- (IBAction)actionToggleShowEditPanel:(UIButton *)sender {
     NSInteger tag = [sender tag];
     [UIView animateWithDuration:.5f animations:^{
         [self.editPanel setHidden:(tag != SlideEditPanelShow)];
@@ -222,20 +258,25 @@
     switch(tag) {
         case SlideEditPanelHiden: {
             [self.editBtn setTag:SlideEditPanelShow];
-            [self.editBtn setTitle:@"<<" forState:UIControlStateNormal];
+            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
+            self.editPanelBgView.hidden = YES;
+            self.colorView.hidden = YES;
+            self.editBtn.layer.shadowOpacity = 0;
+            [self stopLaser];
+            [self stopNote];
         }
-        break;
+            break;
             
         case SlideEditPanelShow: {
-            [self stopNote];
-            [self stopLaser];
-            
             [self.editBtn setTag:SlideEditPanelHiden];
-            [self.editBtn setTitle:@"编辑" forState:UIControlStateNormal];
+            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
+            self.editPanelBgView.hidden = NO;
+            self.editBtn.layer.shadowOpacity = 0.5;
+            
         }
-        break;
+            break;
         default:
-        break;
+            break;
     }
 }
 /**
@@ -243,7 +284,7 @@
  *
  *  @param sender UISwitch
  */
-- (void)changeLaserSwitch:(id)sender{
+- (void)actionChangeLaserSwitch:(id)sender{
     if([sender isOn]){
         [self stopNote];
         [self startLaser];
@@ -259,7 +300,7 @@
 - (void) startLaser {
     if(!self.isLasering) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-30)];
-        self.paintView.backgroundColor = [UIColor purpleColor];
+        self.paintView.backgroundColor = [UIColor clearColor];
         self.paintView.paintColor = [UIColor blackColor];
         self.paintView.alpha = 0.6;
         self.paintView.laser = true;
@@ -269,6 +310,8 @@
         [self.drawBtn setEnabled:false];
     }
     
+    [self.view sendSubviewToBack:self.colorView];
+    self.colorView.hidden = YES;
     [self.view bringSubviewToFront:self.editPanel];
     [self.view bringSubviewToFront:self.editBtn];
 }
@@ -286,8 +329,12 @@
 -(void)noteBtnClick:(UIButton*) sender{
     // 关闭switch控件，并触发自身函数
     [self.laserSwitch setOn:false];
+    [self stopLaser];
     [self startNote];
     self.paintView.paintColor = sender.backgroundColor;
+    
+    [self.view sendSubviewToBack:self.colorView];
+    self.colorView.hidden = YES;
 }
 
 /**
@@ -296,7 +343,7 @@
 - (void) startNote {
     if(!self.isDrawing) {
         self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-        self.paintView.backgroundColor = [UIColor purpleColor];
+        self.paintView.backgroundColor = [UIColor clearColor];
         self.paintView.alpha = 0.6;
         self.paintView.erase = false;
         self.paintView.laser = false;
@@ -324,7 +371,7 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
-    NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
+    NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -336,7 +383,7 @@
  *  @param sender UIButton
  */
 - (IBAction)lastPage: (id)sender {
-    NSInteger pageCount = [[self.fileDesc objectForKey:@"order"] count];
+    NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -375,10 +422,10 @@
             slideType = [NSNumber numberWithInteger:SlideTypeFavorite];
         }
         [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
-        [config writeToFile:pathName atomically:YES];
+        [FileUtils writeJSON:config Into:pathName];
         
         NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-        NSString *fileDescSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:FILE_CONFIG_SWP_FILENAME];
+        NSString *fileDescSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
         if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
             NSLog(@"Config SWP file Exist! last time must be CRASH!");
         } else {
@@ -387,8 +434,10 @@
         }
         
         // 界面跳转至文档页面编辑界面
-        ReViewController *showVC = [[ReViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
+        if(self.reViewController == nil) {
+            self.reViewController = [[ReViewController alloc] init];
+        }
+        [self presentViewController:self.reViewController animated:NO completion:nil];
     }
 }
 
@@ -412,12 +461,9 @@
         self.paintView.laser = false;
         [self.view addSubview:self.paintView];
         self.isDrawing = true;
-        [self.drawBtn setTitle:@"取消" forState:UIControlStateNormal];
-        
     } else {
         [self.paintView removeFromSuperview];
         self.isDrawing = false;
-        [self.drawBtn setTitle:@"作笔记" forState:UIControlStateNormal];
         
     }
 }
@@ -430,5 +476,14 @@
 - (IBAction)actionDismiss:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
+
+- (IBAction)colorButtonTouched:(UIButton *)sender {
+    self.colorView.hidden = !self.colorView.hidden;
+    self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
+    if(!self.colorView.hidden) {
+        [self.view bringSubviewToFront:self.colorView];
+    }
+}
+
 
 @end

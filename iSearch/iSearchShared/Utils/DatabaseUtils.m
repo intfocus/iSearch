@@ -121,7 +121,7 @@
     NSMutableArray *likes = [[NSMutableArray alloc] init];
     for(keyword in keywords) {
         //[likes addObject:[NSString stringWithFormat:@" name like '%%%@%%' or desc like '%%%@%%' ", keyword, keyword]];
-        [likes addObject:[NSString stringWithFormat:@" or %@ like '%%%@%%' or %@ like '%%%@%%' ", OFFLINE_FIELD_NAME, keyword, OFFLINE_FIELD_DESC, keyword]];
+        [likes addObject:[NSString stringWithFormat:@" or %@ like '%%%@%%' or %@ like '%%%@%%' ", CONTENT_FIELD_NAME, keyword, CONTENT_FIELD_DESC, keyword]];
     }
     // 关键字不为空，SQL语句添加where过滤
     NSString *where = @" where 1 = 1 ";

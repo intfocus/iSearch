@@ -9,6 +9,12 @@
 #import "PaintView.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface PaintView ()
+
+@property (nonatomic) UIImageView *penIV;
+
+@end
+
 @implementation PaintView
 @synthesize paintColor = _paintColor;
 @synthesize erase;
@@ -25,9 +31,15 @@
         linesArray = [[NSMutableArray alloc]init];   // 画笔轨迹点记录数组
         // 手指在屏幕划动姿势函数绑定
         UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGesture:)];
+        panGesture.maximumNumberOfTouches = 1;
+        panGesture.minimumNumberOfTouches = 1;
         [self addGestureRecognizer:panGesture];
         //self.laser = YES;
-        //[panGesture release];
+        //[panGesture release]
+        
+        self.penIV = [[UIImageView alloc] initWithFrame:CGRectMake(-22, -22, 22, 22)];
+        self.penIV.image = [UIImage imageNamed:@"pen"];
+        [self addSubview:self.penIV];
     }
     return self;
 }
@@ -45,23 +57,9 @@
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 25);
-    //NSLog(@"color:%@",_paintColor);
 
-    // 激光笔状态
-    if(self.laser) {
-        //[[linesArray reverseObjectEnumerator] allObjects];
-        NSDictionary *lineDic = [linesArray lastObject];
-//        UIColor *lineColor = [lineDic objectForKey:@"color"];
-        CGContextSetStrokeColorWithColor(context, [UIColor redColor].CGColor);
-        //NSArray *linePointArray = [[[lineDic objectForKey:@"line"] reverseObjectEnumerator] allObjects];
-        NSMutableArray *linePointArray = [lineDic objectForKey:@"line"];
-
-        CGPoint point = [[linePointArray lastObject]CGPointValue];
-        
-        CGContextFillEllipseInRect(context, CGRectMake(point.x-20, point.y-40, 20, 20));
-        CGContextSetRGBFillColor(context, 0, 0, 255, 1.0);
-
-    } else {
+    // 绘图
+    if(!self.laser) {
         for (NSDictionary *lineDic in linesArray) {
             UIColor *lineColor = [lineDic objectForKey:@"color"];
             CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
@@ -99,7 +97,6 @@
                 CGContextStrokePath(context);
             }
         }
-        
     }
 }
 
@@ -133,21 +130,33 @@
             }
         }
         //[self eraseLine:currentLineDic erase:[thePan locationInView:self]];
-    // 绘图状态
+    // 绘图/激光笔
     } else {
-        if (thePan.state==UIGestureRecognizerStateBegan) {
-            NSMutableArray *currentLineArray = [NSMutableArray arrayWithObject:[NSValue valueWithCGPoint:touchPoint]];
-            NSMutableDictionary *lineDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentLineArray,@"line",_paintColor,@"color", nil];
-            NSLog(@"panGesture: <x=%f, y=%f>", touchPoint.x, touchPoint.y);
-            [linesArray addObject:lineDic];
-        } else if(thePan.state==UIGestureRecognizerStateChanged){
-            NSMutableDictionary *lineDic = [linesArray lastObject];
-            NSMutableArray *currentLineArray = [lineDic objectForKey:@"line"];
-            [currentLineArray addObject:[NSValue valueWithCGPoint:touchPoint]];
-            CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
-            [self setNeedsDisplayInRect:paintRect];
-        } else if(thePan.state==UIGestureRecognizerStateEnded){
-            //TODO:激光笔状态，结束时应该把屏幕所以痕迹清空
+        if(self.laser) {
+            CGPoint point = [thePan locationInView:self];
+            if (thePan.state == UIGestureRecognizerStateBegan) {
+                self.penIV.hidden = NO;
+            }
+            else if (thePan.state == UIGestureRecognizerStateChanged) {
+                self.penIV.frame = CGRectMake(point.x - 11, point.y - 11, 22, 22);
+            }
+            else if (thePan.state == UIGestureRecognizerStateEnded) {
+                self.penIV.hidden = YES;
+            }
+        } else {
+            if (thePan.state==UIGestureRecognizerStateBegan) {
+                NSMutableArray *currentLineArray = [NSMutableArray arrayWithObject:[NSValue valueWithCGPoint:touchPoint]];
+                NSMutableDictionary *lineDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentLineArray,@"line",_paintColor,@"color", nil];
+                NSLog(@"panGesture: <x=%f, y=%f>", touchPoint.x, touchPoint.y);
+                [linesArray addObject:lineDic];
+            } else if(thePan.state==UIGestureRecognizerStateChanged){
+                NSMutableDictionary *lineDic = [linesArray lastObject];
+                NSMutableArray *currentLineArray = [lineDic objectForKey:@"line"];
+                [currentLineArray addObject:[NSValue valueWithCGPoint:touchPoint]];
+                CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
+                [self setNeedsDisplayInRect:paintRect];
+            } else if(thePan.state==UIGestureRecognizerStateEnded){
+            }
         }
     }
 }

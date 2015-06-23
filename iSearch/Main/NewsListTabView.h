@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+@class SideViewController;
 
 @interface NewsListTabView : UIView
+@property(nonatomic,weak)SideViewController *sideViewController;
 
 @end

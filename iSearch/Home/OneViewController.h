@@ -11,11 +11,13 @@
 
 #import <UIKit/UIKit.h>
 @class HomeViewController;
+@class MainViewController;
 /**
  *  HomePage第一栏 - 我的分类
  */
 @interface OneViewController : UIViewController
 @property (nonatomic , nonatomic) HomeViewController *masterViewController;
+@property (nonatomic , nonatomic) MainViewController *mainViewController;
 @end
 
 

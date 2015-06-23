@@ -75,8 +75,8 @@
 //////////////////////////////////////////////////////////////
 
 @interface ContentViewController () <GMGridViewDataSource> {
-__gm_weak GMGridView *_gridView;
-NSMutableArray       *_dataList;
+    __gm_weak GMGridView *_gridView;
+    NSMutableArray       *_dataList;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
 @property (strong, nonatomic) NSString  *deptID;
@@ -93,7 +93,10 @@ NSMutableArray       *_dataList;
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 文献
 @property (strong, nonatomic) NSNumber        *filterType;        // 依此排序
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortOne; // 按时间排序
+@property (weak, nonatomic) IBOutlet UIImageView *dateSortImageView;
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortTwo; // 按名称排序
+@property (weak, nonatomic) IBOutlet UIImageView *nameSortImageView;
+@property (weak, nonatomic) IBOutlet UILabel *nothingLabel;
 
 // http download variables begin
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
@@ -118,7 +121,7 @@ NSMutableArray       *_dataList;
     self.categoryDict = [[NSMutableDictionary alloc] init];
     self.filterType  = [NSNumber numberWithInteger:FilterAll];
     [self navFilterFont];
-
+    
     // deptID
     [self assignUserInfo];
     // nav behaviour stack
@@ -127,16 +130,14 @@ NSMutableArray       *_dataList;
     /**
      *  导航栏控件
      */
-    [self.navBtnBack setTitle:@"\U000025C0\U0000FE0E返回" forState:UIControlStateNormal];
+    [self.navBtnBack setTitle:@"返回" forState:UIControlStateNormal];
     
     [self.navBtnBack addTarget:self action:@selector(actionNavBack:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnSortOne addTarget:self action:@selector(actionNavSortByDate:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortOne.tag = SortByAscending;
-    [self.navBtnSortOne setTitle:@"按时间(升)" forState:UIControlStateNormal];
     
     [self.navBtnSortTwo addTarget:self action:@selector(actionNavSortByName:) forControlEvents:UIControlEventTouchUpInside];
     self.navBtnSortTwo.tag = SortByAscending;
-    [self.navBtnSortTwo setTitle:@"按名称(升)" forState:UIControlStateNormal];
     
     [self.navBtnFilterAll addTarget:self action:@selector(actionNavFilterAll:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnFilterOne addTarget:self action:@selector(actionNavFilterOne:) forControlEvents:UIControlEventTouchUpInside];
@@ -144,8 +145,10 @@ NSMutableArray       *_dataList;
     
     // current category name
     self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
-
+    
     [self configGridView];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -161,6 +164,36 @@ NSMutableArray       *_dataList;
         [self loadContentData:LOCAL_OR_SERVER_SREVER];
         [self configGridView];
     });
+}
+
+//////////////////////////////////////////////////////////////
+#pragma mark memory management
+//////////////////////////////////////////////////////////////
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    _gridView = nil;
+}
+
+
+#pragma mark - assistant methods
+
+- (void) configGridView {
+    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
+    gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    gmGridView.backgroundColor = [UIColor clearColor];
+    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.scrollView addSubview:gmGridView];
+    _gridView = gmGridView;
+    
+    _gridView.style = GMGridViewStyleSwap;
+    _gridView.itemSpacing = 10;
+    _gridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    _gridView.centerGrid = YES;
+    _gridView.dataSource = self;
+    _gridView.backgroundColor = [UIColor clearColor];
+    _gridView.mainSuperView = self.scrollView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
+    
 }
 
 - (void)loadContentData:(NSString *)type {
@@ -185,7 +218,77 @@ NSMutableArray       *_dataList;
     }
 }
 
-#pragma mark - 导航栏按钮事件
+/**
+ *  读取配置档，获取用户信息
+ */
+- (void)assignUserInfo {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
+    self.deptID = userDict[USER_DEPTID];
+    
+    if(self.deptID == nil || [self.deptID length] == 0) {
+        NSLog(@"Fail read DeptID!");
+        abort();
+    }
+}
+/**
+ *  取得当前目录视图下的分类ID
+ *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
+ *  栈中最后一个对象即当前目录的分类ID
+ *
+ *  强制使用deptID作为参数，以避免先使用后赋值。
+ *
+ */
+- (void)assignCategoryInfo:(NSString *)deptID {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    NSString *categoryID = [mutableArray lastObject];
+    if([categoryID length] == 0) {
+        NSLog(@"BUG - 此目录下未取得CategoryID: %@", mutableArray);
+        categoryID = CONTENT_ROOT_ID;
+    }
+    
+    NSString *parentID = CONTENT_ROOT_ID;
+    if([mutableArray count] >= 2) {
+        // 倒数第二个为父ID
+        NSInteger index = [mutableArray count] - 2;
+        parentID = [mutableArray objectAtIndex:index];
+    }
+    
+    self.categoryID = categoryID;
+    self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
+}
+
+#pragma mark - controls action
+/**
+ *  分类列表鼠标点击事件。
+ *  进入目录界面;
+ *  用户点击分类导航行为记录CONTENT_CONFIG_FILENAME[@CONTENT_KEY_NAVSTACK], 类型为NSMutableArray
+ *  进入push, 返回是pop
+ *
+ *  @param sender UIButton
+ */
+- (IBAction)actionCategoryClick:(UIButton *)sender {
+    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    
+    // 点击分类导航行为记录
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
+    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    // push current categoryID
+    [navStack addObject:categoryID];
+    [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
+    [FileUtils writeJSON:configDict Into:configPath];
+    
+    // enter ContentViewController
+    MainViewController *mainViewController = [self masterViewController];
+    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+    contentViewController.masterViewController = mainViewController;
+    [mainViewController setRightViewController:contentViewController withNav:NO];
+}
+
 /**
  *  导航栏[返回]响应处理；
  *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
@@ -200,10 +303,10 @@ NSMutableArray       *_dataList;
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-
+    
     [mutableArray removeLastObject];
     [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
-    [configDict writeToFile:configPath atomically:true];
+    [FileUtils writeJSON:configDict Into:configPath];
     
     MainViewController *mainViewController = (MainViewController *)[self masterViewController];
     if([mutableArray count] == 0) {
@@ -217,13 +320,15 @@ NSMutableArray       *_dataList;
     }
 }
 
+
+#pragma mark - 导航栏按钮事件
 - (IBAction)actionNavSortByDate:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
-        [sender setTitle:@"按日期(降)" forState:UIControlStateNormal];
+        self.dateSortImageView.image = [UIImage imageNamed:@"iconDescending"];
     } else {
         sender.tag = SortByAscending;
-        [sender setTitle:@"按日期(升)" forState:UIControlStateNormal];
+        self.dateSortImageView.image = [UIImage imageNamed:@"iconAscending"];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
@@ -245,17 +350,17 @@ NSMutableArray       *_dataList;
         default:
             break;
     }
-
+    
     [self configGridView];
 }
 
 - (IBAction)actionNavSortByName:(UIButton *)sender {
     if([sender tag] == SortByAscending) {
         sender.tag = SortByDescending;
-        [sender setTitle:@"按名称(降)" forState:UIControlStateNormal];
+        self.nameSortImageView.image = [UIImage imageNamed:@"iconDescending"];
     } else {
         sender.tag = SortByAscending;
-        [sender setTitle:@"按名称(升)" forState:UIControlStateNormal];
+        self.nameSortImageView.image = [UIImage imageNamed:@"iconAscending"];
     }
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
@@ -328,36 +433,6 @@ NSMutableArray       *_dataList;
 }
 
 /**
- *  配置GridView
- */
-- (void) configGridView {
-    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
-    gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    gmGridView.backgroundColor = [UIColor clearColor];
-    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.scrollView addSubview:gmGridView];
-    _gridView = gmGridView;
-    
-    _gridView.style = GMGridViewStyleSwap;
-    _gridView.itemSpacing = 50;
-    _gridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
-    _gridView.centerGrid = YES;
-    _gridView.dataSource = self;
-    _gridView.backgroundColor = [UIColor clearColor];
-    _gridView.mainSuperView = self.scrollView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
-    
-}
-//////////////////////////////////////////////////////////////
-#pragma mark memory management
-//////////////////////////////////////////////////////////////
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    _gridView = nil;
-}
-
-
-/**
  *      1.1 网络环境良好，HttpPost 服务器获取网站目录（json数组格式）
  *          Post /CONENT_URL_PATH {
  *              user: user-name or user-email,
@@ -383,13 +458,18 @@ NSMutableArray       *_dataList;
  *  @param fid  文件在服务器上的id
  *  @param type 文件类型
  */
- // 代码抽取放在ContentUtils.h文件中
+// 代码抽取放在ContentUtils.h文件中
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
 //////////////////////////////////////////////////////////////
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
+    if (_dataList.count == 0) {
+        self.nothingLabel.hidden = NO;
+    } else {
+        self.nothingLabel.hidden = YES;
+    }
     return [_dataList count];
 }
 
@@ -398,7 +478,6 @@ NSMutableArray       *_dataList;
     return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
 }
 
-// GridViewCell界面 - 目录界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     
     GMGridViewCell *cell = [gridView dequeueReusableCell];
@@ -407,7 +486,6 @@ NSMutableArray       *_dataList;
         
         // 根据服务器返回的JSON数据显示文件夹或文档。
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        NSString *name = currentDict[CONTENT_FIELD_NAME];
         
         // 服务器端Category没有ID值
         if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
@@ -416,10 +494,14 @@ NSMutableArray       *_dataList;
         }
         NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
         
-        // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+
+        /**
+         *  目录: 0; 文档: 1; 直文档: 2; 视频: 4
+         *  category: name; slide: title;(name is origin upload filename)
+         */
         if([categoryType isEqualToString:CONTENT_CATEGORY]) {
             ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-            viewCategory.labelTitle.text = name;
+            viewCategory.labelTitle.text =  currentDict[CONTENT_FIELD_NAME];
             
             [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
             viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
@@ -428,128 +510,20 @@ NSMutableArray       *_dataList;
             [cell setContentView: viewCategory];
         } else {
             ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-            slide.labelTitle.text = name;
-            NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, currentDict[CONTENT_FIELD_ID]];
-            currentDict[CONTENT_FIELD_URL] = downloadUrl;
+            slide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
+
+            slide.isFavorite = NO;
             slide.dict = currentDict;
-            // 数据初始化操作，须在initWithFrame操作前，因为该操作会触发slide内部处理
-            slide = [slide initWithFrame:CGRectMake(0, 0, 230, 150)];
-            
-            slide.btnSlideInfo.tag = index;
-            [slide.btnSlideInfo addTarget:self action:@selector(actionPopupSlideInfo:) forControlEvents:UIControlEventTouchUpInside];
-            // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-            slide.btnDownloadOrDisplay.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-            [slide.btnDownloadOrDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-            
+            slide.masterViewController = [self masterViewController];
+
             [cell setContentView: slide];
         }
     }
-    //[[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
     return cell;
 }
+#pragma mark - assistant methods
 
-#pragma mark - controls action
-/**
- *  分类列表鼠标点击事件。
- *  进入目录界面;
- *  用户点击分类导航行为记录CONTENT_CONFIG_FILENAME[@CONTENT_KEY_NAVSTACK], 类型为NSMutableArray
- *  进入push, 返回是pop
- *
- *  @param sender UIButton
- */
-- (IBAction)actionCategoryClick:(UIButton *)sender {
-    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    
-    // 点击分类导航行为记录
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
-    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    // push current categoryID
-    [navStack addObject:categoryID];
-    [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
-    [configDict writeToFile:configPath atomically:true];
-    
-    // enter ContentViewController
-    MainViewController *mainViewController = [self masterViewController];
-    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-    contentViewController.masterViewController = mainViewController;
-    [mainViewController setRightViewController:contentViewController withNav:NO];
-}
 
-- (IBAction)actionPopupSlideInfo:(UIButton *)sender {
-    NSInteger index = [sender tag];
-    NSMutableDictionary *dict = _dataList[index];
-    MainViewController *mainViewController = [self masterViewController];
-    [mainViewController poupSlideInfo:dict[CONTENT_FIELD_ID] Dir:CONTENT_DIRNAME];
-}
 
-/**
- *  如果文件已经下载，文档原[下载]按钮显示为[演示]
- *
- *  @param IBAction <#IBAction description#>
- *
- *  @return <#return value description#>
- */
-- (IBAction) actionDisplaySlide:(id)sender {
-    NSString *fileID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    
-    // 如果文档已经下载，即可执行演示效果，
-    // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) {
-        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-        NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-        [config setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
-        [config writeToFile:pathName atomically:YES];
-        
-        DisplayViewController *showVC = [[DisplayViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
-    }
-}
-
-#pragma mark - private methods
-/**
- *  读取配置档，获取用户信息
- */
-- (void)assignUserInfo {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
-    self.deptID = userDict[USER_DEPTID];
-    
-    if(self.deptID == nil || [self.deptID length] == 0) {
-        NSLog(@"Fail read DeptID!");
-        abort();
-    }
-}
-/**
- *  取得当前目录视图下的分类ID
- *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
- *  栈中最后一个对象即当前目录的分类ID
- *
- *  强制使用deptID作为参数，以避免先使用后赋值。
- *
- */
-- (void)assignCategoryInfo:(NSString *)deptID {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    NSString *categoryID = [mutableArray lastObject];
-    if([categoryID length] == 0) {
-        NSLog(@"BUG - 此目录下未取得CategoryID: %@", mutableArray);
-        categoryID = CONTENT_ROOT_ID;
-    }
-    
-    NSString *parentID = CONTENT_ROOT_ID;
-    if([mutableArray count] >= 2) {
-        // 倒数第二个为父ID
-        NSInteger index = [mutableArray count] - 2;
-        parentID = [mutableArray objectAtIndex:index];
-    }
-    
-    self.categoryID = categoryID;
-    self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
-}
-
+#
 @end

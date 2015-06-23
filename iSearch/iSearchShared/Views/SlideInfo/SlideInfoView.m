@@ -10,17 +10,23 @@
 #import "SlideInfoView.h"
 #import "const.h"
 #import "FileUtils.h"
+
 #import "ExtendNSLogFunctionality.h"
-#import "FavoriteViewController.h"
+#import "MainViewController.h"
 #import "DisplayViewController.h"
+#import "Slide.h"
+#import "PopupView.h"
 
 @interface SlideInfoView()
+@property (nonatomic, nonatomic) PopupView *popupView;
+@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UILabel *labelDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
 @property (strong, nonatomic) IBOutlet UILabel *labelPageNum;
 @property (strong, nonatomic) IBOutlet UILabel *labelZipSize;
 @property (strong, nonatomic) IBOutlet UILabel *labelCategory;
+@property (strong, nonatomic) IBOutlet UILabel *labelTypeName;
 @property (weak, nonatomic) IBOutlet UIButton *btnDisplay;
 @property (weak, nonatomic) IBOutlet UIButton *btnEdit;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
@@ -33,30 +39,76 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     /**
      *  控件事件
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnAddToTag addTarget:self action:@selector(actionAddToTag:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnEdit addTarget:self action:@selector(actionEditSlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.labelTitle.text = self.dict[SLIDE_DESC_NAME];
-    self.labelDesc.text = @"摘要会很长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长";//self.dict[FILE_DESC_DESC];
+    self.labelTitle.text = self.slide.title;
+    self.labelDesc.text  = self.slide.desc;
+    self.labelTypeName.text = self.slide.typeName;
     [self.labelDesc sizeToFit];
     if (self.labelDesc.frame.size.height > 67) {
         self.labelDesc.frame = CGRectMake(self.labelDesc.frame.origin.x, self.labelDesc.frame.origin.y, self.labelDesc.frame.size.width, 67);
     }
-    self.labelEditTime.text = self.dict[SLIDE_DESC_NAME];
-    self.labelPageNum.text = @"TODO"; //self.dict[FILE_DESC_NAME];
-    self.labelZipSize.text = @"TODO"; //self.dict[FILE_DESC_NAME];
-    self.labelCategory.text = @"TODO"; //self.dict[FILE_DESC_NAME];
+    self.labelEditTime.text = self.slide.createdDate;
+    self.labelPageNum.text  = self.slide.pageNum;
+    self.labelZipSize.text  = self.slide.zipSize;
+    self.labelCategory.text = self.slide.categoryName;
     
     [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+}
+
+
+
+#pragma mark - assistant methods
+
+- (void)showPopupView:(NSString*) text {
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.view;
+    }
     
+    [self.popupView setText: text];
+    [self.view addSubview:self.popupView];
+}
+
+#pragma mark - setter rewrite
+- (void)setDict:(NSMutableDictionary *)dict {
+    self.slide = [[Slide alloc]initWith:dict Favorite:self.isFavorite];
+    self.slideID = self.slide.slideID;
+    self.dirName = self.slide.dirName;
+    _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
+
+}
+
+#pragma mark - control action
+- (IBAction)actionDisplaySlide:(id)sender {
+    // 如果文档已经下载，即可执行演示效果，
+    // 否则需要下载，该功能在FileSlide内部处理
+    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+        [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
+        NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+        [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+        [configDict writeToFile:configPath atomically:YES];
+        
+        if(self.displayViewController == nil) {
+            self.displayViewController = [[DisplayViewController alloc] init];
+        }
+        [self presentViewController:self.displayViewController animated:NO completion:nil];
+    } else {
+        [self showPopupView:@"未找到文档"];
+    }
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
@@ -64,29 +116,32 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
     [fileManager removeItemAtPath:filePath error:&error];
-    NSErrorPrint(error, @"remove file#%@", filePath);
+    BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
     
-    if(error == nil) {
-        FavoriteViewController *masterView = (FavoriteViewController *)[self masterViewController];
-        [masterView dismissPopup];
+    if(isSuccessfully) {
+        [self showPopupView:@"移除成功"];
     }
+    [self.masterViewController dismissPopup];
 }
-- (IBAction)actionDisplaySlide:(id)sender {
-    NSString *fileID = self.dict[SLIDE_DESC_ID];
-    NSString *dir = self.isFavoriteFile ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
 
-    // 如果文档已经下载，即可执行演示效果，
-    // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:fileID Dir:dir Force:YES]) {
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:fileID forKey:CONTENT_KEY_DISPLAYID];
-        [configDict writeToFile:configPath atomically:YES];
-        
-        DisplayViewController *showVC = [[DisplayViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
-    }
+- (IBAction)actionEditSlide:(UIButton *)sender {
+    [self showPopupView:@"TODO"];
+    
 }
+
+- (IBAction)actionAddToTag:(UIButton *)sender {
+    if(self.isFavorite) {
+        [self showPopupView:@"已在收藏了"];
+    } else {
+        BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
+            [DateUtils updateSlideTimestamp:dict];
+        }];
+        
+        [self showPopupView:@"收藏成功"];
+    }
+    
+}
+
 
 
 

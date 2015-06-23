@@ -13,8 +13,10 @@
                 <outlet property="hideButton" destination="xGe-hf-etg" id="s11-Kz-v6R"/>
                 <outlet property="labelCategory" destination="bI4-kD-ekT" id="loP-c0-I7y"/>
                 <outlet property="labelDesc" destination="gmP-sx-TCa" id="6uP-pp-2TB"/>
+                <outlet property="labelEditTime" destination="vhc-5J-lgf" id="EcL-43-rFn"/>
                 <outlet property="labelPageNum" destination="FwQ-Zf-nXD" id="TOz-DS-X4L"/>
                 <outlet property="labelTitle" destination="JBP-Hy-5hR" id="qmV-EE-lyB"/>
+                <outlet property="labelTypeName" destination="3zh-jh-LqU" id="hcw-bi-JVZ"/>
                 <outlet property="labelZipSize" destination="wxj-td-ir5" id="haO-ff-EPK"/>
                 <outlet property="view" destination="iN0-l3-epB" id="s7k-lX-QSB"/>
             </connections>
