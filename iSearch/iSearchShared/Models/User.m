@@ -19,20 +19,47 @@
     self = [super init];
     
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
-    self.ID         = userDict[USER_ID];
-    self.name       = userDict[USER_NAME];
-    self.email      = userDict[USER_EMAIL];
-    self.deptID     = userDict[USER_DEPTID];
-    self.employeeID = userDict[USER_EMPLOYEEID];
+    NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
+    
+    _configPath = configPath;
+    _configDict = configDict;
+    
+    _ID         = configDict[USER_ID];
+    _name       = configDict[USER_NAME];
+    _email      = configDict[USER_EMAIL];
+    _deptID     = configDict[USER_DEPTID];
+    _employeeID = configDict[USER_EMPLOYEEID];
 
     // local fields
-    self.localUserName    = userDict[USER_LOGIN_USERNAME];
-    self.localPassword    = userDict[USER_LOGIN_PASSWORD];
-    self.localRememberPWD = [userDict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"];
-    self.localLastLogin   = userDict[USER_LOGIN_LAST];
+    _loginUserName    = configDict[USER_LOGIN_USERNAME];
+    _loginPassword    = configDict[USER_LOGIN_PASSWORD];
+    _loginRememberPWD = [configDict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"];
+    _loginLast   = configDict[USER_LOGIN_LAST];
 
     return self;
+}
+
+#pragma mark - instance methods
+
+- (void)save {
+    // server info
+    _configDict[USER_ID]         = self.ID;
+    _configDict[USER_NAME]       = self.name;
+    _configDict[USER_EMAIL]      = self.email;
+    _configDict[USER_DEPTID]     = self.deptID;
+    _configDict[USER_EMPLOYEEID] = self.employeeID;
+    
+    // local info
+    _configDict[USER_LOGIN_USERNAME]     = self.loginUserName;
+    _configDict[USER_LOGIN_PASSWORD]     = self.loginPassword;
+    _configDict[USER_LOGIN_REMEMBER_PWD] = (self.loginRememberPWD ? @"1" : @"0");
+    _configDict[USER_LOGIN_LAST]         = self.loginLast;
+    
+    [FileUtils writeJSON:self.configDict Into:self.configPath];
+}
+
+- (NSString *)to_s {
+    return [NSString stringWithFormat:@"#<%@ ID: %@, name: %@, email: %@, deptID: %@, employeeID: %@, loginUserName: %@, loginPassword: %@, loginRememberPWD: %d, loginLast: %@>", self.class, self.ID, self.name, self.email, self.deptID, self.employeeID,self.loginUserName,self.loginPassword,self.loginRememberPWD, self.loginLast];
 }
 
 @end

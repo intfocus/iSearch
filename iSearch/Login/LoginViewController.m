@@ -67,6 +67,7 @@
 #import "MainViewController.h"
 #import "SKSplashIcon.h"
 #import "SSZipArchive.h"
+#import "User.h"
 
 @interface LoginViewController ()
 // i18n controls
@@ -90,6 +91,8 @@
 //Demo of how to add other UI elements on top of splash view
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
+
+@property (strong, nonatomic) User *user;
 @end
 
 @implementation LoginViewController
@@ -100,7 +103,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"view: %@",NSStringFromCGRect(self.view.bounds));
+    /**
+     *  实例变量初始化
+     */
+    self.user = [[User alloc] init];
     // 登陆前 Logor动态效果
     // [self twitterSplash];
     
@@ -115,11 +121,9 @@
     // [登陆]按钮点击事件
     [self.submit addTarget:self action:@selector(submitAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    // 用户登陆信息记录的配置档路径
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    
+
     // A.1 找不到配置档，进入空白登陆界面，跳至步骤C
-    if(![FileUtils checkFileExist:configPath isDir:false]) {
+    if(![FileUtils checkFileExist:self.user.configPath isDir:false]) {
         // 界面不做任何操作
     } else {
         //  B. 界面控件初始化(读取login.plist文件)
@@ -127,11 +131,10 @@
         //      B.2 TextField-PWD输入框，如果上次登陆成功有勾选[记住密码]则预填充密码显示为*，否则置空
         //      B.3 Switch-RememberPassword控件设置上次登陆成功配置，默认@"0" (don't remember password)
         
-        NSMutableDictionary *dict = [FileUtils readConfigFile:configPath];
-        self.fieldUser.text = dict[USER_LOGIN_USERNAME];
+        self.fieldUser.text = self.user.loginUserName;
         [self.switchRememberPwd setOn:NO];
-        if([dict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"]) {
-            self.fieldPwd.text  = dict[USER_LOGIN_PASSWORD];
+        if(self.user.loginRememberPWD) {
+            self.fieldPwd.text  =self.user.loginPassword;
             [self.switchRememberPwd setOn:YES];
         }
     }
@@ -225,15 +228,12 @@
     NSString *password = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     // 测试期，用户可不输入密码
-    if([password length] == 0) {
-        password = username;
-    }
+    password = username;
+
     
     // C.2 如果无网络环境，跳至步骤D[离线登陆]
     if(![HttpUtils isNetworkAvailable]) {
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-        NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-        loginErrors = [self loginOfflineAction:configDict User:username Pwd:password];
+        loginErrors = [self loginWithoutNetwork:self.user User:username Pwd:password];
         
         
         // 3.done 界面输入框、按钮等控件enabeld, switch复原
@@ -284,19 +284,20 @@
                 //          password = remember_password ? 控件内容 : @""
                 //          把user/password/last/remember_password写入login.plist文件
                 // 界面输入信息
-                NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-                NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
-                [userDict setObject:username forKey:USER_LOGIN_USERNAME];
-                [userDict setObject:password forKey:USER_LOGIN_PASSWORD];
-                [userDict setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
-                [userDict setObject:[DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT] forKey:USER_LOGIN_LAST];
+                self.user.loginUserName    = username;
+                self.user.loginPassword    = password;
+                self.user.loginRememberPWD = self.switchRememberPwd.on;
+                self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
+                
                 // 服务器信息
-                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_ID] forKey:USER_ID];
-                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_NAME] forKey:USER_NAME];
-                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_EMAIL] forKey:USER_EMAIL];
-                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_DEPTID] forKey:USER_DEPTID];
-                [userDict setObject:[responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID] forKey:USER_EMPLOYEEID];
-                [FileUtils writeJSON:userDict Into:configPath];
+                self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
+                self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
+                self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
+                self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
+                self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
+                
+                // write into local config
+                [self.user save];
                 
                 // 跳至主界面
                 [self enterMainViewController];
@@ -356,11 +357,11 @@
  *           存在且 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
  *     D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
  */
-- (NSMutableArray *)loginOfflineAction:(NSMutableDictionary *)dict
-                                  User:(NSString *)user
-                                   Pwd:(NSString *)pwd {
+- (NSMutableArray *)loginWithoutNetwork:(User *)user
+                                   User:(NSString *)username
+                                    Pwd:(NSString *)password {
     
-    NSMutableArray *errors = [self checkEnableLoginOffline:dict User:user Pwd:pwd];
+    NSMutableArray *errors = [self checkEnableLoginWithoutNetwork:user User:username Pwd:password];
     
     if(![errors count]) {
         //[ViewUtils simpleAlertView:self Title:@"登陆成功" Message:@"TODO# 跳至主页[离线]" ButtonTitle:BTN_CONFIRM];
@@ -384,30 +385,32 @@
  *
  *  @return 不符合离线登陆条件错误信息数组
  */
-- (NSMutableArray *) checkEnableLoginOffline: (NSMutableDictionary *) dict
-                            User: (NSString *) user
-                             Pwd: (NSString *) pwd {
+- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user
+                                               User:(NSString *) username
+                                                Pwd:(NSString *) password {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
     
     // 上次登陆日期字符串转换成NSDate
-    NSDate *lastDate    = [DateUtils strToDate:dict[@"last"] Format:LOGIN_DATE_FORMAT];
+    NSDate *lastDate    = [DateUtils strToDate:user.loginLast Format:LOGIN_DATE_FORMAT];
     NSDate *currentDate = [NSDate date];
     
     // 判断1: current > last, 即应该是升序
     NSComparisonResult compareResult = [currentDate compare:lastDate];
-    if (compareResult != NSOrderedDescending)
+    if (compareResult != NSOrderedDescending) {
         [errors addObject:LOGIN_ERROR_LAST_GT_CURRENT];
+    }
     
     // 判断2: last日期距离现在小于N小时
     NSTimeInterval intervalBetweenDates = [currentDate timeIntervalSinceDate:lastDate];
-    if(intervalBetweenDates > LOGIN_KEEP_HOURS*60*60)
+    if(intervalBetweenDates > LOGIN_KEEP_HOURS*60*60) {
         [errors addObject:LOGIN_ERROR_EXPIRED_OUT_N_HOURS];
-        
+    }
+    
     
     // 判断3: 输入框user/pwd内容与配置档内容是否一致
-    if(![user isEqualToString:dict[@"user"]])
+    if(![username isEqualToString:user.loginUserName])
         [errors addObject:LOGIN_ERROR_USER_NOT_MATCH];
-    if(![pwd isEqualToString:dict[@"password"]])
+    if(![password isEqualToString:user.loginPassword])
         [errors addObject:LOGIN_ERROR_PWD_NOT_MATCH];
 
     return errors;
@@ -416,20 +419,7 @@
 // pragm mark - 进入主界面
 -(void)enterMainViewController{
     [self downloadCategoryThumbnail];
-    
-    // C.3 取得输入内容，并作去除前后空格等处理
-    NSString *username = [self.fieldUser.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
-    [userDict setObject:username forKey:USER_LOGIN_USERNAME];
-    [userDict setObject:password forKey:USER_LOGIN_PASSWORD];
-    [userDict setObject:(self.switchRememberPwd.on ? @"1" : @"0") forKey:USER_LOGIN_REMEMBER_PWD];
-    [userDict setObject:password forKey:USER_DEPTID];
-    [FileUtils writeJSON:userDict Into:configPath];
-    
-    
+
     // 这里最好换成import，不要用NSClassFromString
     UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
     //MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];

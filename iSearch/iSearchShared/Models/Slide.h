@@ -46,7 +46,7 @@
 @property (nonatomic, strong) NSString *typeName;
 
 // class methods
-+ (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;
+- (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;
 
 @end
 #endif

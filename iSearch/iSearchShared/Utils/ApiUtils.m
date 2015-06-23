@@ -48,24 +48,13 @@
             [FileUtils removeFile:cachePath];
         
         // 写入本地作为cache
-        [response writeToFile:cachePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"notifications cache write");
+        [FileUtils writeJSON:notificationDatas Into:cachePath];
         
         // 情况二: 如果缓存文件存在则读取
     } else if([FileUtils checkFileExist:cachePath isDir:false]) {
         NSErrorPrint(error, @"http get notifications list");
-        
         // 读取本地cache
-        NSLog(@"%@", cachePath);
-        NSString *cacheContent = [NSString stringWithContentsOfFile:cachePath usedEncoding:NULL error:&error];
-        NSErrorPrint(error, @"notifications cache read");
-        if(!error) {
-            // 解析为json数组
-            notificationDatas = [NSJSONSerialization JSONObjectWithData:[cacheContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                options:NSJSONReadingMutableContainers
-                                                                  error:&error];
-            NSErrorPrint(error, @"notifications cache parse into json");
-        }
+        notificationDatas = [FileUtils readConfigFile:cachePath];
         // 情况三:
     } else {
         NSLog(@"<# HttpGET and cache all failed!>");

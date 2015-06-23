@@ -20,9 +20,16 @@
 @property (nonatomic, strong) NSString *result;
 
 // local fields
-@property (nonatomic, strong) NSString *localUserName;
-@property (nonatomic, strong) NSString *localPassword;
-@property (nonatomic, nonatomic) BOOL localRememberPWD;
-@property (nonatomic, strong) NSString *localLastLogin;
+@property (nonatomic, strong) NSString *loginUserName;
+@property (nonatomic, strong) NSString *loginPassword;
+@property (nonatomic, strong) NSString *loginLast;
+@property (nonatomic, nonatomic) BOOL loginRememberPWD;
+
+// attribute fields
+@property (nonatomic, strong) NSString *configPath;
+@property (nonatomic, strong) NSMutableDictionary *configDict;
+
+// instance methods
+- (void)save;
 @end
 #endif

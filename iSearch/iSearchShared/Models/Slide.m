@@ -23,8 +23,8 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 @synthesize zipSize,zipUrl,localCreatedDate,localUpdatedDate;
 @synthesize categoryID,categoryName,typeName;
 
-+ (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite {
-    Slide *slide = [[Slide alloc] init];
+- (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite {
+    Slide *slide = [super init];
     
     // backup assign values
     slide.dict        = [NSMutableDictionary dictionaryWithDictionary:dict];

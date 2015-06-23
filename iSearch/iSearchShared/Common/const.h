@@ -208,7 +208,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
-#define NOTIFICATION_CACHE        @"notifications.json"
+#define NOTIFICATION_CACHE        @"notifications.cache"
 #define NOTIFICATION_DIRNAME      @"notifications"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小

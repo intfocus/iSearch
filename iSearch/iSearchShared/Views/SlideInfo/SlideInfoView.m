@@ -83,8 +83,7 @@
 
 #pragma mark - setter rewrite
 - (void)setDict:(NSMutableDictionary *)dict {
-    self.slide = [[Slide alloc] init];
-    self.slide = [Slide initWith:dict Favorite:self.isFavorite];
+    self.slide = [[Slide alloc]initWith:dict Favorite:self.isFavorite];
     self.slideID = self.slide.slideID;
     self.dirName = self.slide.dirName;
     _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
