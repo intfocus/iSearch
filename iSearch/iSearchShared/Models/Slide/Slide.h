@@ -36,6 +36,7 @@
 
 // backup
 @property (nonatomic, strong) NSString *descPath;
+@property (nonatomic, strong) NSMutableDictionary *assignDict;
 @property (nonatomic, strong) NSMutableDictionary *descDict;
 @property (nonatomic, nonatomic) BOOL isFavorite;
 
@@ -48,6 +49,10 @@
 
 // instance methods
 - (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;
-
+- (BOOL)isDownload;
+- (void)save;
+- (void)cached:(NSString *)cacheName;
+- (NSString *)inspect;
+- (NSString *)to_s;
 @end
 #endif

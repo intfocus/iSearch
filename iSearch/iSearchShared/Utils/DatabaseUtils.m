@@ -32,7 +32,8 @@
     NSString *createTableOfflineSQL= [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ ( \
             id integer PRIMARY KEY AUTOINCREMENT, \
             %@ varchar(100) NOT NULL,                                                        \
-            %@ varchar(100) NOT NULL,                                                        \
+            %@ varchar(500) NOT NULL,                                                        \
+            %@ varchar(500) NOT NULL,                                                        \
             %@ varchar(100) NOT NULL,                                                        \
             %@ varchar(1000) NULL,                                                           \
             %@ varchar(100) NULL,                                                            \
@@ -48,6 +49,7 @@
         OFFLINE_TABLE_NAME,
         OFFLINE_COLUMN_FILEID,
         OFFLINE_COLUMN_NAME,
+        OFFLINE_COLUMN_TITLE,
         OFFLINE_COLUMN_TYPE,
         OFFLINE_COLUMN_DESC,
         OFFLINE_COLUMN_TAGS,
@@ -106,9 +108,10 @@
     if (result != SQLITE_OK) {
         NSLog(@"DatabaseUtils#selectWithResult open database failed - line number: %i.", __LINE__);
     }
-    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@, %@, %@, %@, create_time, modify_time from %@ ",
+    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, create_time, modify_time from %@ ",
                      OFFLINE_COLUMN_FILEID,
                      OFFLINE_COLUMN_NAME,
+                     OFFLINE_COLUMN_TITLE,
                      OFFLINE_COLUMN_TYPE,
                      OFFLINE_COLUMN_DESC,
                      OFFLINE_COLUMN_TAGS,
@@ -133,35 +136,37 @@
     char *errorMsg;
     sqlite3_stmt *statement;
     int _id;
-    NSString *_one, *_two, *_three, *_four, *_five, *_six, *_seven, *_eight, *_nine;
+    NSString *_one, *_two, *_three, *_four, *_five, *_six, *_seven, *_eight, *_nine, *_ten;
     NSString *_create_time, *_modify_time;
     if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
         while (sqlite3_step(statement) == SQLITE_ROW) {
             _id          = sqlite3_column_int(statement, 0);
-            _one        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 1)encoding:NSUTF8StringEncoding];
-            _two        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 2)encoding:NSUTF8StringEncoding];
-            _three        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 3)encoding:NSUTF8StringEncoding];
-            _four       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 4)encoding:NSUTF8StringEncoding];
+            _one         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 1)encoding:NSUTF8StringEncoding];
+            _two         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 2)encoding:NSUTF8StringEncoding];
+            _three       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 3)encoding:NSUTF8StringEncoding];
+            _four        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 4)encoding:NSUTF8StringEncoding];
             _five        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 5)encoding:NSUTF8StringEncoding];
-            _six        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 6)encoding:NSUTF8StringEncoding];
-            _seven        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 7)encoding:NSUTF8StringEncoding];
-            _eight        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 8)encoding:NSUTF8StringEncoding];
+            _six         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 6)encoding:NSUTF8StringEncoding];
+            _seven       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 7)encoding:NSUTF8StringEncoding];
+            _eight       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 8)encoding:NSUTF8StringEncoding];
             _nine        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 9)encoding:NSUTF8StringEncoding];
-            _create_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 10)encoding:NSUTF8StringEncoding];
-            _modify_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 11)encoding:NSUTF8StringEncoding];
+            _ten         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 10)encoding:NSUTF8StringEncoding];
+            _create_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 11)encoding:NSUTF8StringEncoding];
+            _modify_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 12)encoding:NSUTF8StringEncoding];
             
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
             [mutableDictionary setObject:[NSNumber numberWithInteger:_id]  forKey:@"id"];
             [mutableDictionary setObject:_one forKey:OFFLINE_COLUMN_FILEID];
             [mutableDictionary setObject:_two forKey:OFFLINE_COLUMN_NAME];
-            [mutableDictionary setObject:_three forKey:OFFLINE_COLUMN_TYPE];
-            [mutableDictionary setObject:_four forKey:OFFLINE_COLUMN_DESC];
-            [mutableDictionary setObject:_five forKey:OFFLINE_COLUMN_TAGS];
-            [mutableDictionary setObject:_six forKey:OFFLINE_COLUMN_PAGENUM];
-            [mutableDictionary setObject:_seven forKey:OFFLINE_COLUMN_CATEGORYNAME];
-            [mutableDictionary setObject:_eight forKey:OFFLINE_COLUMN_ZIPURL];
-            [mutableDictionary setObject:_nine forKey:OFFLINE_COLUMN_ZIPSIZE];
+            [mutableDictionary setObject:_three forKey:OFFLINE_COLUMN_TITLE];
+            [mutableDictionary setObject:_four forKey:OFFLINE_COLUMN_TYPE];
+            [mutableDictionary setObject:_five forKey:OFFLINE_COLUMN_DESC];
+            [mutableDictionary setObject:_six forKey:OFFLINE_COLUMN_TAGS];
+            [mutableDictionary setObject:_seven forKey:OFFLINE_COLUMN_PAGENUM];
+            [mutableDictionary setObject:_eight forKey:OFFLINE_COLUMN_CATEGORYNAME];
+            [mutableDictionary setObject:_nine forKey:OFFLINE_COLUMN_ZIPURL];
+            [mutableDictionary setObject:_ten forKey:OFFLINE_COLUMN_ZIPSIZE];
 
             [mutableDictionary setObject:_create_time forKey:@"create_time"];
             [mutableDictionary setObject:_modify_time forKey:@"modify_time"];

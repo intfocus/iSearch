@@ -36,6 +36,11 @@
     self.labelTitle.text = self.slide.title;
     _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
     
+    if(self.slideID == nil) {
+        NSLog(@"self.slideID is necessary! %@", self.slide.to_s);
+        abort();
+    }
+    
     [self loadThumbnail];
     [self updateBtnDownloadOrDisplayIcon];
     [self bringSubviewToFront:self.btnDownloadOrDisplay];
@@ -72,10 +77,9 @@
 
 - (IBAction)actionDisplaySlide:(UIButton *)sender {
     //  this slide display or not;
-    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
-    if(self.slide.isDisplay) {
-        [self.dict setObject:@"1" forKey:SLIDE_DESC_ISDISPLAY];
-        [FileUtils writeJSON:self.dict Into:descPath];
+    if(!self.slide.isDisplay) {
+        self.slide.isDisplay = YES;
+        [self.slide save];
     }
     
     // tell DisplayViewController somthing it need.
@@ -90,7 +94,6 @@
         self.displayViewController = [[DisplayViewController alloc] init];
     }
     [self.masterViewController presentViewController:self.displayViewController animated:NO completion:nil];
-
 }
 
 #pragma mark - assistant methods
@@ -118,15 +121,11 @@
  *      演示过: slideToDisplay.png
  */
 - (void) updateBtnDownloadOrDisplayIcon {
-    UIImage *image;
-    if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        image = [UIImage imageNamed:@"coverSlideToDisplay"];
+    UIImage *image = [UIImage imageNamed:@"coverSlideToDisplay"];
+    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO] && !self.slide.isDisplay) {
+        image = [UIImage imageNamed:@"coverSlideUnDisplay"];
     } else {
-        if(self.dict[SLIDE_DESC_ISDISPLAY] == nil) {
-            image = [UIImage imageNamed:@"coverSlideUnDisplay"];
-        } else {
-            image = [UIImage imageNamed:@"coverSlideToDownload"];
-        }
+        image = [UIImage imageNamed:@"coverSlideToDownload"];
     }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
 }
@@ -143,11 +142,9 @@
     NSString *slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
     NSString *thumbanilPath = [slidePath stringByAppendingPathComponent:thumbnailName];
     
-    NSString *htmlContent, *basePath;
+    NSString *htmlContent, *basePath = slidePath;
     NSURL *baseURL;
-    if([FileUtils checkFileExist:thumbanilPath isDir:NO]) {
-        basePath = slidePath;
-    } else {
+    if(![FileUtils checkFileExist:thumbanilPath isDir:NO]) {
         thumbnailName = @"thumbnailSlideDefault.png";
         basePath =  [[NSBundle mainBundle] bundlePath];
     }

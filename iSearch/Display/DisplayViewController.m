@@ -53,6 +53,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     [self loadConfigInfo];
     
@@ -133,15 +137,9 @@
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     // [self demoExtract];
-     [self extractResource];
+    [self extractResource];
     
     [self loadHtml];
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

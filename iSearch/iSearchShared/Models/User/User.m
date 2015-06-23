@@ -58,8 +58,12 @@
     [FileUtils writeJSON:self.configDict Into:self.configPath];
 }
 
-- (NSString *)to_s {
+- (NSString *)inspect {
     return [NSString stringWithFormat:@"#<%@ ID: %@, name: %@, email: %@, deptID: %@, employeeID: %@, loginUserName: %@, loginPassword: %@, loginRememberPWD: %d, loginLast: %@>", self.class, self.ID, self.name, self.email, self.deptID, self.employeeID,self.loginUserName,self.loginPassword,self.loginRememberPWD, self.loginLast];
+}
+
+- (NSString *)to_s {
+    return [self inspect];
 }
 
 @end

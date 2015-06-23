@@ -160,8 +160,7 @@
             }
         }
     }
-    
-    if(errors && [errors count] > 0) NSLog(@"TODO#popupView/checkSlideExist: \n%@", errors);
+
     return ([errors count] == 0);
 }
 

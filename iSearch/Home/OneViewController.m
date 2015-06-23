@@ -95,15 +95,14 @@
 // GridViewCell界面 - 目录界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
-    
-    if (!cell) {
+    if (cell == nil) {
         cell = [[GMGridViewCell alloc] init];
-        ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] lastObject];
+        ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] lastObject];
         NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        slide.isFavorite = YES;
-        slide.dict = currentDict;
-        slide.masterViewController = [self mainViewController];
-        [cell setContentView: slide];
+        viewSlide.isFavorite = YES;
+        viewSlide.dict = currentDict;
+        viewSlide.masterViewController = [self mainViewController];
+        [cell setContentView: viewSlide];
     }
     return cell;
 }

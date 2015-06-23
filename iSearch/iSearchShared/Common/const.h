@@ -135,7 +135,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
-#define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
+#define CONTENT_KEY_DISPLAYID   @"DisplaySlideID" // 目录中文件已经下载，点击[演示]时通过该key传值
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
 #define SLIDE_DISPLAY_TYPE      @"FavoriteOrSlide" // 下载文档位置不同
 #define SLIDE_EDIT_TYPE         @"FavoriteOrSlide" // 下载文档位置不同
@@ -175,6 +175,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"
 #define OFFLINE_COLUMN_NAME      @"file_name"
+#define OFFLINE_COLUMN_TITLE     @"file_title"
 #define OFFLINE_COLUMN_TYPE      @"file_type"
 #define OFFLINE_COLUMN_DESC      @"desc"
 #define OFFLINE_COLUMN_TAGS      @"tags"
