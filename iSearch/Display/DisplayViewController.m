@@ -34,15 +34,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
 @property (nonatomic, nonatomic) PopupView      *popupView;
 
-@property (nonatomic, nonatomic) NSNumber *currentPageIndex;
+@property (nonatomic, strong) NSNumber *currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL  isDrawing; // 作笔记状态
 @property (nonatomic, nonatomic) BOOL  isLasering;// 激光笔状态
 @property (nonatomic, nonatomic) PaintView  *paintView; // 笔记、激光笔画布
-@property (nonatomic, nonatomic) NSString *slideID;
-@property (nonatomic, nonatomic) NSString *filePath;
+@property (nonatomic, strong) NSString *slideID;
+@property (nonatomic, strong) NSString *filePath;
 @property (nonatomic, nonatomic) NSMutableDictionary *fileDesc;
-@property (nonatomic, nonatomic) NSString *forbidCss;
+@property (nonatomic, strong) NSString *forbidCss;
 @property (nonatomic, nonatomic) ReViewController *reViewController;
 
 @end
@@ -379,7 +379,7 @@
     NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
-    NSLog(@"next - current page index: %ld", (long)self.currentPageIndex);
+    NSLog(@"next - current page index: %@", self.currentPageIndex);
 }
 /**
  *  浏览文档时[上一页], 触发手势: 向右滑动
@@ -394,7 +394,7 @@
     NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
-    NSLog(@"next - current page index: %ld", (long)self.currentPageIndex);
+    NSLog(@"next - current page index: %@", self.currentPageIndex);
 }
 
 
