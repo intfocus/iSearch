@@ -41,6 +41,7 @@
 @property (nonatomic, nonatomic) BOOL  isLasering;// 激光笔状态
 @property (nonatomic, nonatomic) PaintView  *paintView; // 笔记、激光笔画布
 @property (nonatomic, strong) NSString *slideID;
+@property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, strong) NSString *slidePath;
 @property (nonatomic, strong) NSMutableDictionary *descDict;
 @property (nonatomic, strong) NSString *forbidCss;
@@ -157,7 +158,7 @@
  *  控件事件
  */
 - (void) loadHtml {
-    NSString *htmlName = [self.descDict[SLIDE_DESC_ORDER] objectAtIndex: [self.currentPageIndex intValue]];
+    NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
     NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slidePath, htmlName, PAGE_HTML_FORMAT];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
@@ -167,39 +168,6 @@
     NSURL *baseURL = [NSURL fileURLWithPath:basePath];
     
     [self.webView loadHTMLString:htmlString baseURL:baseURL];
-}
-
-- (void) loadSlideInfo {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    
-    // Basic Key Check
-    if(configDict[CONTENT_KEY_DISPLAYID] == nil) {
-        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Not Set!");
-        abort();
-    }
-    if(configDict[SLIDE_DISPLAY_TYPE] == nil) {
-        NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
-        abort();
-    }
-    BOOL isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
-    self.slideID = configDict[CONTENT_KEY_DISPLAYID];
-    self.isFavorite = isFavorite;
-    
-    if([self.slideID length] == 0) {
-        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
-        abort();
-    }
-    
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    self.slidePath = [FileUtils getPathName:dirName FileName:self.slideID];
-    NSString *descPath = [self.slidePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
-    NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
-    self.descDict = descDict;
-    
-    self.slide = [[Slide alloc] init];
-    self.slide = [self.slide initWith:descDict Favorite:isFavorite];
-
 }
 
 - (IBAction)addSlideToFavorite:(UIButton *)sender {
@@ -222,27 +190,6 @@
     [self.view addSubview:self.popupView];
 }
 
-- (void) extractResource {
-    NSString *zipName = @"pdfJS";
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    // pdfJS
-    NSString *resPath = [documentPath stringByAppendingPathComponent:@"Resources"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    //[fileManager removeItemAtPath:resPath error:nil];
-    BOOL isDir = TRUE;
-    BOOL isDirExist = [fileManager fileExistsAtPath:resPath isDirectory:&isDir];
-    if(!isDirExist)
-        [fileManager createDirectoryAtPath:resPath withIntermediateDirectories:YES attributes:nil error:nil];
-    
-    NSString *pdfJSPath = [resPath stringByAppendingPathComponent:@"pdfJS"];
-    isDirExist = [fileManager fileExistsAtPath:pdfJSPath isDirectory:&isDir];
-    if(!isDirExist) {
-        NSString *pdfJSZip = [bundlePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.zip", zipName]];
-        BOOL state = [SSZipArchive unzipFileAtPath:pdfJSZip toDestination:resPath];
-        NSLog(@"%@", [NSString stringWithFormat:@"pdfJS解压zip: %@", state ? @"成功" : @"失败"]);
-    }
-}
 /**
  *  编辑面板功能代码
  */
@@ -381,7 +328,7 @@
     [self stopLaser];
     [self stopNote];
     
-    NSInteger pageCount = [[self.descDict objectForKey:SLIDE_DESC_ORDER] count];
+    NSInteger pageCount = [self.slide.pages count];
     NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -396,7 +343,7 @@
     [self stopLaser];
     [self stopNote];
     
-    NSInteger pageCount = [[self.descDict objectForKey:SLIDE_DESC_ORDER] count];
+    NSInteger pageCount = [self.slide.pages count];
     NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -418,11 +365,10 @@
  *
  *  @param sender 无返回
  */
-- (IBAction) enterFilePagesView:(id)sender {
+- (IBAction) enterSlidePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    if([FileUtils checkSlideExist:self.slideID Dir:dirName Force:YES]) {
+    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
@@ -498,5 +444,63 @@
     }
 }
 
+
+#pragma mark - assistant methods
+
+- (void) loadSlideInfo {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    
+    // Basic Key Check
+    if(configDict[CONTENT_KEY_DISPLAYID] == nil) {
+        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Not Set!");
+        abort();
+    }
+    if(configDict[SLIDE_DISPLAY_TYPE] == nil) {
+        NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
+        abort();
+    }
+    BOOL isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
+    self.slideID = configDict[CONTENT_KEY_DISPLAYID];
+    self.isFavorite = isFavorite;
+    
+    if([self.slideID length] == 0) {
+        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
+        abort();
+    }
+    
+    self.dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    self.slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
+    NSString *descPath = [self.slidePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
+    self.descDict = descDict;
+    
+    self.slide = [[Slide alloc] init];
+    self.slide = [self.slide initWith:descDict Favorite:isFavorite];
+}
+
+
+
+- (void) extractResource {
+    NSString *zipName = @"pdfJS";
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    // pdfJS
+    NSString *resPath = [documentPath stringByAppendingPathComponent:@"Resources"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    //[fileManager removeItemAtPath:resPath error:nil];
+    BOOL isDir = TRUE;
+    BOOL isDirExist = [fileManager fileExistsAtPath:resPath isDirectory:&isDir];
+    if(!isDirExist)
+        [fileManager createDirectoryAtPath:resPath withIntermediateDirectories:YES attributes:nil error:nil];
+    
+    NSString *pdfJSPath = [resPath stringByAppendingPathComponent:@"pdfJS"];
+    isDirExist = [fileManager fileExistsAtPath:pdfJSPath isDirectory:&isDir];
+    if(!isDirExist) {
+        NSString *pdfJSZip = [bundlePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.zip", zipName]];
+        BOOL state = [SSZipArchive unzipFileAtPath:pdfJSZip toDestination:resPath];
+        NSLog(@"%@", [NSString stringWithFormat:@"pdfJS解压zip: %@", state ? @"成功" : @"失败"]);
+    }
+}
 
 @end

@@ -24,9 +24,11 @@
  */
 @interface ContentUtils : NSObject
 
-+ (NSMutableArray*)loadContentData:(NSString *)deptID
-                        CategoryID:(NSString *)categoryID
-                              Type:(NSString *)localOrServer;
++ (NSArray*)loadContentData:(NSString *)deptID
+                 CategoryID:(NSString *)categoryID
+                       Type:(NSString *)localOrServer
+                        Key:(NSString *)sortKey
+                      Order:(BOOL)isAsceding;
 
 
 + (NSMutableArray*)loadContentDataFromServer:(NSString *) type

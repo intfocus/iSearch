@@ -34,7 +34,9 @@
  */
 + (NSArray*)loadContentData:(NSString *)deptID
                         CategoryID:(NSString *)categoryID
-                              Type:(NSString *)localOrServer {
+                              Type:(NSString *)localOrServer
+                               Key:(NSString *)sortKey
+                             Order:(BOOL)isAsceding {
     NSMutableArray *categoryList = [[NSMutableArray alloc] init];
     NSMutableArray *slideList = [[NSMutableArray alloc] init];
     
@@ -49,15 +51,23 @@
     else {
         NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
     }
-    if([categoryList count] > 0) {
-        categoryList = [ContentUtils sortArray:categoryList Key:CONTENT_FIELD_NAME Ascending:YES];
+    // mark sure array not nil
+    
+    if(categoryList == nil) {
+        categoryList = [[NSMutableArray alloc] init];
     }
-    if([slideList count] > 0) {
-        slideList = [ContentUtils sortArray:slideList Key:CONTENT_FIELD_NAME Ascending:YES];
+    if(slideList == nil) {
+        slideList = [[NSMutableArray alloc] init];
     }
     
-//    NSArray *array = [categoryList arrayByAddingObjectsFromArray:slideList];
-//    return [NSMutableArray arrayWithArray:array];
+    // order
+    if([categoryList count] > 0) {
+        categoryList = [ContentUtils sortArray:categoryList Key:sortKey Ascending:isAsceding];
+    }
+    if([slideList count] > 0) {
+        slideList = [ContentUtils sortArray:slideList Key:sortKey Ascending:isAsceding];
+    }
+    
 #warning make sure return two array
     return @[categoryList, slideList];
 }

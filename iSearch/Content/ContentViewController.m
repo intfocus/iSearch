@@ -197,7 +197,7 @@
 }
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:type];
+    NSArray *array = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:type Key:SLIDE_DESC_ID Order:YES];
     NSMutableArray *arrayOne = [array objectAtIndex:0];
     NSMutableArray *arrayTwo = [array objectAtIndex:1];
     

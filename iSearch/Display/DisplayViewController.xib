@@ -116,7 +116,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="enterFilePagesView:" destination="-1" eventType="touchUpInside" id="tvZ-dk-vv7"/>
+                                <action selector="enterSlidePagesView:" destination="-1" eventType="touchUpInside" id="YED-2L-Eto"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M2e-E7-OIM">

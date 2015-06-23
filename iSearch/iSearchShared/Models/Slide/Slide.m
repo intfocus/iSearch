@@ -60,7 +60,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _localCreatedDate = [self defaultWhenNil:dict[SLIDE_DESC_LOCAL_CREATEAT] Type:SlideFieldDate];
     _localUpdatedDate = [self defaultWhenNil:dict[SLIDE_DESC_LOCAL_UPDATEAT] Type:SlideFieldDate];
     
+    
     _typeName = @"文档";
+    if(self.desc == nil) {
+        _desc = @"没有描述";
+    }
+    
     return self;
 }
 

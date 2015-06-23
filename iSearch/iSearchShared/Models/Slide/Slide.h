@@ -54,5 +54,6 @@
 - (void)cached:(NSString *)cacheName;
 - (NSString *)inspect;
 - (NSString *)to_s;
+- (NSMutableDictionary *) refreshFields;
 @end
 #endif
