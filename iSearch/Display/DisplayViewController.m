@@ -14,6 +14,7 @@
 #import "MainViewController.h"
 
 #import "const.h"
+#import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
@@ -40,10 +41,11 @@
 @property (nonatomic, nonatomic) BOOL  isLasering;// 激光笔状态
 @property (nonatomic, nonatomic) PaintView  *paintView; // 笔记、激光笔画布
 @property (nonatomic, strong) NSString *slideID;
-@property (nonatomic, strong) NSString *filePath;
-@property (nonatomic, nonatomic) NSMutableDictionary *fileDesc;
+@property (nonatomic, strong) NSString *slidePath;
+@property (nonatomic, strong) NSMutableDictionary *descDict;
 @property (nonatomic, strong) NSString *forbidCss;
 @property (nonatomic, nonatomic) ReViewController *reViewController;
+@property (nonatomic, strong) Slide *slide;
 
 @end
 
@@ -53,22 +55,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-}
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self loadConfigInfo];
-    
-    self.currentPageIndex    = [NSNumber numberWithInt:0];
-    self.isDrawing           = false;
-    self.paintView           = nil;
-    self.editPanel.layer.zPosition = MAXFLOAT;
-    //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    //self.editPanel.backgroundColor = [UIColor blackColor];
-    [self.editPanel setHidden: true];
-    
+    /**
+     *  控件布局、属性
+     */
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editPanel.frame.size.width, self.editPanel.frame.size.height)];
     self.editPanel.layer.masksToBounds = NO;
     self.editPanel.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -96,25 +86,29 @@
     self.blueNoteBtn.layer.cornerRadius = 4;
     self.redNoteBtn.layer.cornerRadius = 4;
     self.greenNoteBtn.layer.cornerRadius = 4;
+    [self.editPanel setHidden: true];
     
+    /**
+     *  控件事件
+     */
     [self.editBtn setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
     [self.editBtn addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.laserSwitch setOn: false];
     [self.laserSwitch addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
-    
     self.forbidCss = @"<style type='text/css'>          \
-    body { background: black; }     \
-    * {                             \
-    -webkit-touch-callout: none;\
-    -webkit-user-select: none;  \
-    }                               \
-    </style>                        \
-    </head>";
+                        body { background: black; }     \
+                        * {                             \
+                        -webkit-touch-callout: none;    \
+                        -webkit-user-select: none;      \
+                        }                               \
+                        </style>                        \
+                        </head>";
     
-    
-    // webView添加手势，向左即上一页，向右即下一页
+    /**
+     * webView添加手势，向左即上一页，向右即下一页
+     */
     UISwipeGestureRecognizer *gestureRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(lastPage:)];
     gestureRight.direction = UISwipeGestureRecognizerDirectionRight;
     [self.webView addGestureRecognizer:gestureRight];
@@ -136,10 +130,23 @@
     [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
     [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    // [self demoExtract];
-    [self extractResource];
+    self.currentPageIndex = [NSNumber numberWithInt:0];
+    self.isDrawing        = NO;
+    self.isLasering       = NO;
+    self.paintView        = nil;
+    self.editPanel.layer.zPosition = MAXFLOAT;
+    //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
     
+    [self loadSlideInfo];
+    [self extractResource];
     [self loadHtml];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -150,8 +157,8 @@
  *  控件事件
  */
 - (void) loadHtml {
-    NSString *htmlName = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex: [self.currentPageIndex intValue]];
-    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.filePath, htmlName, PAGE_HTML_FORMAT];
+    NSString *htmlName = [self.descDict[SLIDE_DESC_ORDER] objectAtIndex: [self.currentPageIndex intValue]];
+    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slidePath, htmlName, PAGE_HTML_FORMAT];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
     //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
@@ -162,7 +169,7 @@
     [self.webView loadHTMLString:htmlString baseURL:baseURL];
 }
 
-- (void) loadConfigInfo {
+- (void) loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
@@ -175,8 +182,9 @@
         NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
         abort();
     }
+    BOOL isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
     self.slideID = configDict[CONTENT_KEY_DISPLAYID];
-    self.isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
+    self.isFavorite = isFavorite;
     
     if([self.slideID length] == 0) {
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
@@ -184,16 +192,14 @@
     }
     
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    self.filePath = [FileUtils getPathName:dirName FileName:self.slideID];
-    NSString *descPath = [self.filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
-    NSError *error;
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-    BOOL isYES = NSErrorPrint(error, @"read slide desc content#%@", descPath);
-    if(!isYES) { abort(); }
+    self.slidePath = [FileUtils getPathName:dirName FileName:self.slideID];
+    NSString *descPath = [self.slidePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
+    self.descDict = descDict;
     
-    self.fileDesc = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
-    isYES = NSErrorPrint(error, @"desc content convert into json");
-    if(!isYES) { abort(); }
+    self.slide = [[Slide alloc] init];
+    self.slide = [self.slide initWith:descDict Favorite:isFavorite];
+
 }
 
 - (IBAction)addSlideToFavorite:(UIButton *)sender {
@@ -375,7 +381,7 @@
     [self stopLaser];
     [self stopNote];
     
-    NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
+    NSInteger pageCount = [[self.descDict objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -390,7 +396,7 @@
     [self stopLaser];
     [self stopNote];
     
-    NSInteger pageCount = [[self.fileDesc objectForKey:SLIDE_DESC_ORDER] count];
+    NSInteger pageCount = [[self.descDict objectForKey:SLIDE_DESC_ORDER] count];
     NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
     self.currentPageIndex = [NSNumber numberWithInteger:index];
     [self loadHtml];
@@ -421,7 +427,7 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.fileDesc[SLIDE_DESC_ORDER] objectAtIndex:[self.currentPageIndex integerValue]];
+        NSString *pageID = [self.descDict[SLIDE_DESC_ORDER] objectAtIndex:[self.currentPageIndex integerValue]];
         [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
         NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];

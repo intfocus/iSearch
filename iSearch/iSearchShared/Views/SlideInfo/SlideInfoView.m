@@ -107,21 +107,25 @@
         }
         [self presentViewController:self.displayViewController animated:NO completion:nil];
     } else {
-        [self showPopupView:@"未找到文档"];
+        [self showPopupView:@"请先下载"];
     }
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
-    NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    [fileManager removeItemAtPath:filePath error:&error];
-    BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
-    
-    if(isSuccessfully) {
-        [self showPopupView:@"移除成功"];
+    if(self.slide.isDownload) {
+        NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error;
+        [fileManager removeItemAtPath:filePath error:&error];
+        BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
+        
+        if(isSuccessfully) {
+            [self showPopupView:@"移除成功"];
+        }
+        [self.masterViewController dismissPopup];
+    } else {
+        [self showPopupView:@"未曾下载，\n何言移除！"];
     }
-    [self.masterViewController dismissPopup];
 }
 
 - (IBAction)actionEditSlide:(UIButton *)sender {
@@ -130,14 +134,17 @@
 }
 
 - (IBAction)actionAddToTag:(UIButton *)sender {
-    if(self.isFavorite) {
+    if([FileUtils checkSlideExist:self.slideID Dir:FAVORITE_DIRNAME Force:NO]) {
         [self showPopupView:@"已在收藏了"];
     } else {
-        BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
-            [DateUtils updateSlideTimestamp:dict];
-        }];
-        
-        [self showPopupView:@"收藏成功"];
+        if(self.slide.isDownload) {
+            BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
+                [DateUtils updateSlideTimestamp:self.dict];
+            }];
+            [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
+        } else {
+            [self showPopupView:@"未曾下载，\n何言收藏！"];
+        }
     }
     
 }

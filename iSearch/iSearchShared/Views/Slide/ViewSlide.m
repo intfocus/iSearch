@@ -121,11 +121,13 @@
  *      演示过: slideToDisplay.png
  */
 - (void) updateBtnDownloadOrDisplayIcon {
-    UIImage *image = [UIImage imageNamed:@"coverSlideToDisplay"];
-    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO] && !self.slide.isDisplay) {
-        image = [UIImage imageNamed:@"coverSlideUnDisplay"];
-    } else {
-        image = [UIImage imageNamed:@"coverSlideToDownload"];
+    UIImage *image = [UIImage imageNamed:@"coverSlideToDownload"];
+    if(self.slide.isDownload) {
+        if(self.slide.isDisplay) {
+            image = [UIImage imageNamed:@"coverSlideToDisplay"];
+        } else {
+            image = [UIImage imageNamed:@"coverSlideUnDisplay"];
+        }
     }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
 }
@@ -198,7 +200,10 @@
     NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.slideID, self.dict[CONTENT_FIELD_URL], state ? @"成功" : @"失败"]);
     
     // 下载zip动作为异步，解压动作应该放在此处
-    if(state) [self extractZipFile];
+    if(state) {
+        [self extractZipFile];
+        [self reloadSlideDesc];
+    }
     
     [self updateBtnDownloadOrDisplayIcon];
 }
@@ -218,5 +223,18 @@
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:filePath];
     NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slideID, state ? @"成功" : @"失败"]);
+}
+
+/**
+ *  文档下载后，把文档页面排序重新赋值，
+ *  其他信息都以目录中获取的信息为主
+ */
+- (void) reloadSlideDesc {
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
+    NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
+    
+    self.slide.descPath = descPath;
+    self.slide.pages = descDict[SLIDE_DESC_ORDER];
+    [self.slide save];
 }
 @end

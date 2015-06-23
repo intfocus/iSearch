@@ -20,7 +20,7 @@
                 </webView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2D-sb-vCm">
                     <rect key="frame" x="0.0" y="0.0" width="184" height="102"/>
-                    <state key="normal" title="下载|演示" image="iconSlideDisplay.png">
+                    <state key="normal" title="下载|演示" image="coverSlideToDisplay">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
@@ -76,7 +76,7 @@
         </view>
     </objects>
     <resources>
-        <image name="iconSlideDisplay.png" width="374" height="205"/>
+        <image name="coverSlideToDisplay" width="184" height="102"/>
         <image name="iconi" width="40" height="40"/>
     </resources>
 </document>
