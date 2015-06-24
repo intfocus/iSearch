@@ -32,10 +32,6 @@
 @property (strong, nonatomic) NSString *dirName;
 @property (strong, nonatomic) Slide *slide;
 
-// http download variables begin
-@property (strong, nonatomic) NSURLConnection *downloadConnection;
-@property (strong, nonatomic) NSMutableData   *downloadConnectionData;
-// http download variables end
 
 
 - (void)dismissDisplayViewController;

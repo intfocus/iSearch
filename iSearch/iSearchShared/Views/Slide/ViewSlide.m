@@ -21,6 +21,11 @@
 @interface ViewSlide()
 @property (nonatomic, nonatomic) DisplayViewController *displayViewController;
 @property (nonatomic, nonatomic) PopupView *popupView;
+
+// http download variables begin
+@property (strong, nonatomic) NSURLConnection *downloadConnection;
+@property (strong, nonatomic) NSMutableData   *downloadConnectionData;
+// http download variables end
 @end
 
 @implementation ViewSlide
@@ -58,19 +63,22 @@
 
 
 #pragma mark - control action
-
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
-    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
-            [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
-            [self updateBtnDownloadOrDisplayIcon];
-        } else {
-            [self showPopupView:@"文档格式有误."];
-        }
+    if([FileUtils isSlideDownloading:self.slideID]) {
+        [self showPopupView:@"下载中,请稍等."];
     } else {
-        NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                 BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
-        [self downloadZip:downloadUrl];
+        if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
+            if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
+                [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
+            } else {
+                [self showPopupView:@"文档格式有误."];
+            }
+        } else {
+            NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
+                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
+            [self downloadZip:downloadUrl];
+        }
+        [self updateBtnDownloadOrDisplayIcon];
     }
 }
 
@@ -156,6 +164,9 @@
             image = [UIImage imageNamed:@"coverSlideUnDisplay"];
         }
     }
+    if([FileUtils isSlideDownloading:self.slideID]) {
+        image = [UIImage imageNamed:@"coverSlideDownloading"];
+    }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
 }
 
@@ -194,6 +205,8 @@
  *  @param urlString 下载zip链接
  */
 - (void) downloadZip: (NSString *) urlString {
+    [FileUtils slideDownloading:self.slideID];
+    
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSMutableData *data = [[NSMutableData alloc] init];
@@ -226,10 +239,13 @@
     BOOL state = [self.downloadConnectionData writeToFile:pathName atomically:YES];
     NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.slideID, self.dict[CONTENT_FIELD_URL], state ? @"成功" : @"失败"]);
     
+#warning 服务器端响应文字处理：文件不存在
     // 下载zip动作为异步，解压动作应该放在此处
     if(state) {
         [self extractZipFile];
         [self reloadSlideDesc];
+        
+        [FileUtils slideDownloaded:self.slideID];
     }
     
     [self updateBtnDownloadOrDisplayIcon];
@@ -257,11 +273,12 @@
  *  其他信息都以目录中获取的信息为主
  */
 - (void) reloadSlideDesc {
-    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
-    
-    self.slide.descPath = descPath;
-    self.slide.pages = descDict[SLIDE_DESC_ORDER];
-    [self.slide save];
+    NSMutableDictionary *descDict = [FileUtils readConfigFile:self.slide.descPath];
+    if(descDict[SLIDE_DESC_ORDER] != nil) {
+        self.slide.pages = descDict[SLIDE_DESC_ORDER];
+        [self.slide save];
+    } else {
+        NSLog(@"Bug Slide#order is nil, %@", self.slide.descPath);
+    }
 }
 @end

@@ -522,4 +522,27 @@
     return isSuccessfully;
 }
 
+#pragma mark - slide download cache
++ (NSString *)slideDownloadCachePath:(NSString *)slideID {
+    NSString *cacheName = [NSString stringWithFormat:@"%@.downloading", slideID];
+    NSString *cachePath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:cacheName];
+    return cachePath;
+}
++ (NSString *)slideDownloading:(NSString *)slideID {
+    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
+    [@"downloading" writeToFile:cachePath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+    
+    return cachePath;
+}
++ (NSString *)slideDownloaded:(NSString *)slideID {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
+    [fileManager removeItemAtPath:cachePath error:NULL];
+    
+    return cachePath;
+}
++ (BOOL)isSlideDownloading:(NSString *)slideID {
+    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
+    return [FileUtils checkFileExist:cachePath isDir:NO];
+}
 @end

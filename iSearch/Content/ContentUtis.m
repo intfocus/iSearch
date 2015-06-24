@@ -103,12 +103,15 @@
         mutableArray = responseJSON[CONTENT_FIELD_DATA];
     }
     
-    Slide *slide = [Slide alloc];
+    Slide *slide;
     // update local slide cache info
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         for(dict in mutableArray) {
-            slide = [slide initWith:dict Favorite:NO];
+            if(slide != nil) {
+                slide = nil;
+            }
+            slide = [[Slide alloc]initWith:dict Favorite:NO];
             if(slide.isDownload) {
                 [slide save];
             }

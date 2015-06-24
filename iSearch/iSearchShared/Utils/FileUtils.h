@@ -215,6 +215,11 @@
  */
 + (BOOL) copySlideToFavorite:(NSString *)slideID
                        Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
+
+#pragma mark - slide download cache
++ (NSString *)slideDownloading:(NSString *)slideID;
++ (NSString *)slideDownloaded:(NSString *)slideID;
++ (BOOL)isSlideDownloading:(NSString *)slideID;
 @end
 
 

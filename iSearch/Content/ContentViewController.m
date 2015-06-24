@@ -145,10 +145,9 @@
     
     // current category name
     self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
+    self.view.backgroundColor=[UIColor blackColor];
     
     [self configGridView];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -156,12 +155,15 @@
     
     //  1. 读取本地缓存，优先加载界面
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
+    //[_gridView reloadData];
     [self configGridView];
-    self.view.backgroundColor=[UIColor blackColor];
+    
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self loadContentData:LOCAL_OR_SERVER_SREVER];
+        //[_gridView reloadData];
+        
         [self configGridView];
     });
 }
@@ -201,21 +203,11 @@
     NSMutableArray *arrayOne = [array objectAtIndex:0];
     NSMutableArray *arrayTwo = [array objectAtIndex:1];
     
-    if([type isEqualToString:LOCAL_OR_SERVER_LOCAL]) {
-        self.dataListOne = arrayOne;
-        self.dataListTwo = arrayTwo;
-        array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
-        _dataList = [NSMutableArray arrayWithArray:array];
-    }
+    self.dataListOne = arrayOne;
+    self.dataListTwo = arrayTwo;
     
-    if([type isEqualToString:LOCAL_OR_SERVER_SREVER]) {
-        if([arrayOne count] > 0 || [arrayTwo count] > 0) {
-            self.dataListOne = arrayOne;
-            self.dataListTwo = arrayTwo;
-            array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
-            _dataList = [NSMutableArray arrayWithArray:array];
-        }
-    }
+    array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
+    _dataList = [NSMutableArray arrayWithArray:array];
 }
 
 /**
@@ -509,14 +501,14 @@
             
             [cell setContentView: viewCategory];
         } else {
-            ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-            slide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
+            ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+            viewSlide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
 
-            slide.isFavorite = NO;
-            slide.dict = currentDict;
-            slide.masterViewController = [self masterViewController];
+            viewSlide.isFavorite = NO;
+            viewSlide.dict = currentDict;
+            viewSlide.masterViewController = [self masterViewController];
 
-            [cell setContentView: slide];
+            [cell setContentView: viewSlide];
         }
     }
     return cell;

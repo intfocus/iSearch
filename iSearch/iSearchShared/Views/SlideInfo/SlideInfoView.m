@@ -60,7 +60,7 @@
     }
     self.labelEditTime.text = self.slide.createdDate;
     self.labelPageNum.text  = self.slide.pageNum;
-    self.labelZipSize.text  = self.slide.zipSize;
+    self.labelZipSize.text  = [FileUtils humanFileSize:self.slide.zipSize];
     self.labelCategory.text = self.slide.categoryName;
     
     [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];

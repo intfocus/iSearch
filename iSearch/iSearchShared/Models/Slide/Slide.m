@@ -105,6 +105,9 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 - (void)save {
     [self refreshFields];
     
+    if([self isDownload] && ![self isValid]) {
+        NSLog(@"pages is not valid - %@", self.descPath);
+    }
     [FileUtils writeJSON:self.descDict Into:self.descPath];
 }
 
@@ -116,6 +119,10 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return [self inspect];
 }
 
+- (BOOL)isValid {
+    NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];
+    return (self.pages != nil && [pageNum isEqualToString:self.pageNum]);
+}
 #pragma mark - private methods
 - (NSMutableDictionary *) refreshFields {
     // slide's desc field
