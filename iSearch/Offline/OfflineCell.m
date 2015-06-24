@@ -8,37 +8,36 @@
 
 #import <Foundation/Foundation.h>
 #import "OfflineCell.h"
+#import "Slide.h"
 #import "const.h"
 #import "FileUtils.h"
 #import "SSZipArchive.h"
+#import "PopupView.h"
+#import "DisplayViewController.h"
+#import "OfflineViewController.h"
 
-// only used here
 #define OFFLINE_DOWNLOAD_URL @"OFFLINE_DOWNLOAD_URL"
 
+@interface OfflineCell()
+@property (nonatomic, nonatomic) PopupView *popupView;
+@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
+@end
+
 @implementation OfflineCell
-/**
- *  TableViewCell自身函数，自定义操作放在这里
- *
- *  @param reuseIdentifier <#reuseIdentifier description#>
- *
- *  @return <#return value description#>
- */
+
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier{
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
         [self initControls];
-        NSLog(@"it should be called.");
     }
     return self;
 }
 
 - (void) initControls {
-    NSString *fileID = self.dict[OFFLINE_COLUMN_FILEID];
-    NSString *filePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:fileID];
+    self.slideID = self.dict[OFFLINE_COLUMN_FILEID];
 
-    NSString *imageName = [[NSString alloc] init];
-    NSString *downloadState = @"未下载";
-    if([FileUtils checkFileExist:filePath isDir:false]) {
+    NSString *imageName, *downloadState;
+    if([FileUtils checkSlideExist:self.slideID Dir:SLIDE_DIRNAME Force:NO]){
         imageName = @"ToView.png";
         downloadState = @"已下载";
     } else {
@@ -55,16 +54,64 @@
     
 }
 
-- (IBAction) slideClick:(id)sender {
-    if(![FileUtils checkSlideExist:self.dict[OFFLINE_COLUMN_FILEID] Dir:SLIDE_DIRNAME Force:NO]) {
+#pragma mark - control action
+
+- (IBAction)actionBtnDownloadOrDisplay:(UIButton *)sender {
+    if([FileUtils checkSlideExist:self.slideID Dir:SLIDE_DIRNAME Force:NO]) {
+        if([FileUtils checkSlideExist:self.slideID Dir:SLIDE_DIRNAME Force:YES]) {
+            [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
+        } else {
+            [self showPopupView: @"文档配置信息有误"];
+        }
+    } else {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@", BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.dict[OFFLINE_COLUMN_FILEID]];
         [self.dict setObject:downloadUrl forKey:OFFLINE_DOWNLOAD_URL];
         
         self.labelDownloadState.text = @"下载中...";
         [self downloadZip:downloadUrl];
-        //} else {
-        //     演示文稿功能在主界面代码中处理
     }
+}
+
+/**
+ *  演示文稿；
+ *  离线列表文档，若下载都在SLIDE_DIRNAME中；
+ *  内存管理: 谁开启DisplayViewController谁关闭，分配callingController1
+ *
+ *  @return 演示界面
+ */
+- (IBAction) actionDisplaySlide:(id)sender {
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
+    NSNumber *displayType = [NSNumber numberWithInt:(SlideTypeSlide)];
+    NSNumber *displayFrom = [NSNumber numberWithInt:(DisplayFromOfflineCell)];
+    [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
+    [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+    [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
+    [FileUtils writeJSON:configDict Into:configPath];
+    
+    if(self.displayViewController == nil) {
+        self.displayViewController = [[DisplayViewController alloc] init];
+        self.displayViewController.callingController1 = self;
+    }
+    [self.offlineViewController presentViewController:self.displayViewController animated:NO completion:nil];
+}
+/**
+ *  释放DisplayViewController内存
+ */
+- (void)dismissDisplayViewController {
+    _displayViewController = nil;
+    NSLog(@"dismissed here - OfflineCell");
+}
+
+#pragma mark - assistant methods
+- (void) showPopupView: (NSString*) text {
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.offlineViewController.view.frame.size.width/4, self.offlineViewController.view.frame.size.height/4, self.offlineViewController.view.frame.size.width/2, self.offlineViewController.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.offlineViewController.view;
+    }
+    [self.popupView setText: text];
+    [self.offlineViewController.view addSubview:self.popupView];
 }
 
 /**

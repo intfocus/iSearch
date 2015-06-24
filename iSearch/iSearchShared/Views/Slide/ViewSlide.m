@@ -13,12 +13,14 @@
 
 #import "FileUtils.h"
 #import "SSZipArchive.h"
+#import "PopupView.h"
 
 #import "MainViewController.h"
 #import "DisplayViewController.h"
 
 @interface ViewSlide()
 @property (nonatomic, nonatomic) DisplayViewController *displayViewController;
+@property (nonatomic, nonatomic) PopupView *popupView;
 @end
 
 @implementation ViewSlide
@@ -59,8 +61,12 @@
 
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
     if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-        [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
-        [self updateBtnDownloadOrDisplayIcon];
+        if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
+            [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
+            [self updateBtnDownloadOrDisplayIcon];
+        } else {
+            [self showPopupView:@"文档格式有误."];
+        }
     } else {
         NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
                                  BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
@@ -86,18 +92,39 @@
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+    NSNumber *displayFrom = [NSNumber numberWithInt:(DisplayFromSlide)];
     [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
     [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+    [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
     [FileUtils writeJSON:configDict Into:configPath];
     
     if(self.displayViewController == nil) {
         self.displayViewController = [[DisplayViewController alloc] init];
+        self.displayViewController.callingController2 = self;
     }
     [self.masterViewController presentViewController:self.displayViewController animated:NO completion:nil];
+}
+/**
+ *  释放DisplayViewController内存
+ */
+- (void)dismissDisplayViewController {
+    _displayViewController = nil;
+    NSLog(@"dismissed here - ViewSlide");
 }
 
 #pragma mark - assistant methods
 
+- (void)showPopupView:(NSString*) text {
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.masterViewController.view.frame.size.width/4, self.masterViewController.view.frame.size.height/4, self.masterViewController.view.frame.size.width/2, self.masterViewController.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.masterViewController.view;
+    }
+    
+    [self.popupView setText: text];
+    // [self.popupView removeFromSuperview];
+    [self.masterViewController.view addSubview:self.popupView];
+}
 /**
  *  read local slide's desc when already download.
  *

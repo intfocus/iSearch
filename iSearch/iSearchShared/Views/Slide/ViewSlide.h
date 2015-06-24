@@ -38,6 +38,7 @@
 // http download variables end
 
 
+- (void)dismissDisplayViewController;
 @end
 
 

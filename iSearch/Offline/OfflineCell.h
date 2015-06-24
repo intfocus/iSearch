@@ -9,15 +9,18 @@
 #ifndef iSearch_OfflineCell_h
 #define iSearch_OfflineCell_h
 #import <UIKit/UIKit.h>
+@class OfflineViewController;
 
 @interface OfflineCell : UITableViewCell
+@property (weak, nonatomic) OfflineViewController *offlineViewController;
 @property (weak, nonatomic) IBOutlet UILabel *labelFileName;
 @property (weak, nonatomic) IBOutlet UILabel *labelCategory;
 @property (weak, nonatomic) IBOutlet UILabel *labelZipSize;
 @property (weak, nonatomic) IBOutlet UILabel *labelDownloadState;
 @property (weak, nonatomic) IBOutlet UIButton *btnDownloadOrView;
 
-@property (strong, nonatomic) NSMutableDictionary *dict; // 该文件的信息，json格式
+@property (strong, nonatomic) NSMutableDictionary *dict;
+@property (strong, nonatomic) NSString *slideID;
 
 
 // http download variables begin
@@ -25,7 +28,8 @@
 @property (strong, nonatomic) NSMutableData   *downloadConnectionData;
 // http download variables end
 
-- (void) initControls;
+- (void)initControls;
+- (void)dismissDisplayViewController;
 @end
 
 #endif

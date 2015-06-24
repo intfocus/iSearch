@@ -99,8 +99,10 @@
                                                                         options:NSJSONReadingMutableContainers
                                                                           error:&error];
     NSErrorPrint(error, @"string convert into json");
+    if(responseJSON[CONTENT_FIELD_DATA] != nil) {
+        mutableArray = responseJSON[CONTENT_FIELD_DATA];
+    }
     
-    mutableArray = responseJSON[CONTENT_FIELD_DATA];
     Slide *slide = [Slide alloc];
     // update local slide cache info
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {

@@ -274,8 +274,7 @@
     }];
 }
 
-#pragma mark - CWPoup methods
-
+#pragma mark - Slide info PopupView
 - (void)poupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
     if(self.slideInfoView == nil) {
         self.slideInfoView = [[SlideInfoView alloc] init];
@@ -295,8 +294,10 @@
 - (void)dismissPopup {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
+            _slideInfoView = nil;
         }];
     }
 }
+
+
 @end

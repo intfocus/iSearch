@@ -42,6 +42,10 @@ typedef NS_ENUM(NSInteger, SlideType){
     SlideTypeSlide = 10,
     SlideTypeFavorite = 11
 };
+typedef NS_ENUM(NSInteger, DisplayFromType){
+    DisplayFromSlide = 10,
+    DisplayFromOfflineCell = 11
+};
 // 目录排序
 typedef NS_ENUM(NSInteger, SortType){
     SortByAscending = 10,
@@ -137,8 +141,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplaySlideID" // 目录中文件已经下载，点击[演示]时通过该key传值
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
-#define SLIDE_DISPLAY_TYPE      @"FavoriteOrSlide" // 下载文档位置不同
-#define SLIDE_EDIT_TYPE         @"FavoriteOrSlide" // 下载文档位置不同
+#define SLIDE_DISPLAY_TYPE      @"DisplayFavoriteOrSlide" // 下载文档位置不同
+#define SLIDE_DISPLAY_FROM      @"DisplayFromType" 
+#define SLIDE_EDIT_TYPE         @"EditFavoriteOrSlide" // 下载文档位置不同
 #define CONTENT_KEY_EDITID1      @"EditFileID" // 演示档时，[编辑]进入文档页面界面
 #define CONTENT_KEY_EDITID2      @"EditPageID" // 演示档时，[编辑]进入文档页面界面
 // 目录中文件类型

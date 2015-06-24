@@ -119,6 +119,7 @@
         [fileManager removeItemAtPath:filePath error:&error];
         BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
         
+#warning 移除后通知Slide更新状态
         if(isSuccessfully) {
             [self showPopupView:@"移除成功"];
         }
@@ -148,8 +149,5 @@
     }
     
 }
-
-
-
 
 @end

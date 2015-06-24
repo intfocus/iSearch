@@ -40,7 +40,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="slideClick:" destination="iN0-l3-epB" eventType="touchUpInside" id="Dt8-Hf-uqx"/>
+                        <action selector="actionBtnDownloadOrDisplay:" destination="iN0-l3-epB" eventType="touchUpInside" id="33B-xE-90T"/>
                     </connections>
                 </button>
             </subviews>

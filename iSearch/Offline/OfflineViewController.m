@@ -216,10 +216,10 @@
     cell.labelFileName.text = currentDict[OFFLINE_COLUMN_TITLE];
     cell.labelCategory.text = currentDict[OFFLINE_COLUMN_CATEGORYNAME];
     cell.labelZipSize.text  = [FileUtils humanFileSize:currentDict[OFFLINE_COLUMN_ZIPSIZE]];
-    // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-    cell.btnDownloadOrView.tag = [currentDict[OFFLINE_COLUMN_FILEID] intValue];
-    [cell.btnDownloadOrView addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-    // 文件是否下载，文件大小等信息操作<OfflineCell#initControls>
+    cell.offlineViewController = self;
+//    cell.btnDownloadOrView.tag = [currentDict[OFFLINE_COLUMN_FILEID] intValue];
+//    [cell.btnDownloadOrView addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
+//    // 文件是否下载，文件大小等信息操作<OfflineCell#initControls>
     [cell initControls];
 
     return cell;

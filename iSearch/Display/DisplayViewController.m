@@ -13,6 +13,9 @@
 #import "ReViewController.h"
 #import "MainViewController.h"
 
+#import "OfflineCell.h"
+#import "ViewSlide.h"
+
 #import "const.h"
 #import "Slide.h"
 #import "message.h"
@@ -27,13 +30,13 @@
 @property (weak, nonatomic) IBOutlet UIButton *colorButton;
 @property (weak, nonatomic) IBOutlet UIView *colorView;
 @property (weak, nonatomic) IBOutlet UIImageView *iconTriangleImageView;
-@property (weak, nonatomic) IBOutlet UIView *editPanel; // 编辑状态面板
+@property (weak, nonatomic) IBOutlet UIView   *editPanel; // 编辑状态面板
 @property (weak, nonatomic) IBOutlet UIButton *drawBtn;
 @property (weak, nonatomic) IBOutlet UISwitch *laserSwitch; // 激光笔状态切换
 @property (weak, nonatomic) IBOutlet UIButton *redNoteBtn;  // 笔记 - 红色
 @property (weak, nonatomic) IBOutlet UIButton *greenNoteBtn;// 笔记 - 绿色
 @property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
-@property (nonatomic, nonatomic) PopupView      *popupView;
+@property (nonatomic, nonatomic) PopupView    *popupView;
 
 @property (nonatomic, strong) NSNumber *currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
@@ -47,6 +50,7 @@
 @property (nonatomic, strong) NSString *forbidCss;
 @property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) Slide *slide;
+@property (nonatomic, strong) NSNumber *displayFrom;
 
 @end
 
@@ -428,11 +432,26 @@
 }
 
 /**
- *  关闭presentViewController
+ *  关闭演示界面；
+ *  内存管理: 谁开启，谁负责；
  *
  *  @param sender
  */
 - (IBAction)actionDismiss:(id)sender {
+    if([self.displayFrom intValue] == DisplayFromOfflineCell) {
+        if(self.callingController1 != nil) {
+            [self.callingController1 dismissDisplayViewController];
+        } else {
+            NSLog(@"Bug#not set DisplayViewController#callingController1");
+        }
+    }
+    if([self.displayFrom intValue] == DisplayFromSlide) {
+        if(self.callingController2 != nil) {
+            [self.callingController2 dismissDisplayViewController];
+        } else {
+            NSLog(@"Bug#not set DisplayViewController#callingController2");
+        }
+    }
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -468,7 +487,7 @@
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
         abort();
     }
-    
+    self.displayFrom = configDict[SLIDE_DISPLAY_FROM];
     self.dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     self.slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
     NSString *descPath = [self.slidePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
