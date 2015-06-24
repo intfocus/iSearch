@@ -212,15 +212,11 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"OfflineCell" owner:self options:nil] lastObject];
     }
-    cell.dict = currentDict;
     cell.labelFileName.text = currentDict[OFFLINE_COLUMN_TITLE];
     cell.labelCategory.text = currentDict[OFFLINE_COLUMN_CATEGORYNAME];
     cell.labelZipSize.text  = [FileUtils humanFileSize:currentDict[OFFLINE_COLUMN_ZIPSIZE]];
     cell.offlineViewController = self;
-//    cell.btnDownloadOrView.tag = [currentDict[OFFLINE_COLUMN_FILEID] intValue];
-//    [cell.btnDownloadOrView addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-//    // 文件是否下载，文件大小等信息操作<OfflineCell#initControls>
-    [cell initControls];
+    cell.dict = currentDict;
 
     return cell;
 }
@@ -234,34 +230,6 @@
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 70.0f;
-}
-
-/**
- *  本viewController中为服务端所有文件列表；
- *  如果已经下载，则可以[演示], 否则需要下载, 所下载文件在FILE_DIRNAME/下
- *
- *  与DisplayViewController传递文件ID通过CONFIG_DIRNAME/CONETNT_CONFIG_FILENAME[@CONTENT_KEY_DISPLAYID]
- *
- *  @param IBAction [演示]按钮点击事件
- *
- *  @return 演示界面
- */
-// 如果文件已经下载，文档原[下载]按钮显示为[演示]
-- (IBAction) actionDisplaySlide:(id)sender {
-    NSString *slideID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    
-    // 如果文档已经下载，即可执行演示效果，
-    // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:slideID Dir:SLIDE_DIRNAME Force:YES]) {
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
-        [configDict setObject:[NSNumber numberWithInteger:SlideTypeSlide] forKey:SLIDE_DISPLAY_TYPE];
-        [FileUtils writeJSON:configDict Into:configPath];
-        
-        DisplayViewController *showVC = [[DisplayViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
-    }
 }
 
 @end

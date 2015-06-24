@@ -45,8 +45,6 @@
 @property (nonatomic, nonatomic) PaintView  *paintView; // 笔记、激光笔画布
 @property (nonatomic, strong) NSString *slideID;
 @property (nonatomic, strong) NSString *dirName;
-@property (nonatomic, strong) NSString *slidePath;
-@property (nonatomic, strong) NSMutableDictionary *descDict;
 @property (nonatomic, strong) NSString *forbidCss;
 @property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) Slide *slide;
@@ -163,7 +161,7 @@
  */
 - (void) loadHtml {
     NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
-    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slidePath, htmlName, PAGE_HTML_FORMAT];
+    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     
     //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
@@ -377,7 +375,7 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.descDict[SLIDE_DESC_ORDER] objectAtIndex:[self.currentPageIndex integerValue]];
+        NSString *pageID = [self.slide.pages objectAtIndex:[self.currentPageIndex integerValue]];
         [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
         NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];
@@ -481,21 +479,21 @@
     }
     BOOL isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
     self.slideID = configDict[CONTENT_KEY_DISPLAYID];
-    self.isFavorite = isFavorite;
+    self.dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     
     if([self.slideID length] == 0) {
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
         abort();
     }
     self.displayFrom = configDict[SLIDE_DISPLAY_FROM];
-    self.dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    self.slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
-    NSString *descPath = [self.slidePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
     NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
-    self.descDict = descDict;
     
-    self.slide = [[Slide alloc] init];
-    self.slide = [self.slide initWith:descDict Favorite:isFavorite];
+    self.slide = [[Slide alloc] initWith:descDict Favorite:isFavorite];
+    NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.slide.pages count]]];
+    if(self.slide.pages == nil || ![pageNum isEqualToString:self.slide.pageNum]) {
+        NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
+    }
 }
 
 

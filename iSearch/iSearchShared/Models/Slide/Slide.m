@@ -33,40 +33,43 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _isFavorite  = isFavorite;
 
     // deal logic
-    _dirName = (isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME);
+    _dirName   = (isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME);
     _isDisplay = NO;// TODO
 
     /*
      * assign server value
      */
     // will check by [updateLocalFields]
-    _ID           = dict[CONTENT_FIELD_ID];
+    _ID = psd(dict[CONTENT_FIELD_ID],dict[SLIDE_DESC_ID]);
+    if(self.ID == nil) {
+        NSLog(@"Bug: Slide#id is nil");
+        abort();
+    }
+    
     _name         = dict[CONTENT_FIELD_NAME];
     _type         = dict[CONTENT_FIELD_TYPE];
     _desc         = dict[CONTENT_FIELD_DESC];
     _title        = dict[CONTENT_FIELD_TITLE];
     
     // make attribute value not nil
-    // psd - propertyStringDefault
     _pageNum      = psd(dict[CONTENT_FIELD_PAGENUM], @"");
     _createdDate  = psd(dict[CONTENT_FIELD_CREATEDATE], @"");
     _zipSize      = psd(dict[CONTENT_FIELD_ZIPSIZE], @"");
     _categoryID   = psd(dict[CONTENT_FIELD_CATEGORYID], @"");
     _categoryName = psd(dict[CONTENT_FIELD_CATEGORYNAME], @"");
     
+    [self assignLocalFields];
+    
+    _path = [FileUtils getPathName:self.dirName FileName:self.ID];
+    _descPath = [self.path stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    
     if(isFavorite || self.isDownload) {
-        _descPath = [FileUtils slideDescPath:self.ID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
         _descDict = [FileUtils readConfigFile:self.descPath];
         _isDisplay = (self.descDict[SLIDE_DESC_ISDISPLAY] != nil && [self.descDict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"]);
-        
-        // assign local field when nil
-        [self updateLocalFields];
-        
-        if(self.ID == nil) {
-            NSLog(@"Bug: Slide#id is nil");
-            abort();
-        }
     }
+    // reassign _descDict when download
+    // assign default value when nil
+    [self uploadLocalFields];
     
     // local fields
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
@@ -144,12 +147,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
  *  并上本地信息就是完整的文档信息
  *  （服务器信息优先级高于本地信息）
  */
-- (void)updateLocalFields {
-    if(!self.isDownload) return;
-    
-    if(self.ID == nil)
-        self.ID = self.descDict[SLIDE_DESC_ID];
-        
+- (void)uploadLocalFields {
     if(self.name == nil)
         self.name = psd(self.descDict[SLIDE_DESC_NAME], @"");
     if(self.title == nil)
@@ -162,5 +160,18 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
         self.pages = self.descDict[SLIDE_DESC_ORDER];
     if(self.pages == nil)
         self.pages = [[NSMutableArray alloc] init];
+}
+
+- (void)assignLocalFields {
+    if(self.name == nil && self.descDict[SLIDE_DESC_NAME] != nil)
+        self.name = self.descDict[SLIDE_DESC_NAME];
+    if(self.title == nil && self.descDict[SLIDE_DESC_NAME] != nil)
+        self.title = self.descDict[SLIDE_DESC_NAME];
+    if(self.type == nil && self.descDict[SLIDE_DESC_TYPE] != nil)
+        self.type = self.descDict[SLIDE_DESC_TYPE];
+    if(self.desc == nil && self.descDict[SLIDE_DESC_DESC] != nil)
+        self.desc =  self.descDict[SLIDE_DESC_DESC];
+    if(self.pages == nil && self.descDict[SLIDE_DESC_ORDER] != nil)
+        self.pages = self.descDict[SLIDE_DESC_ORDER];
 }
 @end

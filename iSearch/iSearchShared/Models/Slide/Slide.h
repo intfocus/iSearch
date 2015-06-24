@@ -35,6 +35,7 @@
 @property (nonatomic, strong) NSMutableArray *pages;
 
 // backup
+@property (nonatomic, strong) NSString *path;
 @property (nonatomic, strong) NSString *descPath;
 @property (nonatomic, strong) NSMutableDictionary *assignDict;
 @property (nonatomic, strong) NSMutableDictionary *descDict;

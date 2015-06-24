@@ -20,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnDownloadOrView;
 
 @property (strong, nonatomic) NSMutableDictionary *dict;
-@property (strong, nonatomic) NSString *slideID;
 
 
 // http download variables begin
@@ -28,7 +27,6 @@
 @property (strong, nonatomic) NSMutableData   *downloadConnectionData;
 // http download variables end
 
-- (void)initControls;
 - (void)dismissDisplayViewController;
 @end
 
