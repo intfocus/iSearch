@@ -161,15 +161,20 @@
  */
 - (void) loadHtml {
     NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
-    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
-    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-    
-    //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
-    //NSLog(@"%@", htmlFile);
-    NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];;
-    NSURL *baseURL = [NSURL fileURLWithPath:basePath];
-    
-    [self.webView loadHTMLString:htmlString baseURL:baseURL];
+//    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
+//    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+//    
+//    //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
+//    //NSLog(@"%@", htmlFile);
+//    NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];;
+//    NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+//    
+//    [self.webView loadHTMLString:htmlString baseURL:baseURL];
+#warning pdf/mp4 单独加载，其他加载html
+    NSString *pdfFile = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"pdf"];
+    NSURL *targetURL = [NSURL fileURLWithPath:pdfFile];
+    NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
+    [self.webView loadRequest:request];
 }
 
 - (IBAction)addSlideToFavorite:(UIButton *)sender {

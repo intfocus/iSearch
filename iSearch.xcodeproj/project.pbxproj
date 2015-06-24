@@ -387,9 +387,9 @@
 				C4A618E41B2C7AEC00D0E91B /* NewsListTabView.h */,
 				C4A618E31B2C7AEC00D0E91B /* NewsListTabView.m */,
 				C4A618E21B2C7AEC00D0E91B /* NewsListTabView.xib */,
-				C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */,
-				C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */,
 				C4A618E71B2C7AEC00D0E91B /* NewsListCell.h */,
+				C4A618E61B2C7AEC00D0E91B /* NewsListCell.m */,
+				C4A618E51B2C7AEC00D0E91B /* NewsListCell.xib */,
 			);
 			name = NewsList;
 			sourceTree = "<group>";
