@@ -14,6 +14,7 @@
 #import "FileUtils.h"
 #import "SSZipArchive.h"
 #import "PopupView.h"
+#import "ExtendNSLogFunctionality.h"
 
 #import "MainViewController.h"
 #import "DisplayViewController.h"
@@ -64,22 +65,16 @@
 
 #pragma mark - control action
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
-    if([FileUtils isSlideDownloading:self.slideID]) {
+    if(self.slide.isDownloading) {
         [self showPopupView:@"下载中,请稍等."];
+    } else if(self.slide.isDownloaded) {
+        [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
     } else {
-        if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:NO]) {
-            if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
-                [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
-            } else {
-                [self showPopupView:@"文档格式有误."];
-            }
-        } else {
-            NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
-            [self downloadZip:downloadUrl];
-        }
-        [self updateBtnDownloadOrDisplayIcon];
+        NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
+                                 BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
+        [self downloadZip:downloadUrl];
     }
+    [self updateBtnDownloadOrDisplayIcon];
 }
 
 - (IBAction)actionDisplaySlideInfo:(UIButton *)sender {
@@ -133,20 +128,7 @@
     // [self.popupView removeFromSuperview];
     [self.masterViewController.view addSubview:self.popupView];
 }
-/**
- *  read local slide's desc when already download.
- *
- *  @param dict slide's desc from server
- *
- *  @return dict
- */
-- (NSMutableDictionary *)checkSlideDownloadOrNot:(NSMutableDictionary *)dict {
-    if([FileUtils checkSlideExist:self.slideID Dir:SLIDE_DIRNAME Force:NO]) {
-        NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:SLIDE_DIRNAME Klass:CONFIG_DIRNAME];
-        dict = [FileUtils readConfigFile:descPath];
-    }
-    return dict;
-}
+
 
 /**
  *  图标 - 需求
@@ -157,14 +139,13 @@
  */
 - (void) updateBtnDownloadOrDisplayIcon {
     UIImage *image = [UIImage imageNamed:@"coverSlideToDownload"];
-    if(self.slide.isDownload) {
+    if(self.slide.isDownloaded) {
         if(self.slide.isDisplay) {
             image = [UIImage imageNamed:@"coverSlideToDisplay"];
         } else {
             image = [UIImage imageNamed:@"coverSlideUnDisplay"];
         }
-    }
-    if([FileUtils isSlideDownloading:self.slideID]) {
+    } else if(self.slide.isDownloading) {
         image = [UIImage imageNamed:@"coverSlideDownloading"];
     }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
@@ -204,8 +185,9 @@
  *
  *  @param urlString 下载zip链接
  */
+#warning 监测下载进程及进程
 - (void) downloadZip: (NSString *) urlString {
-    [FileUtils slideDownloading:self.slideID];
+    [FileUtils slideToDownload:self.slideID];
     
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -245,7 +227,7 @@
         [self extractZipFile];
         [self reloadSlideDesc];
         
-        [FileUtils slideDownloaded:self.slideID];
+        [self.slide downloaded];
     }
     
     [self updateBtnDownloadOrDisplayIcon];
@@ -258,14 +240,27 @@
  *  DOWNLOAD_DIRNAME/id.zip 解压至 CONTENT_DIRNAME/id
  */
 - (void) extractZipFile {
-    NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.slideID];
+    NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.slide.ID];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    NSString *filesPath = [FileUtils getPathName:SLIDE_DIRNAME];
-    NSString *filePath = [filesPath stringByAppendingPathComponent:self.slideID];
     
     // 解压
-    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:filePath];
-    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slideID, state ? @"成功" : @"失败"]);
+    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:self.slide.path];
+    NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slide.ID, state ? @"成功" : @"失败"]);
+    // make sure not nest
+    if(!self.slide.isDownloaded) {
+        NSString *slidePath = [self.slide.path stringByAppendingPathComponent:self.slide.ID];
+        if([FileUtils checkFileExist:slidePath isDir:YES]) {
+            NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", self.slide.path];
+            NSError *error;
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager moveItemAtPath:slidePath toPath:tmpPath error:&error];
+            NSErrorPrint(error, @"move file# %@ => %@", slidePath, tmpPath);
+            [fileManager removeItemAtPath:self.slide.path error:&error];
+            NSErrorPrint(error, @"remove file %@", self.slide.path);
+            [fileManager moveItemAtPath:tmpPath toPath:self.slide.path error:&error];
+            NSErrorPrint(error, @"move file %@ => %@", tmpPath, self.slide.path);
+        }
+    }
 }
 
 /**

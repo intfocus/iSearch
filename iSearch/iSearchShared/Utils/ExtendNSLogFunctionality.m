@@ -78,9 +78,12 @@ void actionLogPost(const char *sourceFile, int lineNumber, const char *functionN
     [HttpUtils httpPost:ACTION_LOGGER_URL_PATH Data:data];
 }
 
-NSString* propertyDefault(NSString *propertyValue, NSString *defaultVlaue) {
-    if(propertyValue == nil) {
-        propertyValue = [NSString stringWithString:defaultVlaue];
+BOOL isNil(NSObject *propertyValue) {
+    return (propertyValue == nil || propertyValue == [NSNull null] || propertyValue == NULL);
+}
+NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue) {
+    if(isNil(propertyValue)) {
+        propertyValue = defaultVlaue;
     }
     return propertyValue;
 }

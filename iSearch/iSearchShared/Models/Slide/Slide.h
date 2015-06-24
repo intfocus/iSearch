@@ -50,11 +50,15 @@
 
 // instance methods
 - (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;
-- (BOOL)isDownload;
 - (void)save;
 - (void)cached:(NSString *)cacheName;
 - (NSString *)inspect;
 - (NSString *)to_s;
 - (NSMutableDictionary *) refreshFields;
+
+- (NSString *)toDownloaded;
+- (BOOL)isDownloaded;
+- (BOOL)isDownloading;
+- (NSString *)downloaded;
 @end
 #endif

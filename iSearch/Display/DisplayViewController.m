@@ -161,20 +161,29 @@
  */
 - (void) loadHtml {
     NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
-//    NSString *htmlFile = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
-//    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
-//    
-//    //htmlString = [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
-//    //NSLog(@"%@", htmlFile);
-//    NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];;
-//    NSURL *baseURL = [NSURL fileURLWithPath:basePath];
-//    
-//    [self.webView loadHTMLString:htmlString baseURL:baseURL];
-#warning pdf/mp4 单独加载，其他加载html
-    NSString *pdfFile = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"pdf"];
-    NSURL *targetURL = [NSURL fileURLWithPath:pdfFile];
-    NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
-    [self.webView loadRequest:request];
+    NSString *pdfPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"pdf"];
+    NSString *gifPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"gif"];
+    NSString *filePath;
+    BOOL isHTML = YES;
+    if([FileUtils checkFileExist:pdfPath isDir:NO]) {
+        filePath = pdfPath;
+        isHTML = NO;
+    } else if([FileUtils checkFileExist:gifPath isDir:NO]) {
+        filePath = gifPath;
+        isHTML = NO;
+    }
+    if(isHTML) {
+        filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
+        NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+        [self.webView loadHTMLString:htmlString baseURL:baseURL];
+    } else {
+        NSURL *targetURL = [NSURL fileURLWithPath:filePath];
+        NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
+        [self.webView loadRequest:request];
+    }
+    
 }
 
 - (IBAction)addSlideToFavorite:(UIButton *)sender {
@@ -183,16 +192,17 @@
     }];
     
     // 信息提示
-    if(self.popupView == nil) {
-        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
-        
-        self.popupView.ParentView = self.view;
-    }
     NSString *popupInfo = [NSString stringWithFormat:@"拷贝%@", isSuccessfully ? @"成功" : @"失败"];
     [self showPopupView: popupInfo];
     
 }
 - (void) showPopupView: (NSString*) text {
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.view;
+    }
+    
     [self.popupView setText: text];
     [self.view addSubview:self.popupView];
 }
@@ -336,9 +346,13 @@
     [self stopNote];
     
     NSInteger pageCount = [self.slide.pages count];
-    NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
-    self.currentPageIndex = [NSNumber numberWithInteger:index];
-    [self loadHtml];
+    if([self.currentPageIndex intValue] < pageCount -1) {
+        NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
+        self.currentPageIndex = [NSNumber numberWithInteger:index];
+        [self loadHtml];
+    } else {
+        [self showPopupView:@"最后一页了."];
+    }
     NSLog(@"next - current page index: %@", self.currentPageIndex);
 }
 /**
@@ -351,9 +365,13 @@
     [self stopNote];
     
     NSInteger pageCount = [self.slide.pages count];
-    NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
-    self.currentPageIndex = [NSNumber numberWithInteger:index];
-    [self loadHtml];
+    if([self.currentPageIndex intValue] != 0) {
+        NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
+        self.currentPageIndex = [NSNumber numberWithInteger:index];
+        [self loadHtml];
+    } else {
+        [self showPopupView:@"第一页了."];
+    }
     NSLog(@"next - current page index: %@", self.currentPageIndex);
 }
 

@@ -112,7 +112,7 @@
                 slide = nil;
             }
             slide = [[Slide alloc]initWith:dict Favorite:NO];
-            if(slide.isDownload) {
+            if(slide.isDownloaded) {
                 [slide save];
             }
             // write into cache then [view] slide info with popup view

@@ -112,7 +112,10 @@
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
-    if(self.slide.isDownload) {
+    if(self.slide.isDownloading) {
+        [self.slide downloaded];
+        [self showPopupView:@"请刷新界面"];
+    }else if(self.slide.isDownloaded) {
         NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
@@ -138,7 +141,7 @@
     if([FileUtils checkSlideExist:self.slideID Dir:FAVORITE_DIRNAME Force:NO]) {
         [self showPopupView:@"已在收藏了"];
     } else {
-        if(self.slide.isDownload) {
+        if(self.slide.isDownloaded) {
             BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
                 [DateUtils updateSlideTimestamp:self.dict];
             }];

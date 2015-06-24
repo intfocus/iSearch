@@ -111,20 +111,6 @@
     /**
      *  导航栏控件
      */
-    // 导航左侧按钮区
-//    NSMutableArray* array = [NSMutableArray array];
-//    UIBarButtonItem* item = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"返回"]
-//                                                            style:UIBarButtonItemStylePlain
-//                                                           target:self
-//                                                           action:@selector(actionDismiss:)];
-//    [item setBackgroundImage:[UIImage imageNamed:@"iconBack"] forState:UIControlStateNormal style:UIBarButtonItemStylePlain barMetrics:UIBarMetricsDefault];
-//    [array addObject:item];
-//
-//    
-//    // 导航右侧按钮区
-//    [array removeAllObjects];
-    
-    
     // 编辑状态-切换
     self.barItemEdit = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
                                                        style:UIBarButtonItemStylePlain
@@ -226,29 +212,18 @@
  *  @return @[{pageName: fileID_pageID}]
  */
 - (NSMutableArray*) loadFilePages {
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
-    
     // 此处必须读取swp文件
     // 如果在编辑文档页面界面，移动页面顺序、移除页面时，把app关闭，则再次进入编辑页面界面时是与原配置信息不一样的
     // 用户可以通过[恢复]实现还原最原始的状态
-    NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass: SLIDE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read desc.swp file");
-    descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
-                                               options:NSJSONReadingMutableContainers
-                                                 error:&error];
-    NSErrorPrint(error, @"desc.swp content convert into json");
-    NSMutableArray *pagesOrder = descDict[SLIDE_DESC_ORDER];
+    NSMutableDictionary *descDict = [FileUtils readConfigFile:descSwpPath];
+    NSMutableArray *pagesOrder = [[NSMutableArray alloc] init];
 
-    NSString *pageName = [[NSString alloc] init];
-    for(pageName in pagesOrder) {
-        [array addObject:pageName];
+    if(descDict[SLIDE_DESC_ORDER] != nil) {
+        pagesOrder = descDict[SLIDE_DESC_ORDER];
     }
-    
-    return array;
+    return pagesOrder;
 }
 
 /**
@@ -608,7 +583,14 @@
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
     NSLog(@"%ld => %ld",(long)index1, (long)index2);
     [self excangePageOrder:self.slideID FromIndex:index1 ToIndex:index2];
-    [_dataList exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
+    //[_dataList exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
+    NSString *pageName = [_dataList objectAtIndex:index1];
+    [_dataList insertObject:pageName atIndex:index2];
+    if(index1 > index2) {
+        [_dataList removeObjectAtIndex:(index1+1)];
+    } else {
+        [_dataList removeObjectAtIndex:index1];
+    }
 }
 
 
@@ -616,28 +598,17 @@
 #pragma mark DraggableGridViewTransformingDelegate
 //////////////////////////////////////////////////////////////
 
-- (CGSize)GMGridView:(GMGridView *)gridView sizeInFullSizeForCell:(GMGridViewCell *)cell atIndex:(NSInteger)index
-{   //310, 310
-    return CGSizeMake(150, 100);
+- (CGSize)GMGridView:(GMGridView *)gridView sizeInFullSizeForCell:(GMGridViewCell *)cell atIndex:(NSInteger)index inInterfaceOrientation:(UIInterfaceOrientation)orientation; {
+    return CGSizeMake(213, 234);
 }
 
-- (UIView *)GMGridView:(GMGridView *)gridView fullSizeViewForCell:(GMGridViewCell *)cell atIndex:(NSInteger)index {
+
+- (UIView *)GMGridView:(GMGridView *)gridView fullSizeViewForCell:(GMGridViewCell *)cell atIndex:(NSInteger)index
+{
     UIView *fullView = [[UIView alloc] init];
     fullView.backgroundColor = [UIColor yellowColor];
     fullView.layer.masksToBounds = NO;
     fullView.layer.cornerRadius = 8;
-    
-    CGSize size = [self GMGridView:gridView sizeInFullSizeForCell:cell atIndex:index];
-    fullView.bounds = CGRectMake(0, 0, size.width, size.height);
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:fullView.bounds];
-    label.text = [NSString stringWithFormat:@"Fullscreen View for cell at index %ld", (long)index];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = [UIColor clearColor];
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    label.font = [UIFont boldSystemFontOfSize:15];
-    
-    [fullView addSubview:label];
     
     return fullView;
 }
@@ -814,24 +785,22 @@
 - (void) excangePageOrder:(NSString *)fileId
                 FromIndex:(NSInteger)index1
                   ToIndex:(NSInteger)index2 {
-    
-    NSError *error;
     NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     NSString *descSwpPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-    
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read desc.swp file");
-    NSMutableDictionary *descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                    options:NSJSONReadingMutableContainers
-                                                                      error:&error];
-    NSErrorPrint(error, @"desc.swp content convert into json");
+    NSMutableDictionary *descDict = [FileUtils readConfigFile:descSwpPath];
     
     NSMutableArray *pageOrder = descDict[SLIDE_DESC_ORDER];
-    [pageOrder exchangeObjectAtIndex:index1 withObjectAtIndex:index2];
+    NSString *pageName = [pageOrder objectAtIndex:index1];
+    [pageOrder insertObject:pageName atIndex:index2];
+    if(index1 > index2) {
+        [pageOrder removeObjectAtIndex:(index1+1)];
+    } else {
+        [pageOrder removeObjectAtIndex:index1];
+    }
     
     // 重置order内容并写入配置档
     [descDict setObject:pageOrder forKey:SLIDE_DESC_ORDER];
-    [self writeJSON:descDict Into:descSwpPath];
+    [FileUtils writeJSON:descDict Into:descSwpPath];
 }
 
 /**

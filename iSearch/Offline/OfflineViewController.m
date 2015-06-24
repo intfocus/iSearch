@@ -133,7 +133,7 @@
         // 插入前先删除
         [self.database executeSQL:[NSString stringWithFormat:@"delete from %@;" , OFFLINE_TABLE_NAME]];
 
-        Slide *slide = [Slide alloc];
+        Slide *slide;
         NSString *tmpSql = [[NSString alloc] init];
         NSMutableString *insertSql = [[NSMutableString alloc]init];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
@@ -168,8 +168,11 @@
             // update local slide cache info
             if([dict[CONTENT_FIELD_TYPE] isEqualToString:CONTENT_SLIDE]) {
                 // update local slide desc when already download
-                slide = [slide initWith:dict Favorite:NO];
-                if(slide.isDownload) {
+                if(isNil(slide)) {
+                    slide = nil;
+                }
+                slide = [[Slide alloc]initWith:dict Favorite:NO];
+                if(slide.isDownloaded) {
                     [slide save];
                 }
                 // write into cache then [view] slide info with popup view

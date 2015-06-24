@@ -35,5 +35,6 @@
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 BOOL ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName,BOOL isPrintSuccessfully, NSError *error, NSString *format, ...);
 void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult);
-NSString* propertyDefault(NSString *propertyValue, NSString *defaultVlaue);
+NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue);
+BOOL isNil(NSObject *propertyValue);
 #endif

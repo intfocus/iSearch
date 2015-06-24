@@ -144,19 +144,9 @@
         // b)内容是否为空，c)格式是否为json
         if(errors && [errors count] == 0) {
             // b)内容是否为空，
-            NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-            if(error || ![descContent length]) {
-                [errors addObject:@"fileID/desc.json文件不存在."];
-            }
-            
-            // c)格式是否为json
-            if(errors && [errors count] == 0) {
-                NSMutableDictionary *configDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                  options:NSJSONReadingMutableContainers
-                                                                                    error:&error];
-                if(error || [[configDict allKeys] count] == 0) {
-                    [errors addObject:@"fileID/desc.json为空或解释失败."];
-                }
+            NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
+            if(descPath == nil) {
+                [errors addObject:@"desc is nil"];
             }
         }
     }
@@ -528,7 +518,7 @@
     NSString *cachePath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:cacheName];
     return cachePath;
 }
-+ (NSString *)slideDownloading:(NSString *)slideID {
++ (NSString *)slideToDownload:(NSString *)slideID {
     NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
     [@"downloading" writeToFile:cachePath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
     
