@@ -55,6 +55,7 @@
 
 // instance methods
 - (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
++ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
 
 - (void)save;
 - (BOOL)addToFavorite;
@@ -68,5 +69,9 @@
 - (BOOL)isDownloaded:(BOOL)isForce;
 - (BOOL)isDownloading;
 - (NSString *)downloaded;
+
+- (NSString *)dictSwpPath;
+- (NSMutableDictionary *)dictSwp;
+
 @end
 #endif

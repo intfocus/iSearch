@@ -13,11 +13,12 @@
 #import <Foundation/Foundation.h>
 
 
-@interface ViewFilePage : UIView
+@interface ViewSlidePage : UIView
 
 @property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail; // 缩略图
 @property (weak, nonatomic) IBOutlet UILabel *labelPageNum; // 第几页
 @property (weak, nonatomic) IBOutlet UILabel *labelFrom; // 来自那个文件
+@property (weak, nonatomic) IBOutlet UIButton *btnMask; // 蒙板，处理点击事件
 
 @property (strong, nonatomic) NSMutableDictionary *dict; // 该文件的信息，json格式
 

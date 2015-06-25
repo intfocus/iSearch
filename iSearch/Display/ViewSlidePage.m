@@ -6,11 +6,11 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#import "ViewFilePage.h"
+#import "ViewSlidePage.h"
 #import "const.h"
 #import "message.h"
 
-@implementation ViewFilePage
+@implementation ViewSlidePage
 @synthesize webViewThumbnail;
 @synthesize labelFrom;
 @synthesize labelPageNum;

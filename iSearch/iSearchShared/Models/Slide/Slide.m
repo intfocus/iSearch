@@ -142,6 +142,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
         [DateUtils updateSlideTimestamp:self.dict];
     }];
 }
++ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
+    NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
+    NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
+   return [[Slide alloc]initSlide:dict isFavorite:isFavorite];
+}
 - (NSString *)inspect {
     return [NSString stringWithFormat:@"#<Slide ID: %@, name: %@, type: %@, desc: %@, pages: %@, title: %@, zipSize: %@, pageNum: %@, categoryID: %@, categoryName: %@, createdDate: %@, localCreatedDate: %@, localUpdatedDate: %@, isDisplay: %d", self.ID, self.name, self.type, self.desc, self.pages, self.title, self.zipSize, self.pageNum, self.categoryID, self.categoryName, self.createdDate, self.localCreatedDate, self.localUpdatedDate, self.isDisplay];
 }
@@ -155,6 +161,13 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return (!self.ID || !self.pages || (!self.pages && [pageNum isEqualToString:self.pageNum]));
 }
 
+#pragma mark - edit slide pages
+- (NSString *)dictSwpPath {
+    return [self.path stringByAppendingPathComponent:SLIDE_CONFIG_SWP_FILENAME];
+}
+- (NSMutableDictionary *)dictSwp {
+    return [FileUtils readConfigFile:[self dictSwpPath]];
+}
 #pragma mark - private methods
 
 - (NSMutableDictionary *) refreshFields {

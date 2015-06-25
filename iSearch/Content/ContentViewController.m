@@ -75,10 +75,12 @@
 #pragma mark ViewController (privates methods)
 //////////////////////////////////////////////////////////////
 
-@interface ContentViewController () <GMGridViewDataSource> {
-    __gm_weak GMGridView *_gridView;
-    NSMutableArray       *_dataList;
+@interface ContentViewController ()  <GMGridViewDataSource>
+{
+    __gm_weak GMGridView     *_gridView;
+    NSMutableArray *_dataList;
 }
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
 @property (strong, nonatomic) NSString  *deptID;
 @property (strong, nonatomic) NSString  *categoryID; // 与categoryDict并不冲突，以此值来取它对应的信息
@@ -101,11 +103,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *nothingLabel;
 @property (strong, nonatomic) NSMutableArray *navActionStack;// 用户点击行为
 
-// http download variables begin
-@property (strong, nonatomic) NSURLConnection *downloadConnection;
-@property (strong, nonatomic) NSMutableData   *downloadConnectionData;
-@property (strong, nonatomic) NSString        *downloadSlideUrl;
-@property (strong, nonatomic) NSString        *downloadSlideID;
 
 // 内存管理
 @property (nonatomic, nonatomic) ContentViewController *contentViewController;
@@ -121,19 +118,18 @@
     /**
      *  实例变量初始化
      */
+    _dataList = [[NSMutableArray alloc] init];
     self.navActionStack = [[NSMutableArray alloc] init];
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     self.navActionStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
     
-    _dataList = [[NSMutableArray alloc] init];
     self.categoryDict = [[NSMutableDictionary alloc] init];
     self.filterType  = [NSNumber numberWithInteger:FilterAll];
     
     [self navFilterFont];
     // deptID
     [self assignUserInfo];
-    
     /**
      *  导航栏控件
      */
@@ -153,25 +149,29 @@
     self.view.backgroundColor=[UIColor blackColor];
     
     [self configGridView];
+    [self refreshContent];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self refreshContent];
 }
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
      [self configSpinner];
 }
-
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    _gridView = nil;
+}
 //////////////////////////////////////////////////////////////
 #pragma mark memory management
 //////////////////////////////////////////////////////////////
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    NSLog(@"didReceiveMemoryWarning");
     _gridView = nil;
 }
 
@@ -181,21 +181,16 @@
     [self loading];
     // nav behaviour stack
     [self assignCategoryInfo:self.deptID];
-    // current category name
-    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
+
     
     //  1. 读取本地缓存，优先加载界面
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
-    //[_gridView reloadData];
-    [self configGridView];
-    
+    [_gridView reloadData];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self loadContentData:LOCAL_OR_SERVER_SREVER];
-        //[_gridView reloadData];
-        
-        [self configGridView];
+        [_gridView reloadData];
     });
     self.navBtnBack.enabled = YES;
     [self performSelector:@selector(loaded) withObject:self afterDelay:0.3f];
@@ -214,6 +209,7 @@
     [self.spinnerView stopAnimating];
     [self.navLabel setHidden:NO];
 }
+
 - (void)configSpinner {
     
     CGRect frame = self.navLabel.frame;
@@ -236,21 +232,21 @@
 
 #pragma mark - assistant methods
 
-- (void) configGridView {
+- (void)configGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gmGridView.backgroundColor = [UIColor clearColor];
-    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    //[[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.scrollView addSubview:gmGridView];
     _gridView = gmGridView;
     
-    _gridView.style = GMGridViewStyleSwap;
+    _gridView.style = GMGridViewStylePush;
     _gridView.itemSpacing = 10;
     _gridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     _gridView.centerGrid = YES;
     _gridView.dataSource = self;
     _gridView.backgroundColor = [UIColor clearColor];
-    _gridView.mainSuperView = self.scrollView; //[UIApplication sharedApplication].keyWindow.rootViewController.view;
+    _gridView.mainSuperView = self.scrollView;
     
 }
 
@@ -264,8 +260,89 @@
     
     array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
+
+}
+/**
+ *      1.1 网络环境良好，HttpPost 服务器获取网站目录（json数组格式）
+ *          Post /CONENT_URL_PATH {
+ *              user: user-name or user-email,
+ *              type: 0 , -- 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+ *                id: 0 ,
+ *              lang: zh-CN -- app language
+ *          }
+ *          Response [{
+ *              type: 0,  -- 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+ *              name: dir-name or file-name,
+ *              desc: desc,
+ *               tag:  tags,
+ *                id: 1,    -- 下次请求使用
+ *               url: zip download url when type is file
+ *          }]
+ *
+ *
+ *          说明:
+ *            1. 请求目录返回josn字符串写入CONTENT_DIRNAME/id.json
+ *            2. 请求下载文档，压缩包放至DOWNLOAD_DIRNAME/id.zip， 解压至FILE_DIRNAME/id
+ *            3. 压缩包文件名称不作要求，其压缩文件格式应为: id/{index.html, images/}
+ *
+ *  @param fid  文件在服务器上的id
+ *  @param type 文件类型
+ */
+// 代码抽取放在ContentUtils.h文件中
+
+//////////////////////////////////////////////////////////////
+#pragma mark GMGridViewDataSource
+//////////////////////////////////////////////////////////////
+
+- (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
+    self.nothingLabel.hidden = (_dataList.count != 0);
+
+    return [_dataList count];
 }
 
+
+- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
+}
+
+- (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
+    GMGridViewCell *cell = [gridView dequeueReusableCell];
+
+    if (!cell) {
+        cell = [[GMGridViewCell alloc] init];
+    }
+    // 根据服务器返回的JSON数据显示文件夹或文档。
+    NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+    NSString *contentType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
+    
+    /**
+     *  目录: 0; 文档: 1; 直文档: 2; 视频: 4
+     *  category: name; slide: title;(name is origin upload filename)
+     */
+    if([contentType isEqualToString:CONTENT_CATEGORY]) {
+        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+        viewCategory.labelTitle.text =  [NSString stringWithFormat:@"%ld - %@", index, currentDict[CONTENT_FIELD_NAME]];
+        
+        [viewCategory setImageWith:CONTENT_CATEGORY CategoryID:currentDict[CONTENT_FIELD_ID]];
+        viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+        NSLog(@"category - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_NAME]);
+        [cell setContentView: viewCategory];
+    } else {
+        ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+        viewSlide.labelTitle.text = [NSString stringWithFormat:@"%ld - %@", index, currentDict[CONTENT_FIELD_TITLE]];
+        
+        viewSlide.isFavorite = NO;
+        viewSlide.dict = currentDict;
+        viewSlide.masterViewController = [self masterViewController];
+        
+        NSLog(@"slide - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_TITLE]);
+        [cell setContentView: viewSlide];
+    }
+    return cell;
+}
+#pragma mark - control action
 /**
  *  读取配置档，获取用户信息
  */
@@ -273,11 +350,6 @@
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
     self.deptID = userDict[USER_DEPTID];
-    
-    if(!self.deptID || [self.deptID length] == 0) {
-        NSLog(@"Fail read DeptID!");
-        abort();
-    }
 }
 /**
  *  取得当前目录视图下的分类ID
@@ -289,7 +361,7 @@
  */
 - (void)assignCategoryInfo:(NSString *)deptID {
     self.categoryID = [self.navActionStack lastObject];
-
+    
     NSString *parentID = CONTENT_ROOT_ID;
     if([self.navActionStack count] >= 2) {
         // 倒数第二个为父ID
@@ -297,6 +369,8 @@
         parentID = [self.navActionStack objectAtIndex:index];
     }
     self.categoryDict = [ContentUtils readCategoryInfo:self.categoryID ParentID:parentID DepthID:deptID];
+    // current category name
+    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
 }
 
 #pragma mark - controls action
@@ -368,7 +442,7 @@
             break;
     }
     
-    [self configGridView];
+    [_gridView reloadData];
 }
 
 - (IBAction)actionNavSortByName:(UIButton *)sender {
@@ -399,7 +473,7 @@
         default:
             break;
     }
-    [self configGridView];
+    [_gridView reloadData];
 }
 
 - (IBAction)actionNavFilterAll:(id)sender {
@@ -407,21 +481,21 @@
     [self navFilterFont];
     NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
-    [self configGridView];
+    [_gridView reloadData];
 }
 
 - (IBAction)actionNavFilterOne:(id)sender {
     self.filterType = [NSNumber numberWithInteger:FilterCategory];
     [self navFilterFont];
     _dataList = self.dataListOne;
-    [self configGridView];
+    [_gridView reloadData];
 }
 
 - (IBAction)actionNavFilterTwo:(id)sender {
     self.filterType = [NSNumber numberWithInteger:FilterSlide];
     [self navFilterFont];
     _dataList = self.dataListTwo;
-    [self configGridView];
+    [_gridView reloadData];
 }
 
 - (void)navFilterFont {
@@ -448,99 +522,4 @@
             break;
     }
 }
-
-/**
- *      1.1 网络环境良好，HttpPost 服务器获取网站目录（json数组格式）
- *          Post /CONENT_URL_PATH {
- *              user: user-name or user-email,
- *              type: 0 , -- 目录: 0; 文档: 1; 直文档: 2; 视频: 4
- *                id: 0 ,
- *              lang: zh-CN -- app language
- *          }
- *          Response [{
- *              type: 0,  -- 目录: 0; 文档: 1; 直文档: 2; 视频: 4
- *              name: dir-name or file-name,
- *              desc: desc,
- *               tag:  tags,
- *                id: 1,    -- 下次请求使用
- *               url: zip download url when type is file
- *          }]
- *
- *
- *          说明:
- *            1. 请求目录返回josn字符串写入CONTENT_DIRNAME/id.json
- *            2. 请求下载文档，压缩包放至DOWNLOAD_DIRNAME/id.zip， 解压至FILE_DIRNAME/id
- *            3. 压缩包文件名称不作要求，其压缩文件格式应为: id/{index.html, images/}
- *
- *  @param fid  文件在服务器上的id
- *  @param type 文件类型
- */
-// 代码抽取放在ContentUtils.h文件中
-
-//////////////////////////////////////////////////////////////
-#pragma mark GMGridViewDataSource
-//////////////////////////////////////////////////////////////
-
-- (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
-    if (_dataList.count == 0) {
-        self.nothingLabel.hidden = NO;
-    } else {
-        self.nothingLabel.hidden = YES;
-    }
-    return [_dataList count];
-}
-
-
-- (CGSize)GMGridView:(GMGridView *)gridView sizeForItemsInInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    return CGSizeMake(SIZE_GRID_VIEW_PAGE_WIDTH, SIZE_GRID_VIEW_PAGE_WIDTH);
-}
-
-- (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
-    
-    GMGridViewCell *cell = [gridView dequeueReusableCell];
-    if (!cell) {
-        cell = [[GMGridViewCell alloc] init];
-        
-        // 根据服务器返回的JSON数据显示文件夹或文档。
-        NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        
-        // 服务器端Category没有ID值
-        if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
-            currentDict[CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
-            [_dataList objectAtIndex:index][CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
-        }
-        NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
-        
-
-        /**
-         *  目录: 0; 文档: 1; 直文档: 2; 视频: 4
-         *  category: name; slide: title;(name is origin upload filename)
-         */
-        if([categoryType isEqualToString:CONTENT_CATEGORY]) {
-            ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-            viewCategory.labelTitle.text =  currentDict[CONTENT_FIELD_NAME];
-            
-            [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
-            viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-            [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
-            
-            [cell setContentView: viewCategory];
-        } else {
-            ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-            viewSlide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
-
-            viewSlide.isFavorite = NO;
-            viewSlide.dict = currentDict;
-            viewSlide.masterViewController = [self masterViewController];
-
-            [cell setContentView: viewSlide];
-        }
-    }
-    return cell;
-}
-#pragma mark - assistant methods
-
-
-
-#
 @end

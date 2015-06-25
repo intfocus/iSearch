@@ -107,16 +107,17 @@
  *
  *  @param sender UIBarButtonItem
  */
+#warning todo deal
 - (IBAction)actionSave:(UIBarButtonItem *)sender {
     NSString *fileName = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
     NSMutableDictionary *descDict = [FileUtils getDescFromFavoriteWithName:fileName];
 //    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:ADDTAG_CONFIG_FILENAME];
 //    [FileUtils writeJSON:descDict Into:configPath];
     
-    MainAddNewTagView *masterView1 = [self masterViewController];
-    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-    [masterView2 actionSavePagesAndMoveFiles:descDict];
-    [masterView2 dismissPopup];
+//    MainAddNewTagView *masterView1 = [self masterViewController];
+//    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+//    [masterView2 actionSavePagesAndMoveFiles:descDict];
+//    [masterView2 dismissPopup];
 }
 
 /**

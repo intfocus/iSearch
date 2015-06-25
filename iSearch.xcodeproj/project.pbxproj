@@ -26,6 +26,8 @@
 		C4357C2E1B392C4100854524 /* thumbnailSlideDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = C4357C2D1B392C4100854524 /* thumbnailSlideDefault.png */; };
 		C44785FF1B3BC065006D4806 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44785FE1B3BC065006D4806 /* SettingViewController.m */; };
 		C44786011B3BC06F006D4806 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44786001B3BC06F006D4806 /* SettingViewController.xib */; };
+		C44786031B3C5679006D4806 /* gmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44786021B3C5679006D4806 /* gmView.xib */; };
+		C44786061B3C5693006D4806 /* gmView.m in Sources */ = {isa = PBXBuildFile; fileRef = C44786051B3C5693006D4806 /* gmView.m */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
 		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
@@ -72,8 +74,8 @@
 		C4BED08A1B2FFEE2000147A2 /* LogUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED06B1B2FFEE2000147A2 /* LogUtils.m */; };
 		C4BED08B1B2FFEE2000147A2 /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED06D1B2FFEE2000147A2 /* PopupView.m */; };
 		C4BED08C1B2FFEE2000147A2 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED06F1B2FFEE2000147A2 /* ViewUtils.m */; };
-		C4BED0951B2FFF49000147A2 /* ViewFilePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED0931B2FFF49000147A2 /* ViewFilePage.m */; };
-		C4BED0961B2FFF49000147A2 /* ViewFilePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BED0941B2FFF49000147A2 /* ViewFilePage.xib */; };
+		C4BED0951B2FFF49000147A2 /* ViewSlidePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED0931B2FFF49000147A2 /* ViewSlidePage.m */; };
+		C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BED0941B2FFF49000147A2 /* ViewSlidePage.xib */; };
 		C4BFEF481B2E6AF60080D7EE /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */; };
 		C4D253CB1B326B410033F697 /* AddNewTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D253C31B326B410033F697 /* AddNewTagView.m */; };
 		C4D253CC1B326B410033F697 /* AddNewTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D253C41B326B410033F697 /* AddNewTagView.xib */; };
@@ -137,6 +139,9 @@
 		C44785FD1B3BC055006D4806 /* SettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
 		C44785FE1B3BC065006D4806 /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
 		C44786001B3BC06F006D4806 /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		C44786021B3C5679006D4806 /* gmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = gmView.xib; sourceTree = "<group>"; };
+		C44786041B3C5685006D4806 /* gmView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gmView.h; sourceTree = "<group>"; };
+		C44786051B3C5693006D4806 /* gmView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gmView.m; sourceTree = "<group>"; };
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
@@ -217,9 +222,9 @@
 		C4BED06D1B2FFEE2000147A2 /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
 		C4BED06E1B2FFEE2000147A2 /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
 		C4BED06F1B2FFEE2000147A2 /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
-		C4BED0921B2FFF49000147A2 /* ViewFilePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFilePage.h; sourceTree = "<group>"; };
-		C4BED0931B2FFF49000147A2 /* ViewFilePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFilePage.m; sourceTree = "<group>"; };
-		C4BED0941B2FFF49000147A2 /* ViewFilePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewFilePage.xib; sourceTree = "<group>"; };
+		C4BED0921B2FFF49000147A2 /* ViewSlidePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlidePage.h; sourceTree = "<group>"; };
+		C4BED0931B2FFF49000147A2 /* ViewSlidePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlidePage.m; sourceTree = "<group>"; };
+		C4BED0941B2FFF49000147A2 /* ViewSlidePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlidePage.xib; sourceTree = "<group>"; };
 		C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineViewController.xib; sourceTree = "<group>"; };
 		C4D253C21B326B410033F697 /* AddNewTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewTagView.h; sourceTree = "<group>"; };
 		C4D253C31B326B410033F697 /* AddNewTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewTagView.m; sourceTree = "<group>"; };
@@ -379,9 +384,9 @@
 		C42EE8281B317ED500C1CA0B /* PageView */ = {
 			isa = PBXGroup;
 			children = (
-				C4BED0921B2FFF49000147A2 /* ViewFilePage.h */,
-				C4BED0931B2FFF49000147A2 /* ViewFilePage.m */,
-				C4BED0941B2FFF49000147A2 /* ViewFilePage.xib */,
+				C4BED0921B2FFF49000147A2 /* ViewSlidePage.h */,
+				C4BED0931B2FFF49000147A2 /* ViewSlidePage.m */,
+				C4BED0941B2FFF49000147A2 /* ViewSlidePage.xib */,
 			);
 			name = PageView;
 			sourceTree = "<group>";
@@ -470,6 +475,9 @@
 				C44923591B2AF72900E3BB65 /* ContentViewController.xib */,
 				C46497471B2D8C03005E3903 /* ContentUtils.h */,
 				C46497451B2D8BFB005E3903 /* ContentUtis.m */,
+				C44786021B3C5679006D4806 /* gmView.xib */,
+				C44786041B3C5685006D4806 /* gmView.h */,
+				C44786051B3C5693006D4806 /* gmView.m */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -835,7 +843,7 @@
 			files = (
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
 				C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */,
-				C4BED0961B2FFF49000147A2 /* ViewFilePage.xib in Resources */,
+				C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */,
 				C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */,
 				C4D253CC1B326B410033F697 /* AddNewTagView.xib in Resources */,
 				C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */,
@@ -852,6 +860,7 @@
 				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
 				C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */,
 				C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */,
+				C44786031B3C5679006D4806 /* gmView.xib in Resources */,
 				C44786011B3BC06F006D4806 /* SettingViewController.xib in Resources */,
 				C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */,
 				C46497341B2D8244005E3903 /* OneViewController.xib in Resources */,
@@ -942,13 +951,14 @@
 				C4D253E51B32FE030033F697 /* ViewSlide.m in Sources */,
 				C4BED07C1B2FFEE2000147A2 /* UIGestureRecognizer+GMGridViewAdditions.m in Sources */,
 				C42EC8791B289082000F84EF /* LoginViewController.m in Sources */,
-				C4BED0951B2FFF49000147A2 /* ViewFilePage.m in Sources */,
+				C4BED0951B2FFF49000147A2 /* ViewSlidePage.m in Sources */,
 				C4D253E81B32FE030033F697 /* ViewCategory.m in Sources */,
 				C4D253E71B32FE030033F697 /* PaintView.m in Sources */,
 				C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */,
 				C4BED0881B2FFEE2000147A2 /* FileUtils.m in Sources */,
 				C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */,
 				C4BED07D1B2FFEE2000147A2 /* UIView+GMGridViewAdditions.m in Sources */,
+				C44786061B3C5693006D4806 /* gmView.m in Sources */,
 				C46497301B2D6772005E3903 /* HomeViewController.m in Sources */,
 				C4D253CF1B326B410033F697 /* TagListView.m in Sources */,
 				C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */,

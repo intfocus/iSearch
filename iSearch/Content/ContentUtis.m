@@ -48,27 +48,34 @@
         categoryList = [ContentUtils loadContentDataFromServer:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
         slideList     = [ContentUtils loadContentDataFromServer:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
     }
-    else {
-        NSLog(@"=BUG= not support localOrServer=%@", localOrServer);
-    }
     // mark sure array not nil
+    if(!categoryList) { categoryList = [[NSMutableArray alloc] init]; }
+    if(!slideList) { slideList = [[NSMutableArray alloc] init]; }
     
-    if(categoryList == nil) {
-        categoryList = [[NSMutableArray alloc] init];
-    }
-    if(slideList == nil) {
-        slideList = [[NSMutableArray alloc] init];
-    }
-    
+    NSInteger i = 0;
+    NSString *sID = [[NSString alloc] init];
+    NSNumber *nID = [[NSNumber alloc] init];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     // order
     if([categoryList count] > 0) {
-        categoryList = [ContentUtils sortArray:categoryList Key:sortKey Ascending:isAsceding];
+        for(dict in categoryList) {
+            sID = dict[CONTENT_FIELD_ID];
+            nID = [NSNumber numberWithInteger:[sID intValue]];
+            [dict setObject:nID forKey:CONTENT_SORT_KEY];
+            if(!dict[CONTENT_FIELD_TYPE])
+                [dict setObject:CONTENT_CATEGORY forKey:CONTENT_FIELD_TYPE];
+        }
+        categoryList = [ContentUtils sortArray:categoryList Key:CONTENT_SORT_KEY Ascending:isAsceding];
     }
     if([slideList count] > 0) {
-        slideList = [ContentUtils sortArray:slideList Key:sortKey Ascending:isAsceding];
+        for(i = 0; i < [categoryList count]; i++) {
+            sID = categoryList[i][CONTENT_FIELD_ID];
+            nID = [NSNumber numberWithInteger:[sID intValue]];
+            [categoryList[i] setObject:nID forKey:CONTENT_SORT_KEY];
+        }
+        slideList = [ContentUtils sortArray:slideList Key:CONTENT_SORT_KEY Ascending:isAsceding];
     }
     
-#warning make sure return two array
     return @[categoryList, slideList];
 }
 
@@ -89,9 +96,6 @@
         urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_PARENTID, categoryID];
     } else if([type isEqualToString:CONTENT_SLIDE]) {
         urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_FILE_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_FILE_CATEGORYID, categoryID];
-    } else {
-        NSLog(@"Not Support [%@]", type);
-        return mutableArray;
     }
     
     response = [HttpUtils httpGet: urlPath];
@@ -99,27 +103,25 @@
                                                                         options:NSJSONReadingMutableContainers
                                                                           error:&error];
     NSErrorPrint(error, @"string convert into json");
-    if(responseJSON[CONTENT_FIELD_DATA] != nil) {
+    if(responseJSON[CONTENT_FIELD_DATA]) {
         mutableArray = responseJSON[CONTENT_FIELD_DATA];
     }
     
-    Slide *slide;
     // update local slide cache info
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        Slide *slide;
         for(dict in mutableArray) {
             slide = [[Slide alloc]initSlide:dict isFavorite:NO];
             [slide toCached];
-            if([slide isDownloaded:NO]) {
-                [slide save];
-            }
+            if([slide isDownloaded:NO]) { [slide save]; }
         }
     }
-    NSString *cacheName = [ContentUtils contentCacheName:type ID:categoryID];
-    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     
     // 解析成功、获取数据不为空时，写入本地缓存
     if(!error && [mutableArray count] > 0) {
+        NSString *cacheName = [ContentUtils contentCacheName:type ID:categoryID];
+        NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
         [FileUtils writeJSON:responseJSON Into:cachePath];
     }
     

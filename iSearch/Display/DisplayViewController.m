@@ -142,15 +142,25 @@
     
     [self loadSlideInfo];
     [self extractResource];
-    [self loadHtml];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    NSNumber *indexJumpTo = configDict[SLIDE_DISPLAY_JUMPTO];
+    if(indexJumpTo && ![self.currentPageIndex isEqual:indexJumpTo]) {
+        self.currentPageIndex = indexJumpTo;
+        [self showPopupView:[NSString stringWithFormat:@"跳致%@页", indexJumpTo]];
+    }
+    [self loadHtml];
 }
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    NSLog(@"see you later.");
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -160,6 +170,10 @@
  *  控件事件
  */
 - (void) loadHtml {
+    if([self.currentPageIndex integerValue] > [self.slide.pages count]-1) {
+        self.currentPageIndex = [NSNumber numberWithInteger:0];
+        NSLog(@"Bug: DisplayViewController set Jumpto %@", self.currentPageIndex);
+    }
     NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
     NSString *pdfPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"pdf"];
     NSString *gifPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"gif"];
@@ -478,6 +492,7 @@
             NSLog(@"Bug#not set DisplayViewController#callingController2");
         }
     }
+    self.webView = nil;
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 

@@ -290,7 +290,7 @@
 - (void)dismissPopupSlideInfo {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-            _slideInfoView = nil;
+#warning refresh view after remove cell
         }];
     }
 }

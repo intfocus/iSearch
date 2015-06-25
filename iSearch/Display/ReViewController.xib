@@ -159,7 +159,7 @@
     </objects>
     <resources>
         <image name="iconBack" width="22" height="22"/>
-        <image name="iconEdit2" width="44" height="44"/>
+        <image name="iconEdit2" width="60" height="63"/>
         <image name="iconRemove" width="44" height="44"/>
         <image name="iconRestore" width="44" height="44"/>
         <image name="iconSaveTo" width="44" height="44"/>

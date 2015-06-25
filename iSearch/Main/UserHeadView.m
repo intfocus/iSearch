@@ -31,7 +31,8 @@
     User *user = [[User alloc] init];
     self.nameView.text = user.name;
     self.dateView.text = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
-#warning online state
+    
+    self.stateView.hidden = YES;
 }
 
 @end
