@@ -65,6 +65,7 @@
 #import "FileUtils.h"
 #import "DateUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import "MMMaterialDesignSpinner.h"
 
 #define NUMBER_ITEMS_ON_LOAD 10
 #define SIZE_GRID_VIEW_CELL_WIDTH 120//230
@@ -88,6 +89,7 @@
 // 顶部控件
 @property (weak, nonatomic) IBOutlet UIButton *navBtnBack; // 返回
 @property (weak, nonatomic) IBOutlet UILabel  *navLabel;   // 当前分类名称
+@property (strong, nonatomic) MMMaterialDesignSpinner *spinnerView;
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterAll;   // 全部
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterOne;   // 分类
 @property (weak, nonatomic) IBOutlet UIButton *navBtnFilterTwo;   // 文献
@@ -154,8 +156,26 @@
     
     [self refreshContent];
 }
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    NSLog(@"%@", NSStringFromCGRect(self.navLabel.frame));
+     [self configSpinner];
+}
 
+//////////////////////////////////////////////////////////////
+#pragma mark memory management
+//////////////////////////////////////////////////////////////
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+    _gridView = nil;
+}
+
+
+#pragma mark - assistant methods
 - (void) refreshContent {
+    [self loading];
     // nav behaviour stack
     [self assignCategoryInfo:self.deptID];
     // current category name
@@ -175,15 +195,39 @@
         [self configGridView];
     });
     self.navBtnBack.enabled = YES;
+    [self performSelector:@selector(loaded) withObject:self afterDelay:0.3f];
 }
 
-//////////////////////////////////////////////////////////////
-#pragma mark memory management
-//////////////////////////////////////////////////////////////
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    _gridView = nil;
+#pragma mark - spinner loading
+- (void)loading {
+    if(!self.spinnerView) return;
+    
+    [self.navLabel setHidden:YES];
+    [self.spinnerView startAnimating];
+}
+- (void)loaded {
+    if(!self.spinnerView) return;
+    
+    [self.spinnerView stopAnimating];
+    [self.navLabel setHidden:NO];
+}
+- (void)configSpinner {
+    
+    CGRect frame = self.navLabel.frame;
+    frame.origin.x = frame.origin.x + frame.size.width/2;
+    frame.origin.y = frame.origin.y + 30;
+    frame.size.width = 20;
+    frame.size.height = 20;
+    if(!self.spinnerView) {
+        self.spinnerView = [[MMMaterialDesignSpinner alloc] initWithFrame:frame];
+        // Set the line width of the spinner
+        self.spinnerView.lineWidth = 1.5f;
+        // Set the tint color of the spinner
+        self.spinnerView.tintColor = [UIColor purpleColor];
+        [self.view addSubview:self.spinnerView];
+    } else {
+        self.spinnerView.frame = frame;
+    }
 }
 
 
