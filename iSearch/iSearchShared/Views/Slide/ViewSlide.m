@@ -82,7 +82,7 @@
 - (IBAction)actionDisplaySlideInfo:(UIButton *)sender {
     MainViewController *mainViewController = [self masterViewController];
 //    [mainViewController poupSlideInfo:self.slideID Dir:self.dirName];
-    [mainViewController poupSlideInfo:[self.slide refreshFields] isFavorite:self.isFavorite];
+    [mainViewController popupSlideInfo:[self.slide refreshFields] isFavorite:self.isFavorite];
 }
 
 

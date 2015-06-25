@@ -33,10 +33,12 @@
  *  @param slideID 文档ID
  *  @param dirName SLIDE_DIRNAME/FAVORITE_DIRNAME
  */
-//- (void)poupSlideInfo:(NSString *)slideID Dir:(NSString *)dirName;
-- (void)poupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
-- (void)dismissPopup;
+- (void)popupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
+- (void)dismissPopupSlideInfo;
 
+- (void)popupSettingViewController;
+- (void)dimmissPopupSettingViewController;
+- (void)backToLoginViewController;
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;
 

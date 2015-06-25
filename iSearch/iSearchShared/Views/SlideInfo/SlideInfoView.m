@@ -126,7 +126,7 @@
         if(isSuccessfully) {
             [self showPopupView:@"移除成功"];
         }
-        [self.masterViewController dismissPopup];
+        [self.masterViewController dismissPopupSlideInfo];
     } else {
         [self showPopupView:@"未曾下载，\n何言移除！"];
     }

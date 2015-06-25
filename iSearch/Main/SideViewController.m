@@ -13,6 +13,7 @@
 #import "OfflineViewController.h"
 #import "HomeViewController.h"
 #import "FavoriteViewController.h"
+#import "SettingViewController.h"
 
 
 #import "UserHeadView.h"
@@ -67,8 +68,8 @@
     }
     
     // warning 此处位置调整时，需要修改
-    NSArray *array=@[@"首页",@"收藏",@"通知",@"下载",@"设置",@"登出"];//
-    NSArray *images = @[@"iconIndex",@"iconCollection",@"iconNotification",@"iconDownload",@"iconSetup",@"iconSignOut"];//
+    NSArray *array=@[@"首页",@"收藏",@"通知",@"下载",@"设置"];//,@"登出"];//
+    NSArray *images = @[@"iconIndex",@"iconCollection",@"iconNotification",@"iconDownload",@"iconSetup"];//,@"iconSignOut"];//
 
     //[array objectAtIndex:10];
 
@@ -122,9 +123,7 @@
             vc=[[OfflineViewController alloc] initWithNibName:nil bundle:nil];
             break;
             
-        case EntryButtonSetting: {
- 
-        }
+        case EntryButtonSetting:
             break;
             
         case EntryButtonLogout:
