@@ -32,7 +32,7 @@
     
     if(self.slide == nil) {
         [self columnToContent];
-        self.slide = [[Slide alloc]initWith:self.dict Favorite:NO];
+        self.slide = [[Slide alloc]initSlide:dict isFavorite:NO];
     }
     
     [self checkSlideDownloadBtn];

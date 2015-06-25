@@ -79,7 +79,7 @@ void actionLogPost(const char *sourceFile, int lineNumber, const char *functionN
 }
 
 BOOL isNil(NSObject *propertyValue) {
-    return (propertyValue == nil || propertyValue == [NSNull null] || propertyValue == NULL);
+    return (!propertyValue || propertyValue == [NSNull null] || propertyValue == NULL);
 }
 NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue) {
     if(isNil(propertyValue)) {

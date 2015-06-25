@@ -103,6 +103,9 @@
 @property (strong, nonatomic) NSMutableData   *downloadConnectionData;
 @property (strong, nonatomic) NSString        *downloadSlideUrl;
 @property (strong, nonatomic) NSString        *downloadSlideID;
+
+// 内存管理
+@property (nonatomic, nonatomic) ContentViewController *contentViewController;
 // http download variables end
 
 @end
@@ -274,6 +277,7 @@
     [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
     [FileUtils writeJSON:configDict Into:configPath];
     
+#warning refresh self
     // enter ContentViewController
     MainViewController *mainViewController = [self masterViewController];
     ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
@@ -306,6 +310,7 @@
         HomeViewController *homeViewController = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
         [mainViewController setRightViewController:homeViewController withNav: NO];
     } else {
+#warning refresh self
         // 刷新本视图
         ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
         [mainViewController setRightViewController:contentViewController withNav: NO];

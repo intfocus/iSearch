@@ -13,9 +13,11 @@
  *  文档格式: 
  *    1. 已下载文件desc.json
  *    2. 服务器目录数据
- *    3. 离线下载文件列表
+ *    3. 离线下载文件列表,字段名称以2为主(categoryName只有这里有)
  *
  *   三种数据格式，处理逻辑都放在这里。
+ *
+ *   以目录数据为主，如果已下载，则读取[order]，如果已经离线下载，则读取[categoryName]
  */
 @interface Slide : NSObject
 
@@ -35,29 +37,34 @@
 @property (nonatomic, strong) NSMutableArray *pages;
 
 // backup
-@property (nonatomic, strong) NSString *path;
-@property (nonatomic, strong) NSString *descPath;
-@property (nonatomic, strong) NSMutableDictionary *assignDict;
-@property (nonatomic, strong) NSMutableDictionary *descDict;
+@property (nonatomic, strong) NSString *path; // slide path
+@property (nonatomic, strong) NSString *descPath; // slide desc file path
+@property (nonatomic, strong) NSString *descContent; // origin desc.json content
+@property (nonatomic, strong) NSString *dictPath; 
+@property (nonatomic, strong) NSMutableDictionary *dict;
+@property (nonatomic, strong) NSMutableDictionary *descDict1; // origin desc.json json
+@property (nonatomic, strong) NSMutableDictionary *cacheDict; // content cache json
 @property (nonatomic, nonatomic) BOOL isFavorite;
 
 // local fields
-@property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, nonatomic) BOOL isDisplay;
+@property (nonatomic, strong) NSString *dirName;
+@property (nonatomic, strong) NSString *typeName;
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
-@property (nonatomic, strong) NSString *typeName;
 
 // instance methods
-- (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite;
+- (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
+
 - (void)save;
-- (void)cached:(NSString *)cacheName;
+- (void)toCached;
 - (NSString *)inspect;
 - (NSString *)to_s;
 - (NSMutableDictionary *) refreshFields;
 
 - (NSString *)toDownloaded;
 - (BOOL)isDownloaded;
+- (BOOL)isDownloaded:(BOOL)isForce;
 - (BOOL)isDownloading;
 - (NSString *)downloaded;
 @end

@@ -66,7 +66,6 @@
 *  @return cacheName
 */
 + (NSString *)contentCacheName:(NSString *)type
-                        DeptID:(NSString *)deptID
                     ID:(NSString *)categoryID;
 
 

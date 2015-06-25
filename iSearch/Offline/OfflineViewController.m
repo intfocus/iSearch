@@ -171,13 +171,12 @@
                 if(isNil(slide)) {
                     slide = nil;
                 }
-                slide = [[Slide alloc]initWith:dict Favorite:NO];
+                slide = [[Slide alloc]initSlide:dict isFavorite:NO];
                 if(slide.isDownloaded) {
                     [slide save];
                 }
                 // write into cache then [view] slide info with popup view
-                NSString *cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:user.deptID ID:slide.ID];
-                [slide cached:cacheName];
+                [slide toCached];
                 /**
                  *  warning: 此处不更新desc的SLIDE_DESC_LOCAL_UPDATEDAT,该信息用来记录用户的操作时候
                  */

@@ -24,6 +24,7 @@
 @property (nonatomic, nonatomic) PopupView *popupView;
 
 // http download variables begin
+@property (strong, nonatomic) NSString   *downloadURL;
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
 @property (strong, nonatomic) NSMutableData   *downloadConnectionData;
 // http download variables end
@@ -38,7 +39,8 @@
 # pragma mark - rewrite setter
 
 - (void)setDict:(NSMutableDictionary *)dict {
-    self.slide = [[Slide alloc] initWith:dict Favorite:self.isFavorite];
+    self.slide = [[Slide alloc] initSlide:dict isFavorite:self.isFavorite];
+        
     self.slideID = self.slide.ID;
     self.dirName = self.slide.dirName;
     self.labelTitle.text = self.slide.title;
@@ -70,9 +72,9 @@
     } else if(self.slide.isDownloaded) {
         [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
     } else {
-        NSString *downloadUrl = [NSString stringWithFormat:@"%@%@?%@=%@",
+        self.downloadURL = [NSString stringWithFormat:@"%@%@?%@=%@",
                                  BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
-        [self downloadZip:downloadUrl];
+        [self downloadZip:self.downloadURL];
     }
     [self updateBtnDownloadOrDisplayIcon];
 }
@@ -214,12 +216,12 @@
 
 - (void) connectionDidFinishLoading: (NSURLConnection *)connection{
     /* 下载的数据 */
-    NSLog(@"%@", [NSString stringWithFormat:@"下载<#id:%@ url:%@> 成功", self.slideID, self.dict[CONTENT_FIELD_URL]]);
+    NSLog(@"%@", [NSString stringWithFormat:@"下载<#id:%@ url:%@> 成功", self.slideID, self.downloadURL]);
     NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.slideID];
     NSString *pathName = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
     
     BOOL state = [self.downloadConnectionData writeToFile:pathName atomically:YES];
-    NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.slideID, self.dict[CONTENT_FIELD_URL], state ? @"成功" : @"失败"]);
+    NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.slideID, self.downloadURL, state ? @"成功" : @"失败"]);
     
 #warning 服务器端响应文字处理：文件不存在
     // 下载zip动作为异步，解压动作应该放在此处
@@ -273,7 +275,7 @@
         self.slide.pages = descDict[SLIDE_DESC_ORDER];
         [self.slide save];
     } else {
-        NSLog(@"Bug Slide#order is nil, %@", self.slide.descPath);
+        NSLog(@"Bug Slide#order is nil, %@", self.slide.dictPath);
     }
 }
 @end

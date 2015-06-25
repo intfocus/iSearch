@@ -108,20 +108,14 @@
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         for(dict in mutableArray) {
-            if(slide != nil) {
-                slide = nil;
-            }
-            slide = [[Slide alloc]initWith:dict Favorite:NO];
-            if(slide.isDownloaded) {
+            slide = [[Slide alloc]initSlide:dict isFavorite:NO];
+            [slide toCached];
+            if([slide isDownloaded:NO]) {
                 [slide save];
             }
-            // write into cache then [view] slide info with popup view
-            NSString *cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:deptID ID:slide.ID];
-            [slide cached:cacheName];
-
         }
     }
-    NSString *cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
+    NSString *cacheName = [ContentUtils contentCacheName:type ID:categoryID];
     NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     
     // 解析成功、获取数据不为空时，写入本地缓存
@@ -136,7 +130,7 @@
                                      DeptID:(NSString *)deptID
                                  CategoryID:(NSString *)categoryID {
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *cacheName = [ContentUtils contentCacheName:type DeptID:deptID ID:categoryID];
+    NSString *cacheName = [ContentUtils contentCacheName:type ID:categoryID];
     NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     
     if([FileUtils checkFileExist:cachePath isDir:false]) {
@@ -165,7 +159,7 @@
                                  ParentID:(NSString *)parentID
                                   DepthID:(NSString *)deptID {
     NSMutableDictionary *categoryDict = [[NSMutableDictionary alloc] init];
-    NSString *cacheName = [ContentUtils contentCacheName:CONTENT_CATEGORY DeptID:deptID ID:parentID];
+    NSString *cacheName = [ContentUtils contentCacheName:CONTENT_CATEGORY ID:parentID];
     NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     NSMutableDictionary *cacheDict = [FileUtils readConfigFile:cachePath];
     NSMutableArray *cacheData = [cacheDict objectForKey:CONTENT_FIELD_DATA];
@@ -200,14 +194,12 @@
  *  缓存文件名称
  *
  *  @param type       category,slide?
- *  @param deptID     deptID
- *  @param categoryID categoryID
+ *  @param ID ID
  *
  *  @return cacheName
  */
 + (NSString *)contentCacheName:(NSString *)type
-                        DeptID:(NSString *)deptID
-                            ID:(NSString *)categoryID {
-    return [NSString stringWithFormat:@"%@-%@-%@.cache",deptID, categoryID, type];
+                            ID:(NSString *)ID {
+    return [NSString stringWithFormat:@"%@-%@.cache",type, ID];
 }
 @end

@@ -509,10 +509,10 @@
         abort();
     }
     self.displayFrom = configDict[SLIDE_DISPLAY_FROM];
-    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
+    NSString *dictPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_DICT_FILENAME];
+    NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
     
-    self.slide = [[Slide alloc] initWith:descDict Favorite:isFavorite];
+    self.slide = [[Slide alloc] initSlide:dict isFavorite:isFavorite];
     NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.slide.pages count]]];
     if(self.slide.pages == nil || ![pageNum isEqualToString:self.slide.pageNum]) {
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");

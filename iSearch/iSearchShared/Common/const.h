@@ -86,6 +86,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 #define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
 #define THUMBNAIL_DIRNAME      @"Thumbails" // 分类缩略图
+#define CACHE_DIRNAME          @"Caches"
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -200,6 +201,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 文档描述desc.json相关
 // TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
 #define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define SLIDE_DICT_FILENAME         @"dict.json" // desc.json保待不变，一切操作在些文件
 #define SLIDE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 #define SLIDE_DESC_ID               @"id"
 #define SLIDE_DESC_TYPE             @"type"
