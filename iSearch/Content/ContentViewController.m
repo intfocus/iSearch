@@ -127,8 +127,6 @@
     
     // deptID
     [self assignUserInfo];
-    // nav behaviour stack
-    [self assignCategoryInfo:self.deptID];
     
     /**
      *  导航栏控件
@@ -146,8 +144,6 @@
     [self.navBtnFilterOne addTarget:self action:@selector(actionNavFilterOne:) forControlEvents:UIControlEventTouchUpInside];
     [self.navBtnFilterTwo addTarget:self action:@selector(actionNavFilterTwo:) forControlEvents:UIControlEventTouchUpInside];
     
-    // current category name
-    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
     self.view.backgroundColor=[UIColor blackColor];
     
     [self configGridView];
@@ -155,6 +151,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    [self refreshContent];
+}
+
+- (void) refreshContent {
+    // nav behaviour stack
+    [self assignCategoryInfo:self.deptID];
+    // current category name
+    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
     
     //  1. 读取本地缓存，优先加载界面
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
@@ -169,6 +174,7 @@
         
         [self configGridView];
     });
+    self.navBtnBack.enabled = YES;
 }
 
 //////////////////////////////////////////////////////////////
@@ -202,7 +208,7 @@
 }
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:type Key:SLIDE_DESC_ID Order:YES];
+    NSArray *array = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:type Key:CONTENT_FIELD_ID Order:YES];
     NSMutableArray *arrayOne = [array objectAtIndex:0];
     NSMutableArray *arrayTwo = [array objectAtIndex:1];
     
@@ -265,6 +271,7 @@
  *  @param sender UIButton
  */
 - (IBAction)actionCategoryClick:(UIButton *)sender {
+    self.navBtnBack.enabled = NO;
     NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
     
     // 点击分类导航行为记录
@@ -276,13 +283,14 @@
     [navStack addObject:categoryID];
     [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
     [FileUtils writeJSON:configDict Into:configPath];
+
     
-#warning refresh self
     // enter ContentViewController
-    MainViewController *mainViewController = [self masterViewController];
-    ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-    contentViewController.masterViewController = mainViewController;
-    [mainViewController setRightViewController:contentViewController withNav:NO];
+    //MainViewController *mainViewController = [self masterViewController];
+    //ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+    //contentViewController.masterViewController = mainViewController;
+    //[mainViewController setRightViewController:contentViewController withNav:NO];
+    [self refreshContent];
 }
 
 /**
@@ -295,7 +303,8 @@
  *
  *  @param sender <#sender description#>
  */
-- (IBAction)actionNavBack:(id)sender {
+- (IBAction)actionNavBack:(UIButton *)sender {
+    sender.enabled = NO;
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
@@ -310,10 +319,10 @@
         HomeViewController *homeViewController = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
         [mainViewController setRightViewController:homeViewController withNav: NO];
     } else {
-#warning refresh self
         // 刷新本视图
-        ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-        [mainViewController setRightViewController:contentViewController withNav: NO];
+        //ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
+        //[mainViewController setRightViewController:contentViewController withNav: NO];
+        [self refreshContent];
     }
 }
 
