@@ -137,7 +137,11 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 
     [FileUtils writeJSON:self.dict Into:self.dictPath];
 }
-
+- (BOOL)addToFavorite {
+    return [FileUtils copySlideToFavorite:self.ID Block:^(NSMutableDictionary *dict) {
+        [DateUtils updateSlideTimestamp:self.dict];
+    }];
+}
 - (NSString *)inspect {
     return [NSString stringWithFormat:@"#<Slide ID: %@, name: %@, type: %@, desc: %@, pages: %@, title: %@, zipSize: %@, pageNum: %@, categoryID: %@, categoryName: %@, createdDate: %@, localCreatedDate: %@, localUpdatedDate: %@, isDisplay: %d", self.ID, self.name, self.type, self.desc, self.pages, self.title, self.zipSize, self.pageNum, self.categoryID, self.categoryName, self.createdDate, self.localCreatedDate, self.localUpdatedDate, self.isDisplay];
 }
@@ -150,7 +154,9 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];
     return (!self.ID || !self.pages || (!self.pages && [pageNum isEqualToString:self.pageNum]));
 }
+
 #pragma mark - private methods
+
 - (NSMutableDictionary *) refreshFields {
     // slide's desc field
     _dict[SLIDE_DESC_ID]              = self.ID;

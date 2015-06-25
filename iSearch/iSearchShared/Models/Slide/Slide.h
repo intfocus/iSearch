@@ -57,6 +57,7 @@
 - (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
 
 - (void)save;
+- (BOOL)addToFavorite;
 - (void)toCached;
 - (NSString *)inspect;
 - (NSString *)to_s;

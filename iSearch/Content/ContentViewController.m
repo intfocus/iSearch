@@ -99,6 +99,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *navBtnSortTwo; // 按名称排序
 @property (weak, nonatomic) IBOutlet UIImageView *nameSortImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nothingLabel;
+@property (strong, nonatomic) NSMutableArray *navActionStack;// 用户点击行为
 
 // http download variables begin
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
@@ -117,16 +118,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
     /**
-     *任何实例都需要初始化
+     *  实例变量初始化
      */
+    self.navActionStack = [[NSMutableArray alloc] init];
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    self.navActionStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
+    
     _dataList = [[NSMutableArray alloc] init];
     self.categoryDict = [[NSMutableDictionary alloc] init];
     self.filterType  = [NSNumber numberWithInteger:FilterAll];
-    [self navFilterFont];
     
+    [self navFilterFont];
     // deptID
     [self assignUserInfo];
     
@@ -159,7 +163,6 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    NSLog(@"%@", NSStringFromCGRect(self.navLabel.frame));
      [self configSpinner];
 }
 
@@ -271,7 +274,7 @@
     NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
     self.deptID = userDict[USER_DEPTID];
     
-    if(self.deptID == nil || [self.deptID length] == 0) {
+    if(!self.deptID || [self.deptID length] == 0) {
         NSLog(@"Fail read DeptID!");
         abort();
     }
@@ -285,24 +288,15 @@
  *
  */
 - (void)assignCategoryInfo:(NSString *)deptID {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    NSString *categoryID = [mutableArray lastObject];
-    if([categoryID length] == 0) {
-        NSLog(@"BUG - 此目录下未取得CategoryID: %@", mutableArray);
-        categoryID = CONTENT_ROOT_ID;
-    }
-    
+    self.categoryID = [self.navActionStack lastObject];
+
     NSString *parentID = CONTENT_ROOT_ID;
-    if([mutableArray count] >= 2) {
+    if([self.navActionStack count] >= 2) {
         // 倒数第二个为父ID
-        NSInteger index = [mutableArray count] - 2;
-        parentID = [mutableArray objectAtIndex:index];
+        NSInteger index = [self.navActionStack count] - 2;
+        parentID = [self.navActionStack objectAtIndex:index];
     }
-    
-    self.categoryID = categoryID;
-    self.categoryDict = [ContentUtils readCategoryInfo:categoryID ParentID:parentID DepthID:deptID];
+    self.categoryDict = [ContentUtils readCategoryInfo:self.categoryID ParentID:parentID DepthID:deptID];
 }
 
 #pragma mark - controls action
@@ -317,23 +311,7 @@
 - (IBAction)actionCategoryClick:(UIButton *)sender {
     self.navBtnBack.enabled = NO;
     NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    
-    // 点击分类导航行为记录
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    // init as NSMutableArray when key@CONTENT_KEY_NAVSTACK not exist
-    NSMutableArray *navStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    // push current categoryID
-    [navStack addObject:categoryID];
-    [configDict setObject:navStack forKey:CONTENT_KEY_NAVSTACK];
-    [FileUtils writeJSON:configDict Into:configPath];
-
-    
-    // enter ContentViewController
-    //MainViewController *mainViewController = [self masterViewController];
-    //ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-    //contentViewController.masterViewController = mainViewController;
-    //[mainViewController setRightViewController:contentViewController withNav:NO];
+    [self.navActionStack addObject:categoryID];
     [self refreshContent];
 }
 
@@ -349,23 +327,12 @@
  */
 - (IBAction)actionNavBack:(UIButton *)sender {
     sender.enabled = NO;
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSMutableArray *mutableArray = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    
-    [mutableArray removeLastObject];
-    [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
-    [FileUtils writeJSON:configDict Into:configPath];
-    
-    MainViewController *mainViewController = (MainViewController *)[self masterViewController];
-    if([mutableArray count] == 0) {
-        // 返回HomePage
+    if([self.navActionStack count] == 1) {
         HomeViewController *homeViewController = [[HomeViewController alloc] initWithNibName:nil bundle:nil];
-        [mainViewController setRightViewController:homeViewController withNav: NO];
+        MainViewController *mainViewController = (MainViewController *)[self masterViewController];
+        [mainViewController setRightViewController:homeViewController withNav:YES];
     } else {
-        // 刷新本视图
-        //ContentViewController *contentViewController = [[ContentViewController alloc] initWithNibName:nil bundle:nil];
-        //[mainViewController setRightViewController:contentViewController withNav: NO];
+        [self.navActionStack removeLastObject];
         [self refreshContent];
     }
 }

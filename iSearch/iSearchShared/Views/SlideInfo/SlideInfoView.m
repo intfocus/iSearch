@@ -40,6 +40,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     /**
+     *  实例变量初始化
+     */
+    /**
      *  控件事件
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
@@ -63,7 +66,7 @@
     self.labelZipSize.text  = [FileUtils humanFileSize:self.slide.zipSize];
     self.labelCategory.text = self.slide.categoryName;
     
-    [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+    [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopupSlideInfo) forControlEvents:UIControlEventTouchUpInside];
 }
 
 
@@ -116,7 +119,7 @@
         [self.slide downloaded];
         [self showPopupView:@"请刷新界面"];
     }else if(self.slide.isDownloaded) {
-        NSString *filePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.dict[SLIDE_DESC_ID]];
+        NSString *filePath = [FileUtils getPathName:self.dirName FileName:self.slide.ID];
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSError *error;
         [fileManager removeItemAtPath:filePath error:&error];
@@ -142,9 +145,7 @@
         [self showPopupView:@"已在收藏了"];
     } else {
         if(self.slide.isDownloaded) {
-            BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
-                [DateUtils updateSlideTimestamp:self.dict];
-            }];
+            BOOL isSuccessfully = [self.slide addToFavorite];
             [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
         } else {
             [self showPopupView:@"未曾下载，\n何言收藏！"];
