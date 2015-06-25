@@ -163,6 +163,7 @@
     NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
     NSString *pdfPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"pdf"];
     NSString *gifPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"gif"];
+    NSString *mp4Path = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"mp4"];
     NSString *filePath;
     BOOL isHTML = YES;
     if([FileUtils checkFileExist:pdfPath isDir:NO]) {
@@ -171,7 +172,11 @@
     } else if([FileUtils checkFileExist:gifPath isDir:NO]) {
         filePath = gifPath;
         isHTML = NO;
+    } else if([FileUtils checkFileExist:mp4Path isDir:NO]) {
+        filePath = mp4Path;
+        isHTML = NO;
     }
+
     if(isHTML) {
         filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
         NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
