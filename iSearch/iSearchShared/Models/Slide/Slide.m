@@ -36,7 +36,6 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     self = [super init];
 
     _isFavorite = isFavorite;
-    _dirName    = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     _isDisplay  = dict[SLIDE_DESC_ISDISPLAY] && [dict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"];
     _dict       = [NSMutableDictionary dictionaryWithDictionary:dict];
     
@@ -63,9 +62,10 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 
 - (void)assignLocalFields:(NSMutableDictionary *)dict {
     // base info whatever downloaded
-    _path = [FileUtils getPathName:self.dirName FileName:self.ID];
+    _dirName  = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    _path     = [FileUtils getPathName:self.dirName FileName:self.ID];
     _descPath = [self.path stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
-    _dictPath = [self.path stringByAppendingPathComponent:@"dict.json"];
+    _dictPath = [self.path stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
     if([self isDownloaded] && !self.isFavorite) {
         _descContent = [NSString stringWithContentsOfFile:self.descPath encoding:NSUTF8StringEncoding error:NULL];
         _descDict1 = [FileUtils readConfigFile:self.descPath];
@@ -201,6 +201,9 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 #pragma mark - private methods
 
 - (NSMutableDictionary *) refreshFields {
+    if(!self.dict) {
+        _dict = [[NSMutableDictionary alloc] init];
+    }
     // slide's desc field
     _dict[SLIDE_DESC_ID]              = self.ID;
     _dict[CONTENT_FIELD_ID]           = self.ID;

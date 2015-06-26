@@ -49,7 +49,6 @@
      *  控件控制
      */
     // 有勾选标签则激活
-//    self.barItemSubmit.enabled = NO;
     [self.btnAddNewTag addTarget:self action:@selector(actionAddNewTag:) forControlEvents:UIControlEventTouchUpInside];
 }
 

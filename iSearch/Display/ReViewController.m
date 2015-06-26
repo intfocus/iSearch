@@ -92,6 +92,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     
     /**
      * 实例变量初始化
@@ -100,14 +105,12 @@
     self.pageInfoTmp = [[NSMutableDictionary alloc] init];
     _dataList        = [[NSMutableArray alloc] init];
     _selectedList    = [[NSMutableArray alloc] init];
-    
     [self loadConfigInfo];
-
     /**
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
-
+    
     [self configGridView];
     
     /**
@@ -118,7 +121,7 @@
     [self.btnNavRestore addTarget:self action:@selector(actionRestore:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavDismiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
-
+    
 }
 
 - (void) configGridView {

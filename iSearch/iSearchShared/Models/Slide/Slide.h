@@ -59,6 +59,8 @@
 
 - (void)save;
 - (void)toCached;
+- (void)assignLocalFields:(NSMutableDictionary *)dict;
+- (void)updateTimestamp;
 - (NSString *)inspect;
 - (NSString *)to_s;
 - (NSMutableDictionary *) refreshFields;

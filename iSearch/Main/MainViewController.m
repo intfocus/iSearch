@@ -27,6 +27,7 @@
 
 @property(nonatomic,strong)IBOutlet UIView *leftView;
 @property(nonatomic,strong)IBOutlet UIView *rightView;
+@property(nonatomic,strong) NSNumber *btnEntrySelectedTag;
 
 @property(nonatomic,strong)UIViewController *rightViewController;
 @property(nonatomic,strong)SlideInfoView *slideInfoView;
@@ -44,29 +45,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
+    /**
+     *  实例变量初始化
+     */
+    self.btnEntrySelectedTag = [NSNumber numberWithInteger:EntryButtonHomePage];
+    
     // CWPopup 事件
     self.useBlurForPopup = YES;
+    
+//    BlockTask(^{
+//        //sleep(1);
+//    });
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //NSActionLogger(@"主界面加载", @"successfully");
         
-        SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
-        left.masterViewController = self;
-        self.leftViewController   = left;
-        
-        SideViewController *side     = (id)self.leftViewController;
-        UIViewController *controller = [side viewControllerForTag:EntryButtonHomePage];
-        [self setRightViewController:controller withNav:YES];
+        [self refreshRightViewController];
     });
-    
-//    BlockTask(^{
-//        //sleep(1);
-//    });
-
 }
 
+- (void) refreshRightViewController {
+    SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
+    left.masterViewController = self;
+    self.leftViewController   = left;
+    
+    SideViewController *side     = (id)self.leftViewController;
+    UIViewController *controller = [side viewControllerForTag:[self.btnEntrySelectedTag integerValue]];
+    [self setRightViewController:controller withNav:YES];
+}
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置
 ///////////////////////////////////////////////////////////
@@ -99,11 +110,11 @@
     UIControl *entry=sender;
 
     SideViewController *side=(id)self.leftViewController;
-
     #warning viewController的配置集中到sideViewController里
-    UIViewController *controller=[side viewControllerForTag:entry.tag];
+    UIViewController *controller=[side viewControllerForTag:[entry tag]];
     [self setRightViewController:controller withNav:YES];
-
+    self.btnEntrySelectedTag = [NSNumber numberWithInteger:[entry tag]];
+    
     if (!controller) {
         NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
     }
@@ -290,7 +301,7 @@
 - (void)dismissPopupSlideInfo {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-#warning refresh view after remove cell
+            [self refreshRightViewController];
         }];
     }
 }

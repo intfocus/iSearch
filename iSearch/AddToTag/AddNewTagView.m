@@ -77,7 +77,6 @@
     [self switchToTagListView:[[NSMutableDictionary alloc] init]];
 }
 
-
 #pragma mark 输入框监听
 
 /**
