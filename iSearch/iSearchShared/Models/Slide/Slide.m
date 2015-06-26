@@ -132,7 +132,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     Slide *slide = [[Slide alloc] initSlide:[self refreshFields] isFavorite:YES];
     [slide updateTimestamp];
     [slide save];
-    return error;
+    return isNil(error);
 }
 
 - (BOOL)isInFavorited:(BOOL)isForce {

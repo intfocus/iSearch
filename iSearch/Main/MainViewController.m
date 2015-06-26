@@ -301,7 +301,7 @@
 - (void)dismissPopupSlideInfo {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-            [self refreshRightViewController];
+            [self.rightViewController performSelector:@selector(viewWillAppear:) withObject:self.rightViewController];
         }];
     }
 }

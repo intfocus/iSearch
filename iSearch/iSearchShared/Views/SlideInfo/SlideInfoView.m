@@ -49,7 +49,7 @@
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnAddToTag addTarget:self action:@selector(actionAddToTag:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnAddToTag addTarget:self action:@selector(actionAddToFavorite:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnEdit addTarget:self action:@selector(actionEditSlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -159,7 +159,7 @@
     
 }
 
-- (IBAction)actionAddToTag:(UIButton *)sender {
+- (IBAction)actionAddToFavorite:(UIButton *)sender {
     if([self.slide isInFavorited]) {
         [self showPopupView:@"已在收藏了"];
     } else if(self.slide.isDownloaded) {

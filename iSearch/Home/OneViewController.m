@@ -41,10 +41,10 @@
     [self configGMGridView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    Slide *slide;
-    for(slide in [FileUtils favoriteSlideList1]) {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    for(Slide *slide in [FileUtils favoriteSlideList1]) {
         [_dataList addObject:[slide refreshFields]];
     }
     _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];

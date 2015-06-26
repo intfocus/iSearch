@@ -42,8 +42,9 @@
     [self configGMGridView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
     [_gridView reloadData];
     

@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "iconCancel.png"
+      "filename" : "取消.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "iconCancel@2x.png"
+      "filename" : "取消@2X.png"
     },
     {
       "idiom" : "universal",

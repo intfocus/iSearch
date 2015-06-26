@@ -149,12 +149,12 @@
     self.view.backgroundColor=[UIColor blackColor];
     
     [self configGridView];
-    [self refreshContent];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
+    [self refreshContent];
 }
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
