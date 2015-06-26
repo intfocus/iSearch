@@ -205,16 +205,6 @@
     
 }
 
-- (IBAction)addSlideToFavorite:(UIButton *)sender {
-    BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
-        [DateUtils updateSlideTimestamp:dict];
-    }];
-    
-    // 信息提示
-    NSString *popupInfo = [NSString stringWithFormat:@"拷贝%@", isSuccessfully ? @"成功" : @"失败"];
-    [self showPopupView: popupInfo];
-    
-}
 - (void) showPopupView: (NSString*) text {
     if(self.popupView == nil) {
         self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];

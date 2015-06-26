@@ -153,7 +153,7 @@
  *
  *  @return @{FILE_DESC_KEY: }
  */
-+ (NSMutableArray *) favoriteFileList;
++ (NSMutableArray *) favoriteSlideList1;
 
 /** 创建新标签
  *
@@ -181,7 +181,7 @@
  *  @param filePath 目标文件
  */
 + (void) writeJSON:(NSMutableDictionary *)data
-              Into:(NSString *) filePath;
+              Into:(NSString *) slidePath;
 
 /**
  *  根据文件名称在收藏夹中查找文件描述档
@@ -204,17 +204,7 @@
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
-/**
- *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
- *  使用block是为了保持FileUtils一方净土
- *
- *  @param slideID                   文档ID
- *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
- *
- *  @return 操作成功否
- */
-+ (BOOL) copySlideToFavorite:(NSString *)slideID
-                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
+
 
 #pragma mark - slide download cache
 + (NSString *)slideToDownload:(NSString *)slideID;

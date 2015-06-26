@@ -55,17 +55,17 @@
                                         <constraint firstAttribute="height" constant="44" id="6du-WT-2ql"/>
                                         <constraint firstAttribute="width" constant="44" id="d3k-zc-eO4"/>
                                     </constraints>
-                                    <state key="normal" image="iconRemove">
+                                    <state key="normal" image="iconNavRefresh">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e05-Dp-V6I" userLabel="restore">
-                                    <rect key="frame" x="490" y="0.0" width="44" height="44"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEa-JI-59P" userLabel="saveTo">
+                                    <rect key="frame" x="548" y="0.0" width="44" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="UfG-lb-ewp"/>
-                                        <constraint firstAttribute="height" constant="44" id="dBg-QQ-b8N"/>
+                                        <constraint firstAttribute="height" constant="44" id="FrE-2N-AUO"/>
+                                        <constraint firstAttribute="width" constant="44" id="tZ3-PM-1F1"/>
                                     </constraints>
-                                    <state key="normal" image="iconRestore">
+                                    <state key="normal" image="iconNavSaveTo">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -75,7 +75,7 @@
                                         <constraint firstAttribute="width" constant="44" id="EnC-Mn-Cyo"/>
                                         <constraint firstAttribute="height" constant="44" id="ydy-Ov-O0I"/>
                                     </constraints>
-                                    <state key="normal" image="iconEdit2">
+                                    <state key="normal" image="iconNavEdit2">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -86,13 +86,13 @@
                                         <constraint firstAttribute="height" constant="1" id="5cw-LZ-SII"/>
                                     </constraints>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEa-JI-59P" userLabel="saveTo">
-                                    <rect key="frame" x="548" y="0.0" width="44" height="44"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e05-Dp-V6I" userLabel="restore">
+                                    <rect key="frame" x="490" y="0.0" width="44" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="FrE-2N-AUO"/>
-                                        <constraint firstAttribute="width" constant="44" id="tZ3-PM-1F1"/>
+                                        <constraint firstAttribute="width" constant="44" id="UfG-lb-ewp"/>
+                                        <constraint firstAttribute="height" constant="44" id="dBg-QQ-b8N"/>
                                     </constraints>
-                                    <state key="normal" image="iconSaveTo">
+                                    <state key="normal" image="iconNavRestore">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
@@ -145,9 +145,9 @@
     </objects>
     <resources>
         <image name="iconBack" width="22" height="22"/>
-        <image name="iconEdit2" width="60" height="63"/>
-        <image name="iconRemove" width="44" height="44"/>
-        <image name="iconRestore" width="44" height="44"/>
-        <image name="iconSaveTo" width="44" height="44"/>
+        <image name="iconNavEdit2" width="44" height="44"/>
+        <image name="iconNavRefresh" width="44" height="44"/>
+        <image name="iconNavRestore" width="44" height="44"/>
+        <image name="iconNavSaveTo" width="44" height="44"/>
     </resources>
 </document>

@@ -11,8 +11,8 @@
 #import "GMGridView.h"
 #import "ViewSlide.h"
 #import "FileUtils.h"
-
 #import "const.h"
+#import "Slide.h"
 
 #import "MainViewController.h"
 #import "SideViewController.h"
@@ -38,8 +38,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    _dataList = [FileUtils favoriteFileList];
+    Slide *slide;
+    for(slide in [FileUtils favoriteSlideList1]) {
+        [_dataList addObject:[slide refreshFields]];
+    }
     [_gridView reloadData];
     
 }

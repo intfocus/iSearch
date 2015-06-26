@@ -93,6 +93,11 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     }
 }
 
+- (void)updateTimestamp {
+    NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
+    if(!self.localCreatedDate) { _localCreatedDate = timestamp; }
+    _localUpdatedDate = timestamp;
+}
 
 #pragma mark - around slide download
 
@@ -113,6 +118,29 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return [FileUtils slideDownloaded:self.ID];
 }
 
+#pragma mark - around favorite
+
+- (NSString *)favoritePath {
+    return [FileUtils getPathName:FAVORITE_DIRNAME FileName:self.ID];
+}
+
+- (BOOL)addToFavorite {
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager copyItemAtPath:self.path toPath:[self favoritePath] error:&error];
+    NSErrorPrint(error, @"slide#%@ %@ => %@", self.ID, self.path, [self favoritePath]);
+    Slide *slide = [[Slide alloc] initSlide:[self refreshFields] isFavorite:YES];
+    [slide updateTimestamp];
+    [slide save];
+    return error;
+}
+
+- (BOOL)isInFavorited:(BOOL)isForce {
+    return [FileUtils checkSlideExist:self.ID Dir:FAVORITE_DIRNAME Force:isForce];
+}
+- (BOOL)isInFavorited {
+    return [self isInFavorited:YES];
+}
 #pragma mark - around write cache
 
 - (NSString *)cacheName {
@@ -137,15 +165,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 
     [FileUtils writeJSON:self.dict Into:self.dictPath];
 }
-- (BOOL)addToFavorite {
-    return [FileUtils copySlideToFavorite:self.ID Block:^(NSMutableDictionary *dict) {
-        [DateUtils updateSlideTimestamp:self.dict];
-    }];
-}
+
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
     NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
     NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
+    
    return [[Slide alloc]initSlide:dict isFavorite:isFavorite];
 }
 - (NSString *)inspect {
@@ -162,6 +187,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 }
 
 #pragma mark - edit slide pages
+
 - (NSString *)dictSwpPath {
     return [self.path stringByAppendingPathComponent:SLIDE_CONFIG_SWP_FILENAME];
 }
@@ -171,6 +197,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 - (void)enterEditState {
     return [FileUtils writeJSON:self.dict Into:[self dictSwpPath]];
 }
+
 #pragma mark - private methods
 
 - (NSMutableDictionary *) refreshFields {

@@ -22,9 +22,9 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.rootViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    //self.window.rootViewController = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     // 每次启动app都需要进入登录界面
-    //self.window.rootViewController=[[NSClassFromString(@"LoginViewController") alloc] initWithNibName:@"LoginViewController" bundle:nil];
+    self.window.rootViewController=[[NSClassFromString(@"LoginViewController") alloc] initWithNibName:@"LoginViewController" bundle:nil];
     [self.window makeKeyAndVisible];
     return YES;
 }

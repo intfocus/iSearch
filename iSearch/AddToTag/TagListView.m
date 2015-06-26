@@ -11,6 +11,7 @@
 #import "DLRadioButton.h"
 #import "ExtendNSLogFunctionality.h"
 #import "FileUtils.h"
+#import "Slide.h"
 
 #import "MainAddNewTagView.h"
 #import "AddNewTagView.h"
@@ -59,25 +60,25 @@
      *  标签列表为单选，手工点击[提交]
      *  DLRadioButton单选原理 firstRadioButton.otherButtons = otherButtons;
      */
-    NSMutableArray *fileList = [FileUtils favoriteFileList];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableArray *slideList = [FileUtils favoriteSlideList1];
+    Slide *slide;
     DLRadioButton *firstRadioButton;
     NSMutableArray *otherButtons = [[NSMutableArray alloc] init];
     NSInteger index = 0;
     // firstRadioButton
-    if([fileList count] >= 1) {
-        dict = [fileList objectAtIndex:index];
-        firstRadioButton = [self createRadioButton:dict[SLIDE_DESC_NAME] Index:index];
+    if([slideList count] >= 1) {
+        slide = [slideList objectAtIndex:index];
+        firstRadioButton = [self createRadioButton:slide.title Index:index];
         [firstRadioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
         [self checkNewTagNameInList:firstRadioButton];
         [self.scrollView addSubview:firstRadioButton];
         self.arrayTagName = @[firstRadioButton];
     }
     // otherButtons
-    if([fileList count] >= 2) {
-        for (index = 1; index < [fileList count]; index++) {
-            dict = [fileList objectAtIndex:index];
-            DLRadioButton *radioButton = [self createRadioButton:dict[SLIDE_DESC_NAME] Index:index];
+    if([slideList count] >= 2) {
+        for (index = 1; index < [slideList count]; index++) {
+            slide = [slideList objectAtIndex:index];
+            DLRadioButton *radioButton = [self createRadioButton:slide.title Index:index];
             [radioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
             [self checkNewTagNameInList:radioButton];
             [self.scrollView addSubview:radioButton];

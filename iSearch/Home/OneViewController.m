@@ -15,6 +15,7 @@
 #import "ViewSlide.h"
 #import "FileUtils.h"
 #import "ContentUtils.h"
+#import "Slide.h"
 
 #import "MainViewController.h"
 #import "HomeViewController.h"
@@ -42,7 +43,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    _dataList = [FileUtils favoriteFileList];
+    Slide *slide;
+    for(slide in [FileUtils favoriteSlideList1]) {
+        [_dataList addObject:[slide refreshFields]];
+    }
     _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
     [_gridView reloadData];
 }

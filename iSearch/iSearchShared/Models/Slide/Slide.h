@@ -58,7 +58,6 @@
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
 
 - (void)save;
-- (BOOL)addToFavorite;
 - (void)toCached;
 - (NSString *)inspect;
 - (NSString *)to_s;
@@ -69,6 +68,11 @@
 - (BOOL)isDownloaded:(BOOL)isForce;
 - (BOOL)isDownloading;
 - (NSString *)downloaded;
+
+- (NSString *)favoritePath;
+- (BOOL)addToFavorite;
+- (BOOL)isInFavorited:(BOOL)isForce;
+- (BOOL)isInFavorited;
 
 - (void)enterEditState;
 - (NSString *)dictSwpPath;

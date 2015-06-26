@@ -11,6 +11,7 @@
 #import "FileUtils.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
+#import "Slide.h"
 
 @interface FileUtils()
 @end
@@ -283,35 +284,24 @@
  *
  *  @return @{FILE_DESC_KEY: }
  */
-+ (NSMutableArray *) favoriteFileList {
-    NSMutableArray *fileList = [[NSMutableArray alloc]init];
++ (NSMutableArray *) favoriteSlideList1 {
+    NSMutableArray *slideList = [[NSMutableArray alloc]init];
     
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     // 重组内容文件名称格式: r150501
     NSString *favoritesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSArray *slides = [fileManager contentsOfDirectoryAtPath:favoritesPath error:&error];
-    
-    //    // 过滤出原重组内容的文件列表进行匹配
-    //    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
-    //    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
-    
-    NSString *slideID, *slidePath, *dictPath;
-    NSMutableDictionary *dict;
+
+    NSString *slideID;
+    Slide *slide;
     
     for(slideID in slides) {
-        slidePath = [favoritesPath stringByAppendingPathComponent:slideID];
-        dictPath = [slidePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
-        
-        // 配置档不存在，跳过
-        if(![FileUtils checkSlideExist:slideID Dir:FAVORITE_DIRNAME Force:YES]) continue;
-        
-        dict = [FileUtils readConfigFile:dictPath];
-        
-        [fileList addObject:dict];
+        slide = [Slide findById:slideID isFavorite:YES];
+        if([slide isInFavorited]) { [slideList addObject:slide]; }
     }
     
-    return fileList;
+    return slideList;
 }
 
 /** 创建新标签
@@ -337,16 +327,16 @@
     // step1: 判断该标签名称是否存在
     NSError *error;
     NSString *tagFileID = [[NSString alloc] init];
-    NSMutableArray *fileList = [FileUtils favoriteFileList];
+    NSMutableArray *slideList = [FileUtils favoriteSlideList1];
     NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     // 检测扫描收藏目录，检测是否存在
     // 若存在则赋值tagFileID，为后面判断依据
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
-    for(dict in fileList) {
-        if([dict[SLIDE_DESC_NAME] isEqualToString:tagName]) {
-            tagFileID = dict[SLIDE_DESC_ID];
+    Slide *slide;
+    for(slide in slideList) {
+        if([slide.title isEqualToString:tagName]) {
+            tagFileID = slide.ID;
             break;
         }
     }
@@ -362,7 +352,7 @@
         NSString *newFileID = [NSString stringWithFormat:@"r%@", timestamp];
         //[ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
         NSString *newFilePath = [favoritePath stringByAppendingPathComponent:newFileID];
-        descPath = [newFilePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+        descPath = [newFilePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
         
         // 检测newFileID路径是否不存在，否则创建
         if(![FileUtils checkFileExist:newFilePath isDir:true])
@@ -403,7 +393,7 @@
  *  @param filePath 目标文件
  */
 + (void) writeJSON:(NSMutableDictionary *)data
-              Into:(NSString *) filePath {
+              Into:(NSString *) slidePath {
     NSError *error;
     if ([NSJSONSerialization isValidJSONObject:data]) {
         // NSMutableDictionary convert to JSON Data
@@ -414,8 +404,8 @@
         // JSON Data convert to NSString
         NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         if(!error) {
-            [jsonStr writeToFile:filePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-            NSErrorPrint(error, @"json string write into desc file#%@", filePath);
+            [jsonStr writeToFile:slidePath atomically:true encoding:NSUTF8StringEncoding error:&error];
+            NSErrorPrint(error, @"json string write into desc file#%@", slidePath);
         }
     }
 }
@@ -428,15 +418,15 @@
  *  @return descJSOn
  */
 + (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName {
-    NSMutableArray *fileList = [FileUtils favoriteFileList];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    for(dict in fileList) {
-        if(dict[SLIDE_DESC_NAME] && [dict[SLIDE_DESC_NAME] isEqualToString:fileName]) {
+    NSMutableArray *slideList = [FileUtils favoriteSlideList1];
+    Slide *slide;
+    for(slide in slideList) {
+        if(slide.title && [slide.title isEqualToString:fileName]) {
             break;
         }
     }
     
-    return dict;
+    return [slide refreshFields];
 }
 
 /**
@@ -462,51 +452,6 @@
     return thumbnailPath;
 }
 
-/**
- *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
- *  使用block是为了保持FileUtils一方净土
- *
- *  @param slideID                   文档ID
- *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
- *
- *  @return 操作成功否
- */
-+ (BOOL) copySlideToFavorite:(NSString *)slideID
-                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock {
-    NSError *error;
-    BOOL isSuccessfully = YES;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:slideID];
-    NSString *slidePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:slideID];
-    [fileManager copyItemAtPath:slidePath toPath:favoritePath error:&error];
-    isSuccessfully = NSErrorPrint(error, @"copy slide#%@ from %@ to %@", slideID, favoritePath, slidePath)
-    
-    NSString *descPath = [[NSString alloc] init];
-    NSString *descContent = [[NSString alloc] init];
-    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
-    
-    if(isSuccessfully) {
-        descPath = [FileUtils slideDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-        descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-        isSuccessfully = NSErrorPrint(error, @"read slide config at %@", descPath)
-    }
-    
-    if(isSuccessfully) {
-       descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                    error:&error];
-        isSuccessfully = NSErrorPrint(error, @"convert string into json use data:\n %@", descContent)
-    }
-    
-    if(isSuccessfully) {
-        // modifiy updated_at/created_at with DateUtils
-        // keep clean environment with Block
-        updateSlideTimestampBlock(descDict);
-        [FileUtils writeJSON:descDict Into:descPath];
-    }
-    
-    return isSuccessfully;
-}
 
 #pragma mark - slide download cache
 + (NSString *)slideDownloadCachePath:(NSString *)slideID {

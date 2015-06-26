@@ -164,15 +164,13 @@
 }
 
 - (IBAction)actionAddToTag:(UIButton *)sender {
-    if([FileUtils checkSlideExist:self.slideID Dir:FAVORITE_DIRNAME Force:NO]) {
+    if([self.slide isInFavorited]) {
         [self showPopupView:@"已在收藏了"];
+    } else if(self.slide.isDownloaded) {
+        BOOL isSuccessfully = [self.slide addToFavorite];
+        [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
     } else {
-        if(self.slide.isDownloaded) {
-            BOOL isSuccessfully = [self.slide addToFavorite];
-            [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
-        } else {
-            [self showPopupView:@"未曾下载，\n何言收藏！"];
-        }
+        [self showPopupView:@"未曾下载，\n何言收藏！"];
     }
     
 }
