@@ -189,8 +189,10 @@
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self loadContentData:LOCAL_OR_SERVER_SREVER];
-        [_gridView reloadData];
+        if([HttpUtils isNetworkAvailable]) {
+            [self loadContentData:LOCAL_OR_SERVER_SREVER];
+            [_gridView reloadData];
+        }
     });
     self.navBtnBack.enabled = YES;
     [self performSelector:@selector(loaded) withObject:self afterDelay:0.3f];
@@ -260,35 +262,7 @@
     
     array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
-
 }
-/**
- *      1.1 网络环境良好，HttpPost 服务器获取网站目录（json数组格式）
- *          Post /CONENT_URL_PATH {
- *              user: user-name or user-email,
- *              type: 0 , -- 目录: 0; 文档: 1; 直文档: 2; 视频: 4
- *                id: 0 ,
- *              lang: zh-CN -- app language
- *          }
- *          Response [{
- *              type: 0,  -- 目录: 0; 文档: 1; 直文档: 2; 视频: 4
- *              name: dir-name or file-name,
- *              desc: desc,
- *               tag:  tags,
- *                id: 1,    -- 下次请求使用
- *               url: zip download url when type is file
- *          }]
- *
- *
- *          说明:
- *            1. 请求目录返回josn字符串写入CONTENT_DIRNAME/id.json
- *            2. 请求下载文档，压缩包放至DOWNLOAD_DIRNAME/id.zip， 解压至FILE_DIRNAME/id
- *            3. 压缩包文件名称不作要求，其压缩文件格式应为: id/{index.html, images/}
- *
- *  @param fid  文件在服务器上的id
- *  @param type 文件类型
- */
-// 代码抽取放在ContentUtils.h文件中
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
@@ -321,7 +295,7 @@
      */
     if([contentType isEqualToString:CONTENT_CATEGORY]) {
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-        viewCategory.labelTitle.text =  [NSString stringWithFormat:@"%ld - %@", index, currentDict[CONTENT_FIELD_NAME]];
+        viewCategory.labelTitle.text =  currentDict[CONTENT_FIELD_NAME];
         
         [viewCategory setImageWith:CONTENT_CATEGORY CategoryID:currentDict[CONTENT_FIELD_ID]];
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
@@ -331,7 +305,7 @@
         [cell setContentView: viewCategory];
     } else {
         ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-        viewSlide.labelTitle.text = [NSString stringWithFormat:@"%ld - %@", index, currentDict[CONTENT_FIELD_TITLE]];
+        viewSlide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
         
         viewSlide.isFavorite = NO;
         viewSlide.dict = currentDict;

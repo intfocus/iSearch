@@ -12,6 +12,7 @@
 #import "message.h"
 
 #import "FileUtils.h"
+#import "HttpUtils.h"
 #import "SSZipArchive.h"
 #import "PopupView.h"
 #import "ExtendNSLogFunctionality.h"
@@ -72,9 +73,13 @@
     } else if(self.slide.isDownloaded) {
         [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
     } else {
-        self.downloadURL = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                 BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
-        [self downloadZip:self.downloadURL];
+        if([HttpUtils isNetworkAvailable]) {
+            self.downloadURL = [NSString stringWithFormat:@"%@%@?%@=%@",
+                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
+            [self downloadZip:self.downloadURL];
+        } else {
+            [self showPopupView:@"无网络，\n不下载"];
+        }
     }
     [self updateBtnDownloadOrDisplayIcon];
 }
