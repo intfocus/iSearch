@@ -8,6 +8,7 @@
 
 #import "RightSideViewController.h"
 #import "MainViewController.h"
+#import "ExtendNSLogFunctionality.h"
 
 @implementation RightSideViewController
 

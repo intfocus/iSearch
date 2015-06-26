@@ -12,6 +12,8 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
+#import "ContentUtils.h"
+#import "ExtendNSLogFunctionality.h"
 
 typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     SlideFieldString = 10,
@@ -19,115 +21,181 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 };
 
 @implementation Slide
-@synthesize slideID,name,title,type,tags,desc,pages,pageNum,createdDate;
-@synthesize zipSize,zipUrl,localCreatedDate,localUpdatedDate;
-@synthesize categoryID,categoryName,typeName;
-
-- (Slide *)initWith:(NSMutableDictionary *)dict Favorite:(BOOL)isFavorite {
-    Slide *slide = [super init];
-    
-    // backup assign values
-    slide.configDict  = [NSMutableDictionary dictionaryWithDictionary:dict];
-    slide.isFavorite  = isFavorite;
-
-    // deal logic
-    NSString *dirName = (isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME);
-    slide.dirName     = dirName;
-    slide.isDisplay   = NO;// TODO
-
-    
-    // when download and add to favorite
-    NSString *descPath;
-    NSMutableDictionary *descDict;
-    // <local desc format>
-    if(isFavorite) {
-        [slide dealWithDownload:[NSMutableDictionary dictionaryWithDictionary:dict]];
-        
-        descPath = [FileUtils slideDescPath:slide.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-        descDict = [FileUtils readConfigFile:descPath];
-        slide.isDisplay = (descDict[SLIDE_DESC_ISDISPLAY] == nil);
-        
-    // <content format>
-    } else {
-        slide.slideID = slide.configDict[CONTENT_FIELD_ID];
-        
-        // when download
-        if([FileUtils checkSlideExist:slide.slideID Dir:dirName Force:NO]) {
-            descPath = [FileUtils slideDescPath:slide.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-            descDict = [FileUtils readConfigFile:descPath];
-            slide.isDisplay = !(descDict[SLIDE_DESC_ISDISPLAY] == nil);
-
-            [slide dealWithDownload:descDict];
-        }
-        // or not
-        else {
-            [slide dealWithContent:[NSMutableDictionary dictionaryWithDictionary:dict]];
-        }
-    }
-    
-    // common fields
-    slide.pageNum          = [slide defaultWhenNil:dict[CONTENT_FIELD_PAGENUM] Type:SlideFieldString];
-    slide.createdDate      = [slide defaultWhenNil:dict[CONTENT_FIELD_CREATEDATE] Type:SlideFieldDate];
-    slide.zipSize          = [slide defaultWhenNil:dict[CONTENT_FIELD_ZIPSIZE] Type:SlideFieldString];
-    slide.categoryID       = [slide defaultWhenNil:dict[CONTENT_FIELD_CATEGORYID] Type:SlideFieldString];
-    slide.categoryName     = [slide defaultWhenNil:dict[CONTENT_FIELD_CATEGORYNAME] Type:SlideFieldString];
-
-    // local fields
-    slide.localCreatedDate = [slide defaultWhenNil:dict[SLIDE_DESC_LOCAL_CREATEAT] Type:SlideFieldDate];
-    slide.localUpdatedDate = [slide defaultWhenNil:dict[SLIDE_DESC_LOCAL_UPDATEAT] Type:SlideFieldDate];
-    
-    slide.typeName = @"文档";
-    return slide;
-}
-
 //@synthesize ID,name,title,type,tags,desc,pages,pageNum,createdDate;
 //@synthesize zipSize,zipUrl,localCreatedDate,localUpdatedDate;
-//@synthesize categoryID,categoryName;
-- (Slide *)dealWithDownload:(NSMutableDictionary *)dict {
-    Slide *slide = self;
-    slide.slideID = dict[SLIDE_DESC_ID];
-    slide.name    = dict[SLIDE_DESC_NAME];
-    slide.title   = dict[SLIDE_DESC_NAME];
-    slide.type    = dict[SLIDE_DESC_TYPE];
-    slide.desc    = dict[SLIDE_DESC_DESC];
-    slide.pages   = dict[SLIDE_DESC_ORDER];
+//@synthesize categoryID,categoryName,typeName;
+
+/**
+ *  content cache init slide
+ *
+ *  @param dict cache content
+ *
+ *  @return slide instance
+ */
+- (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
+    self = [super init];
+
+    _isFavorite = isFavorite;
+    _dirName    = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    _isDisplay  = dict[SLIDE_DESC_ISDISPLAY] && [dict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"];
+    _dict       = [NSMutableDictionary dictionaryWithDictionary:dict];
     
-    return slide;
+    // server info
+    _ID           = dict[CONTENT_FIELD_ID];
+    _name         = (NSString *)psd(dict[CONTENT_FIELD_NAME], @"未设置");
+    _type         = (NSString *)psd(dict[CONTENT_FIELD_TYPE], @"");
+    _desc         = (NSString *)psd(dict[CONTENT_FIELD_DESC], @"未设置");
+    _title        = (NSString *)psd(dict[CONTENT_FIELD_TITLE], @"未设置");
+    _pageNum      = (NSString *)psd(dict[CONTENT_FIELD_PAGENUM], @"");
+    _createdDate  = (NSString *)psd(dict[CONTENT_FIELD_CREATEDATE], @"");
+    _zipSize      = (NSString *)psd(dict[CONTENT_FIELD_ZIPSIZE], @"0");
+    _categoryID   = (NSString *)psd(dict[CONTENT_FIELD_CATEGORYID], @"");
+    _categoryName = (NSString *)psd(dict[CONTENT_FIELD_CATEGORYNAME], @"");
+    if(dict[SLIDE_DESC_ORDER]) {
+        _pages = dict[SLIDE_DESC_ORDER];
+    }
+    // ID/DirName is necessary
+    [self assignLocalFields:[NSMutableDictionary dictionaryWithDictionary:dict]];
+    
+    
+    return self;
 }
 
-- (Slide *)dealWithContent:(NSMutableDictionary *)dict {
-    Slide *slide = self;
-    slide.slideID = dict[CONTENT_FIELD_ID];
-    slide.name    = dict[CONTENT_FIELD_NAME];
-    slide.title   = [slide defaultWhenNil:dict[CONTENT_FIELD_TITLE] Type:SlideFieldString];
-    slide.type    = dict[CONTENT_FIELD_TYPE];
-    slide.desc    = dict[CONTENT_FIELD_DESC];
-    slide.pages   = [[NSMutableArray alloc] init];
-
-    return slide;
-}
-
-- (NSString *)defaultWhenNil:(NSString *)fieldValue Type:(NSInteger)fieldType {
-    if(fieldValue != nil) {
-        return fieldValue;
+- (void)assignLocalFields:(NSMutableDictionary *)dict {
+    // base info whatever downloaded
+    _path = [FileUtils getPathName:self.dirName FileName:self.ID];
+    _descPath = [self.path stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    _dictPath = [self.path stringByAppendingPathComponent:@"dict.json"];
+    if([self isDownloaded] && !self.isFavorite) {
+        _descContent = [NSString stringWithContentsOfFile:self.descPath encoding:NSUTF8StringEncoding error:NULL];
+        _descDict1 = [FileUtils readConfigFile:self.descPath];
+        NSMutableDictionary *dict = [FileUtils readConfigFile:self.dictPath];
+        
+        if(!self.pages) {
+            _pages = (NSMutableArray *)psd(_descDict1[SLIDE_DESC_ORDER], [[NSMutableArray alloc] init]);
+        }
+        _isDisplay = (dict[SLIDE_DESC_ISDISPLAY] && [dict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"]);
     }
     
-    switch (fieldType) {
-        case SlideFieldString: {
-            fieldValue = @"";
-        }
-            break;
-        case SlideFieldDate: {
-            fieldValue = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
-        }
-            break;
-        default: {
-            fieldValue = @"";
-            NSLog(@"Bug:fieldValue#%@, fieldType:%ld", fieldValue, (long)fieldType);
-        }
-            break;
+    // local fields
+    NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
+    _localCreatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_CREATEAT],timestamp);
+    _localUpdatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_UPDATEAT],timestamp);
+    
+    if([self.type isEqualToString:@"1"]) {
+        _typeName = @"文档";
+    } else if ([self.type isEqualToString:@"2"]) {
+        _typeName = @"幻灯片";
+    } else if ([self.type isEqualToString:@"0"]) {
+        _typeName = @"分类";
+    } else {
+        _typeName = @"未知文档";
     }
-    return fieldValue;
 }
 
+
+#pragma mark - around slide download
+
+- (NSString *)toDownloaded {
+    return [FileUtils slideToDownload:self.ID];
+}
+- (BOOL)isDownloaded:(BOOL)isForce {
+    return [FileUtils checkSlideExist:self.ID Dir:self.dirName Force:isForce];
+}
+
+- (BOOL)isDownloaded {
+    return [self isDownloaded:YES];
+}
+- (BOOL)isDownloading {
+    return [FileUtils isSlideDownloading:self.ID];
+}
+- (NSString *)downloaded {
+    return [FileUtils slideDownloaded:self.ID];
+}
+
+#pragma mark - around write cache
+
+- (NSString *)cacheName {
+    return [ContentUtils contentCacheName:self.type ID:self.ID];
+}
+- (NSString *)cachePath {
+    return [FileUtils getPathName:CACHE_DIRNAME FileName:[self cacheName]];
+}
+- (void)toCached {
+    NSMutableDictionary *dict = [self refreshFields];
+    [FileUtils writeJSON:dict Into:[self cachePath]];
+}
+
+- (BOOL)isCached {
+    return [FileUtils checkFileExist:self.cachePath isDir:NO];
+}
+
+#pragma mark - instance methods
+
+- (void)save {
+    [self refreshFields];
+
+    [FileUtils writeJSON:self.dict Into:self.dictPath];
+}
+- (BOOL)addToFavorite {
+    return [FileUtils copySlideToFavorite:self.ID Block:^(NSMutableDictionary *dict) {
+        [DateUtils updateSlideTimestamp:self.dict];
+    }];
+}
++ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
+    NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
+    NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
+   return [[Slide alloc]initSlide:dict isFavorite:isFavorite];
+}
+- (NSString *)inspect {
+    return [NSString stringWithFormat:@"#<Slide ID: %@, name: %@, type: %@, desc: %@, pages: %@, title: %@, zipSize: %@, pageNum: %@, categoryID: %@, categoryName: %@, createdDate: %@, localCreatedDate: %@, localUpdatedDate: %@, isDisplay: %d", self.ID, self.name, self.type, self.desc, self.pages, self.title, self.zipSize, self.pageNum, self.categoryID, self.categoryName, self.createdDate, self.localCreatedDate, self.localUpdatedDate, self.isDisplay];
+}
+
+- (NSString *)to_s {
+    return [self inspect];
+}
+
+- (BOOL)isValid {
+    NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];
+    return (!self.ID || !self.pages || (!self.pages && [pageNum isEqualToString:self.pageNum]));
+}
+
+#pragma mark - edit slide pages
+- (NSString *)dictSwpPath {
+    return [self.path stringByAppendingPathComponent:SLIDE_CONFIG_SWP_FILENAME];
+}
+- (NSMutableDictionary *)dictSwp {
+    return [FileUtils readConfigFile:[self dictSwpPath]];
+}
+- (void)enterEditState {
+    return [FileUtils writeJSON:self.dict Into:[self dictSwpPath]];
+}
+#pragma mark - private methods
+
+- (NSMutableDictionary *) refreshFields {
+    // slide's desc field
+    _dict[SLIDE_DESC_ID]              = self.ID;
+    _dict[CONTENT_FIELD_ID]           = self.ID;
+    _dict[CONTENT_FIELD_NAME]         = self.name;
+    _dict[CONTENT_FIELD_TYPE]         = self.type;
+    if(isNil(_dict[SLIDE_DESC_ORDER]) && !isNil(self.pages)) {
+    _dict[SLIDE_DESC_ORDER]           = self.pages;
+    }
+
+    // server field
+    _dict[CONTENT_FIELD_TITLE]        = self.title;
+    _dict[CONTENT_FIELD_ZIPSIZE]      = self.zipSize;
+    _dict[CONTENT_FIELD_PAGENUM]      = self.pageNum;
+    _dict[CONTENT_FIELD_CATEGORYID]   = self.categoryID;
+    _dict[CONTENT_FIELD_CATEGORYNAME] = self.categoryName;
+    _dict[CONTENT_FIELD_CREATEDATE]   = self.createdDate;
+
+    // local field
+    _dict[SLIDE_DESC_LOCAL_CREATEAT]  = self.localCreatedDate;
+    _dict[SLIDE_DESC_LOCAL_UPDATEAT]  = self.localUpdatedDate;
+    _dict[SLIDE_DESC_ISDISPLAY]       = (self.isDisplay ? @"1" : @"0");
+    
+    return self.dict;
+}
 @end

@@ -42,6 +42,10 @@ typedef NS_ENUM(NSInteger, SlideType){
     SlideTypeSlide = 10,
     SlideTypeFavorite = 11
 };
+typedef NS_ENUM(NSInteger, DisplayFromType){
+    DisplayFromSlide = 10,
+    DisplayFromOfflineCell = 11
+};
 // 目录排序
 typedef NS_ENUM(NSInteger, SortType){
     SortByAscending = 10,
@@ -82,6 +86,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
 #define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
 #define THUMBNAIL_DIRNAME      @"Thumbails" // 分类缩略图
+#define CACHE_DIRNAME          @"Caches"
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -135,16 +140,19 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
-#define CONTENT_KEY_DISPLAYID   @"DisplayFileID" // 目录中文件已经下载，点击[演示]时通过该key传值
+#define CONTENT_KEY_DISPLAYID   @"DisplaySlideID" // 目录中文件已经下载，点击[演示]时通过该key传值
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
-#define SLIDE_DISPLAY_TYPE      @"FavoriteOrSlide" // 下载文档位置不同
-#define SLIDE_EDIT_TYPE         @"FavoriteOrSlide" // 下载文档位置不同
+#define SLIDE_DISPLAY_TYPE      @"DisplayFavoriteOrSlide" // 下载文档位置不同
+#define SLIDE_DISPLAY_FROM      @"DisplayFromType" 
+#define SLIDE_EDIT_TYPE         @"EditFavoriteOrSlide" // 下载文档位置不同
+#define SLIDE_DISPLAY_JUMPTO    @"DisplayJumpTo" // 编辑界面，双击进入演示
 #define CONTENT_KEY_EDITID1      @"EditFileID" // 演示档时，[编辑]进入文档页面界面
 #define CONTENT_KEY_EDITID2      @"EditPageID" // 演示档时，[编辑]进入文档页面界面
 // 目录中文件类型
 #define CONTENT_CATEGORY   @"0" // 分类，可以点击再进入
 #define CONTENT_SLIDE      @"1" // 文献 （待确认)
 #define CONTENT_PPT        @"2" // 幻灯片（待确认)
+#define CONTENT_SORT_KEY   @"SortKey" // CONTENT_FIELD_ID转化为数字
 // 目录API参数
 #define CONTENT_PARAM_DEPTID    @"did" // 部门ID
 #define CONTENT_PARAM_PARENTID  @"pid" // 分类父ID
@@ -175,10 +183,13 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
 #define OFFLINE_COLUMN_FILEID    @"file_id"
 #define OFFLINE_COLUMN_NAME      @"file_name"
+#define OFFLINE_COLUMN_TITLE     @"file_title"
 #define OFFLINE_COLUMN_TYPE      @"file_type"
 #define OFFLINE_COLUMN_DESC      @"desc"
 #define OFFLINE_COLUMN_TAGS      @"tags"
+#define OFFLINE_COLUMN_CATEGORYID   @"category_id"
 #define OFFLINE_COLUMN_CATEGORYNAME @"category_name"
+#define OFFLINE_COLUMN_CREATEDATE   @"edit_time"
 #define OFFLINE_COLUMN_PAGENUM   @"page_num"
 #define OFFLINE_COLUMN_ZIPURL    @"zip_url"
 #define OFFLINE_COLUMN_ZIPSIZE   @"zip_size"
@@ -192,6 +203,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 文档描述desc.json相关
 // TODO: 用户上传文档后可能修改文件名称、描述，所以同步目录时更新desc.json信息
 #define SLIDE_CONFIG_FILENAME       @"desc.json" // 文件的配置档名称
+#define SLIDE_DICT_FILENAME         @"dict.json" // desc.json保待不变，一切操作在些文件
 #define SLIDE_CONFIG_SWP_FILENAME   @"desc.json.swp" // 文件页面编辑时的配置档拷贝
 #define SLIDE_DESC_ID               @"id"
 #define SLIDE_DESC_TYPE             @"type"

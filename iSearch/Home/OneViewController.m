@@ -23,7 +23,6 @@
     __gm_weak GMGridView *_gridView;
     NSMutableArray       *_dataList;
 }
-
 @end
 
 @implementation OneViewController
@@ -34,17 +33,18 @@
      * 实例变量初始化
      */
     _dataList = [[NSMutableArray alloc] init];
-    // slide need it.
+    // viewSlideInfo need it.
     HomeViewController *homeViewController = [self masterViewController];
     self.mainViewController = [homeViewController masterViewController];
+    
+    [self configGMGridView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     _dataList = [FileUtils favoriteFileList];
-    // order by updated_at by default.
     _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
-    [self configGMGridView];
+    [_gridView reloadData];
 }
 
 - (void)viewDidLayoutSubviews{
@@ -68,7 +68,6 @@
     [self.view addSubview:gmGridView];
     _gridView = gmGridView;
     
-    
     _gridView.dataSource = self;
     _gridView.mainSuperView = self.view;
 }
@@ -78,7 +77,6 @@
     // Dispose of any resources that can be recreated.
     _gridView = nil;
 }
-
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
@@ -95,16 +93,15 @@
 // GridViewCell界面 - 目录界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
-    
-    if (!cell) {
+    if (cell == nil) {
         cell = [[GMGridViewCell alloc] init];
-        ViewSlide *slide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] lastObject];
-        NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        slide.isFavorite = YES;
-        slide.dict = currentDict;
-        slide.masterViewController = [self mainViewController];
-        [cell setContentView: slide];
     }
+    ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] lastObject];
+    NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+    viewSlide.isFavorite = YES;
+    viewSlide.dict = currentDict;
+    viewSlide.masterViewController = [self mainViewController];
+    [cell setContentView: viewSlide];
     return cell;
 }
 @end

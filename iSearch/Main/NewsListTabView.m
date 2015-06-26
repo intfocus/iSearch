@@ -68,15 +68,13 @@
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.font = [UIFont systemFontOfSize:12.0];
     cell.textLabel.text = message;
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
     return cell;
 }
 
 // 选择某行, 跳转至[首页][通知]
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NewsListCell *cell= (NewsListCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.textColor = [UIColor blackColor];
-    
     SideViewController *sideViewController = self.sideViewController;
     MainViewController *mainViewController = [sideViewController masterViewController];
     UIViewController *controller = [sideViewController viewControllerForTag:EntryButtonNotification];
@@ -86,7 +84,7 @@
 // 取消选择某行(选择了其他行)
 -(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     NewsListCell *cell= (NewsListCell *)[tableView cellForRowAtIndexPath:indexPath];
-    cell.textLabel.textColor = [UIColor whiteColor];
+    cell.backgroundColor=[UIColor clearColor];
     NSLog(@"uns%@",cell);
 }
 

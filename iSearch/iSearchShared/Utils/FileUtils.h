@@ -200,7 +200,7 @@
  *
  *  @return pdf/gif文档路径
  */
-+ (NSString*) fileThumbnail:(NSString *)FileID
++ (NSString*) slideThumbnail:(NSString *)FileID
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
@@ -215,6 +215,11 @@
  */
 + (BOOL) copySlideToFavorite:(NSString *)slideID
                        Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
+
+#pragma mark - slide download cache
++ (NSString *)slideToDownload:(NSString *)slideID;
++ (NSString *)slideDownloaded:(NSString *)slideID;
++ (BOOL)isSlideDownloading:(NSString *)slideID;
 @end
 
 

@@ -30,8 +30,11 @@
 
 
 #define NSActionLogger(actionName, actionResult) actionLogPost(__FILE__,__LINE__,__PRETTY_FUNCTION__, actionName, actionResult);
+#define psd(pValue, dValue) propertyDefault(pValue, dValue)
 
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 BOOL ExtendNSLogPrintError(const char *file, int lineNumber, const char *functionName,BOOL isPrintSuccessfully, NSError *error, NSString *format, ...);
 void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult);
+NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue);
+BOOL isNil(NSObject *propertyValue);
 #endif

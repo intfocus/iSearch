@@ -12,12 +12,8 @@
 #import "LoginViewCOntroller.h"
 #import "SideViewController.h"
 #import "RightSideViewController.h"
+#import "SettingViewController.h"
 
-//#import "HomeViewController.h"
-//#import "NotificationViewController.h"
-//#import "OfflineViewController.h"
-//#import "ContentViewController.h"
-//#import "FavoriteViewController.h"
 #import "FileUtils.h"
 #import "PopupView.h"
 #import "const.h"
@@ -34,6 +30,7 @@
 
 @property(nonatomic,strong)UIViewController *rightViewController;
 @property(nonatomic,strong)SlideInfoView *slideInfoView;
+@property(nonatomic,strong)SettingViewController *settingViewController;
 
 
 // 头像设置
@@ -50,10 +47,6 @@
 
     // CWPopup 事件
     self.useBlurForPopup = YES;
-//    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissPopup)];
-//    tapRecognizer.numberOfTapsRequired = 1;
-//    tapRecognizer.delegate = self;
-//    [self.view addGestureRecognizer:tapRecognizer];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -90,7 +83,6 @@
 - (BOOL)prefersStatusBarHidden {
     return NO;
 }
-#warning#TODO 状态栏 - 黑底白字
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleDefault;
 }
@@ -103,7 +95,7 @@
 /// 控件事件
 ///////////////////////////////////////////////////////////
 
-- (IBAction)changeVIew:(id)sender {
+- (IBAction)changeView:(id)sender {
     UIControl *entry=sender;
 
     SideViewController *side=(id)self.leftViewController;
@@ -185,21 +177,25 @@
     right.view.frame=self.rightView.bounds;
 }
 
--(void)onEntryClick:(id)sender{
-    [self changeVIew:sender];
+- (void)onEntryClick:(id)sender{
+    if([sender tag] == EntryButtonSetting) {
+        [self popupSettingViewController];
+    } else {
+        [self changeView:sender];
+    }
 }
 /**
  *  点击头像事件
  *
  *  @param sender <#sender description#>
  */
--(void)onUserHeadClick:(id)sender{
+- (void)onUserHeadClick:(id)sender{
     self.imagePickerActionSheet = [[UIActionSheet alloc] initWithTitle:@"上传头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"从相册选择" otherButtonTitles:@"现在拍照", nil];
     self.imagePickerActionSheet.delegate = self;
     [self.imagePickerActionSheet showInView:self.view];
 }
 
--(void)backToLoginViewController{
+- (void)backToLoginViewController{
     LoginViewController *login = [[LoginViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
     window.rootViewController = login;
@@ -274,9 +270,8 @@
     }];
 }
 
-#pragma mark - CWPoup methods
-
-- (void)poupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
+#pragma mark - Slide info PopupView
+- (void)popupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
     if(self.slideInfoView == nil) {
         self.slideInfoView = [[SlideInfoView alloc] init];
         self.slideInfoView.masterViewController = self;
@@ -292,10 +287,28 @@
  *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
  *  强制刷新[收藏界面]；
  */
-- (void)dismissPopup {
+- (void)dismissPopupSlideInfo {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
+#warning refresh view after remove cell
+        }];
+    }
+}
+#pragma mark - popup show settingViewController
+- (void)popupSettingViewController {
+    if(self.settingViewController == nil) {
+        self.settingViewController = [[SettingViewController alloc] init];
+        self.settingViewController.masterViewController = self;
+    }
+    [self presentPopupViewController:self.settingViewController animated:YES completion:^(void) {
+        NSLog(@"popup view settingViewController");
+    }];
+}
+
+- (void)dimmissPopupSettingViewController {
+    if (self.popupViewController != nil) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            _settingViewController = nil;
         }];
     }
 }

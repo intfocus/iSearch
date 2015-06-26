@@ -144,24 +144,13 @@
         // b)内容是否为空，c)格式是否为json
         if(errors && [errors count] == 0) {
             // b)内容是否为空，
-            NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-            if(error || ![descContent length]) {
-                [errors addObject:@"fileID/desc.json文件不存在."];
-            }
-            
-            // c)格式是否为json
-            if(errors && [errors count] == 0) {
-                NSMutableDictionary *configDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                                  options:NSJSONReadingMutableContainers
-                                                                                    error:&error];
-                if(error || [[configDict allKeys] count] == 0) {
-                    [errors addObject:@"fileID/desc.json为空或解释失败."];
-                }
+            NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
+            if(descPath == nil) {
+                [errors addObject:@"desc is nil"];
             }
         }
     }
-    
-    if(errors && [errors count] > 0) NSLog(@"TODO#popupView/checkSlideExist: \n%@", errors);
+
     return ([errors count] == 0);
 }
 
@@ -297,34 +286,29 @@
 + (NSMutableArray *) favoriteFileList {
     NSMutableArray *fileList = [[NSMutableArray alloc]init];
     
-    // 重组内容文件名称格式: r150501
-    NSString *filesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSArray *files = [fileManager contentsOfDirectoryAtPath:filesPath error:&error];
+    // 重组内容文件名称格式: r150501
+    NSString *favoritesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
+    NSArray *slides = [fileManager contentsOfDirectoryAtPath:favoritesPath error:&error];
     
     //    // 过滤出原重组内容的文件列表进行匹配
     //    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
     //    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
     
-    NSString *fileID, *filePath, *descPath, *descContent;
+    NSString *slideID, *slidePath, *dictPath;
+    NSMutableDictionary *dict;
     
-    for(fileID in files) {
-        filePath = [filesPath stringByAppendingPathComponent:fileID];
-        descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    for(slideID in slides) {
+        slidePath = [favoritesPath stringByAppendingPathComponent:slideID];
+        dictPath = [slidePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
         
         // 配置档不存在，跳过
-        if(![FileUtils checkSlideExist:fileID Dir:FAVORITE_DIRNAME Force:YES]) continue;
+        if(![FileUtils checkSlideExist:slideID Dir:FAVORITE_DIRNAME Force:YES]) continue;
         
-        // 解析字符串为JSON
-        descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"read desc file#%@", fileID);
-        NSMutableDictionary *descJSON = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&error];
-        NSErrorPrint(error, @"file#%@ desc content convert into json", fileID);
+        dict = [FileUtils readConfigFile:dictPath];
         
-        [fileList addObject:descJSON];
+        [fileList addObject:dict];
     }
     
     return fileList;
@@ -431,7 +415,7 @@
         NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         if(!error) {
             [jsonStr writeToFile:filePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-            NSErrorPrint(error, @"json string write into desc file#%@", [filePath lastPathComponent]);
+            NSErrorPrint(error, @"json string write into desc file#%@", filePath);
         }
     }
 }
@@ -463,7 +447,7 @@
  *
  *  @return pdf/gif文档路径
  */
-+ (NSString*) fileThumbnail:(NSString *)slideID
++ (NSString*) slideThumbnail:(NSString *)slideID
                      PageID:(NSString *)pageID
                         Dir:(NSString *)dir {
     NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
@@ -472,8 +456,9 @@
     
     if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
         thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gif", pageID]];
+    } else if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4", pageID]];
     }
-    //NSLog(@"thumbnail: %@", thumbnailPath);
     return thumbnailPath;
 }
 
@@ -523,4 +508,27 @@
     return isSuccessfully;
 }
 
+#pragma mark - slide download cache
++ (NSString *)slideDownloadCachePath:(NSString *)slideID {
+    NSString *cacheName = [NSString stringWithFormat:@"%@.downloading", slideID];
+    NSString *cachePath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:cacheName];
+    return cachePath;
+}
++ (NSString *)slideToDownload:(NSString *)slideID {
+    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
+    [@"downloading" writeToFile:cachePath atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+    
+    return cachePath;
+}
++ (NSString *)slideDownloaded:(NSString *)slideID {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
+    [fileManager removeItemAtPath:cachePath error:NULL];
+    
+    return cachePath;
+}
++ (BOOL)isSlideDownloading:(NSString *)slideID {
+    NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
+    return [FileUtils checkFileExist:cachePath isDir:NO];
+}
 @end

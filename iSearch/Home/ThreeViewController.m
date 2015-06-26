@@ -30,7 +30,8 @@
      * 实例变量初始化
      */
     _data = [[NSMutableArray alloc] init];
-
+    
+    [self configGMGridView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -40,7 +41,7 @@
     for(i=0; i< 13; i++) {
         [_data addObject:[NSString stringWithFormat:@"我的记录-%ld", (long)i]];
     }
-    [self configGMGridView];
+    [_gmGridView reloadData];
 }
 
 -(void)viewDidLayoutSubviews{
@@ -95,12 +96,13 @@
     
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-        viewCategory.labelTitle.text = [_data objectAtIndex:index];
-        
-        [viewCategory setImageWith:@"0" CategoryID:@"3"];
-        [cell setContentView: viewCategory];
+
     }
+    ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+    viewCategory.labelTitle.text = [_data objectAtIndex:index];
+    
+    [viewCategory setImageWith:@"0" CategoryID:@"3"];
+    [cell setContentView: viewCategory];
     return cell;
 }
 

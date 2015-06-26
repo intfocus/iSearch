@@ -180,13 +180,9 @@
             while(currentMonthIndex <= 0){
                 currentMonthIndex += 12;
             }
-            NSString *monthText = [[NSString alloc] init];
-            if([APP_LANG isEqual: @"zh-CN"])
-                monthText = [NSString stringWithFormat:@"%ld月", (long)(currentMonthIndex - 1)];
-            else
-                monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
+            NSString *monthText = [[dateFormatter standaloneMonthSymbols][currentMonthIndex - 1] capitalizedString];
             
-            return [NSString stringWithFormat:@"%ld年%@", comps.year, monthText];
+            return [NSString stringWithFormat:@"%@/%ld", monthText, comps.year];
         };
         
     }

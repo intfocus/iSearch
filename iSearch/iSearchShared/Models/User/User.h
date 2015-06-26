@@ -31,5 +31,7 @@
 
 // instance methods
 - (void)save;
+- (NSString *)inspect;
+- (NSString *)to_s;
 @end
 #endif

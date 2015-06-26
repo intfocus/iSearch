@@ -11,7 +11,9 @@
 #import "GMGridView.h"
 #import "GMGridViewLayoutStrategies.h"
 
+#import "User.h"
 #import "const.h"
+#import "HttpUtils.h"
 #import "FileUtils.h"
 #import "ViewSlide.h"
 #import "ViewCategory.h"
@@ -25,7 +27,7 @@
     __gm_weak GMGridView *_gridView;
     NSMutableArray       *_dataList;
 }
-@property (strong, nonatomic) NSString  *deptID;
+@property (strong, nonatomic) User  *user;
 @end
 
 @implementation TwoViewController
@@ -35,23 +37,21 @@
     /**
      *  实例变量初始化
      */
-    self.deptID = @"10";
+    self.user = [[User alloc] init];
     _dataList = [[NSMutableArray alloc] init];
-
-    
+    [self configGMGridView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    _dataList = [[ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_LOCAL] firstObject];
-    [self configGMGridView];
+    [self loadContentData:LOCAL_OR_SERVER_LOCAL];
+    [_gridView reloadData];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSMutableArray *data = [[ContentUtils loadContentData:self.deptID CategoryID:CONTENT_ROOT_ID Type:LOCAL_OR_SERVER_SREVER] firstObject];
-        if([data count] > 0) {
-            _dataList = data;
-            [self configGMGridView];
+        if([HttpUtils isNetworkAvailable]) {
+            [self loadContentData:LOCAL_OR_SERVER_LOCAL];
+            [_gridView reloadData];
         }
     });
 }
@@ -73,6 +73,12 @@
 
 
 #pragma mark - controls configuration
+
+
+- (void)loadContentData:(NSString *)type {
+    NSArray *array = [ContentUtils loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:type Key:CONTENT_FIELD_ID Order:YES];
+    _dataList = [array objectAtIndex:0];
+}
 
 - (void) configGMGridView {
     GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
@@ -108,32 +114,24 @@
 
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        
-        NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        
-        // 服务器端Category没有ID值
-        if(![currentDict objectForKey:CONTENT_FIELD_TYPE]) {
-            currentDict[CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
-            [_dataList objectAtIndex:index][CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
-        }
-        
-        NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
-        
-        // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
-        if(![categoryType isEqualToString:CONTENT_CATEGORY]) {
-            NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
-        }
-        ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-//        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
-        viewCategory.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
-
-        
-        [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
-        viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
-        [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell setContentView: viewCategory];
     }
+    NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+    NSString *categoryType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
+    
+    // 目录: 0; 文档: 1; 直文档: 2; 视频: 4
+    if(![categoryType isEqualToString:CONTENT_CATEGORY]) {
+        NSLog(@"Hey man, here is MyCategory, cannot load Slide!");
+    }
+    ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
+    //        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
+    viewCategory.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
+    
+    
+    [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
+    viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+    [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell setContentView: viewCategory];
     return cell;
 }
 

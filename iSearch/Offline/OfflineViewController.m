@@ -6,6 +6,8 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 //  离线搜索
+//  **point** api返回字段与ContentViewController一致
+//
 //  1. 有网络时连接服务器获取文档列表(json)格式
 //      GET /OFFLINE_URL_PATH, {
 //          user: user-name or user-email,
@@ -28,12 +30,16 @@
 //     从本地数据取数据，使用OFFLINE_COLUMN_*
 #import "OfflineViewController.h"
 #import <UIKit/UIKit.h>
-#import "DatabaseUtils.h"
+
+#import "User.h"
+#import "Slide.h"
 #import "const.h"
 #import "PopupView.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "ContentUtils.h"
+#import "DatabaseUtils.h"
+
 #import "ExtendNSLogFunctionality.h"
 #import "OfflineCell.h"
 #import "DisplayViewController.h"
@@ -111,9 +117,9 @@
  *  先删除后插入；
  */
 - (IBAction)refreshSlideList:(UIBarButtonItem *)sender {
-    NSString *deptID = @"10";
+    User *user = [[User alloc] init];
     NSError *error;
-    NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", OFFLINE_URL_PATH, PARAM_LANG, APP_LANG, OFFLINE_PARAM_DEPTID, deptID];
+    NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", OFFLINE_URL_PATH, PARAM_LANG, APP_LANG, OFFLINE_PARAM_DEPTID, user.deptID];
     NSString *response = [HttpUtils httpGet:urlPath];
 
     NSMutableDictionary *mutableDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
@@ -127,16 +133,19 @@
         // 插入前先删除
         [self.database executeSQL:[NSString stringWithFormat:@"delete from %@;" , OFFLINE_TABLE_NAME]];
 
+        Slide *slide;
         NSString *tmpSql = [[NSString alloc] init];
         NSMutableString *insertSql = [[NSMutableString alloc]init];
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         for(dict in mutableArray) {
+            
             // append `insert` sql sentences.
-            tmpSql = [NSString stringWithFormat:@"insert into %@(%@,    %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@)  \
-                                                          values('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@');\n",
+            tmpSql = [NSString stringWithFormat:@"insert into %@(%@,    %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@,   %@)  \
+                                                          values('%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@', '%@');\n",
                       OFFLINE_TABLE_NAME,
                       OFFLINE_COLUMN_FILEID,
                       OFFLINE_COLUMN_NAME,
+                      OFFLINE_COLUMN_TITLE,
                       OFFLINE_COLUMN_TYPE,
                       OFFLINE_COLUMN_DESC,
                       OFFLINE_COLUMN_TAGS,
@@ -146,9 +155,10 @@
                       OFFLINE_COLUMN_ZIPSIZE,
                       dict[CONTENT_FIELD_ID],
                       dict[CONTENT_FIELD_NAME],
+                      dict[CONTENT_FIELD_TITLE],
                       dict[CONTENT_FIELD_TYPE],
                       dict[CONTENT_FIELD_DESC],
-                      dict[CONTENT_FIELD_TYPE],
+                      dict[CONTENT_FIELD_ID],
                       dict[CONTENT_FIELD_PAGENUM],
                       dict[CONTENT_FIELD_CATEGORYNAME],
                       dict[CONTENT_FIELD_ID],// ZipUrl由FileID拼接
@@ -157,23 +167,16 @@
             
             // update local slide cache info
             if([dict[CONTENT_FIELD_TYPE] isEqualToString:CONTENT_SLIDE]) {
-                NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
-                NSMutableDictionary *tmpDesc = [[NSMutableDictionary alloc] init];
-                NSString *descPath = [[NSString alloc] init];
-                NSString *cacheName = [[NSString alloc] init];
-                NSString *cachePath = [[NSString alloc] init];
                 // update local slide desc when already download
-                if([FileUtils checkSlideExist:dict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Force:NO]) {
-                    descPath = [FileUtils slideDescPath:dict[CONTENT_FIELD_ID] Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-                    tmpDesc = [FileUtils readConfigFile:descPath];
-                    tmpDesc = [ContentUtils descConvert:dict To:tmpDesc Type:OFFLINE_DIRNAME];
-                    
-                    [FileUtils writeJSON:tmpDesc Into:descPath];
+                if(isNil(slide)) {
+                    slide = nil;
+                }
+                slide = [[Slide alloc]initSlide:dict isFavorite:NO];
+                if(slide.isDownloaded) {
+                    [slide save];
                 }
                 // write into cache then [view] slide info with popup view
-                cacheName = [ContentUtils contentCacheName:CONTENT_SLIDE DeptID:deptID ID:tmpDict[CONTENT_FIELD_ID]];
-                cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
-                [FileUtils writeJSON:dict Into:cachePath];
+                [slide toCached];
                 /**
                  *  warning: 此处不更新desc的SLIDE_DESC_LOCAL_UPDATEDAT,该信息用来记录用户的操作时候
                  */
@@ -211,56 +214,24 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"OfflineCell" owner:self options:nil] lastObject];
     }
-    cell.dict = currentDict;
-    cell.labelFileName.text = currentDict[OFFLINE_COLUMN_NAME];
+    cell.labelFileName.text = currentDict[OFFLINE_COLUMN_TITLE];
     cell.labelCategory.text = currentDict[OFFLINE_COLUMN_CATEGORYNAME];
     cell.labelZipSize.text  = [FileUtils humanFileSize:currentDict[OFFLINE_COLUMN_ZIPSIZE]];
-    // 如果文件已经下载，文档原[下载]按钮显示为[演示]
-    cell.btnDownloadOrView.tag = [currentDict[OFFLINE_COLUMN_FILEID] intValue];
-    [cell.btnDownloadOrView addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-    // 文件是否下载，文件大小等信息操作<OfflineCell#initControls>
-    [cell initControls];
+    cell.offlineViewController = self;
+    cell.dict = currentDict;
 
     return cell;
 }
 /**
  *  Cell高度
  *
- *  @param tableView <#tableView description#>
+ *  @param tableView
  *  @param indexPath <#indexPath description#>
  *
  *  @return Cell高度
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 70.0f;
-}
-
-/**
- *  本viewController中为服务端所有文件列表；
- *  如果已经下载，则可以[演示], 否则需要下载, 所下载文件在FILE_DIRNAME/下
- *
- *  与DisplayViewController传递文件ID通过CONFIG_DIRNAME/CONETNT_CONFIG_FILENAME[@CONTENT_KEY_DISPLAYID]
- *
- *  @param IBAction [演示]按钮点击事件
- *
- *  @return 演示界面
- */
-// 如果文件已经下载，文档原[下载]按钮显示为[演示]
-- (IBAction) actionDisplaySlide:(id)sender {
-    NSString *slideID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    
-    // 如果文档已经下载，即可执行演示效果，
-    // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:slideID Dir:SLIDE_DIRNAME Force:YES]) {
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-        NSMutableDictionary *configDict = [[NSMutableDictionary alloc] init];
-        [configDict setObject:slideID forKey:CONTENT_KEY_DISPLAYID];
-        [configDict setObject:[NSNumber numberWithInteger:SlideTypeSlide] forKey:SLIDE_DISPLAY_TYPE];
-        [FileUtils writeJSON:configDict Into:configPath];
-        
-        DisplayViewController *showVC = [[DisplayViewController alloc] init];
-        [self presentViewController:showVC animated:NO completion:nil];
-    }
 }
 
 @end
