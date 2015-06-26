@@ -29,7 +29,6 @@
     /**
      *  实例变量初始化
      */
-    self.descDict = [[NSMutableDictionary alloc] init];
     
     /**
      *  控件事件

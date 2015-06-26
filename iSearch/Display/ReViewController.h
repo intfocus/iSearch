@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 //#import <Foundation/Foundation.h>
+@class Slide;
 
 @interface ReViewController : UIViewController <UIGestureRecognizerDelegate>
-
 /**
  *  添加标签界面，[取消]或选择标签[完成]时
  */
-- (void)dismissPopup;
-
+- (void)dismissPopupAddToTag;
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide;
 
 @end
 

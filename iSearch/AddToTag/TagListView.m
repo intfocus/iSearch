@@ -98,7 +98,7 @@
 - (IBAction)actionDismissPopup:(UIBarButtonItem *)sender {
     MainAddNewTagView *masterView1 = [self masterViewController];
     ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-    [masterView2 dismissPopup];
+    [masterView2 dismissPopupAddToTag];
 }
 
 /**
@@ -107,17 +107,14 @@
  *
  *  @param sender UIBarButtonItem
  */
-#warning todo deal
 - (IBAction)actionSave:(UIBarButtonItem *)sender {
-    NSString *fileName = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
-    NSMutableDictionary *descDict = [FileUtils getDescFromFavoriteWithName:fileName];
-//    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:ADDTAG_CONFIG_FILENAME];
-//    [FileUtils writeJSON:descDict Into:configPath];
+    NSString *slideTitle = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
+    Slide *slide = [Slide findByTitleInFavorited:slideTitle];
     
-//    MainAddNewTagView *masterView1 = [self masterViewController];
-//    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-//    [masterView2 actionSavePagesAndMoveFiles:descDict];
-//    [masterView2 dismissPopup];
+    MainAddNewTagView *masterView1 = [self masterViewController];
+    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+    [masterView2 actionSavePagesAndMoveFiles:slide];
+    [masterView2 dismissPopupAddToTag];
 }
 
 /**
@@ -135,10 +132,9 @@
 
 - (void)checkNewTagNameInList:(DLRadioButton *)radioButton {
     MainAddNewTagView *masterView = [self masterViewController];
-    NSMutableDictionary *descDict = masterView.descDict;
-    if(descDict[SLIDE_DESC_NAME] &&
-       [descDict[SLIDE_DESC_NAME] length] >0 &&
-       [descDict[SLIDE_DESC_NAME] isEqualToString:radioButton.titleLabel.text]) {
+    if(masterView.addSlide &&
+       masterView.addSlide.title &&
+       [masterView.addSlide.title isEqualToString:radioButton.titleLabel.text]) {
         radioButton.selected = YES;
         self.barItemSubmit.enabled = YES;
     }

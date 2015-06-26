@@ -71,7 +71,7 @@
 @property (nonatomic, nonatomic) BOOL selectState; // 编辑状态
 @property (nonatomic, strong) Slide  *slide;
 @property (nonatomic, strong) NSString  *slideID;
-@property (nonatomic, strong) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
+@property (nonatomic, strong) NSString  *pageName; // 由展示文档页面跳至本页时需要使用
 @property (nonatomic, strong) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 
@@ -86,7 +86,7 @@
 
 @implementation ReViewController
 @synthesize slideID;
-@synthesize pageID;
+@synthesize pageName;
 @synthesize pageInfoTmp;
 @synthesize selectState;
 
@@ -124,6 +124,12 @@
     
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    [_gmGridView reloadData];
+}
+
 - (void) configGridView {
     GMGridView *gmGridView      = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -152,7 +158,7 @@
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
     self.slideID    = config[CONTENT_KEY_EDITID1];
-    self.pageID     = config[CONTENT_KEY_EDITID2];
+    self.pageName     = config[CONTENT_KEY_EDITID2];
     self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 
     self.slide = [Slide findById:self.slideID isFavorite:self.isFavorite];
@@ -161,10 +167,10 @@
     _dataList = dict[SLIDE_DESC_ORDER];
 }
 
-- (void)dismissPopup {
+- (void)dismissPopupAddToTag {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
+            NSLog(@"popup view dismissPopupAddToTag dismissed");
         }];
     }
 }
@@ -222,6 +228,56 @@
     }
 }
 
+/**
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
+ *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
+ *
+ *  并把当前选择的页面拷贝到目标文件ID(FAVORITE_DIRNAME)文件夹下
+ *
+ *  @param dict 目标文件配置
+ */
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide {
+    NSString *pName;
+    for(pName in _selectedList) {
+        
+        // skip when not exist
+        if([targetSlide.pages containsObject:pName]) continue;
+        // copy page/image
+        [self copyFilePage:pName FromSlide:self.slide ToSlide:targetSlide];
+        
+        [targetSlide.pages addObject:pName];
+    }
+    [targetSlide updateTimestamp];
+    [targetSlide save];
+}
+
+/**
+ *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
+ *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
+ *
+ *  @param pageName   页面名称fildId_pageId.html
+ *  @param fromFileId 源文件id
+ *  @param toFileId   目标文件id
+ */
+- (void)copyFilePage:(NSString *)pName
+           FromSlide:(Slide *)fromSlide
+             ToSlide:(Slide *)toSlide {
+    NSError *error;
+    NSString *pagePath, *newPagePath, *imagePath, *newImagePath;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    // 复制html文件
+    pagePath = [fromSlide.path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pName, PAGE_HTML_FORMAT]];
+    newPagePath = [toSlide.path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pName, PAGE_HTML_FORMAT]];
+    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
+    NSErrorPrint(error, @"copy page html from %@ -> %@", pagePath, newPagePath);
+    
+    // 复制文件夹
+    imagePath = [fromSlide.path stringByAppendingPathComponent:pName];
+    newImagePath = [toSlide.path stringByAppendingPathComponent:pName];
+    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
+    NSErrorPrint(error, @"copy page folder from %@ -> %@", imagePath, newImagePath);
+}
 
 /**
  *  对比desc.json与desc.json.swp是否一致
@@ -270,15 +326,16 @@
     cell.selectedButtonOffset  = CGPointMake(0, 0);
     
     ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
-    NSString *currentPageID = [_dataList objectAtIndex:index];
+    NSString *currentPageName = [_dataList objectAtIndex:index];
+    viewSlidePage.slidePageName = currentPageName;
     
-    if([currentPageID isEqualToString: self.pageID]) {
+    if([currentPageName isEqualToString: self.pageName]) {
         [viewSlidePage hightLight];
     }
     viewSlidePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", self.slide.title];
     viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)index];
     
-    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageID Dir:(self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME)];
+    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:(self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME)];
     if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
         [viewSlidePage loadThumbnail: thumbnailPath];
     } else {
@@ -297,6 +354,7 @@
 //    [viewSlidePage.btnMask addGestureRecognizer:longPressGesture];
     
     [viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
+    //[viewSlidePage sendSubviewToBack:viewSlidePage.btnMask];
     [cell setContentView: viewSlidePage];
     
     return cell;
@@ -341,12 +399,15 @@
     // 仅处理编辑状态下
     if(!self.selectState) return;
     
-    NSNumber *i = [NSNumber numberWithInteger:index];
+    GMGridViewCell *cell = [gridView cellForItemAtIndex:index];
+    ViewSlidePage *viewSlidePage = (ViewSlidePage *)cell.contentView;
+    NSLog(@"click %@", viewSlidePage.slidePageName);
+
     // 未记录该cell的状态，只能过判断_select是否包含i
-    if([_selectedList containsObject:i])
-        [_selectedList removeObject:i];
+    if([_selectedList containsObject:viewSlidePage.slidePageName])
+        [_selectedList removeObject:viewSlidePage.slidePageName];
     else
-        [_selectedList addObject:i];
+        [_selectedList addObject:viewSlidePage.slidePageName];
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
     if([_selectedList count]) {
@@ -412,8 +473,8 @@
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
 - (void)GMGridView:(GMGridView *)gridView moveItemAtIndex:(NSInteger)oldIndex toIndex:(NSInteger)newIndex {
     NSLog(@"%ld => %ld",(long)oldIndex, (long)newIndex);
-    NSString *pageName = [_dataList objectAtIndex:oldIndex];
-    [_dataList insertObject:pageName atIndex:newIndex];
+    NSString *pName = [_dataList objectAtIndex:oldIndex];
+    [_dataList insertObject:pName atIndex:newIndex];
     if(oldIndex > newIndex) {
         [_dataList removeObjectAtIndex:(oldIndex+1)];
     } else {
@@ -436,38 +497,6 @@
     [FileUtils writeJSON:dict Into:path];
 }
 
-
-/**
- *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
- *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
- *
- *  @param pageName   页面名称fildId_pageId.html
- *  @param fromFileId 源文件id
- *  @param toFileId   目标文件id
- */
-- (void)copyFilePage:(NSString *)pageName
-          FromFileId:(NSString *)fromFileId
-            ToFileId:(NSString *)toFileId {
-    NSError *error;
-    NSString *filePath, *newFilePath, *pagePath, *newPagePath, *imagePath, *newImagePath;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *filesPath = [FileUtils getPathName:dirName];
-    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
-    
-    filePath      = [filesPath stringByAppendingPathComponent:fromFileId];
-    newFilePath   = [favoritePath stringByAppendingPathComponent:toFileId];
-    // 复制html文件
-    pagePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
-    newPagePath = [newFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
-    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
-    NSErrorPrint(error, @"copy page html from %@ -> %@", fromFileId, toFileId);
-    // 复制文件夹
-    imagePath = [filePath stringByAppendingPathComponent:pageName];
-    newImagePath = [newFilePath stringByAppendingPathComponent:pageName];
-    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
-    NSErrorPrint(error, @"copy page folder from %@ -> %@", fromFileId, toFileId);
-}
 
 
 @end

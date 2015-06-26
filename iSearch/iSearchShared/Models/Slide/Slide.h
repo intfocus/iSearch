@@ -56,6 +56,7 @@
 // instance methods
 - (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
++ (Slide *)findByTitleInFavorited:(NSString *)title;
 
 - (void)save;
 - (void)toCached;

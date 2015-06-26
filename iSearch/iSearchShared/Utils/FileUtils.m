@@ -135,7 +135,7 @@
     }
     
     // 2. a)Files/fileID/desc.json是否存在，b)内容是否为空，c)格式是否为json
-    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
     if(isForce && errors && [errors count] == 0) {
         // a)Files/fileID/desc.json是否存在
         if(![FileUtils checkFileExist:descPath isDir:NO]) {
@@ -295,7 +295,6 @@
 
     NSString *slideID;
     Slide *slide;
-    
     for(slideID in slides) {
         slide = [Slide findById:slideID isFavorite:YES];
         if([slide isInFavorited]) { [slideList addObject:slide]; }
@@ -319,9 +318,9 @@
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (NSMutableDictionary *)findOrCreateTag:(NSString *)tagName
-                                    Desc:(NSString *)tagDesc
-                               Timestamp:(NSString *)timestamp {
++ (Slide *)findOrCreateTag:(NSString *)tagName
+                      Desc:(NSString *)tagDesc
+                 Timestamp:(NSString *)timestamp {
     tagName = [tagName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     // step1: 判断该标签名称是否存在
@@ -341,9 +340,6 @@
         slide.ID = newSlideID;
         // base info
         slide.isFavorite = YES;
-        slide.zipSize = @"0";
-        slide.pageNum = @"0";
-        slide.categoryName = @"0";
         slide.type = CONTENT_SLIDE;
         
         
@@ -357,7 +353,6 @@
         slide.name  = tagName;
         slide.title = tagName;
         slide.desc  = tagDesc;
-        slide.pages = [[NSMutableArray alloc] init];
         // step2.2 收藏夹中原已存在，修改原配置档，复制页面
     } else {
         // 重置name/desc
@@ -369,7 +364,7 @@
     [slide updateTimestamp];
     [slide save];
     
-    return [slide refreshFields];
+    return slide;
 }
 
 /**

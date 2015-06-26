@@ -92,6 +92,14 @@
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
 
+@property (weak, nonatomic) IBOutlet UIView *viewOutsideLogin;
+@property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavClose;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRefresh;
+@property (strong, nonatomic)  NSString *cookieValue;
+@property (strong, nonatomic)  NSTimer *timerReadCookie;
+
+
 @property (strong, nonatomic) User *user;
 @end
 
@@ -103,6 +111,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    /**
+     控件事件
+    */
+    [self.btnNavClose addTarget:self action:@selector(actionOutsideLoginClose:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavRefresh addTarget:self action:@selector(actionOutsideLoginRefresh:) forControlEvents:UIControlEventTouchUpInside];
     /**
      *  实例变量初始化
      */
@@ -158,6 +171,8 @@
     self.inputBgView.layer.cornerRadius = 4.0;
     self.inputBg2View.layer.cornerRadius = 4.0;
     self.buttonBgView.layer.cornerRadius = 4.0;
+    
+
 }
 /**
  *  界面每次出现时都会被触发，动态加载动作放在这里
@@ -166,6 +181,104 @@
     [super viewDidAppear:animated];
 }
 
+- (IBAction)actionOutsideLogin:(UIButton *)sender {
+    [self performSelector:@selector(actionOutsideLoginRefresh:) withObject:self];
+    [self.view bringSubviewToFront:self.viewOutsideLogin];
+    if(!self.timerReadCookie) {
+        self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(readCookieTimer:) userInfo:nil repeats:YES];
+    }
+    [self.timerReadCookie fire];
+}
+
+- (IBAction)actionOutsideLoginRefresh:(id)sender {
+    NSString *urlString = @"https://tsa-china.takeda.com.cn/uat/saml/sp/index.php?sso";
+    NSURL *url = [NSURL URLWithString:urlString];
+    [self.webViewLogin loadRequest:[NSURLRequest requestWithURL:url]];
+}
+
+- (IBAction)readCookieTimer:(id)sender {
+    NSLog(@"timer: %@", [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT]);
+    NSString *cookieName = @"samlNameId", *cookieValue = @"";
+    
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [cookieJar cookies]) {
+        NSLog(@"cookie: %@:%@", cookie.name, cookie.value);
+        if([cookie.name isEqualToString:cookieName]) {
+            cookieValue = cookie.value;
+            break;
+        }
+    }
+    if([cookieValue length] > 0) {
+        self.cookieValue = cookieValue;
+        [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+        [self.timerReadCookie invalidate];
+        
+        //clear cookie
+        for (cookie in [cookieJar cookies]) {
+           [cookieJar deleteCookie:cookie];
+        }
+    }
+}
+
+- (IBAction)actionOutsideLoginClose:(id)sender {
+    [self.view sendSubviewToBack:self.viewOutsideLogin];
+}
+- (IBAction)actionOutsideLoginSuccessfully:(id)sender {
+    NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
+
+        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, self.cookieValue];
+        NSString *response = [HttpUtils httpGet:urlPath];
+        NSError *error;
+        NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
+                                                                            options:NSJSONReadingMutableContainers
+                                                                              error:&error];
+        NSErrorPrint(error, @"login response convert into json");
+        
+        // 服务器交互成功
+        if(!error) {
+            // 服务器响应json格式为: { code: 1, info: {} }
+            //  code = 1 则表示服务器与客户端交互成功, info为用户信息,格式为JSON
+            //  code = 非1 则表示服务器方面查检出有错误， info为错误信息,格式为JSON
+            //            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
+            NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
+            // C.5.1 登陆成功,跳至步骤 C.success
+            // if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
+            if([responseResult length] == 0) {
+                //      3.success
+                //          last为当前时间(格式LOGIN_DATE_FORMAT)
+                //          password = remember_password ? 控件内容 : @""
+                //          把user/password/last/remember_password写入login.plist文件
+                // 界面输入信息
+                self.user.loginUserName    = self.cookieValue;
+                self.user.loginPassword    = self.cookieValue;
+                self.user.loginRememberPWD = self.switchRememberPwd.on;
+                self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
+                
+                // 服务器信息
+                self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
+                self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
+                self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
+                self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
+                self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
+                
+                // write into local config
+                [self.user save];
+                
+                // 跳至主界面
+                [self enterMainViewController];
+                return;
+            } else {
+                [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", responseResult]];
+            }
+        } else {
+            [loginErrors addObject:[NSString stringWithFormat:@"服务器响应解析失败:%@", response]];
+        }
+
+    if([loginErrors count])
+        [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
+    [self.view sendSubviewToBack:self.viewOutsideLogin];
+}
 /**
  *  twitter加载Logo的动态效果
  */
@@ -216,6 +329,8 @@
 //      C.done 界面输入框、按钮等控件enabeld
 
 - (IBAction)submitAction:(id)sender {
+    [self performSelector:@selector(actionOutsideLogin:) withObject:self];
+    return;
     // C.1 界面输入框、按钮等控件disabeld
     [self switchCtlStateWhenLogin:false];
 

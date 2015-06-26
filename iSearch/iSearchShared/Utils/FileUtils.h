@@ -12,6 +12,7 @@
 #define iContent_FileUtils_h
 
 #import <UIKit/UIKit.h>
+@class Slide;
 
 /**
  *  处理File相关的代码块合集
@@ -170,9 +171,9 @@
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (NSMutableDictionary *)findOrCreateTag:(NSString*)tagName
-                                    Desc:(NSString *)tagDesc
-                               Timestamp:(NSString *)timestamp;
++ (Slide *)findOrCreateTag:(NSString *)tagName
+                      Desc:(NSString *)tagDesc
+                 Timestamp:(NSString *)timestamp;
 
 /**
  *  NSMutableDictionary写入本地文件

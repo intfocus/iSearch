@@ -34,7 +34,7 @@
      * 实例变量初始化
      */
     _dataList = [[NSMutableArray alloc] init];
-    // viewSlideInfo need it.
+    
     HomeViewController *homeViewController = [self masterViewController];
     self.mainViewController = [homeViewController masterViewController];
     
@@ -43,11 +43,15 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
+    [_dataList removeAllObjects];
     for(Slide *slide in [FileUtils favoriteSlideList1]) {
         [_dataList addObject:[slide refreshFields]];
     }
-    _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+    if([_dataList count] > 0) {
+        _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+    }
+    // must be refresh
     [_gridView reloadData];
 }
 

@@ -25,6 +25,25 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 //@synthesize zipSize,zipUrl,localCreatedDate,localUpdatedDate;
 //@synthesize categoryID,categoryName,typeName;
 
+- (Slide *)init {
+    self = [super init];
+    
+    // some fields necessary
+    _dict         = [[NSMutableDictionary alloc] init];
+    _type         = CONTENT_SLIDE;
+    _name         = @"未设置";
+    _desc         = @"未设置";
+    _title        = @"未设置";
+    _createdDate  = @"";
+    _pageNum      = @"0";
+    _createdDate  = @"";
+    _zipSize      = @"0";
+    _categoryID   = @"";
+    _categoryName = @"";
+    _pages        = [[NSMutableArray alloc] init];
+    
+    return self;
+}
 /**
  *  content cache init slide
  *
@@ -173,6 +192,14 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     
    return [[Slide alloc]initSlide:dict isFavorite:isFavorite];
 }
++ (Slide *)findByTitleInFavorited:(NSString *)title {
+    Slide *slide;
+    for(slide in [FileUtils favoriteSlideList1]) {
+        if([slide.title isEqualToString:title]) { break; }
+    }
+    
+    return slide;
+}
 - (NSString *)inspect {
     return [NSString stringWithFormat:@"#<Slide ID: %@, name: %@, type: %@, desc: %@, pages: %@, title: %@, zipSize: %@, pageNum: %@, categoryID: %@, categoryName: %@, createdDate: %@, localCreatedDate: %@, localUpdatedDate: %@, isDisplay: %d", self.ID, self.name, self.type, self.desc, self.pages, self.title, self.zipSize, self.pageNum, self.categoryID, self.categoryName, self.createdDate, self.localCreatedDate, self.localUpdatedDate, self.isDisplay];
 }
@@ -201,11 +228,10 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 #pragma mark - private methods
 
 - (NSMutableDictionary *) refreshFields {
-    if(!self.dict) {
-        _dict = [[NSMutableDictionary alloc] init];
-    }
+
     // slide's desc field
     _dict[SLIDE_DESC_ID]              = self.ID;
+    _dict[SLIDE_DESC_DESC]            = self.desc;
     _dict[CONTENT_FIELD_ID]           = self.ID;
     _dict[CONTENT_FIELD_NAME]         = self.name;
     _dict[CONTENT_FIELD_TYPE]         = self.type;
