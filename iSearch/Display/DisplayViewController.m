@@ -409,7 +409,7 @@
  *
  *  @param sender 无返回
  */
-- (IBAction) enterSlidePagesView:(id)sender {
+- (IBAction)enterSlidePagesView:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
@@ -420,21 +420,9 @@
         NSString *pageID = [self.slide.pages objectAtIndex:[self.currentPageIndex integerValue]];
         [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
         [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
-        NSNumber *slideType = [NSNumber numberWithInteger:SlideTypeSlide];
-        if(self.isFavorite) {
-            slideType = [NSNumber numberWithInteger:SlideTypeFavorite];
-        }
+        NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
         [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
         [FileUtils writeJSON:config Into:pathName];
-        
-        NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-        NSString *fileDescSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-        if([FileUtils checkFileExist:fileDescSwpPath isDir:false]) {
-            NSLog(@"Config SWP file Exist! last time must be CRASH!");
-        } else {
-            // 拷贝一份文档描述配置
-            [FileUtils copyFileDescContent:self.slideID Dir:dirName];
-        }
         
         // 界面跳转至文档页面编辑界面
         if(self.reViewController == nil) {
@@ -520,9 +508,9 @@
         NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
         abort();
     }
-    BOOL isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
+    self.isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
     self.slideID = configDict[CONTENT_KEY_DISPLAYID];
-    self.dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    self.dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     
     if([self.slideID length] == 0) {
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
@@ -532,7 +520,7 @@
     NSString *dictPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_DICT_FILENAME];
     NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
     
-    self.slide = [[Slide alloc] initSlide:dict isFavorite:isFavorite];
+    self.slide = [[Slide alloc] initSlide:dict isFavorite:self.isFavorite];
     NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.slide.pages count]]];
     if(self.slide.pages == nil || ![pageNum isEqualToString:self.slide.pageNum]) {
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");

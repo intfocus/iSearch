@@ -49,6 +49,7 @@
         [self.webViewThumbnail loadHTMLString:html baseURL:nil];
     } else {
         NSLog(@"Load default thumbnail.");
+        NSLog(@"%@", thumbnailPath);
     }
 }
 

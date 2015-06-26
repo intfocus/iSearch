@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C31A5A26A50B79A54B9722 /* libPods.a */; };
 		C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55B1B2BCAC1006DB157 /* close_x.png */; };
-		C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */; };
-		C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55F1B2BCAC1006DB157 /* overlay_selecting.png */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8791B289082000F84EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8771B289082000F84EF /* LoginViewController.m */; };
 		C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8781B289082000F84EF /* LoginViewController.xib */; };
@@ -114,8 +112,6 @@
 		69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		75C31A5A26A50B79A54B9722 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42BD55B1B2BCAC1006DB157 /* close_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close_x.png; sourceTree = "<group>"; };
-		C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_selected.png; sourceTree = "<group>"; };
-		C42BD55F1B2BCAC1006DB157 /* overlay_selecting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay_selecting.png; sourceTree = "<group>"; };
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8761B289082000F84EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C42EC8771B289082000F84EF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -308,8 +304,6 @@
 				C46497511B2DB108005E3903 /* ToView.png */,
 				C464974E1B2D9B93005E3903 /* ToDownload.png */,
 				C42BD55B1B2BCAC1006DB157 /* close_x.png */,
-				C42BD55D1B2BCAC1006DB157 /* overlay_selected.png */,
-				C42BD55F1B2BCAC1006DB157 /* overlay_selecting.png */,
 			);
 			name = Images;
 			path = ../Images;
@@ -862,7 +856,6 @@
 				C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */,
 				C44786031B3C5679006D4806 /* gmView.xib in Resources */,
 				C44786011B3BC06F006D4806 /* SettingViewController.xib in Resources */,
-				C42BD5641B2BCAC1006DB157 /* overlay_selected.png in Resources */,
 				C46497341B2D8244005E3903 /* OneViewController.xib in Resources */,
 				C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */,
 				C4D253E91B32FE030033F697 /* ViewCategory.xib in Resources */,
@@ -875,7 +868,6 @@
 				C46497411B2D88CC005E3903 /* TwoViewController.xib in Resources */,
 				C4A618F31B2C7AEC00D0E91B /* MainEntryButton.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
-				C42BD5661B2BCAC1006DB157 /* overlay_selecting.png in Resources */,
 				C4A618EB1B2C7AEC00D0E91B /* UserHeadView.xib in Resources */,
 				C46497321B2D678B005E3903 /* HomeViewController.xib in Resources */,
 			);

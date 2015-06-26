@@ -70,6 +70,7 @@
 - (BOOL)isDownloading;
 - (NSString *)downloaded;
 
+- (void)enterEditState;
 - (NSString *)dictSwpPath;
 - (NSMutableDictionary *)dictSwp;
 

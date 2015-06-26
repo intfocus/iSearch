@@ -14,12 +14,14 @@
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 #import "DisplayViewController.h"
+#import "ReViewController.h"
 #import "Slide.h"
 #import "PopupView.h"
 
 @interface SlideInfoView()
 @property (nonatomic, nonatomic) PopupView *popupView;
 @property (nonatomic, nonatomic) DisplayViewController *displayViewController;
+@property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UILabel *labelDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
@@ -136,7 +138,28 @@
 }
 
 - (IBAction)actionEditSlide:(UIButton *)sender {
-    [self showPopupView:@"TODO"];
+    if(self.slide.isDownloaded) {
+        // 如果文档已经下载，可以查看文档内部详细信息，
+        // 否则需要下载，该功能在FileSlide内部处理
+        if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
+            // 界面跳转需要传递fileID，通过写入配置文件来实现交互
+            NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
+            NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
+            
+            [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
+            NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+            [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
+            [FileUtils writeJSON:config Into:pathName];
+            
+            // 界面跳转至文档页面编辑界面
+            if(self.reViewController == nil) {
+                self.reViewController = [[ReViewController alloc] init];
+            }
+            [self presentViewController:self.reViewController animated:NO completion:nil];
+        }
+    } else {
+        [self showPopupView:@"空空如也,\n编辑何物？"];
+    }
     
 }
 

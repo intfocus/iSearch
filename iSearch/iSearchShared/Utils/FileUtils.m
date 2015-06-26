@@ -447,7 +447,7 @@
  *
  *  @return pdf/gif文档路径
  */
-+ (NSString*) fileThumbnail:(NSString *)slideID
++ (NSString*) slideThumbnail:(NSString *)slideID
                      PageID:(NSString *)pageID
                         Dir:(NSString *)dir {
     NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
@@ -456,8 +456,9 @@
     
     if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
         thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gif", pageID]];
+    } else if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4", pageID]];
     }
-    //NSLog(@"thumbnail: %@", thumbnailPath);
     return thumbnailPath;
 }
 

@@ -70,19 +70,16 @@
 @property (nonatomic, nonatomic) BOOL isFavorite; // 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL selectState; // 编辑状态
 @property (nonatomic, strong) Slide  *slide;
-@property (nonatomic, nonatomic) NSString  *slideID;
-@property (nonatomic, nonatomic) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
-@property (nonatomic, nonatomic) UIBarButtonItem *barItemEdit; // 是否切换至编辑状态
-@property (nonatomic, nonatomic) UIBarButtonItem *barItemRestore; // 恢复至初始状态，desc.json覆盖desc.json.swp
-@property (nonatomic, nonatomic) UIBarButtonItem *barItemSave;   // 编辑状态下至少选择一个页面时激活
-//@property (nonatomic, nonatomic) UIBarButtonItem *barItemRemove; // 编辑状态下至少选择一个页面时激活
-@property (nonatomic, nonatomic) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
+@property (nonatomic, strong) NSString  *slideID;
+@property (nonatomic, strong) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
+@property (nonatomic, strong) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 
-@property (weak, nonatomic) IBOutlet UIButton *removeButton;
-@property (weak, nonatomic) IBOutlet UIButton *saveToButton;
-@property (weak, nonatomic) IBOutlet UIButton *restoreButton;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRefresh;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavSaveTo;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRestore;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavEdit;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavDismiss;
 
 
 @end
@@ -90,9 +87,6 @@
 @implementation ReViewController
 @synthesize slideID;
 @synthesize pageID;
-@synthesize barItemRestore;
-@synthesize barItemEdit;
-@synthesize barItemSave;
 @synthesize pageInfoTmp;
 @synthesize selectState;
 
@@ -104,76 +98,46 @@
      */
     self.selectState = false;
     self.pageInfoTmp = [[NSMutableDictionary alloc] init];
-    _dataList = [[NSMutableArray alloc] init];
-    _selectedList = [[NSMutableArray alloc] init];
-    // 必须放前排 for 后面一些设置需要用到slideID/pageID
+    _dataList        = [[NSMutableArray alloc] init];
+    _selectedList    = [[NSMutableArray alloc] init];
+    
     [self loadConfigInfo];
 
-    /**
-     *  导航栏控件
-     */
-    // 编辑状态-切换
-    self.barItemEdit = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_EDIT]
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(actionEditPages:)];
-    self.barItemEdit.possibleTitles = [NSSet setWithObjects:BTN_EDIT, BTN_CANCEL, nil];
-    
-    // 恢复按钮 - desc.json覆盖desc.json.swp
-    self.barItemRestore = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_RESTORE]
-                                                          style:UIBarButtonItemStylePlain
-                                                         target:self
-                                                         action:@selector(actionRestorePages:)];
-    // 对比是否有修改，以此设置[恢复]状态
-    [self checkDescSwpContent];
-    
-    // 保存 - 编辑状态下，至少选择一页面时，激活
-    self.barItemSave = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_SAVE]
-                                                    style:UIBarButtonItemStylePlain
-                                                   target:self
-                                                  action:@selector(actionSavePages:)];
-    self.barItemSave.enabled = NO;
-    
-//    // 移除 - 编辑状态下，至少选择一页面时，激活
-//    self.barItemRemove = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:BTN_REMOVE]
-//                                                    style:UIBarButtonItemStylePlain
-//                                                   target:self
-//                                                   action:@selector(actionRemovePages:)];
-//    self.barItemRemove.enabled = NO;
-    self.navigation.rightBarButtonItems = @[self.barItemEdit,self.barItemRestore,self.barItemSave];
-    
     /**
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
-    
+
     [self configGridView];
-    [self refreshGridView];
+    
+    /**
+     *  导航栏
+     */
+    [self.btnNavEdit addTarget:self action:@selector(actionEdit:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavRefresh addTarget:self action:@selector(actionRefresh:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavRestore addTarget:self action:@selector(actionRestore:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavDismiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
+
 }
 
 - (void) configGridView {
-    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
+    GMGridView *gmGridView      = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
     gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    gmGridView.backgroundColor = [UIColor clearColor];
-    [[self.scrollView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    gmGridView.backgroundColor  = [UIColor clearColor];
     [self.scrollView addSubview:gmGridView];
-    _gmGridView = gmGridView;
-    
-    _gmGridView.style = GMGridViewStylePush;
-    _gmGridView.itemSpacing = 50;  // 页面横向间隔
-    _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
-    _gmGridView.centerGrid = YES;
-    _gmGridView.actionDelegate = self;
+    _gmGridView                 = gmGridView;
+
+    _gmGridView.style           = GMGridViewStylePush;
+    _gmGridView.itemSpacing     = 50;
+    _gmGridView.minEdgeInsets   = UIEdgeInsetsMake(30, 10, -5, 10);
+    _gmGridView.centerGrid      = YES;
+    _gmGridView.actionDelegate  = self;
     _gmGridView.sortingDelegate = self;
-    _gmGridView.dataSource = self;
-    
-    _gmGridView.mainSuperView = self.scrollView;
-    _gmGridView.selectState = self.selectState;
-}
-- (void) refreshGridView {
-    [_gmGridView reloadData];
-    
-    [self checkDescSwpContent];
+    _gmGridView.dataSource      = self;
+
+    _gmGridView.mainSuperView   = self.scrollView;
+    _gmGridView.selectState     = self.selectState;
 }
 
 /**
@@ -184,12 +148,14 @@
     NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
     
-    self.slideID = config[CONTENT_KEY_EDITID1];
-    self.pageID = config[CONTENT_KEY_EDITID2];
+    self.slideID    = config[CONTENT_KEY_EDITID1];
+    self.pageID     = config[CONTENT_KEY_EDITID2];
     self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
-    
+
     self.slide = [Slide findById:self.slideID isFavorite:self.isFavorite];
-    _dataList = self.slide.dictSwp[SLIDE_DESC_ORDER];
+    [self.slide enterEditState];
+    NSMutableDictionary *dict = [self.slide dictSwp];
+    _dataList = dict[SLIDE_DESC_ORDER];
 }
 
 - (void)dismissPopup {
@@ -201,28 +167,8 @@
 }
 
 //////////////////////////////////////////////////////////////
-#pragma mark 加载文件各页面
+#pragma mark - controls action
 //////////////////////////////////////////////////////////////
-
-/**
- *  B2 读取fileID/desc.json.swp[@"order"]并按该顺序写入_data
- *
- *  @return @[{pageName: fileID_pageID}]
- */
-- (NSMutableArray*) loadFilePages {
-    // 此处必须读取swp文件
-    // 如果在编辑文档页面界面，移动页面顺序、移除页面时，把app关闭，则再次进入编辑页面界面时是与原配置信息不一样的
-    // 用户可以通过[恢复]实现还原最原始的状态
-    NSString *descSwpPath = [FileUtils slideDescPath:self.slide.ID Dir:self.slide.dirName Klass: SLIDE_CONFIG_SWP_FILENAME];
-    NSMutableDictionary *descDict = [FileUtils readConfigFile:descSwpPath];
-    NSMutableArray *pagesOrder = [[NSMutableArray alloc] init];
-
-    if(descDict[SLIDE_DESC_ORDER] != nil) {
-        pagesOrder = descDict[SLIDE_DESC_ORDER];
-    }
-    return pagesOrder;
-}
-
 /**
  *  导航栏按钮[返回], 关闭当前文档编辑界面。
  *  读取desc.json.swp写回desc.json, 并物理删除swp文件
@@ -230,86 +176,11 @@
  *  bad方法: copy then remove or move; 各种问题
  *  @param gesture UIGestureRecognizer
  */
-- (IBAction)actionDismiss:(UIGestureRecognizer *)gesture {
-    NSError *error;
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    
-    [descSwpContent writeToFile:descPath atomically:true encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"desc swp info write into desc");
-    
-    if(!error) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        [fileManager removeItemAtPath:descSwpPath error:&error];
-        NSErrorPrint(error, @"remove desc swp file");
-    }
-    
-    [self dismissViewControllerAnimated:NO completion:^{
-    
-    }];
+- (IBAction)actionDismiss:(UIButton *)sender {
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-/**
- *  对比desc.json与desc.json.swp是否一致
- *  TODO: 转成NSMutableDirectory对比
- *
- */
-- (void)checkDescSwpContent {
-    self.restoreButton.enabled = ![self.slide.pages isEqualToArray:_dataList];
-}
-
-/**
- *  导航栏按钮[恢复], desc.json -> desc.json.swp -> reload view
- *
- *  @param sender UIBarButtonItem
- */
-- (IBAction)actionRestorePages:(UIBarButtonItem *)sender {
-    _dataList = self.slide.pages;
-
-    [self refreshGridView];
-}
-
-/**
- *  导航栏按钮[编辑], 编辑状态切换。
- *
- *  @param sender UIBarButtonItem
- */
-- (IBAction)actionEditPages:(UIBarButtonItem*)sender {
-    if(!self.selectState) {
-        self.selectState = true;
-        _gmGridView.selectState = self.selectState;
-        
-        // 导航栏按钮样式
-        [self.barItemEdit setTitle: BTN_CANCEL];
-        //self.barItemSave.enabled = false;
-        self.saveToButton.enabled = NO;
-        //self.barItemRemove.enabled = false;
-        self.removeButton.enabled = NO;
-    } else {
-        self.selectState = false;
-        _gmGridView.selectState = self.selectState;
-        
-        [self.barItemEdit setTitle: BTN_EDIT];
-        // 在有选择多个页面情况下，[保存][移除]是激活的，
-        // 但直接[取消]编辑状态时, 就需要手工禁用
-        //self.barItemSave.enabled = false;
-        self.saveToButton.enabled = NO;
-        //self.barItemRemove.enabled = false;
-        self.removeButton.enabled = NO;
-    }
-    
-}
-
-/**
- *  导航栏[保存]事件；[编辑]选择页面后，该按钮为激活状态。
- *  弹出MainAddNewTagView来处理[新建标签][选择标签]逻辑
- *  masterViewController为必设置项，否则MainAddNewTagView无法获取当前Context。
- *
- *  @param sender UIBarButtonItem
- */
-- (IBAction)actionSavePages:(UIBarButtonItem *)sender {
+- (IBAction)actionSaveTo:(UIButton *)sender {
     if(self.mainAddNewTagView == nil) {
         self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
         self.mainAddNewTagView.masterViewController = self;
@@ -319,13 +190,43 @@
     }];
 }
 
+- (IBAction)actionRefresh:(id)sender {
+    [_gmGridView reloadData];
+}
+
+- (IBAction)actionRestore:(UIButton *)sender {
+    _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    [_gmGridView reloadData];
+}
+
+- (IBAction)actionEdit:(UIButton *)sender {
+    if(!self.selectState) {
+        self.selectState = true;
+        _gmGridView.selectState = self.selectState;
+        
+        // 导航栏按钮样式
+        self.btnNavSaveTo.enabled = NO;
+        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconCancel"] forState:UIControlStateNormal];
+    } else {
+        self.selectState = false;
+        _gmGridView.selectState = self.selectState;
+        
+        //[self.barItemEdit setTitle: BTN_EDIT];
+        // 在有选择多个页面情况下，[保存][移除]是激活的，
+        // 但直接[取消]编辑状态时, 就需要手工禁用
+        self.btnNavSaveTo.enabled = NO;
+        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconEdit2"] forState:UIControlStateNormal];
+    }
+}
+
+
 /**
- *  导航栏[移除]事件；[编辑]选择页面后，该按钮为激活状态。
- *  操作desc.json.swp文件，可执行[恢复]
+ *  对比desc.json与desc.json.swp是否一致
+ *  TODO: 转成NSMutableDirectory对比
  *
- *  @param sender UIBarButtonItem
  */
-- (IBAction)actionRemovePages:(UIBarButtonItem *)sender {
+- (void)checkDescSwpContent {
+    self.btnNavRestore.enabled = ![self.slide.pages isEqualToArray:_dataList];
 }
 
 //////////////////////////////////////////////////////////////
@@ -342,7 +243,6 @@
 //////////////////////////////////////////////////////////////
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    
     return YES;
 }
 
@@ -357,56 +257,52 @@
 
 // GridViewCell界面 - 文件各页面展示界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
-    
-    if(index >= [_dataList count]) {
-        NSLog(@"BUG: index beyound bounds");
-    }
     GMGridViewCell *cell = [gridView dequeueReusableCell];
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        cell.selectingButtonIcon   = [UIImage imageNamed:@"overlay_selecting.png"];
-        cell.selectingButtonOffset = CGPointMake(0, 0);
-        cell.selectedButtonIcon    = [UIImage imageNamed:@"overlay_selected.png"];
-        cell.selectedButtonOffset  = CGPointMake(0, 0);
     }
+    cell.selectingButtonIcon   = [UIImage imageNamed:@"coverSlideSelecting"];
+    cell.selectingButtonOffset = CGPointMake(0, 0);
+    cell.selectedButtonIcon    = [UIImage imageNamed:@"coverSlideSelected"];
+    cell.selectedButtonOffset  = CGPointMake(0, 0);
     
     ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
-    NSString *keyName = [NSString stringWithFormat:@"page-%@", self.slideID];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    // self.tmpPageInfo - 为了减少重复扫描本地信息
-    if(![[self.pageInfoTmp allKeys] containsObject:keyName]) {
-        NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-        NSString *descContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:NULL];
-        NSMutableDictionary *descSwpDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:NULL];
-        
-        [self.pageInfoTmp setObject:descSwpDict forKey:keyName];
-    }
-    
-    NSDictionary *currentDescSwpDict = [NSDictionary dictionaryWithDictionary: self.pageInfoTmp[keyName]];
-    NSString *currentPageID = [currentDescSwpDict[SLIDE_DESC_ORDER] objectAtIndex:index];
+    NSString *currentPageID = [_dataList objectAtIndex:index];
     
     if([currentPageID isEqualToString: self.pageID]) {
         [viewSlidePage hightLight];
     }
-    viewSlidePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", currentDescSwpDict[SLIDE_DESC_NAME]];
-    viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页#%@", (long)index, [currentDescSwpDict[SLIDE_DESC_ORDER] objectAtIndex:index]];
+    viewSlidePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", self.slide.title];
+    viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)index];
     
-    NSString *thumbnailPath = [FileUtils fileThumbnail:self.slideID PageID:currentPageID Dir:dirName];
+    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageID Dir:(self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME)];
     if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
         [viewSlidePage loadThumbnail: thumbnailPath];
+    } else {
+        NSLog(@"%@", thumbnailPath);
     }
     
-    [viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
     UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(actionJumpToDisplay:)];
     [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
     [viewSlidePage.btnMask setTag:index];
     [viewSlidePage.btnMask addGestureRecognizer:doubleTapGestureRecognizer];
     
+//    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureUpdated:)];
+//    longPressGesture.numberOfTouchesRequired = 1;
+//    longPressGesture.delegate = self;
+//    longPressGesture.cancelsTouchesInView = NO;
+//    [viewSlidePage.btnMask addGestureRecognizer:longPressGesture];
+    
+    [viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
     [cell setContentView: viewSlidePage];
     
     return cell;
 }
 
+- (IBAction)longPressGestureUpdated:(id)sender {
+    [_gmGridView performSelector:@selector(longPressGestureUpdated:) withObject:_gmGridView];
+    NSLog(@"long press.");
+}
 /**
  *  非编辑状态下，双击直接进入演示该页面
  *  编辑状态下，会有selectButton在最外层，不会触发此处双击事件
@@ -414,11 +310,11 @@
  *  @param gestureRecognizer gestureRecognizer
  */
 - (IBAction)actionJumpToDisplay:(UIGestureRecognizer*)gestureRecognizer {
-    NSInteger index = gestureRecognizer.view.tag;
-    NSLog(@"jump to %ld",(long)index);
+    NSInteger jumpToIndex = gestureRecognizer.view.tag;
+    NSLog(@"jump to %ld",(long)jumpToIndex);
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:index];
+    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:jumpToIndex];
     [FileUtils writeJSON:configDict Into:configPath];
     
     
@@ -451,15 +347,9 @@
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
     if([_selectedList count]) {
-        //self.barItemSave.enabled = true;
-        self.saveToButton.enabled = YES;
-        //self.barItemRemove.enabled = true;
-        self.removeButton.enabled = YES;
+        self.btnNavSaveTo.enabled = YES;
     } else {
-        //self.barItemSave.enabled = false;
-        self.saveToButton.enabled = NO;
-        //self.barItemRemove.enabled = false;
-        self.removeButton.enabled = NO;
+        self.btnNavSaveTo.enabled = NO;
     }
 }
 
@@ -543,53 +433,6 @@
     [FileUtils writeJSON:dict Into:path];
 }
 
-// TODO 已经创建重组夹列表
-// 名称、描述
-/**
- *  选择页面后，点击[保存]按钮后，弹出对话框选择内容重组文件名称列表，或新建文件名称及描述
- *
- *  @param alertView   弹出框实现
- *  @param buttonIndex 弹出框按钮序号
- */
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    // tag == 101 => [移除]
-    if(alertView.tag == 101 && buttonIndex == 1) {
-        [self removePagesFromDescSwpFile];
-    } else {
-        NSLog(@"BUG: alertView.tag=%d; buttonIndex: %d", alertView.tag, buttonIndex);
-    }
-}
-
-/**
- *  选择页面后，点击[移除]按钮后，确认后，重置desc.swp[@order]
- *  **重点** 必须倒序removeObjectAtIndex
- */
-- (void)removePagesFromDescSwpFile {
-    NSNumber *pageIndex = [[NSNumber alloc] init];
-    NSSortDescriptor *highestToLowest = [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:NO];
-    NSLog(@"before sort: %@", _selectedList);
-    [_selectedList sortUsingDescriptors:[NSArray arrayWithObject:highestToLowest]];
-    NSLog(@"after sort: %@", _selectedList);
-    
-    NSLog(@"before remove: %@", _dataList);
-    for(pageIndex in _selectedList)
-        [_dataList removeObjectAtIndex:[pageIndex integerValue]];
-    NSLog(@"after remove: %@", _dataList);
-    
-    NSError *error;
-    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"[移除] read desc.swp file");
-    descDict = [NSJSONSerialization JSONObjectWithData:[descSwpContent dataUsingEncoding:NSUTF8StringEncoding]
-                                               options:NSJSONReadingMutableContainers
-                                                 error:&error];
-    NSErrorPrint(error, @"[移除] desc.swp convert into json");
-    descDict[@"order"] = _dataList;
-    [self writeJSON:descDict Into:descSwpPath];
-    [self refreshGridView];
-}
 
 /**
  *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
@@ -623,95 +466,6 @@
     NSErrorPrint(error, @"copy page folder from %@ -> %@", fromFileId, toFileId);
 }
 
-
-- (IBAction)back:(UIButton *)sender {
-    NSError *error;
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-    NSString *descSwpContent = [NSString stringWithContentsOfFile:descSwpPath encoding:NSUTF8StringEncoding error:&error];
-    
-    [descSwpContent writeToFile:descPath atomically:true encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"desc swp info write into desc");
-    
-    if(!error) {
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        [fileManager removeItemAtPath:descSwpPath error:&error];
-        NSErrorPrint(error, @"remove desc swp file");
-    }
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (IBAction)remove:(UIButton *)sender {
-    NSString *message = @"确认移除以下页面:\n";
-    NSNumber *i = [[NSNumber alloc] init];
-    for(i in _selectedList)
-        message = [message stringByAppendingString:[NSString stringWithFormat:@"第%@页 ", i]];
-    
-    message = [message stringByAppendingString:@"\n未关闭当前界面时，可选择[恢复]此操作。"];
-    
-    UIAlertView * alertView = [[UIAlertView alloc] initWithTitle:@"移除"
-                                                         message:message
-                                                        delegate:self
-                                               cancelButtonTitle:BTN_CANCEL
-                                               otherButtonTitles:BTN_SURE, nil];
-    alertView.alertViewStyle = UIAlertViewStyleDefault;
-    alertView.tag = 101; // 区分alwrtView, for 所有alertView共用同一个回调函数
-    [alertView show];
-}
-
-- (IBAction)saveTo:(UIButton *)sender {
-    MainAddNewTagView *popupView = [[MainAddNewTagView alloc] init];
-    popupView.masterViewController = self;
-    [self presentPopupViewController:popupView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
-    }];
-}
-
-- (IBAction)restore:(UIButton *)sender {
-    NSError *error;
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *descPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_FILENAME];
-    NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"read desc file");
-    NSString *descSwpPath = [FileUtils slideDescPath:self.slideID Dir:dirName Klass:SLIDE_CONFIG_SWP_FILENAME];
-    
-    [descContent writeToFile:descSwpPath atomically:true encoding:NSUTF8StringEncoding error:&error];
-    NSErrorPrint(error, @"[restore] desc content write into desc swp file");
-    // 重新加载文档页面
-    if(!error) {
-        [self refreshGridView];
-        [self checkDescSwpContent];
-    }
-}
-
-- (IBAction)editButtonTouched:(UIButton *)sender {
-    if(!self.selectState) {
-        self.selectState = true;
-        _gmGridView.selectState = self.selectState;
-        
-        // 导航栏按钮样式
-        //[self.barItemEdit setTitle: BTN_CANCEL];
-        //self.barItemSave.enabled = false;
-        self.saveToButton.enabled = NO;
-        //self.barItemRemove.enabled = false;
-        self.removeButton.enabled = NO;
-        [self.editButton setImage:[UIImage imageNamed:@"iconCancel"] forState:UIControlStateNormal];
-    } else {
-        self.selectState = false;
-        _gmGridView.selectState = self.selectState;
-        
-        //[self.barItemEdit setTitle: BTN_EDIT];
-        // 在有选择多个页面情况下，[保存][移除]是激活的，
-        // 但直接[取消]编辑状态时, 就需要手工禁用
-        //self.barItemSave.enabled = false;
-        self.saveToButton.enabled = NO;
-        //self.barItemRemove.enabled = false;
-        self.removeButton.enabled = NO;
-        [self.editButton setImage:[UIImage imageNamed:@"iconEdit2"] forState:UIControlStateNormal];
-    }
-}
 
 @end
 

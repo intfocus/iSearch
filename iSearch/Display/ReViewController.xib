@@ -6,11 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReViewController">
             <connections>
-                <outlet property="editButton" destination="QuE-w2-dXh" id="75U-Ti-lx3"/>
+                <outlet property="btnNavDismiss" destination="mst-UN-TaP" id="wLX-XK-zjW"/>
+                <outlet property="btnNavEdit" destination="QuE-w2-dXh" id="WHb-GF-YVW"/>
+                <outlet property="btnNavRefresh" destination="EbM-8Y-DSu" id="bnj-Ni-Tgn"/>
+                <outlet property="btnNavRestore" destination="e05-Dp-V6I" id="0fr-VM-zep"/>
+                <outlet property="btnNavSaveTo" destination="CEa-JI-59P" id="yiy-GP-iXa"/>
                 <outlet property="navBarContainerView" destination="lTC-Uy-H1e" id="tXa-5f-yAH"/>
-                <outlet property="removeButton" destination="EbM-8Y-DSu" id="mvc-kf-svU"/>
-                <outlet property="restoreButton" destination="e05-Dp-V6I" id="ixm-mM-crH"/>
-                <outlet property="saveToButton" destination="CEa-JI-59P" id="fgt-dP-jny"/>
                 <outlet property="scrollView" destination="s9r-Ut-qqt" id="LQK-ED-dys"/>
                 <outlet property="view" destination="iN0-l3-epB" id="BgA-yZ-xCJ"/>
             </connections>
@@ -37,9 +38,6 @@
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="back:" destination="-1" eventType="touchUpInside" id="ABd-Lg-MrW"/>
-                                    </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="重组" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlP-pm-41K">
                                     <rect key="frame" x="234" y="1" width="132" height="44"/>
@@ -48,11 +46,11 @@
                                         <constraint firstAttribute="height" constant="44" id="lwF-Np-n9x"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EbM-8Y-DSu">
-                                    <rect key="frame" x="536" y="0.0" width="44" height="44"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EbM-8Y-DSu" userLabel="refresh">
+                                    <rect key="frame" x="429" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="6du-WT-2ql"/>
                                         <constraint firstAttribute="width" constant="44" id="d3k-zc-eO4"/>
@@ -60,25 +58,9 @@
                                     <state key="normal" image="iconRemove">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="remove:" destination="-1" eventType="touchUpInside" id="mkZ-mf-Aea"/>
-                                    </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEa-JI-59P">
-                                    <rect key="frame" x="484" y="0.0" width="44" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="FrE-2N-AUO"/>
-                                        <constraint firstAttribute="width" constant="44" id="tZ3-PM-1F1"/>
-                                    </constraints>
-                                    <state key="normal" image="iconSaveTo">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="saveTo:" destination="-1" eventType="touchUpInside" id="Mag-Oi-JJg"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e05-Dp-V6I">
-                                    <rect key="frame" x="432" y="0.0" width="44" height="44"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e05-Dp-V6I" userLabel="restore">
+                                    <rect key="frame" x="490" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="UfG-lb-ewp"/>
                                         <constraint firstAttribute="height" constant="44" id="dBg-QQ-b8N"/>
@@ -86,11 +68,8 @@
                                     <state key="normal" image="iconRestore">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="restore:" destination="-1" eventType="touchUpInside" id="b5p-mY-aXh"/>
-                                    </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QuE-w2-dXh">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QuE-w2-dXh" userLabel="edit">
                                     <rect key="frame" x="380" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="EnC-Mn-Cyo"/>
@@ -99,9 +78,6 @@
                                     <state key="normal" image="iconEdit2">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="editButtonTouched:" destination="-1" eventType="touchUpInside" id="cwC-qp-VRm"/>
-                                    </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SjH-VH-2h0">
                                     <rect key="frame" x="0.0" y="43" width="600" height="1"/>
@@ -110,22 +86,32 @@
                                         <constraint firstAttribute="height" constant="1" id="5cw-LZ-SII"/>
                                     </constraints>
                                 </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEa-JI-59P" userLabel="saveTo">
+                                    <rect key="frame" x="548" y="0.0" width="44" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="FrE-2N-AUO"/>
+                                        <constraint firstAttribute="width" constant="44" id="tZ3-PM-1F1"/>
+                                    </constraints>
+                                    <state key="normal" image="iconSaveTo">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="centerY" secondItem="QuE-w2-dXh" secondAttribute="centerY" id="4iq-fH-LS1"/>
+                                <constraint firstItem="EbM-8Y-DSu" firstAttribute="leading" secondItem="QuE-w2-dXh" secondAttribute="trailing" constant="5" id="5bm-Ay-vzT"/>
+                                <constraint firstItem="CEa-JI-59P" firstAttribute="leading" secondItem="e05-Dp-V6I" secondAttribute="trailing" constant="14" id="7rN-Da-t1Q"/>
                                 <constraint firstAttribute="centerY" secondItem="mst-UN-TaP" secondAttribute="centerY" id="9tr-Uz-gFL"/>
                                 <constraint firstAttribute="bottom" secondItem="SjH-VH-2h0" secondAttribute="bottom" id="BwT-V3-4Wj"/>
                                 <constraint firstItem="SjH-VH-2h0" firstAttribute="width" secondItem="lTC-Uy-H1e" secondAttribute="width" id="Cgf-O6-4M3"/>
-                                <constraint firstItem="EbM-8Y-DSu" firstAttribute="leading" secondItem="CEa-JI-59P" secondAttribute="trailing" constant="8" symbolic="YES" id="DXG-np-glo"/>
-                                <constraint firstAttribute="trailing" secondItem="EbM-8Y-DSu" secondAttribute="trailing" constant="20" symbolic="YES" id="EZx-rs-tgJ"/>
                                 <constraint firstAttribute="centerX" secondItem="qlP-pm-41K" secondAttribute="centerX" id="IBw-nL-6Gb"/>
                                 <constraint firstAttribute="height" constant="44" id="OOu-l0-RKY"/>
-                                <constraint firstItem="CEa-JI-59P" firstAttribute="leading" secondItem="e05-Dp-V6I" secondAttribute="trailing" constant="8" symbolic="YES" id="aVt-lp-zew"/>
                                 <constraint firstItem="mst-UN-TaP" firstAttribute="leading" secondItem="lTC-Uy-H1e" secondAttribute="leading" id="czK-qP-wOd"/>
                                 <constraint firstAttribute="centerX" secondItem="SjH-VH-2h0" secondAttribute="centerX" id="gMW-0V-9OX"/>
                                 <constraint firstAttribute="centerY" secondItem="e05-Dp-V6I" secondAttribute="centerY" id="mW4-ZA-oYj"/>
-                                <constraint firstItem="e05-Dp-V6I" firstAttribute="leading" secondItem="QuE-w2-dXh" secondAttribute="trailing" constant="8" symbolic="YES" id="rrb-JG-7bN"/>
+                                <constraint firstItem="e05-Dp-V6I" firstAttribute="leading" secondItem="EbM-8Y-DSu" secondAttribute="trailing" constant="17" id="t6L-iT-yrc"/>
+                                <constraint firstAttribute="trailing" secondItem="CEa-JI-59P" secondAttribute="trailing" constant="8" id="vbz-qc-5cJ"/>
                                 <constraint firstAttribute="centerY" secondItem="EbM-8Y-DSu" secondAttribute="centerY" id="yIm-he-Gnt"/>
                                 <constraint firstAttribute="centerY" secondItem="CEa-JI-59P" secondAttribute="centerY" id="yhx-N6-li1"/>
                                 <constraint firstAttribute="centerY" secondItem="qlP-pm-41K" secondAttribute="centerY" id="zM1-xd-Ect"/>
