@@ -19,17 +19,10 @@
 - (id)initWithFrame:(CGRect)theFrame {
     self = [super initWithFrame:theFrame];
     if (self) {
-        [self configView];
     }
     return self;
 }
 
-
-/**
- *  配置文档页面: 缩略图、第几页、来自那个文档。
- */
-- (void) configView {
-}
 /**
  *  UIWebView浏览PDF或GIF文档
  *

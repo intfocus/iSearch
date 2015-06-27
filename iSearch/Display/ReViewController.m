@@ -67,6 +67,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 
 @property (weak, nonatomic) IBOutlet UIView *navBarContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *labelNavSlideTitle;
 @property (nonatomic, nonatomic) BOOL isFavorite; // 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL selectState; // 编辑状态
 @property (nonatomic, strong) Slide  *slide;
@@ -92,12 +93,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    
     /**
      * 实例变量初始化
      */
@@ -105,7 +100,6 @@
     self.pageInfoTmp = [[NSMutableDictionary alloc] init];
     _dataList        = [[NSMutableArray alloc] init];
     _selectedList    = [[NSMutableArray alloc] init];
-    [self loadConfigInfo];
     /**
      *  CWPopup 事件
      */
@@ -122,13 +116,24 @@
     [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavDismiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
     
+//    /**
+//     *  强制横屏
+//     */
+//    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
+//        [[UIDevice currentDevice] performSelector:@selector(setOrientation:)
+//                                       withObject:(id)[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight]];
+//    }
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
+    [self loadConfigInfo];
+    _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
     [_gmGridView reloadData];
 }
+
+#pragma mark - configuration
 
 - (void) configGridView {
     GMGridView *gmGridView      = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
@@ -149,25 +154,21 @@
     _gmGridView.selectState     = self.selectState;
 }
 
-/**
- *  B1 点击文件[编辑]时，该fileID写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME[@"FileID"]
- *
- */
-- (void) loadConfigInfo {
-    NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
-    NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-    
-    self.slideID    = config[CONTENT_KEY_EDITID1];
-    self.pageName     = config[CONTENT_KEY_EDITID2];
-    self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 
-    self.slide = [Slide findById:self.slideID isFavorite:self.isFavorite];
+- (void) loadConfigInfo {
+    NSString *pathName          = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
+    NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
+
+    self.slideID                = config[CONTENT_KEY_EDITID1];
+    self.pageName               = config[CONTENT_KEY_EDITID2];
+    self.isFavorite             = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
+
+    self.slide                  = [Slide findById:self.slideID isFavorite:self.isFavorite];
     [self.slide enterEditState];
-    NSMutableDictionary *dict = [self.slide dictSwp];
-    _dataList = dict[SLIDE_DESC_ORDER];
+    self.labelNavSlideTitle.text = self.slide.title;
 }
 
-- (void)dismissPopupAddToTag {
+- (void) dismissPopupAddToTag {
     if (self.popupViewController != nil) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             NSLog(@"popup view dismissPopupAddToTag dismissed");
@@ -190,12 +191,12 @@
 }
 
 - (IBAction)actionSaveTo:(UIButton *)sender {
-    if(self.mainAddNewTagView == nil) {
+    if(!self.mainAddNewTagView || !self.mainAddNewTagView.masterViewController) {
         self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
         self.mainAddNewTagView.masterViewController = self;
     }
     [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
+        NSLog(@"mainAddNewTagView popup view presented");
     }];
 }
 
@@ -215,7 +216,7 @@
         
         // 导航栏按钮样式
         self.btnNavSaveTo.enabled = NO;
-        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconCancel"] forState:UIControlStateNormal];
+        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconNavCancel"] forState:UIControlStateNormal];
     } else {
         self.selectState = false;
         _gmGridView.selectState = self.selectState;
@@ -224,7 +225,7 @@
         // 在有选择多个页面情况下，[保存][移除]是激活的，
         // 但直接[取消]编辑状态时, 就需要手工禁用
         self.btnNavSaveTo.enabled = NO;
-        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconEdit2"] forState:UIControlStateNormal];
+        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconNavEdit2"] forState:UIControlStateNormal];
     }
 }
 
@@ -237,9 +238,7 @@
  *  @param dict 目标文件配置
  */
 - (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide {
-    NSString *pName;
-    for(pName in _selectedList) {
-        
+    for(NSString *pName in _selectedList) {
         // skip when not exist
         if([targetSlide.pages containsObject:pName]) continue;
         // copy page/image
@@ -338,14 +337,14 @@
     NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:(self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME)];
     if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
         [viewSlidePage loadThumbnail: thumbnailPath];
-    } else {
-        NSLog(@"%@", thumbnailPath);
     }
+    NSLog(@"%ld, %@", (long)index, thumbnailPath);
     
-    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(actionJumpToDisplay:)];
-    [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
-    [viewSlidePage.btnMask setTag:index];
-    [viewSlidePage.btnMask addGestureRecognizer:doubleTapGestureRecognizer];
+    
+//    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(actionJumpToDisplay:)];
+//    [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+//    [viewSlidePage.btnMask setTag:index];
+//    [viewSlidePage.btnMask addGestureRecognizer:doubleTapGestureRecognizer];
     
 //    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureUpdated:)];
 //    longPressGesture.numberOfTouchesRequired = 1;
@@ -353,7 +352,8 @@
 //    longPressGesture.cancelsTouchesInView = NO;
 //    [viewSlidePage.btnMask addGestureRecognizer:longPressGesture];
     
-    [viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
+    //[viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
+    [viewSlidePage.btnMask removeFromSuperview];
     //[viewSlidePage sendSubviewToBack:viewSlidePage.btnMask];
     [cell setContentView: viewSlidePage];
     
@@ -421,10 +421,7 @@
 #pragma mark GMGridViewActionDelegate
 //////////////////////////////////////////////////////////////
 
-- (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {
-}
-
-
+- (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {}
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewSortingDelegate
@@ -467,7 +464,7 @@
 }
 
 - (BOOL)GMGridView:(GMGridView *)gridView shouldAllowShakingBehaviorWhenMovingCell:(GMGridViewCell *)cell atIndex:(NSInteger)index {
-    return !self.selectState;
+    return YES || !self.selectState;
 }
 
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
@@ -496,8 +493,6 @@
     dict = [DateUtils updateSlideTimestamp:dict];
     [FileUtils writeJSON:dict Into:path];
 }
-
-
 
 @end
 
