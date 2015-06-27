@@ -200,13 +200,6 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     
     return slide;
 }
-- (NSString *)inspect {
-    return [NSString stringWithFormat:@"#<Slide ID: %@, name: %@, type: %@, desc: %@, pages: %@, title: %@, zipSize: %@, pageNum: %@, categoryID: %@, categoryName: %@, createdDate: %@, localCreatedDate: %@, localUpdatedDate: %@, isDisplay: %d", self.ID, self.name, self.type, self.desc, self.pages, self.title, self.zipSize, self.pageNum, self.categoryID, self.categoryName, self.createdDate, self.localCreatedDate, self.localUpdatedDate, self.isDisplay];
-}
-
-- (NSString *)to_s {
-    return [self inspect];
-}
 
 - (BOOL)isValid {
     NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];

@@ -8,7 +8,7 @@
 
 #ifndef iSearch_SlideUtils_h
 #define iSearch_SlideUtils_h
-#import <UIKit/UIKit.h>
+#import "BaseModel.h"
 /**
  *  文档格式: 
  *    1. 已下载文件desc.json
@@ -19,7 +19,7 @@
  *
  *   以目录数据为主，如果已下载，则读取[order]，如果已经离线下载，则读取[categoryName]
  */
-@interface Slide : NSObject
+@interface Slide : BaseModel
 
 // attributes
 @property (nonatomic, strong) NSString *ID;
@@ -62,8 +62,6 @@
 - (void)toCached;
 - (void)assignLocalFields:(NSMutableDictionary *)dict;
 - (void)updateTimestamp;
-- (NSString *)inspect;
-- (NSString *)to_s;
 - (NSMutableDictionary *) refreshFields;
 
 - (NSString *)toDownloaded;
