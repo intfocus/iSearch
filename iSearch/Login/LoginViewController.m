@@ -138,10 +138,15 @@
         }
     }
     if([cookieValue length] > 0) {
-        self.cookieValue = cookieValue;
-        [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+        NSLog(@"got it, samlNameId: %@", cookieValue);
+        if([cookieValue isEqualToString:@"error000"]) {
+            [self hideOutsideLoginControl:YES];
+            [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
+        } else {
+            self.cookieValue = cookieValue;
+            [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+        }
         [self.timerReadCookie invalidate];
-        
         [self actionClearCookies];
     }
     self.timerCount++;

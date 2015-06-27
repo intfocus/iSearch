@@ -73,7 +73,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdw-Aj-1SF" userLabel="btnNavBack">
-                    <rect key="frame" x="8" y="10" width="66" height="44"/>
+                    <rect key="frame" x="0.0" y="10" width="66" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="66" id="LRP-vV-q8w"/>
                         <constraint firstAttribute="height" constant="44" id="QWL-c1-Ft3"/>
@@ -84,7 +84,7 @@
                     </state>
                 </button>
                 <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KY7-T3-Gjb">
-                    <rect key="frame" x="0.0" y="62" width="600" height="546"/>
+                    <rect key="frame" x="0.0" y="54" width="600" height="546"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </webView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本次登录有效期12小时，为避免网络不佳，请您在拜访前预先登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyz-cH-AOw">
@@ -121,7 +121,6 @@
                 <constraint firstAttribute="trailingMargin" secondItem="KY7-T3-Gjb" secondAttribute="trailing" id="oRh-ad-jRw"/>
                 <constraint firstAttribute="centerX" secondItem="O2n-uM-dVG" secondAttribute="centerX" id="pWU-Xg-ADl"/>
                 <constraint firstAttribute="trailing" secondItem="pjR-tn-azA" secondAttribute="trailing" id="wyG-O6-Rg2"/>
-                <constraint firstItem="Bdw-Aj-1SF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="10" id="xht-6F-IkU"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
             <point key="canvasLocation" x="164" y="-13"/>
