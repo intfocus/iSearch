@@ -11,7 +11,6 @@
 		C42BD5621B2BCAC1006DB157 /* close_x.png in Resources */ = {isa = PBXBuildFile; fileRef = C42BD55B1B2BCAC1006DB157 /* close_x.png */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8791B289082000F84EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8771B289082000F84EF /* LoginViewController.m */; };
-		C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC8781B289082000F84EF /* LoginViewController.xib */; };
 		C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC87D1B28908B000F84EF /* NotificationCell.m */; };
 		C42EC8831B28908B000F84EF /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C42EC87E1B28908B000F84EF /* NotificationCell.xib */; };
 		C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8801B28908B000F84EF /* NotificationViewController.m */; };
@@ -28,6 +27,7 @@
 		C44786061B3C5693006D4806 /* gmView.m in Sources */ = {isa = PBXBuildFile; fileRef = C44786051B3C5693006D4806 /* gmView.m */; };
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
+		C44EF65F1B3E4BE3006AB765 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */; };
 		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
 		C46497321B2D678B005E3903 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46497311B2D678B005E3903 /* HomeViewController.xib */; };
 		C46497341B2D8244005E3903 /* OneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46497331B2D8244005E3903 /* OneViewController.xib */; };
@@ -115,7 +115,6 @@
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8761B289082000F84EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C42EC8771B289082000F84EF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		C42EC8781B289082000F84EF /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C42EC87C1B28908B000F84EF /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
 		C42EC87D1B28908B000F84EF /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		C42EC87E1B28908B000F84EF /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
@@ -141,6 +140,7 @@
 		C44923571B2AF72900E3BB65 /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
+		C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C464972E1B2D6767005E3903 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		C464972F1B2D6772005E3903 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		C46497311B2D678B005E3903 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
@@ -314,7 +314,7 @@
 			children = (
 				C42EC8761B289082000F84EF /* LoginViewController.h */,
 				C42EC8771B289082000F84EF /* LoginViewController.m */,
-				C42EC8781B289082000F84EF /* LoginViewController.xib */,
+				C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -840,11 +840,11 @@
 				C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */,
 				C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */,
 				C4D253CC1B326B410033F697 /* AddNewTagView.xib in Resources */,
+				C44EF65F1B3E4BE3006AB765 /* LoginViewController.xib in Resources */,
 				C4A618F11B2C7AEC00D0E91B /* NewsListCell.xib in Resources */,
 				C46497501B2D9B93005E3903 /* ToDownload.png in Resources */,
 				C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */,
 				C46497521B2DB108005E3903 /* ToView.png in Resources */,
-				C42EC87A1B289082000F84EF /* LoginViewController.xib in Resources */,
 				C4D253D01B326B410033F697 /* TagListView.xib in Resources */,
 				C4D253D21B326B640033F697 /* FavoriteViewController.xib in Resources */,
 				C4BFEF481B2E6AF60080D7EE /* OfflineViewController.xib in Resources */,
