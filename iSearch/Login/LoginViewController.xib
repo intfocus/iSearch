@@ -22,6 +22,10 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgSignIn" translatesAutoresizingMaskIntoConstraints="NO" id="pjR-tn-azA">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                 </imageView>
+                <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KY7-T3-Gjb">
+                    <rect key="frame" x="0.0" y="54" width="600" height="546"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </webView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O2n-uM-dVG" userLabel="ViewLogin">
                     <rect key="frame" x="20" y="125" width="560" height="350"/>
                     <subviews>
@@ -44,10 +48,10 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJR-ta-GTh">
-                            <rect key="frame" x="210" y="200" width="140" height="60"/>
+                            <rect key="frame" x="110" y="200" width="340" height="60"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="60" id="6Pq-Dl-8Vi"/>
-                                <constraint firstAttribute="width" constant="140" id="Mpt-ub-ljJ"/>
+                                <constraint firstAttribute="width" constant="340" id="Mpt-ub-ljJ"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="26"/>
                             <state key="normal" title="登陆">
@@ -83,10 +87,16 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KY7-T3-Gjb">
-                    <rect key="frame" x="0.0" y="54" width="600" height="546"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </webView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="登录" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrt-ZS-qms">
+                    <rect key="frame" x="267" y="10" width="66" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="66" id="3s8-bh-jlr"/>
+                        <constraint firstAttribute="height" constant="44" id="99M-gp-F0A"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本次登录有效期12小时，为避免网络不佳，请您在拜访前预先登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyz-cH-AOw">
                     <rect key="frame" x="20" y="571" width="560" height="21"/>
                     <constraints>
@@ -94,12 +104,6 @@
                         <constraint firstAttribute="width" constant="560" id="xYt-gT-grj"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="登录" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrt-ZS-qms">
-                    <rect key="frame" x="267" y="10" width="66" height="44"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -122,7 +126,6 @@
                 <constraint firstAttribute="centerX" secondItem="O2n-uM-dVG" secondAttribute="centerX" id="pWU-Xg-ADl"/>
                 <constraint firstAttribute="trailing" secondItem="pjR-tn-azA" secondAttribute="trailing" id="wyG-O6-Rg2"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackOpaque"/>
             <point key="canvasLocation" x="164" y="-13"/>
         </view>
     </objects>
