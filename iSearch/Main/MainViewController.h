@@ -38,7 +38,7 @@
 
 - (void)popupSettingViewController;
 - (void)dimmissPopupSettingViewController;
-- (void)backToLoginViewController;
+- (void)refreshRightViewController;
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;
 

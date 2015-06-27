@@ -13,6 +13,7 @@
 
 @interface BaseModel : NSObject
 
+- (NSString *) to_s:(BOOL)isFormat;
 - (NSString *) to_s;
 - (NSString *) inspect;
 

@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DEBUG                  1
 #define PARAM_LANG             @"lang" // 传递给服务器的语言key
 #define APP_LANG               @"zh-CN" // 应用系统的语言
-#define BASE_URL               @"http://elnprd.chinacloudapp.cn" //
+#define BASE_URL               @"http://tsa-china.takeda.com.cn" //
 #define CONFIG_DIRNAME         @"Configs" // 所有配置档放置在些文件夹下
 #define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件

@@ -110,6 +110,7 @@
         if(self.displayViewController == nil) {
             self.displayViewController = [[DisplayViewController alloc] init];
         }
+        [self.masterViewController dismissPopupSlideInfo];
         [self presentViewController:self.displayViewController animated:NO completion:nil];
     } else {
         [self showPopupView:@"请先下载"];
@@ -127,10 +128,10 @@
         [fileManager removeItemAtPath:filePath error:&error];
         BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
         
-#warning 移除后通知Slide更新状态
         if(isSuccessfully) {
             [self showPopupView:@"移除成功"];
         }
+        [self.masterViewController performSelector:@selector(refreshRightViewController)];
         [self.masterViewController dismissPopupSlideInfo];
     } else {
         [self showPopupView:@"未曾下载，\n何言移除！"];
@@ -152,11 +153,12 @@
         if(self.reViewController == nil) {
             self.reViewController = [[ReViewController alloc] init];
         }
+        
+        [self.masterViewController dismissPopupSlideInfo];
         [self presentViewController:self.reViewController animated:NO completion:nil];
     } else {
         [self showPopupView:@"空空如也,\n编辑何物？"];
     }
-    
 }
 
 - (IBAction)actionAddToFavorite:(UIButton *)sender {

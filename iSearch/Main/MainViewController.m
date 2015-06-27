@@ -56,20 +56,6 @@
 //    BlockTask(^{
 //        //sleep(1);
 //    });
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    // 耗时间的操作放在些block中
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //NSActionLogger(@"主界面加载", @"successfully");
-        
-        [self refreshRightViewController];
-    });
-}
-
-- (void) refreshRightViewController {
     SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
     left.masterViewController = self;
     self.leftViewController   = left;
@@ -77,6 +63,17 @@
     SideViewController *side     = (id)self.leftViewController;
     UIViewController *controller = [side viewControllerForTag:[self.btnEntrySelectedTag integerValue]];
     [self setRightViewController:controller withNav:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self refreshRightViewController];
+}
+
+- (void)refreshRightViewController {
+    // presentViewController调出的视图覆盖全屏时，关闭时，会触发此处
+    [self.rightViewController performSelector:@selector(viewWillAppear:) withObject:self.rightViewController];
 }
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置

@@ -13,7 +13,7 @@
 
 @implementation BaseModel
 
-- (NSString *) to_s {
+- (NSString *) to_s:(BOOL)isFormat {
     unsigned int outCount, i;
     objc_property_t *properties = class_copyPropertyList([self class], &outCount);
     
@@ -27,7 +27,13 @@
     }
     free(properties);
     
-    return [NSString stringWithFormat:@"#<%@ %@>", self.class, [keys componentsJoinedByString:@","]];
+    NSString *joinStr = [keys componentsJoinedByString:(isFormat ? @",\n" : @",")];
+    NSString *output = [NSString stringWithFormat:@"#<%@ %@>", self.class, joinStr];
+    return output;
+}
+
+- (NSString *) to_s {
+    return [self to_s:NO];
 }
 
 - (NSString *) inspect {

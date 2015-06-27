@@ -28,6 +28,7 @@
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
 		C44EF65F1B3E4BE3006AB765 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */; };
+		C44EF6621B3E9205006AB765 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C44EF6611B3E9205006AB765 /* BaseModel.m */; };
 		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
 		C46497321B2D678B005E3903 /* HomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46497311B2D678B005E3903 /* HomeViewController.xib */; };
 		C46497341B2D8244005E3903 /* OneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C46497331B2D8244005E3903 /* OneViewController.xib */; };
@@ -141,6 +142,8 @@
 		C44923581B2AF72900E3BB65 /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
 		C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		C44EF6611B3E9205006AB765 /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
+		C44EF6631B3E920D006AB765 /* BaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
 		C464972E1B2D6767005E3903 /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		C464972F1B2D6772005E3903 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		C46497311B2D678B005E3903 /* HomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeViewController.xib; sourceTree = "<group>"; };
@@ -411,6 +414,7 @@
 		C4357C191B37F22100854524 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C44EF6601B3E91D6006AB765 /* BaseModel */,
 				C4357C231B391B5600854524 /* User */,
 				C4357C261B391B5600854524 /* Slide */,
 				C4357C291B391B5600854524 /* Notification */,
@@ -474,6 +478,15 @@
 				C44786051B3C5693006D4806 /* gmView.m */,
 			);
 			path = Content;
+			sourceTree = "<group>";
+		};
+		C44EF6601B3E91D6006AB765 /* BaseModel */ = {
+			isa = PBXGroup;
+			children = (
+				C44EF6631B3E920D006AB765 /* BaseModel.h */,
+				C44EF6611B3E9205006AB765 /* BaseModel.m */,
+			);
+			path = BaseModel;
 			sourceTree = "<group>";
 		};
 		C464972D1B2D6759005E3903 /* Home */ = {
@@ -968,6 +981,7 @@
 				C4A618EE1B2C7AEC00D0E91B /* SideViewController.m in Sources */,
 				C4BED0871B2FFEE2000147A2 /* ExtendNSLogFunctionality.m in Sources */,
 				C4D253CD1B326B410033F697 /* MainAddNewTagView.m in Sources */,
+				C44EF6621B3E9205006AB765 /* BaseModel.m in Sources */,
 				C44785FF1B3BC065006D4806 /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

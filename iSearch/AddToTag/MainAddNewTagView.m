@@ -18,8 +18,6 @@
 @interface MainAddNewTagView()
 
 @property(nonatomic,strong)IBOutlet UIView *mainView;
-
-
 @end
 
 @implementation MainAddNewTagView
@@ -27,13 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     /**
-     *  实例变量初始化
-     */
-    
-    /**
      *  控件事件
      */
-    TagListView *view  = [[TagListView alloc] initWithNibName:nil bundle:nil];
+    TagListView *view         = [[TagListView alloc] initWithNibName:nil bundle:nil];
     view.masterViewController = self;
     self.mainViewController   = view;
 }
@@ -43,17 +37,17 @@
     [_mainViewController.view removeFromSuperview];
     
     if (!mainView) return;
-    
-    UINavigationController *nav=[[UINavigationController alloc] initWithRootViewController:mainView];
-    nav.navigationBar.translucent=NO;
-    nav.toolbar.translucent=NO;
-    mainView=nav;
+
+    UINavigationController *nav   = [[UINavigationController alloc] initWithRootViewController:mainView];
+    nav.navigationBar.translucent = NO;
+    nav.toolbar.translucent       = NO;
+    mainView                      = nav;
     
     _mainViewController=mainView;
     [self addChildViewController:mainView];
     [self.mainView addSubview:mainView.view];
-    
-    mainView.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    mainView.view.frame=self.mainView.bounds;
+
+    mainView.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    mainView.view.frame            = self.mainView.bounds;
 }
 @end

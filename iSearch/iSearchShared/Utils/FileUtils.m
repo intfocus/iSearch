@@ -31,7 +31,7 @@
     NSString *path = [paths objectAtIndex:0];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    
+#warning todo userID_deptID/一级目录
     // 一级目录路径， 不存在则创建
     NSString *pathname = [path stringByAppendingPathComponent:dirName];
     
@@ -124,11 +124,10 @@
  *  @return 存在即true, 否则false
  */
 + (BOOL) checkSlideExist:(NSString *) slideID
-                     Dir:(NSString *) dir
+                     Dir:(NSString *) dirName
                    Force:(BOOL) isForce {
-    NSError *error;
     NSMutableArray *errors = [[NSMutableArray alloc] init];
-    NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
+    NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
     // 1. Files/fileID/文件是否存在
     if(![FileUtils checkFileExist:filePath isDir:YES]) {
         [errors addObject:@"fileID文件夹不存在."];
@@ -146,7 +145,7 @@
         if(errors && [errors count] == 0) {
             // b)内容是否为空，
             NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
-            if(descPath == nil) {
+            if(!descDict) {
                 [errors addObject:@"desc is nil"];
             }
         }

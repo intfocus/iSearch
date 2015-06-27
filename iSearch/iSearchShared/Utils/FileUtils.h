@@ -79,7 +79,7 @@
  */
 
 + (BOOL) checkSlideExist: (NSString *) slideID
-                     Dir:(NSString *)dir
+                     Dir:(NSString *)dirName
                    Force:(BOOL)isForce;
 
 /**

@@ -156,11 +156,13 @@
     
     [self refreshContent];
 }
+
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
      [self configSpinner];
 }
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     _gridView = nil;

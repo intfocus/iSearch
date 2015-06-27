@@ -26,6 +26,10 @@
     // 每次启动app都需要进入登录界面
     self.window.rootViewController=[[NSClassFromString(@"LoginViewController") alloc] initWithNibName:@"LoginViewController" bundle:nil];
     [self.window makeKeyAndVisible];
+    
+    //  webview 演示pdf，设置不显示黑边
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     return YES;
 }
 

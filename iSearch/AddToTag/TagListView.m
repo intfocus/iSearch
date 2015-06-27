@@ -112,7 +112,7 @@
     Slide *slide = [Slide findByTitleInFavorited:slideTitle];
     
     MainAddNewTagView *masterView1 = [self masterViewController];
-    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+    ReViewController *masterView2  = (ReViewController*)[masterView1 masterViewController];
     [masterView2 actionSavePagesAndMoveFiles:slide];
     [masterView2 dismissPopupAddToTag];
 }
