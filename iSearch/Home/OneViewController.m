@@ -51,7 +51,6 @@
     if([_dataList count] > 0) {
         _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
     }
-    // must be refresh
     [_gridView reloadData];
 }
 

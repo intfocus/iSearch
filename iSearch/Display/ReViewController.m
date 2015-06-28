@@ -76,10 +76,12 @@
 @property (nonatomic, strong) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 
+
+@property (weak, nonatomic) IBOutlet UIButton *btnNavEdit;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRemove;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRestore;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavRefresh;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavSaveTo;
-@property (weak, nonatomic) IBOutlet UIButton *btnNavRestore;
-@property (weak, nonatomic) IBOutlet UIButton *btnNavEdit;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavDismiss;
 
 
@@ -115,6 +117,7 @@
     [self.btnNavRestore addTarget:self action:@selector(actionRestore:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavDismiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavRemove addTarget:self action:@selector(actionRemovePages:) forControlEvents:UIControlEventTouchUpInside];
     
 //    /**
 //     *  强制横屏
@@ -124,12 +127,25 @@
 //                                       withObject:(id)[NSNumber numberWithInteger:UIInterfaceOrientationLandscapeRight]];
 //    }
 }
-
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if(self.selectState) {
+        [self performSelector:@selector(actionEdit:) withObject:self.btnNavEdit];
+    }
+    self.btnNavRefresh.enabled = NO;
+    self.btnNavRemove.enabled = NO;
+    self.btnNavSaveTo.enabled = NO;
+    
+    [_dataList removeAllObjects];
+    [_selectedList removeAllObjects];
+}
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [self loadConfigInfo];
     _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    [self checkDescSwpContent];
     [_gmGridView reloadData];
 }
 
@@ -198,6 +214,11 @@
     [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
         NSLog(@"mainAddNewTagView popup view presented");
     }];
+}
+
+
+- (IBAction)actionRemovePages:(id)sender {
+    
 }
 
 - (IBAction)actionRefresh:(id)sender {
@@ -410,11 +431,8 @@
         [_selectedList addObject:viewSlidePage.slidePageName];
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
-    if([_selectedList count]) {
-        self.btnNavSaveTo.enabled = YES;
-    } else {
-        self.btnNavSaveTo.enabled = NO;
-    }
+    self.btnNavSaveTo.enabled = ([_selectedList count] > 0);
+    self.btnNavRemove.enabled = ([_selectedList count] > 0);
 }
 
 //////////////////////////////////////////////////////////////

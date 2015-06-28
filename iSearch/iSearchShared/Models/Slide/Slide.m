@@ -101,10 +101,10 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _localCreatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_CREATEAT],timestamp);
     _localUpdatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_UPDATEAT],timestamp);
     
-    if([self.type isEqualToString:@"1"]) {
+    if([@[@"1",@"2",@"4"] containsObject:self.type]) {
         _typeName = @"文档";
-    } else if ([self.type isEqualToString:@"2"]) {
-        _typeName = @"幻灯片";
+    } else if ([self.type isEqualToString:@"3"]) {
+        _typeName = @"视频";
     } else if ([self.type isEqualToString:@"0"]) {
         _typeName = @"分类";
     } else {

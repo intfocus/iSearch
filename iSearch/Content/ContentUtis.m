@@ -33,10 +33,10 @@
  *  @return <#return value description#>
  */
 + (NSArray*)loadContentData:(NSString *)deptID
-                        CategoryID:(NSString *)categoryID
-                              Type:(NSString *)localOrServer
-                               Key:(NSString *)sortKey
-                             Order:(BOOL)isAsceding {
+                 CategoryID:(NSString *)categoryID
+                       Type:(NSString *)localOrServer
+                        Key:(NSString *)sortKey
+                      Order:(BOOL)isAsceding {
     NSMutableArray *categoryList = [[NSMutableArray alloc] init];
     NSMutableArray *slideList = [[NSMutableArray alloc] init];
     

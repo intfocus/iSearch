@@ -215,7 +215,6 @@
 }
 
 - (void)configSpinner {
-    
     CGRect frame = self.navLabel.frame;
     frame.origin.x = frame.origin.x + frame.size.width/2;
     frame.origin.y = frame.origin.y + 30;

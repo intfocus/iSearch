@@ -25,17 +25,22 @@
 @interface DisplayViewController ()
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 展示html5
-@property (weak, nonatomic) IBOutlet UIButton *editBtn; // 切换显示编辑状态面板的显示
-@property (weak, nonatomic) IBOutlet UIView *editPanelBgView;
-@property (weak, nonatomic) IBOutlet UIButton *colorButton;
-@property (weak, nonatomic) IBOutlet UIView *colorView;
+@property (weak, nonatomic) IBOutlet UIButton *btnEditPanelSwitch; // 切换显示编辑状态面板的显示
+@property (weak, nonatomic) IBOutlet UIView *viewEditPanelBg;
+@property (weak, nonatomic) IBOutlet UIButton *btnColorSwitch;
+@property (weak, nonatomic) IBOutlet UIView *viewColorChoice;
 @property (weak, nonatomic) IBOutlet UIImageView *iconTriangleImageView;
-@property (weak, nonatomic) IBOutlet UIView   *editPanel; // 编辑状态面板
-@property (weak, nonatomic) IBOutlet UIButton *drawBtn;
-@property (weak, nonatomic) IBOutlet UISwitch *laserSwitch; // 激光笔状态切换
-@property (weak, nonatomic) IBOutlet UIButton *redNoteBtn;  // 笔记 - 红色
-@property (weak, nonatomic) IBOutlet UIButton *greenNoteBtn;// 笔记 - 绿色
-@property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
+@property (weak, nonatomic) IBOutlet UIView   *viewEditPanel; // 编辑状态面板
+@property (weak, nonatomic) IBOutlet UISwitch *switchLaser;  // 激光笔状态切换
+@property (weak, nonatomic) IBOutlet UIButton *btnRedNote;   // 笔记 - 红色
+@property (weak, nonatomic) IBOutlet UIButton *btnGreenNote; // 笔记 - 绿色
+@property (weak, nonatomic) IBOutlet UIButton *btnBlueNote;  // 笔记 - 蓝色
+@property (weak, nonatomic) IBOutlet UIButton *btnClearNote; // 消除笔记
+
+@property (weak, nonatomic) IBOutlet UIButton *btnScanPages; // 浏览
+@property (weak, nonatomic) IBOutlet UIButton *btnLastPage;  // 上一页
+@property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
+@property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
 @property (nonatomic, nonatomic) PopupView    *popupView;
 
 @property (nonatomic, strong) NSNumber *currentPageIndex;
@@ -62,43 +67,43 @@
     /**
      *  控件布局、属性
      */
-    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editPanel.frame.size.width, self.editPanel.frame.size.height)];
-    self.editPanel.layer.masksToBounds = NO;
-    self.editPanel.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.editPanel.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
-    self.editPanel.layer.shadowOpacity = 0.8;
-    self.editPanel.layer.shadowPath = shadowPath.CGPath;
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.viewEditPanel.frame.size.width, self.viewEditPanel.frame.size.height)];
+    self.viewEditPanel.layer.masksToBounds = NO;
+    self.viewEditPanel.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.viewEditPanel.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.viewEditPanel.layer.shadowOpacity = 0.8;
+    self.viewEditPanel.layer.shadowPath = shadowPath.CGPath;
     
-    UIBezierPath *shadowPath2 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.colorView.frame.size.width, self.colorView.frame.size.height)];
-    self.colorView.layer.masksToBounds = NO;
-    self.colorView.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.colorView.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
-    self.colorView.layer.shadowOpacity = 0.8;
-    self.colorView.layer.shadowPath = shadowPath2.CGPath;
+    UIBezierPath *shadowPath2 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.viewColorChoice.frame.size.width, self.viewColorChoice.frame.size.height)];
+    self.viewColorChoice.layer.masksToBounds = NO;
+    self.viewColorChoice.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.viewColorChoice.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.viewColorChoice.layer.shadowOpacity = 0.8;
+    self.viewColorChoice.layer.shadowPath = shadowPath2.CGPath;
     
-    UIBezierPath *shadowPath3 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editBtn.frame.size.width, self.editBtn.frame.size.height)];
-    self.editBtn.layer.masksToBounds = NO;
-    self.editBtn.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.editBtn.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
-    self.editBtn.layer.shadowOpacity = 0;
-    self.editBtn.layer.shadowPath = shadowPath3.CGPath;
+    UIBezierPath *shadowPath3 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.btnEditPanelSwitch.frame.size.width, self.btnEditPanelSwitch.frame.size.height)];
+    self.btnEditPanelSwitch.layer.masksToBounds = NO;
+    self.btnEditPanelSwitch.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.btnEditPanelSwitch.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.btnEditPanelSwitch.layer.shadowOpacity = 0;
+    self.btnEditPanelSwitch.layer.shadowPath = shadowPath3.CGPath;
     
-    self.editPanel.layer.cornerRadius = 4;
-    self.colorView.layer.cornerRadius = 4;
-    self.colorButton.layer.cornerRadius = 4;
-    self.blueNoteBtn.layer.cornerRadius = 4;
-    self.redNoteBtn.layer.cornerRadius = 4;
-    self.greenNoteBtn.layer.cornerRadius = 4;
-    [self.editPanel setHidden: true];
+    self.viewEditPanel.layer.cornerRadius = 4;
+    self.viewColorChoice.layer.cornerRadius = 4;
+    self.btnColorSwitch.layer.cornerRadius = 4;
+    self.btnBlueNote.layer.cornerRadius = 4;
+    self.btnRedNote.layer.cornerRadius = 4;
+    self.btnGreenNote.layer.cornerRadius = 4;
+    [self.viewEditPanel setHidden: true];
     
     /**
      *  控件事件
      */
-    [self.editBtn setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
-    [self.editBtn addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnEditPanelSwitch setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
+    [self.btnEditPanelSwitch addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.laserSwitch setOn: false];
-    [self.laserSwitch addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
+    [self.switchLaser setOn: false];
+    [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.forbidCss = @"<style type='text/css'>          \
                         body { background: black; }     \
@@ -124,32 +129,39 @@
     
     
     // 作笔记的入口，可切换笔记颜色
-    [self.redNoteBtn setBackgroundColor:[UIColor redColor]];
-    [self.redNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnRedNote setBackgroundColor:[UIColor redColor]];
+    [self.btnRedNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.greenNoteBtn setBackgroundColor:[UIColor greenColor]];
-    [self.greenNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnGreenNote setBackgroundColor:[UIColor greenColor]];
+    [self.btnGreenNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
-    [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnBlueNote setBackgroundColor:[UIColor blueColor]];
+    [self.btnBlueNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnClearNote addTarget:self action:@selector(actionClearNote:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnLastPage addTarget:self action:@selector(lastPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNextPage addTarget:self action:@selector(nextPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnScanPages addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnDimiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     self.currentPageIndex = [NSNumber numberWithInt:0];
     self.isDrawing        = NO;
     self.isLasering       = NO;
     self.paintView        = nil;
-    self.editPanel.layer.zPosition = MAXFLOAT;
+    self.viewEditPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
     
 }
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self stopNote];
+    [self stopLaser];
+    
     [self loadSlideInfo];
+    [self checkLastNextPageBtnState];
     [self loadHtml];
     
 }
@@ -200,7 +212,6 @@
     if(isHTML) {
         filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
         NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSURL *baseURL = [NSURL fileURLWithPath:basePath];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
@@ -237,26 +248,26 @@
 - (IBAction)actionToggleShowEditPanel:(UIButton *)sender {
     NSInteger tag = [sender tag];
     [UIView animateWithDuration:.5f animations:^{
-        [self.editPanel setHidden:(tag != SlideEditPanelShow)];
+        [self.viewEditPanel setHidden:(tag != SlideEditPanelShow)];
     }];
     
     switch(tag) {
         case SlideEditPanelHiden: {
-            [self.editBtn setTag:SlideEditPanelShow];
-            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
-            self.editPanelBgView.hidden = YES;
-            self.colorView.hidden = YES;
-            self.editBtn.layer.shadowOpacity = 0;
+            [self.btnEditPanelSwitch setTag:SlideEditPanelShow];
+            [self.btnEditPanelSwitch setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
+            self.viewEditPanelBg.hidden = YES;
+            self.viewColorChoice.hidden = YES;
+            self.btnEditPanelSwitch.layer.shadowOpacity = 0;
             [self stopLaser];
             [self stopNote];
         }
             break;
             
         case SlideEditPanelShow: {
-            [self.editBtn setTag:SlideEditPanelHiden];
-            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
-            self.editPanelBgView.hidden = NO;
-            self.editBtn.layer.shadowOpacity = 0.5;
+            [self.btnEditPanelSwitch setTag:SlideEditPanelHiden];
+            [self.btnEditPanelSwitch setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
+            self.viewEditPanelBg.hidden = NO;
+            self.btnEditPanelSwitch.layer.shadowOpacity = 0.5;
             
         }
             break;
@@ -292,13 +303,12 @@
         self.paintView.erase = false;
         [self.view addSubview:self.paintView];
         self.isLasering = !self.isLasering;
-        [self.drawBtn setEnabled:false];
     }
     
-    [self.view sendSubviewToBack:self.colorView];
-    self.colorView.hidden = YES;
-    [self.view bringSubviewToFront:self.editPanel];
-    [self.view bringSubviewToFront:self.editBtn];
+    [self.view sendSubviewToBack:self.viewColorChoice];
+    self.viewColorChoice.hidden = YES;
+    [self.view bringSubviewToFront:self.viewEditPanel];
+    [self.view bringSubviewToFront:self.btnEditPanelSwitch];
 }
 /**
  *  停用激光笔；
@@ -308,20 +318,6 @@
         [self.paintView removeFromSuperview];
         self.isLasering = !self.isLasering;
     }
-}
-
-// 笔记颜色
--(void)noteBtnClick:(UIButton*) sender{
-    // 关闭switch控件，并触发自身函数
-    [self.laserSwitch setOn:false];
-    [self stopLaser];
-    [self startNote];
-    self.paintView.paintColor = sender.backgroundColor;
-    self.colorButton.backgroundColor = sender.backgroundColor;
-    
-    [self.view sendSubviewToBack:self.colorView];
-    self.colorView.hidden = YES;
-    
 }
 
 /**
@@ -337,9 +333,25 @@
         [self.view addSubview:self.paintView];
         self.isDrawing = !self.isDrawing;
         
-        [self.view bringSubviewToFront:self.editPanel];
-        [self.view bringSubviewToFront:self.editBtn];
+        [self.view bringSubviewToFront:self.viewEditPanel];
+        [self.view bringSubviewToFront:self.btnEditPanelSwitch];
     }
+    self.btnClearNote.enabled = YES;
+}
+
+
+// 笔记颜色
+-(void)noteBtnClick:(UIButton*) sender{
+    // 关闭switch控件，并触发自身函数
+    [self.switchLaser setOn:false];
+    [self stopLaser];
+    [self startNote];
+    self.paintView.paintColor = sender.backgroundColor;
+    self.btnColorSwitch.backgroundColor = sender.backgroundColor;
+    
+    [self.view sendSubviewToBack:self.viewColorChoice];
+    self.viewColorChoice.hidden = YES;
+    
 }
 
 /**
@@ -349,7 +361,15 @@
     if(self.isDrawing) {
         [self.paintView removeFromSuperview];
         self.isDrawing = !self.isDrawing;
-        self.colorButton.backgroundColor = [UIColor whiteColor];
+        self.btnColorSwitch.backgroundColor = [UIColor whiteColor];
+    }
+    self.btnClearNote.enabled = NO;
+}
+
+- (IBAction)actionClearNote:(id)sender {
+    if(self.isDrawing) {
+        [self.paintView clearDrawRect];
+        [self.paintView setNeedsDisplay];
     }
 }
 
@@ -367,11 +387,10 @@
         NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
-    } else {
-        [self showPopupView:@"最后一页了."];
     }
-    NSLog(@"next - current page index: %@", self.currentPageIndex);
+    [self checkLastNextPageBtnState];
 }
+
 /**
  *  浏览文档时[上一页], 触发手势: 向右滑动
  *
@@ -386,10 +405,8 @@
         NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
-    } else {
-        [self showPopupView:@"第一页了."];
     }
-    NSLog(@"next - current page index: %@", self.currentPageIndex);
+    [self checkLastNextPageBtnState];
 }
 
 
@@ -407,7 +424,7 @@
  *
  *  @param sender 无返回
  */
-- (IBAction)enterSlidePagesView:(id)sender {
+- (IBAction)actionScanSlide:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
@@ -473,16 +490,35 @@
 }
 
 - (IBAction)colorButtonTouched:(UIButton *)sender {
-    self.colorView.hidden = !self.colorView.hidden;
+    self.viewColorChoice.hidden = !self.viewColorChoice.hidden;
     self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
-    if(!self.colorView.hidden) {
-        [self.view bringSubviewToFront:self.colorView];
+    if(!self.viewColorChoice.hidden) {
+        [self.view bringSubviewToFront:self.viewColorChoice];
     }
 }
 
 
 #pragma mark - assistant methods
 
+- (void) checkLastNextPageBtnState {
+    [self enabledLastNextPageBtn:self.btnLastPage Enabeld:([self.currentPageIndex intValue] != 0)];
+    [self enabledLastNextPageBtn:self.btnNextPage Enabeld:([self.currentPageIndex intValue] != [self.slide.pages count]-1)];
+}
+- (void) enabledLastNextPageBtn:(UIButton *)sender
+                        Enabeld:(BOOL)enabled {
+    if(enabled == sender.enabled) return;
+    
+    sender.enabled = enabled;
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
+    NSRange strRange = {0,[str length]};
+    if(enabled) {
+        [str removeAttribute:NSStrikethroughStyleAttributeName range:strRange];
+        
+    } else {
+        [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+    }
+    [sender setAttributedTitle:str forState:UIControlStateNormal];
+}
 - (void) loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];

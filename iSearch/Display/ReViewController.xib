@@ -9,6 +9,7 @@
                 <outlet property="btnNavDismiss" destination="mst-UN-TaP" id="wLX-XK-zjW"/>
                 <outlet property="btnNavEdit" destination="QuE-w2-dXh" id="WHb-GF-YVW"/>
                 <outlet property="btnNavRefresh" destination="EbM-8Y-DSu" id="bnj-Ni-Tgn"/>
+                <outlet property="btnNavRemove" destination="0Uy-OC-PIc" id="3q9-fq-s5i"/>
                 <outlet property="btnNavRestore" destination="e05-Dp-V6I" id="0fr-VM-zep"/>
                 <outlet property="btnNavSaveTo" destination="CEa-JI-59P" id="yiy-GP-iXa"/>
                 <outlet property="labelNavSlideTitle" destination="qlP-pm-41K" id="bF7-kB-lvv"/>

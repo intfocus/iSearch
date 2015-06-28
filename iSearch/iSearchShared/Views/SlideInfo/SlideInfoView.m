@@ -30,7 +30,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelCategory;
 @property (strong, nonatomic) IBOutlet UILabel *labelTypeName;
 @property (weak, nonatomic) IBOutlet UIButton *btnDisplay;
-@property (weak, nonatomic) IBOutlet UIButton *btnEdit;
+@property (weak, nonatomic) IBOutlet UIButton *btnScan;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
 @property (weak, nonatomic) IBOutlet UIButton *btnRemove;
 @property (weak, nonatomic) IBOutlet UIButton *hideButton;
@@ -50,7 +50,7 @@
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnAddToTag addTarget:self action:@selector(actionAddToFavorite:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnEdit addTarget:self action:@selector(actionEditSlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnScan addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -114,14 +114,13 @@
         [self.masterViewController dismissPopupSlideInfo];
         [self presentViewController:self.displayViewController animated:NO completion:nil];
     } else {
-        [self showPopupView:@"请先下载"];
+        [self showPopupView:@"请君下载"];
     }
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
     if(self.slide.isDownloading) {
         [self.slide downloaded];
-        [self showPopupView:@"请刷新界面"];
     }else if(self.slide.isDownloaded) {
         NSString *filePath = [FileUtils getPathName:self.dirName FileName:self.slide.ID];
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -139,7 +138,7 @@
     }
 }
 
-- (IBAction)actionEditSlide:(UIButton *)sender {
+- (IBAction)actionScanSlide:(UIButton *)sender {
     if(self.slide.isDownloaded) {
         // 界面跳转需要传递fileID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
@@ -164,7 +163,7 @@
 
 - (IBAction)actionAddToFavorite:(UIButton *)sender {
     if([self.slide isInFavorited]) {
-        [self showPopupView:@"已在收藏了"];
+        [self showPopupView:@"已在收藏"];
     } else if(self.slide.isDownloaded) {
         BOOL isSuccessfully = [self.slide addToFavorite];
         [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];

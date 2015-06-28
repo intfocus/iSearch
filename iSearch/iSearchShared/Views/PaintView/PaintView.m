@@ -34,8 +34,6 @@
         panGesture.maximumNumberOfTouches = 1;
         panGesture.minimumNumberOfTouches = 1;
         [self addGestureRecognizer:panGesture];
-        //self.laser = YES;
-        //[panGesture release]
         
         self.penIV = [[UIImageView alloc] initWithFrame:CGRectMake(-22, -22, 22, 22)];
         self.penIV.image = [UIImage imageNamed:@"pen"];
@@ -159,5 +157,9 @@
             }
         }
     }
+}
+
+- (void)clearDrawRect {
+    [linesArray removeAllObjects];
 }
 @end

@@ -32,6 +32,18 @@
     self.mainViewController   = view;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if(!self.mainViewController) {
+        TagListView *view         = [[TagListView alloc] initWithNibName:nil bundle:nil];
+        view.masterViewController = self;
+        self.mainViewController   = view;
+    } else {
+        [self.mainViewController performSelector:@selector(viewDidAppear:)];
+    }
+}
+
 - (void)setMainViewController:(UIViewController *)mainView{
     [_mainViewController removeFromParentViewController];
     [_mainViewController.view removeFromSuperview];

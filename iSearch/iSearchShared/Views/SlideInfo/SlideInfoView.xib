@@ -8,8 +8,8 @@
             <connections>
                 <outlet property="btnAddToTag" destination="8Ro-dP-TAy" id="2Wh-CZ-lz8"/>
                 <outlet property="btnDisplay" destination="Wd1-po-1gt" id="nGv-9g-Uzk"/>
-                <outlet property="btnEdit" destination="Ovv-e7-dj2" id="XBC-9w-nFY"/>
                 <outlet property="btnRemove" destination="U1q-5S-ztg" id="4kn-pv-HDw"/>
+                <outlet property="btnScan" destination="Ovv-e7-dj2" id="Pcf-aw-eVq"/>
                 <outlet property="hideButton" destination="xGe-hf-etg" id="s11-Kz-v6R"/>
                 <outlet property="labelCategory" destination="bI4-kD-ekT" id="loP-c0-I7y"/>
                 <outlet property="labelDesc" destination="gmP-sx-TCa" id="6uP-pp-2TB"/>
@@ -161,7 +161,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="4Ju-Pq-bjT"/>
                             </constraints>
-                            <state key="normal" title="编辑" image="iconEdit">
+                            <state key="normal" title="浏览" image="iconEdit">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
