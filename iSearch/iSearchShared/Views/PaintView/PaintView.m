@@ -35,6 +35,10 @@
         panGesture.minimumNumberOfTouches = 1;
         [self addGestureRecognizer:panGesture];
         
+        UILongPressGestureRecognizer *gestureLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+        gestureLongPress.minimumPressDuration = 0.1f; //seconds
+        [self addGestureRecognizer:gestureLongPress];
+        
         self.penIV = [[UIImageView alloc] initWithFrame:CGRectMake(-22, -22, 22, 22)];
         self.penIV.image = [UIImage imageNamed:@"pen"];
         [self addSubview:self.penIV];
@@ -99,7 +103,7 @@
 }
 
 
--(void)panGesture:(UIPanGestureRecognizer*)thePan{
+-(void)panGesture:(UIPanGestureRecognizer*)thePan {
     CGPoint touchPoint = [thePan locationInView:self];
     // 橡皮擦状态
     if (self.erase) {
@@ -134,6 +138,10 @@
             CGPoint point = [thePan locationInView:self];
             if (thePan.state == UIGestureRecognizerStateBegan) {
                 self.penIV.hidden = NO;
+                self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
+                [self bringSubviewToFront:self.penIV];
+                [self setNeedsDisplay];
+                NSLog(@"begin");
             }
             else if (thePan.state == UIGestureRecognizerStateChanged) {
                 self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
@@ -159,6 +167,17 @@
     }
 }
 
+-(void)tapGesture:(UITapGestureRecognizer*)theTap {
+    if(!self.laser) return;
+    
+    CGPoint point = [theTap locationInView:self];
+    
+    if (theTap.state == UIGestureRecognizerStateBegan) {
+        self.penIV.hidden = NO;
+    }
+    self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
+    
+}
 - (void)clearDrawRect {
     [linesArray removeAllObjects];
 }

@@ -158,7 +158,7 @@
     [super viewDidAppear:animated];
     
     [self stopNote];
-    [self stopLaser];
+    [self.switchLaser setOn:NO];
     
     [self loadSlideInfo];
     [self checkLastNextPageBtnState];
@@ -343,7 +343,7 @@
 // 笔记颜色
 -(void)noteBtnClick:(UIButton*) sender{
     // 关闭switch控件，并触发自身函数
-    [self.switchLaser setOn:false];
+    [self.switchLaser setOn:NO];
     [self stopLaser];
     [self startNote];
     self.paintView.paintColor = sender.backgroundColor;
