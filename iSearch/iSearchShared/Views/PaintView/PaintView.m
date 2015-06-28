@@ -174,6 +174,8 @@
     
     if (theTap.state == UIGestureRecognizerStateBegan) {
         self.penIV.hidden = NO;
+    } else if(theTap.state==UIGestureRecognizerStateEnded){
+        self.penIV.hidden = YES;
     }
     self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
     
