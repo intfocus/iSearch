@@ -140,20 +140,18 @@
     self.editPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self loadSlideInfo];
-    [self extractResource];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSNumber *indexJumpTo = configDict[SLIDE_DISPLAY_JUMPTO];
-    if(indexJumpTo && ![self.currentPageIndex isEqual:indexJumpTo]) {
-        self.currentPageIndex = indexJumpTo;
-        [self showPopupView:[NSString stringWithFormat:@"跳致%@页", indexJumpTo]];
-    }
+    
+    [self loadSlideInfo];
     [self loadHtml];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -164,6 +162,21 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - webview 
+//开始加载数据
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+//    [activityIndicator startAnimating];
+    NSLog(@"start.");
+}
+
+//数据加载完
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    [activityIndicator stopAnimating];
+//    UIView *view = (UIView *)[self.view viewWithTag:103];
+    //    [view removeFromSuperview];
+    NSLog(@"finish.");
 }
 
 /**
@@ -178,26 +191,27 @@
     
     NSString *filePath;
     BOOL isHTML = YES;
-    NSArray *suportFormat = @[@"pdf", @"gif", @"mp4", @"mpg"];
+    NSArray *suportFormat = @[@"pdf", @"gif", @"mp4"];
     for(NSString *format in suportFormat) {
         filePath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, format];
         if([FileUtils checkFileExist:filePath isDir:NO]) {
             isHTML = NO; break;
         }
     }
-    NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
     if(isHTML) {
         filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
         NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSURL *baseURL = [NSURL fileURLWithPath:basePath];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
+        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];
+        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
     }
-    
 }
 
 - (void) showPopupView: (NSString*) text {
@@ -417,16 +431,6 @@
     }
 }
 
-
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    // Disable user selection
-    NSLog(@"webViewDidFinishLoad");
-    //[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
-    // Disable callout
-    //[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
-}
-
 // 做笔记
 - (void)toggleDrawing {
     if(!self.isDrawing) {
@@ -510,30 +514,8 @@
     if(self.slide.pages == nil || ![pageNum isEqualToString:self.slide.pageNum]) {
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
     }
-}
-
-
-
-- (void) extractResource {
-    NSString *zipName = @"pdfJS";
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    // pdfJS
-    NSString *resPath = [documentPath stringByAppendingPathComponent:@"Resources"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    //[fileManager removeItemAtPath:resPath error:nil];
-    BOOL isDir = TRUE;
-    BOOL isDirExist = [fileManager fileExistsAtPath:resPath isDirectory:&isDir];
-    if(!isDirExist)
-        [fileManager createDirectoryAtPath:resPath withIntermediateDirectories:YES attributes:nil error:nil];
     
-    NSString *pdfJSPath = [resPath stringByAppendingPathComponent:@"pdfJS"];
-    isDirExist = [fileManager fileExistsAtPath:pdfJSPath isDirectory:&isDir];
-    if(!isDirExist) {
-        NSString *pdfJSZip = [bundlePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.zip", zipName]];
-        BOOL state = [SSZipArchive unzipFileAtPath:pdfJSZip toDestination:resPath];
-        NSLog(@"%@", [NSString stringWithFormat:@"pdfJS解压zip: %@", state ? @"成功" : @"失败"]);
-    }
+    self.currentPageIndex = configDict[SLIDE_DISPLAY_JUMPTO];
 }
 
 @end

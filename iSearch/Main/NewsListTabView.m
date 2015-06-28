@@ -11,6 +11,7 @@
 
 #import "SideViewController.h"
 #import "MainViewController.h"
+#import "MainEntryButton.h"
 
 #import "const.h"
 #import "ApiUtils.h"
@@ -77,8 +78,12 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     SideViewController *sideViewController = self.sideViewController;
     MainViewController *mainViewController = [sideViewController masterViewController];
-    UIViewController *controller = [sideViewController viewControllerForTag:EntryButtonNotification];
-    [mainViewController setRightViewController:controller withNav:YES];
+
+    MainEntryButton *btn = (MainEntryButton *)[sideViewController.buttons objectAtIndex:EntryButtonNotification];
+    [btn setTag:EntryButtonNotification];
+    [mainViewController performSelector:@selector(onEntryClick:) withObject:btn];
+    [sideViewController performSelector:@selector(buttonClicked:) withObject:btn];
+    
 }
 
 // 取消选择某行(选择了其他行)

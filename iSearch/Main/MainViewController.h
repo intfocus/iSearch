@@ -16,8 +16,8 @@
  */
 @interface MainViewController : UIViewController <UIGestureRecognizerDelegate>
 
-
 @property(nonatomic,strong)UIViewController *leftViewController;
+@property(nonatomic,strong) NSNumber *btnEntrySelectedTag;
 
 - (void)hideLeftView;
 - (void)showLeftView;

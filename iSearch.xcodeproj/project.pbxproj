@@ -358,9 +358,9 @@
 		C42EC88C1B289392000F84EF /* Offline */ = {
 			isa = PBXGroup;
 			children = (
-				C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */,
 				C42EC88D1B289392000F84EF /* OfflineViewController.h */,
 				C42EC88E1B289392000F84EF /* OfflineViewController.m */,
+				C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */,
 				C46497481B2D972E005E3903 /* OfflineCell.h */,
 				C46497491B2D9737005E3903 /* OfflineCell.m */,
 				C464974B1B2D973F005E3903 /* OfflineCell.xib */,

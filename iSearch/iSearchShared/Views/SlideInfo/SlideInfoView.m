@@ -105,6 +105,7 @@
         [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
         NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
         [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+        [configDict setObject:[NSNumber numberWithInt:0] forKey:SLIDE_DISPLAY_JUMPTO];
         [configDict writeToFile:configPath atomically:YES];
         
         if(self.displayViewController == nil) {

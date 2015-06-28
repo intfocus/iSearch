@@ -42,9 +42,9 @@
     self.navigationItem.leftBarButtonItem = leftTitleBI;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
     /**
      * 实例变量初始化
      */
@@ -53,7 +53,7 @@
         one.masterViewController   = self;
         self.oneViewController     = one;
     } else {
-        [self.oneViewController performSelector:@selector(viewWillAppear:) withObject:self.oneViewController];
+        [self.oneViewController performSelector:@selector(viewDidAppear:) withObject:self.oneViewController];
     }
     
     if(!self.twoViewController) {
@@ -61,7 +61,7 @@
         two.masterViewController   = self;
         self.twoViewController     = two;
     } else {
-        [self.twoViewController performSelector:@selector(viewWillAppear:) withObject:self.twoViewController];
+        [self.twoViewController performSelector:@selector(viewDidAppear:) withObject:self.twoViewController];
     }
     
     if(!self.threeViewController) {
@@ -69,7 +69,7 @@
         three.masterViewController   = self;
         self.threeViewController   = three;
     } else {
-        [self.threeViewController performSelector:@selector(viewWillAppear:) withObject:self.threeViewController];
+        [self.threeViewController performSelector:@selector(viewDidAppear:) withObject:self.threeViewController];
     }
 }
 
@@ -119,33 +119,4 @@
     three.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     three.view.frame=self.threeView.bounds;
 }
-
-/**
- *  收藏页面，点击文件[明细]，弹出框显示文档信息，及操作
- */
-- (void)actionPopupSlideInfo:(NSMutableDictionary *)dict {
-//    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
-//    slideInfoView.masterViewController = self;
-//    slideInfoView.dict = dict;
-//    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
-//        NSLog(@"popup view presented");
-//    }];
-}
-
-/**
- *  关闭弹出框；
- *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
- *  强制刷新[收藏界面]；
- */
-- (void)dismissPopup {
-//    if (self.popupViewController != nil) {
-//        [self dismissPopupViewControllerAnimated:YES completion:^{
-//            NSLog(@"popup view dismissed");
-//        }];
-//    }
-//    OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
-//    one.masterViewController   = self;
-//    self.oneViewController     = one;
-}
-
 @end

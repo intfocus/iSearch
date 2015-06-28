@@ -34,8 +34,8 @@
     [self configGMGridView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 
     for(NSInteger i=0; i< 13; i++) {
         [_data addObject:[NSString stringWithFormat:@"我的记录-%ld", (long)i]];

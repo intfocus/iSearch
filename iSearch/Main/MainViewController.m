@@ -27,7 +27,6 @@
 
 @property(nonatomic,strong)IBOutlet UIView *leftView;
 @property(nonatomic,strong)IBOutlet UIView *rightView;
-@property(nonatomic,strong) NSNumber *btnEntrySelectedTag;
 
 @property(nonatomic,strong)UIViewController *rightViewController;
 @property(nonatomic,strong)SlideInfoView *slideInfoView;
@@ -73,7 +72,7 @@
 
 - (void)refreshRightViewController {
     // presentViewController调出的视图覆盖全屏时，关闭时，会触发此处
-    [self.rightViewController performSelector:@selector(viewWillAppear:) withObject:self.rightViewController];
+    [self.rightViewController performSelector:@selector(viewDidAppear:) withObject:self.rightViewController];
 }
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置

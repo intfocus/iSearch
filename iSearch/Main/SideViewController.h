@@ -12,12 +12,15 @@
 #import "UserHeadView.h"
 
 @class MainViewController;
+@class MainEntryButton;
 
 @interface SideViewController : UIViewController
 
 @property(nonatomic,weak)MainViewController *masterViewController;
 @property (nonatomic) UserHeadView *head;
+@property (nonatomic) NSMutableArray *buttons;
 
+
+- (void)buttonClicked:(MainEntryButton *)button;
 -(UIViewController *)viewControllerForTag:(NSInteger)tag;
-
 @end
