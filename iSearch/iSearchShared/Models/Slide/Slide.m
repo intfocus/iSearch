@@ -108,6 +108,8 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
         _typeName = @"视频";
     } else if ([self.type isEqualToString:@"0"]) {
         _typeName = @"分类";
+    } else if ([self.type isEqualToString:@"10000"]) {
+        _typeName = @"说明文档";
     } else {
         _typeName = @"未知文档";
     }

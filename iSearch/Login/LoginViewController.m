@@ -96,6 +96,7 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
+
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
@@ -305,7 +306,10 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController{
-    [self downloadCategoryThumbnail];
+    [self downloadCategoryThumbnail:@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip" dir:THUMBNAIL_DIRNAME];
+    [self downloadCategoryThumbnail:@"http://tsa-china.takeda.com.cn/uat/public/999154.zip" dir:SLIDE_DIRNAME];
+    [self downloadCategoryThumbnail:@"http://tsa-china.takeda.com.cn/uat/public/999155.zip" dir:SLIDE_DIRNAME];
+
     
     // UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
@@ -313,8 +317,8 @@
     window.rootViewController = mainView;
 }
 
-- (void)downloadCategoryThumbnail {
-    NSString *downloadUrl = @"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip";
+- (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName {
+//    NSString *downloadUrl = @"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip";
     NSString *zipName = [downloadUrl lastPathComponent];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
     if([FileUtils checkFileExist:zipPath isDir:NO]) {
@@ -322,10 +326,12 @@
     }
     NSURL *url = [NSURL URLWithString:downloadUrl];
     NSData *zipData = [NSData dataWithContentsOfURL:url];
-    NSString *thumbnailPath = [FileUtils getPathName:THUMBNAIL_DIRNAME];
+    NSString *thumbnailPath = [FileUtils getPathName:dirName];
     [zipData writeToFile:zipPath atomically:YES];
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:thumbnailPath];
     NSLog(@"解压%@  %@", zipPath, state ? @"成功" : @"失败");
 }
+
+
 
 @end
