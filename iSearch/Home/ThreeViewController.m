@@ -41,11 +41,14 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [_dataList removeAllObjects];
     Slide *slide;
     NSString *dictPath;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     for(NSString *slideID in @[@"999154", @"999155"]) {
         dictPath = [FileUtils slideDescPath:slideID Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        if(![FileUtils checkFileExist:dictPath isDir:NO]) continue;
+        
         dict = [FileUtils readConfigFile:dictPath];
         dict[CONTENT_FIELD_ID] = slideID;
         dict[CONTENT_FIELD_TYPE] = @"10000";
