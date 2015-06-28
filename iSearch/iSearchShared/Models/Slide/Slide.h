@@ -44,6 +44,7 @@
 @property (nonatomic, strong) NSMutableDictionary *dict;
 @property (nonatomic, strong) NSMutableDictionary *descDict1; // origin desc.json json
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // content cache json
+@property (nonatomic, strong) NSMutableDictionary *slides; // pages from slides
 @property (nonatomic, nonatomic) BOOL isFavorite;
 
 // local fields

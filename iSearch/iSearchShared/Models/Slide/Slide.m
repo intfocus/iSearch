@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _categoryID   = @"";
     _categoryName = @"";
     _pages        = [[NSMutableArray alloc] init];
+    _slides       = [[NSMutableDictionary alloc] init];
     
     return self;
 }
@@ -181,10 +182,14 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 
 - (void)save {
     [self refreshFields];
+    [self clearRemovePages];
 
     [FileUtils writeJSON:self.dict Into:self.dictPath];
 }
 
+- (void)clearRemovePages {
+    // TODO clearRemovePages
+}
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
     NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
@@ -215,7 +220,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return [FileUtils readConfigFile:[self dictSwpPath]];
 }
 - (void)enterEditState {
-    return [FileUtils writeJSON:self.dict Into:[self dictSwpPath]];
+    return [FileUtils writeJSON:[self refreshFields] Into:[self dictSwpPath]];
 }
 
 #pragma mark - private methods
@@ -228,7 +233,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _dict[CONTENT_FIELD_ID]           = self.ID;
     _dict[CONTENT_FIELD_NAME]         = self.name;
     _dict[CONTENT_FIELD_TYPE]         = self.type;
-    if(isNil(_dict[SLIDE_DESC_ORDER]) && !isNil(self.pages)) {
+    if(!isNil(self.pages)) {
     _dict[SLIDE_DESC_ORDER]           = self.pages;
     }
 
@@ -244,6 +249,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _dict[SLIDE_DESC_LOCAL_CREATEAT]  = self.localCreatedDate;
     _dict[SLIDE_DESC_LOCAL_UPDATEAT]  = self.localUpdatedDate;
     _dict[SLIDE_DESC_ISDISPLAY]       = (self.isDisplay ? @"1" : @"0");
+    _dict[PAGE_FROM_SLIDES]           = (self.slides ? self.slides : [[NSMutableDictionary alloc] init]);
     
     return self.dict;
 }

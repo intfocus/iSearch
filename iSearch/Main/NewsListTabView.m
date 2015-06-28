@@ -62,7 +62,7 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NewsListCell *cell= (NewsListCell *)[tableView dequeueReusableCellWithIdentifier:@"news" forIndexPath:indexPath];
     NSMutableDictionary *dict = [self.tableItems objectAtIndex:indexPath.row];
-    NSString *message = dict[NOTIFICATION_FIELD_MSG];
+    NSString *message = dict[NOTIFICATION_FIELD_TITLE];
     
     cell.textLabel.numberOfLines=0;
     //cell.textLabel.adjustsFontSizeToFitWidth=YES;

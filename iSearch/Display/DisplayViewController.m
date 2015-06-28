@@ -21,6 +21,8 @@
 #import "message.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import "MainAddNewTagView.h"
+#import "UIViewController+CWPopup.h"
 
 @interface DisplayViewController ()
 
@@ -54,6 +56,8 @@
 @property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) Slide *slide;
 @property (nonatomic, strong) NSNumber *displayFrom;
+@property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
+@property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
 
@@ -62,8 +66,24 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
 
+    
+    // 作笔记的入口，可切换笔记颜色
+    [self.btnRedNote setBackgroundColor:[UIColor redColor]];
+    [self.btnRedNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnGreenNote setBackgroundColor:[UIColor greenColor]];
+    [self.btnGreenNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnBlueNote setBackgroundColor:[UIColor blueColor]];
+    [self.btnBlueNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnClearNote addTarget:self action:@selector(actionClearNote:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnLastPage addTarget:self action:@selector(lastPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNextPage addTarget:self action:@selector(nextPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnScanPages addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnDimiss addTarget:self action:@selector(actionDismissDisplayViewController:) forControlEvents:UIControlEventTouchUpInside];
+    
     /**
      *  控件布局、属性
      */
@@ -106,13 +126,13 @@
     [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.forbidCss = @"<style type='text/css'>          \
-                        body { background: black; }     \
-                        * {                             \
-                        -webkit-touch-callout: none;    \
-                        -webkit-user-select: none;      \
-                        }                               \
-                        </style>                        \
-                        </head>";
+    body { background: black; }     \
+    * {                             \
+    -webkit-touch-callout: none;    \
+    -webkit-user-select: none;      \
+    }                               \
+    </style>                        \
+    </head>";
     
     /**
      * webView添加手势，向左即上一页，向右即下一页
@@ -126,32 +146,31 @@
     [self.webView addGestureRecognizer:gestureLeft];
     // webView按手势放大或缩小
     self.webView.scalesPageToFit = YES;
+    //self.webView.userInteractionEnabled = NO;
     
-    
-    // 作笔记的入口，可切换笔记颜色
-    [self.btnRedNote setBackgroundColor:[UIColor redColor]];
-    [self.btnRedNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.btnGreenNote setBackgroundColor:[UIColor greenColor]];
-    [self.btnGreenNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.btnBlueNote setBackgroundColor:[UIColor blueColor]];
-    [self.btnBlueNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.btnClearNote addTarget:self action:@selector(actionClearNote:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnLastPage addTarget:self action:@selector(lastPage:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnNextPage addTarget:self action:@selector(nextPage:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnScanPages addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnDimiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
+    self.dataList = [[NSMutableArray alloc] init];
     self.currentPageIndex = [NSNumber numberWithInt:0];
     self.isDrawing        = NO;
     self.isLasering       = NO;
     self.paintView        = nil;
     self.viewEditPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // Do any additional setup after loading the view, typically from a nib.
     
+    /**
+     *  CWPopup 事件
+     */
+    self.useBlurForPopup = YES;
+    
+    [self loadSlideInfo];
+    if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+        _dataList = [NSMutableArray arrayWithArray:[self.slide dictSwp][SLIDE_DESC_ORDER]];
+    } else {
+        _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -160,11 +179,8 @@
     [self stopNote];
     [self.switchLaser setOn:NO];
     
-    [self loadSlideInfo];
     [self checkLastNextPageBtnState];
     [self loadHtml];
-    
-    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -196,11 +212,11 @@
  *  控件事件
  */
 - (void) loadHtml {
-    if([self.currentPageIndex integerValue] > [self.slide.pages count]-1) {
+    if([self.currentPageIndex integerValue] > [self.dataList count]-1) {
         self.currentPageIndex = [NSNumber numberWithInteger:0];
         NSLog(@"Bug: DisplayViewController set Jumpto %@", self.currentPageIndex);
     }
-    NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
+    NSString *htmlName = [self.dataList objectAtIndex: [self.currentPageIndex intValue]];
     
     NSString *filePath;
     BOOL isHTML = YES;
@@ -215,6 +231,7 @@
         NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
         NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+        [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
         NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
@@ -380,10 +397,10 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
-    [self stopLaser];
+//    [self.switchLaser setOn:NO];
     [self stopNote];
     
-    NSInteger pageCount = [self.slide.pages count];
+    NSInteger pageCount = [self.dataList count];
     if([self.currentPageIndex intValue] < pageCount -1) {
         NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
@@ -398,10 +415,10 @@
  *  @param sender UIButton
  */
 - (IBAction)lastPage: (id)sender {
-    [self stopLaser];
+//    [self.switchLaser setOn:NO];
     [self stopNote];
     
-    NSInteger pageCount = [self.slide.pages count];
+    NSInteger pageCount = [self.dataList count];
     if([self.currentPageIndex intValue] != 0) {
         NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
@@ -433,12 +450,17 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.slide.pages objectAtIndex:[self.currentPageIndex integerValue]];
+        NSString *pageID = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
         [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
         [config setObject:pageID forKey:SCAN_SLIDE_PAGEID];
         NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
         [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
+        
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+        configDict[SLIDE_DISPLAY_JUMPTO] = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
+        [FileUtils writeJSON:configDict Into:configPath];
         
         // 界面跳转至文档页面编辑界面
         if(self.reViewController == nil) {
@@ -471,24 +493,66 @@
  *
  *  @param sender
  */
-- (IBAction)actionDismiss:(id)sender {
-    if([self.displayFrom intValue] == DisplayFromOfflineCell) {
-        if(self.callingController1 != nil) {
-            [self.callingController1 dismissDisplayViewController];
-        } else {
-            NSLog(@"Bug#not set DisplayViewController#callingController1");
+- (IBAction)actionDismissDisplayViewController:(id)sender {
+    if(self.slide.isFavorite) {
+        [self performSelector:@selector(dismissDisplayViewController)];
+    } else {
+        if(![self.dataList isEqualToArray:self.slide.pages]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否存在？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
+            [alert show];
         }
     }
-    if([self.displayFrom intValue] == DisplayFromSlide) {
-        if(self.callingController2 != nil) {
-            [self.callingController2 dismissDisplayViewController];
-        } else {
-            NSLog(@"Bug#not set DisplayViewController#callingController2");
-        }
-    }
-    self.webView = nil;
-    [self dismissViewControllerAnimated:NO completion:nil];
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:0];
+    [FileUtils writeJSON:configDict Into:configPath];
+    
+    [self dismissDisplayViewController];
 }
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0: {
+            if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
+            }
+            if([self.displayFrom intValue] == DisplayFromOfflineCell) {
+                if(self.callingController1 != nil) {
+                    [self.callingController1 dismissDisplayViewController];
+                } else {
+                    NSLog(@"Bug#not set DisplayViewController#callingController1");
+                }
+            }
+            if([self.displayFrom intValue] == DisplayFromSlide) {
+                if(self.callingController2 != nil) {
+                    [self.callingController2 dismissDisplayViewController];
+                } else {
+                    NSLog(@"Bug#not set DisplayViewController#callingController2");
+                }
+            }
+            self.webView = nil;
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
+            break;
+        case 1: {
+            if(!self.mainAddNewTagView || !self.mainAddNewTagView.masterViewController) {
+                self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
+                self.mainAddNewTagView.masterViewController = self;
+            }
+            self.mainAddNewTagView.closeMainViewAfterDone = YES;
+            self.mainAddNewTagView.fromViewControllerName = @"DisplayViewController";
+            [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
+                NSLog(@"mainAddNewTagView popup view presented");
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 
 - (IBAction)colorButtonTouched:(UIButton *)sender {
     self.viewColorChoice.hidden = !self.viewColorChoice.hidden;
@@ -503,7 +567,7 @@
 
 - (void) checkLastNextPageBtnState {
     [self enabledLastNextPageBtn:self.btnLastPage Enabeld:([self.currentPageIndex intValue] != 0)];
-    [self enabledLastNextPageBtn:self.btnNextPage Enabeld:([self.currentPageIndex intValue] != [self.slide.pages count]-1)];
+    [self enabledLastNextPageBtn:self.btnNextPage Enabeld:([self.currentPageIndex intValue] != [self.dataList count]-1)];
 }
 - (void) enabledLastNextPageBtn:(UIButton *)sender
                         Enabeld:(BOOL)enabled {
@@ -551,16 +615,48 @@
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
     }
     
-    NSString *jumpToPageIndex = configDict[SLIDE_DISPLAY_JUMPTO];
-    if(jumpToPageIndex) {
-        NSInteger jumpToIndex = [jumpToPageIndex integerValue];
-        if( jumpToIndex < 0 || jumpToIndex > [self.slide.pages count] -1) {
-            jumpToIndex = 0;
-        }
-        self.currentPageIndex = [NSNumber numberWithInteger:jumpToIndex];
-    } else {
-        self.currentPageIndex = [NSNumber numberWithInteger:0];
+    NSString *jumpToPageName = configDict[SLIDE_DISPLAY_JUMPTO];
+    NSInteger jumpToPageIndex = [self.slide.pages indexOfObject:jumpToPageName];
+    if(jumpToPageIndex && (jumpToPageIndex < 0 || jumpToPageIndex > [self.slide.pages count] -1)) {
+            jumpToPageIndex = 0;
     }
+    self.currentPageIndex = [NSNumber numberWithInteger:jumpToPageIndex];
 }
 
+
+#pragma mark - save slide to favorite
+/**
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
+ *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
+ *
+ *  并把当前选择的页面拷贝到目标文件ID(FAVORITE_DIRNAME)文件夹下
+ *
+ *  @param dict 目标文件配置
+ */
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide {
+    NSMutableDictionary *dictSwp = [self.slide dictSwp];
+    
+    for(NSString *pName in dictSwp[SLIDE_DESC_ORDER]) {
+        // skip when not exist
+        if([targetSlide.pages containsObject:pName]) continue;
+        // copy page/image
+        [FileUtils copyFilePage:pName FromSlide:self.slide ToSlide:targetSlide];
+        
+        [targetSlide.pages addObject:pName];
+    }
+    [targetSlide updateTimestamp];
+    [targetSlide save];
+}
+-(void)dismissDisplayViewController {
+    [self performSelector:@selector(dismissPopupAddToTag)];
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+- (void) dismissPopupAddToTag {
+    if (self.popupViewController != nil) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissPopupAddToTag dismissed");
+        }];
+    }
+}
 @end

@@ -211,6 +211,10 @@
 + (NSString *)slideToDownload:(NSString *)slideID;
 + (NSString *)slideDownloaded:(NSString *)slideID;
 + (BOOL)isSlideDownloading:(NSString *)slideID;
+
++ (void)copyFilePage:(NSString *)pName
+           FromSlide:(Slide *)fromSlide
+             ToSlide:(Slide *)toSlide;
 @end
 
 

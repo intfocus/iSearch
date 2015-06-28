@@ -15,6 +15,7 @@
  *  添加标签界面，[取消]或选择标签[完成]时
  */
 - (void)dismissPopupAddToTag;
+-(void)dismissReViewController;
 - (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide;
 
 @end

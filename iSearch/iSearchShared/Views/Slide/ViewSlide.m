@@ -108,11 +108,16 @@
     [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
     [FileUtils writeJSON:configDict Into:configPath];
     
-    if(self.displayViewController == nil) {
+ 
         self.displayViewController = [[DisplayViewController alloc] init];
         self.displayViewController.callingController2 = self;
+    if([self.slide.pages count] > 0) {
+        [self.slide enterEditState];
+        self.displayViewController.presentReViewController = NO;
+        [self.masterViewController presentViewController:self.displayViewController animated:NO completion:nil];
+    } else {
+        [self showPopupView:@"it is empty"];
     }
-    [self.masterViewController presentViewController:self.displayViewController animated:NO completion:nil];
 }
 /**
  *  释放DisplayViewController内存
@@ -268,6 +273,8 @@
             NSErrorPrint(error, @"move file %@ => %@", tmpPath, self.slide.path);
         }
     }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:zipPath error:NULL];
 }
 
 /**
@@ -278,6 +285,9 @@
     NSMutableDictionary *descDict = [FileUtils readConfigFile:self.slide.descPath];
     if(descDict[SLIDE_DESC_ORDER] != nil) {
         self.slide.pages = descDict[SLIDE_DESC_ORDER];
+        NSMutableDictionary *pageFromSlides = [[NSMutableDictionary alloc] init];
+        [pageFromSlides setObject:self.slide.title forKey:self.slide.ID];
+        self.slide.slides = pageFromSlides;
         [self.slide save];
     } else {
         NSLog(@"Bug Slide#order is nil, %@", self.slide.dictPath);

@@ -216,7 +216,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"
 #define PAGE_IMAGE_FORMAT          @"gif"
-#define PAGE_IMAGE_NOT_FOUND       @"not_found.png"
+#define PAGE_FROM_SLIDES           @"PageFromSlides"
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"

@@ -20,6 +20,8 @@
 @property(nonatomic,nonatomic) UIViewController *masterViewController;
 // 标签列表/创建新标签 容器
 @property(nonatomic,nonatomic) UIViewController *mainViewController;
+@property(nonatomic,nonatomic) BOOL closeMainViewAfterDone;
+@property(nonatomic,nonatomic) NSString *fromViewControllerName;
 // 传递[创建新标签]的信息
 @property(nonatomic, strong) Slide *addSlide;
 @end

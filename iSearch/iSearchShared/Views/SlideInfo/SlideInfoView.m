@@ -111,7 +111,9 @@
         if(self.displayViewController == nil) {
             self.displayViewController = [[DisplayViewController alloc] init];
         }
+        self.displayViewController.presentReViewController = YES;
         [self.masterViewController dismissPopupSlideInfo];
+        [self.slide enterEditState];
         [self presentViewController:self.displayViewController animated:NO completion:nil];
     } else {
         [self showPopupView:@"请君下载"];
@@ -149,13 +151,17 @@
         [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
         
-        // 界面跳转至文档页面编辑界面
-        if(self.reViewController == nil) {
-            self.reViewController = [[ReViewController alloc] init];
-        }
+//        // 界面跳转至文档页面编辑界面
+//        if(self.reViewController == nil) {
+//            self.reViewController = [[ReViewController alloc] init];
+//        }
         
+        if(self.displayViewController == nil) {
+            self.displayViewController = [[DisplayViewController alloc] init];
+        }
+        self.displayViewController.presentReViewController = YES;
         [self.masterViewController dismissPopupSlideInfo];
-        [self presentViewController:self.reViewController animated:NO completion:nil];
+        [self presentViewController:self.displayViewController animated:NO completion:nil];
     } else {
         [self showPopupView:@"空空如也,\n编辑何物？"];
     }

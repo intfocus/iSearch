@@ -476,4 +476,32 @@
     NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
     return [FileUtils checkFileExist:cachePath isDir:NO];
 }
+
+/**
+ *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
+ *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
+ *
+ *  @param pageName   页面名称fildId_pageId.html
+ *  @param fromFileId 源文件id
+ *  @param toFileId   目标文件id
+ */
++ (void)copyFilePage:(NSString *)pName
+           FromSlide:(Slide *)fromSlide
+             ToSlide:(Slide *)toSlide {
+    NSError *error;
+    NSString *pagePath, *newPagePath, *imagePath, *newImagePath;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // 复制html文件
+    pagePath = [fromSlide.path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pName, PAGE_HTML_FORMAT]];
+    newPagePath = [toSlide.path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pName, PAGE_HTML_FORMAT]];
+    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
+    NSErrorPrint(error, @"copy page html from %@ -> %@", pagePath, newPagePath);
+    
+    // 复制文件夹
+    imagePath = [fromSlide.path stringByAppendingPathComponent:pName];
+    newImagePath = [toSlide.path stringByAppendingPathComponent:pName];
+    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
+    NSErrorPrint(error, @"copy page folder from %@ -> %@", imagePath, newImagePath);
+}
 @end

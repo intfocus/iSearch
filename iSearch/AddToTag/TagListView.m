@@ -16,6 +16,7 @@
 #import "MainAddNewTagView.h"
 #import "AddNewTagView.h"
 #import "ReViewController.h"
+#import "DisplayViewController.h"
 
 @interface TagListView()
 @property (weak, nonatomic) IBOutlet UIButton *btnAddNewTag;
@@ -112,9 +113,24 @@
     Slide *slide = [Slide findByTitleInFavorited:slideTitle];
     
     MainAddNewTagView *masterView1 = [self masterViewController];
-    ReViewController *masterView2  = (ReViewController*)[masterView1 masterViewController];
-    [masterView2 actionSavePagesAndMoveFiles:slide];
-    [masterView2 dismissPopupAddToTag];
+    if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
+        ReViewController *masterView2  = (ReViewController*)[masterView1 masterViewController];
+        [masterView2 actionSavePagesAndMoveFiles:slide];
+        if(masterView1.closeMainViewAfterDone) {
+            [masterView2 dismissReViewController];
+        } else {
+            [masterView2 dismissPopupAddToTag];
+        }
+    }
+    if([masterView1.fromViewControllerName isEqualToString:@"DisplayViewController"]) {
+        DisplayViewController *masterView2  = (DisplayViewController *)[masterView1 masterViewController];
+        [masterView2 actionSavePagesAndMoveFiles:slide];
+        if(masterView1.closeMainViewAfterDone) {
+            [masterView2 dismissDisplayViewController];
+        } else {
+            [masterView2 dismissPopupAddToTag];
+        }
+    }
 }
 
 /**
