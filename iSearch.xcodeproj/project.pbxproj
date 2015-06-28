@@ -46,7 +46,6 @@
 		C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */; };
 		C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */; };
 		C4A3AF111B2B0CCB00A12170 /* ReViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */; };
-		C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF161B2B0EF500A12170 /* pdfJS.zip */; };
 		C4A618EB1B2C7AEC00D0E91B /* UserHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */; };
 		C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */; };
 		C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A618DF1B2C7AEC00D0E91B /* SideViewController.xib */; };
@@ -76,6 +75,7 @@
 		C4BED0951B2FFF49000147A2 /* ViewSlidePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED0931B2FFF49000147A2 /* ViewSlidePage.m */; };
 		C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BED0941B2FFF49000147A2 /* ViewSlidePage.xib */; };
 		C4BFEF481B2E6AF60080D7EE /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */; };
+		C4D1A5FE1B3FA79100A80714 /* thumbnailPageVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = C4D1A5FD1B3FA79100A80714 /* thumbnailPageVideo.png */; };
 		C4D253CB1B326B410033F697 /* AddNewTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D253C31B326B410033F697 /* AddNewTagView.m */; };
 		C4D253CC1B326B410033F697 /* AddNewTagView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4D253C41B326B410033F697 /* AddNewTagView.xib */; };
 		C4D253CD1B326B410033F697 /* MainAddNewTagView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D253C61B326B410033F697 /* MainAddNewTagView.m */; };
@@ -169,7 +169,6 @@
 		C4A3AF0B1B2B0CCB00A12170 /* ReViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReViewController.h; sourceTree = "<group>"; };
 		C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReViewController.m; sourceTree = "<group>"; };
 		C4A3AF0D1B2B0CCB00A12170 /* ReViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReViewController.xib; sourceTree = "<group>"; };
-		C4A3AF161B2B0EF500A12170 /* pdfJS.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = pdfJS.zip; sourceTree = "<group>"; };
 		C4A618DC1B2C7AEC00D0E91B /* UserHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeadView.xib; sourceTree = "<group>"; };
 		C4A618DD1B2C7AEC00D0E91B /* UserHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHeadView.m; sourceTree = "<group>"; };
 		C4A618DE1B2C7AEC00D0E91B /* UserHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHeadView.h; sourceTree = "<group>"; };
@@ -225,6 +224,7 @@
 		C4BED0931B2FFF49000147A2 /* ViewSlidePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlidePage.m; sourceTree = "<group>"; };
 		C4BED0941B2FFF49000147A2 /* ViewSlidePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlidePage.xib; sourceTree = "<group>"; };
 		C4BFEF471B2E6AF60080D7EE /* OfflineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineViewController.xib; sourceTree = "<group>"; };
+		C4D1A5FD1B3FA79100A80714 /* thumbnailPageVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnailPageVideo.png; sourceTree = "<group>"; };
 		C4D253C21B326B410033F697 /* AddNewTagView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewTagView.h; sourceTree = "<group>"; };
 		C4D253C31B326B410033F697 /* AddNewTagView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewTagView.m; sourceTree = "<group>"; };
 		C4D253C41B326B410033F697 /* AddNewTagView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNewTagView.xib; sourceTree = "<group>"; };
@@ -303,6 +303,7 @@
 		C42BD5591B2BCAC1006DB157 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C4D1A5FD1B3FA79100A80714 /* thumbnailPageVideo.png */,
 				C4357C2D1B392C4100854524 /* thumbnailSlideDefault.png */,
 				C46497511B2DB108005E3903 /* ToView.png */,
 				C464974E1B2D9B93005E3903 /* ToDownload.png */,
@@ -544,18 +545,10 @@
 			path = Display;
 			sourceTree = "<group>";
 		};
-		C4A3AF151B2B0EF500A12170 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C42BD5591B2BCAC1006DB157 /* Images */,
-				C4A3AF161B2B0EF500A12170 /* pdfJS.zip */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		C4BED03D1B2FFEE2000147A2 /* iSearchShared */ = {
 			isa = PBXGroup;
 			children = (
+				C42BD5591B2BCAC1006DB157 /* Images */,
 				C4357C191B37F22100854524 /* Models */,
 				C4BED03E1B2FFEE2000147A2 /* Common */,
 				C4BED0421B2FFEE2000147A2 /* GMGridView */,
@@ -723,7 +716,6 @@
 				C4D253C01B326B2A0033F697 /* Favorite */,
 				C4BED03D1B2FFEE2000147A2 /* iSearchShared */,
 				C464972D1B2D6759005E3903 /* Home */,
-				C4A3AF151B2B0EF500A12170 /* Resources */,
 				C4A3AF071B2B0CCB00A12170 /* Display */,
 				C44923561B2AF72900E3BB65 /* Content */,
 				C42EC88C1B289392000F84EF /* Offline */,
@@ -849,7 +841,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
-				C4A3AF171B2B0EF500A12170 /* pdfJS.zip in Resources */,
 				C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */,
 				C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */,
 				C4D253CC1B326B410033F697 /* AddNewTagView.xib in Resources */,
@@ -864,6 +855,7 @@
 				C4D253CE1B326B410033F697 /* MainAddNewTagView.xib in Resources */,
 				C4E3CCEC1B184E530067B762 /* LaunchScreen.xib in Resources */,
 				C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */,
+				C4D1A5FE1B3FA79100A80714 /* thumbnailPageVideo.png in Resources */,
 				C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */,
 				C4A618ED1B2C7AEC00D0E91B /* SideViewController.xib in Resources */,
 				C4A618EF1B2C7AEC00D0E91B /* NewsListTabView.xib in Resources */,

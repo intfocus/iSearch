@@ -22,5 +22,5 @@
 
 
 - (void)buttonClicked:(MainEntryButton *)button;
--(UIViewController *)viewControllerForTag:(NSInteger)tag;
+- (UIViewController *)viewControllerForTag:(NSInteger)tag;
 @end

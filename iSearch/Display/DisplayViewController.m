@@ -191,8 +191,7 @@
     
     NSString *filePath;
     BOOL isHTML = YES;
-    NSArray *suportFormat = @[@"pdf", @"gif", @"mp4"];
-    for(NSString *format in suportFormat) {
+    for(NSString *format in @[@"pdf", @"gif", @"mp4"]) {
         filePath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, format];
         if([FileUtils checkFileExist:filePath isDir:NO]) {
             isHTML = NO; break;

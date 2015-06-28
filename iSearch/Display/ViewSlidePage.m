@@ -32,14 +32,16 @@
 - (void)loadThumbnail:(NSString *)thumbnailPath {
     NSString *extName = [thumbnailPath pathExtension];
     
-    if([extName isEqualToString:@"pdf"]) {
+    if([@[@"pdf"] containsObject:extName]) {
+        
         NSURL *url = [NSURL fileURLWithPath:thumbnailPath];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [self.webViewThumbnail loadRequest:request];
+    } else if([@[@"png",@"gif",@"jpeg",@"bmp"] containsObject:extName]) {
         
-    } else if([extName isEqualToString:@"gif"]) {
-        NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", thumbnailPath];
-        [self.webViewThumbnail loadHTMLString:html baseURL:nil];
+        NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", [thumbnailPath lastPathComponent]];
+        NSURL *url = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
+        [self.webViewThumbnail loadHTMLString:html baseURL:url];
     } else {
         NSLog(@"Load default thumbnail.");
         NSLog(@"%@", thumbnailPath);

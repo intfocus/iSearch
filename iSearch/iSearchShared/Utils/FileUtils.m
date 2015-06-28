@@ -419,16 +419,36 @@
  */
 + (NSString*) slideThumbnail:(NSString *)slideID
                      PageID:(NSString *)pageID
-                        Dir:(NSString *)dir {
-    NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
-    NSString *pagePath = [filePath stringByAppendingPathComponent:pageID];
-    NSString *thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.pdf", pageID]];
+                        Dir:(NSString *)dirName {
+    NSString *slidePath = [FileUtils getPathName:dirName FileName:slideID];
+    NSString *pagePath = [slidePath stringByAppendingPathComponent:pageID];
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     
-    if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gif", pageID]];
-    } else if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4", pageID]];
+    NSString *thumbnailPath, *format;
+    BOOL isVideo = NO, isSlide = NO;
+    
+    for(format in @[@"mp4", @"mpg"]) {
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
+        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
+            isVideo = YES;
+            break;
+        }
     }
+    if(isVideo) {
+        thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageVideo.png"];
+        return thumbnailPath;
+    };
+    
+    for(format in @[@"pdf", @"gif"]) {
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
+        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
+            isSlide = YES;
+            break;
+        }
+    }
+    if(isSlide) { return thumbnailPath; }
+    
+    thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
     return thumbnailPath;
 }
 
