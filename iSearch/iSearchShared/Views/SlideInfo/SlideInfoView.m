@@ -144,9 +144,9 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
+        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
         NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-        [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
+        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
         
         // 界面跳转至文档页面编辑界面

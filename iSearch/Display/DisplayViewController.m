@@ -99,7 +99,7 @@
     /**
      *  控件事件
      */
-    [self.btnEditPanelSwitch setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
+    [self.btnEditPanelSwitch setTag:SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
     [self.btnEditPanelSwitch addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.switchLaser setOn: false];
@@ -163,6 +163,7 @@
     [self loadSlideInfo];
     [self checkLastNextPageBtnState];
     [self loadHtml];
+    
     
 }
 
@@ -433,10 +434,10 @@
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
         NSString *pageID = [self.slide.pages objectAtIndex:[self.currentPageIndex integerValue]];
-        [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
-        [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
+        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
+        [config setObject:pageID forKey:SCAN_SLIDE_PAGEID];
         NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-        [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
+        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
         
         // 界面跳转至文档页面编辑界面
@@ -524,11 +525,11 @@
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
     // Basic Key Check
-    if(configDict[CONTENT_KEY_DISPLAYID] == nil) {
+    if(!configDict[CONTENT_KEY_DISPLAYID]) {
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Not Set!");
         abort();
     }
-    if(configDict[SLIDE_DISPLAY_TYPE] == nil) {
+    if(!configDict[SLIDE_DISPLAY_TYPE]) {
         NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
         abort();
     }
@@ -550,7 +551,16 @@
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
     }
     
-    self.currentPageIndex = configDict[SLIDE_DISPLAY_JUMPTO];
+    NSString *jumpToPageIndex = configDict[SLIDE_DISPLAY_JUMPTO];
+    if(jumpToPageIndex) {
+        NSInteger jumpToIndex = [jumpToPageIndex integerValue];
+        if( jumpToIndex < 0 || jumpToIndex > [self.slide.pages count] -1) {
+            jumpToIndex = 0;
+        }
+        self.currentPageIndex = [NSNumber numberWithInteger:jumpToIndex];
+    } else {
+        self.currentPageIndex = [NSNumber numberWithInteger:0];
+    }
 }
 
 @end

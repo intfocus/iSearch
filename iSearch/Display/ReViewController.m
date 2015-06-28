@@ -175,9 +175,9 @@
     NSString *pathName          = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
 
-    self.slideID                = config[CONTENT_KEY_EDITID1];
-    self.pageName               = config[CONTENT_KEY_EDITID2];
-    self.isFavorite             = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
+    self.slideID                = config[SCAN_SLIDE_ID];
+    self.pageName               = config[SCAN_SLIDE_PAGEID];
+    self.isFavorite             = ([config[SCAN_SLIDE_FROM] intValue] == SlideTypeFavorite);
 
     self.slide                  = [Slide findById:self.slideID isFavorite:self.isFavorite];
     [self.slide enterEditState];
@@ -217,8 +217,14 @@
 }
 
 
-- (IBAction)actionRemovePages:(id)sender {
+- (IBAction)actionRemovePages:(UIButton *)sender {
+    for(NSString *pName in _selectedList) {
+        [_dataList removeObject:pName];
+    }
+    [_selectedList removeAllObjects];
+    [_gmGridView reloadData];
     
+    [sender setEnabled:NO];
 }
 
 - (IBAction)actionRefresh:(id)sender {
@@ -347,7 +353,7 @@
     
     ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
     NSString *currentPageName = [_dataList objectAtIndex:index];
-    viewSlidePage.slidePageName = currentPageName;
+
     
     if([currentPageName isEqualToString: self.pageName]) {
         [viewSlidePage hightLight];
@@ -355,50 +361,45 @@
     viewSlidePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", self.slide.title];
     viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)index];
     
-    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:(self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME)];
+    viewSlidePage.slidePageName = currentPageName;
+    viewSlidePage.reViewController = self;
+    
+    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:self.slide.dirName];
     if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
         [viewSlidePage loadThumbnail: thumbnailPath];
     }
     NSLog(@"%ld, %@", (long)index, thumbnailPath);
     
-    
-//    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(actionJumpToDisplay:)];
-//    [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
-//    [viewSlidePage.btnMask setTag:index];
-//    [viewSlidePage.btnMask addGestureRecognizer:doubleTapGestureRecognizer];
-    
-//    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureUpdated:)];
-//    longPressGesture.numberOfTouchesRequired = 1;
-//    longPressGesture.delegate = self;
-//    longPressGesture.cancelsTouchesInView = NO;
-//    [viewSlidePage.btnMask addGestureRecognizer:longPressGesture];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionJumpToDisplay:)];
+    tapGesture.numberOfTapsRequired = 2; //点击次数
+    tapGesture.numberOfTouchesRequired = 1; //点击手指数
+    tapGesture.delegate = self;
+    [viewSlidePage.btnMask setTag:index];
+    [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
+
     
     //[viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
-    [viewSlidePage.btnMask removeFromSuperview];
+    [viewSlidePage bringSubviewToFront:viewSlidePage.webViewThumbnail];
     //[viewSlidePage sendSubviewToBack:viewSlidePage.btnMask];
     [cell setContentView: viewSlidePage];
     
     return cell;
 }
 
-- (IBAction)longPressGestureUpdated:(id)sender {
-    [_gmGridView performSelector:@selector(longPressGestureUpdated:) withObject:_gmGridView];
-    NSLog(@"long press.");
-}
+
+
 /**
  *  非编辑状态下，双击直接进入演示该页面
  *  编辑状态下，会有selectButton在最外层，不会触发此处双击事件
  *
  *  @param gestureRecognizer gestureRecognizer
  */
-- (IBAction)actionJumpToDisplay:(UIGestureRecognizer*)gestureRecognizer {
-    NSInteger jumpToIndex = gestureRecognizer.view.tag;
-    NSLog(@"jump to %ld",(long)jumpToIndex);
+- (IBAction)actionJumpToDisplay:(UITapGestureRecognizer*)tapRecognizer {
+    NSInteger pageIndex = [tapRecognizer.view tag];
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:jumpToIndex];
+    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:pageIndex];
     [FileUtils writeJSON:configDict Into:configPath];
-    
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }

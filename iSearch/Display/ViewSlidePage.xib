@@ -11,12 +11,6 @@
             <rect key="frame" x="0.0" y="0.0" width="213" height="234"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAu-Xf-gMb">
-                    <rect key="frame" x="0.0" y="0.0" width="213" height="234"/>
-                    <state key="normal">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgA-Qa-PiF">
                     <rect key="frame" x="0.0" y="0.0" width="213" height="187"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -25,6 +19,16 @@
                         <constraint firstAttribute="height" constant="187" id="hrp-fq-BqG"/>
                     </constraints>
                 </webView>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Z8-6B-8Hu">
+                    <rect key="frame" x="0.0" y="0.0" width="213" height="187"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="187" id="17Z-8Y-tl4"/>
+                        <constraint firstAttribute="width" constant="213" id="egM-fq-bix"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="第一页" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKf-Hm-vx5">
                     <rect key="frame" x="0.0" y="187" width="213" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -45,19 +49,17 @@
                 <constraint firstItem="K8D-qI-Vxh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NxM-cI-Yy8"/>
                 <constraint firstAttribute="trailing" secondItem="TKf-Hm-vx5" secondAttribute="trailing" id="RYl-La-BPA"/>
                 <constraint firstAttribute="trailing" secondItem="mgA-Qa-PiF" secondAttribute="trailing" id="SVQ-eS-A2T"/>
-                <constraint firstItem="nAu-Xf-gMb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="WK2-Ak-B2G"/>
-                <constraint firstItem="nAu-Xf-gMb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="XWl-kd-CAF"/>
-                <constraint firstAttribute="trailingMargin" secondItem="nAu-Xf-gMb" secondAttribute="trailing" id="hS2-pX-zjG"/>
+                <constraint firstItem="2Z8-6B-8Hu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="Wk7-JT-wlG"/>
                 <constraint firstItem="mgA-Qa-PiF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nZb-Ch-VTl"/>
                 <constraint firstItem="mgA-Qa-PiF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nfY-ga-VpN"/>
                 <constraint firstItem="TKf-Hm-vx5" firstAttribute="top" secondItem="mgA-Qa-PiF" secondAttribute="bottom" id="o8j-QZ-GOn"/>
-                <constraint firstAttribute="bottomMargin" secondItem="nAu-Xf-gMb" secondAttribute="bottom" id="rbO-7c-Nor"/>
+                <constraint firstItem="2Z8-6B-8Hu" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="qnA-NU-O2N"/>
                 <constraint firstAttribute="bottom" secondItem="K8D-qI-Vxh" secondAttribute="bottom" constant="5" id="uwu-jS-ggE"/>
                 <constraint firstItem="K8D-qI-Vxh" firstAttribute="top" secondItem="TKf-Hm-vx5" secondAttribute="bottom" id="zJo-gx-pTF"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="btnMask" destination="nAu-Xf-gMb" id="oaa-k3-0yx"/>
+                <outlet property="btnMask" destination="2Z8-6B-8Hu" id="ly3-q2-TNK"/>
                 <outlet property="labelFrom" destination="K8D-qI-Vxh" id="z33-pt-IvO"/>
                 <outlet property="labelPageNum" destination="TKf-Hm-vx5" id="7DM-o6-9hn"/>
                 <outlet property="webViewThumbnail" destination="mgA-Qa-PiF" id="4Gd-Qv-Pwm"/>

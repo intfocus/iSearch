@@ -9,19 +9,13 @@
 #import "ViewSlidePage.h"
 #import "const.h"
 #import "message.h"
+#import "FileUtils.h"
+#import "ReViewController.h"
 
 @implementation ViewSlidePage
 @synthesize webViewThumbnail;
 @synthesize labelFrom;
 @synthesize labelPageNum;
-
-
-- (id)initWithFrame:(CGRect)theFrame {
-    self = [super initWithFrame:theFrame];
-    if (self) {
-    }
-    return self;
-}
 
 /**
  *  UIWebView浏览PDF或GIF文档
@@ -47,6 +41,16 @@
         NSLog(@"%@", thumbnailPath);
     }
 }
+
+- (void)setReViewController:(ReViewController *)reViewController {
+    _reViewController = reViewController;
+
+    self.webViewThumbnail.scrollView.scrollEnabled = NO;
+    self.webViewThumbnail.scrollView.bounces       = NO;
+    self.webViewThumbnail.scalesPageToFit          = YES;
+    self.webViewThumbnail.userInteractionEnabled   = NO;
+}
+
 
 - (void)hightLight {
     self.webViewThumbnail.layer.borderWidth = 2.0f;

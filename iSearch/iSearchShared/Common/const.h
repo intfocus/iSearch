@@ -144,10 +144,10 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
 #define SLIDE_DISPLAY_TYPE      @"DisplayFavoriteOrSlide" // 下载文档位置不同
 #define SLIDE_DISPLAY_FROM      @"DisplayFromType" 
-#define SLIDE_EDIT_TYPE         @"EditFavoriteOrSlide" // 下载文档位置不同
+#define SCAN_SLIDE_FROM         @"ScanFavoriteOrSlide" // 下载文档位置不同
+#define SCAN_SLIDE_ID           @"ScanSlideID" // 演示档时，[编辑]进入文档页面界面
+#define SCAN_SLIDE_PAGEID       @"ScanSLidePageID" // 演示档时，[编辑]进入文档页面界面
 #define SLIDE_DISPLAY_JUMPTO    @"DisplayJumpTo" // 编辑界面，双击进入演示
-#define CONTENT_KEY_EDITID1      @"EditFileID" // 演示档时，[编辑]进入文档页面界面
-#define CONTENT_KEY_EDITID2      @"EditPageID" // 演示档时，[编辑]进入文档页面界面
 // 目录中文件类型
 #define CONTENT_CATEGORY   @"0" // 分类，可以点击再进入
 #define CONTENT_SLIDE      @"1" // 文献 （待确认)
