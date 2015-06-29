@@ -193,6 +193,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    self.slide = nil;
+    self.webView = nil;
+    self.dataList = nil;
+    self.paintView = nil;
+    self.popupView = nil;
+}
 #pragma mark - webview 
 //开始加载数据
 - (void)webViewDidStartLoad:(UIWebView *)webView {
@@ -466,7 +473,20 @@
         if(self.reViewController == nil) {
             self.reViewController = [[ReViewController alloc] init];
         }
-        [self presentViewController:self.reViewController animated:NO completion:nil];
+        self.reViewController.masterViewController = self;
+        [self presentViewController:self.reViewController animated:NO completion:^{
+            NSLog(@"present ReViewController.");
+        }];
+    }
+}
+
+- (void)dismissReViewController {
+    if(self.reViewController) {
+        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+            NSLog(@"dismiss ReViewController and release it");
+            self.reViewController = nil;
+        }];
+
     }
 }
 

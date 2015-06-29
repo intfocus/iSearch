@@ -55,6 +55,7 @@
 #import "ViewUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
+#import "DisplayViewController.h"
 #import "MainAddNewTagView.h"
 #import "UIViewController+CWPopup.h"
 
@@ -103,6 +104,7 @@
     self.pageInfoTmp = [[NSMutableDictionary alloc] init];
     _dataList        = [[NSMutableArray alloc] init];
     _selectedList    = [[NSMutableArray alloc] init];
+    
     /**
      *  CWPopup 事件
      */
@@ -119,13 +121,10 @@
     [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavDismiss addTarget:self action:@selector(actionDismissReViewController:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavRemove addTarget:self action:@selector(actionRemovePages:) forControlEvents:UIControlEventTouchUpInside];
-
-    
-
 }
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     if(self.selectState) {
         [self performSelector:@selector(actionEdit:) withObject:self.btnNavEdit];
@@ -139,7 +138,6 @@
     
     [self loadConfigInfo];
     
-  
     if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
         NSMutableDictionary *dictSwp = [self.slide dictSwp];
         _dataList = dictSwp[SLIDE_DESC_ORDER];
@@ -149,6 +147,22 @@
 
     [self checkDescSwpContent];
     [_gmGridView reloadData];
+}
+
+//////////////////////////////////////////////////////////////
+#pragma mark - memory management
+//////////////////////////////////////////////////////////////
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    NSLog(@"receive memory warning.");
+    _gmGridView = nil;
+}
+
+#pragma mark - release
+- (void)dealloc {
+    self.pageInfoTmp = nil;
+    _dataList        = nil;
+    _selectedList    = nil;
 }
 
 #pragma mark - configuration
@@ -171,7 +185,6 @@
     _gmGridView.mainSuperView   = self.scrollView;
     _gmGridView.selectState     = self.selectState;
 }
-
 
 - (void) loadConfigInfo {
     NSString *pathName          = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
@@ -220,8 +233,11 @@
 
 -(void)dismissReViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
-    
-    [self dismissViewControllerAnimated:NO completion:nil];
+    if(self.masterViewController) {
+        [self.masterViewController dismissReViewController];
+    } else {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 - (IBAction)actionSaveTo:(UIButton *)sender {
     if(!self.mainAddNewTagView || !self.mainAddNewTagView.masterViewController) {
@@ -306,14 +322,7 @@
     self.btnNavRestore.enabled = ![self.slide.pages isEqualToArray:_dataList];
 }
 
-//////////////////////////////////////////////////////////////
-#pragma mark memory management
-//////////////////////////////////////////////////////////////
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 
-    _gmGridView = nil;
-}
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource
@@ -345,7 +354,6 @@
     
     ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
     NSString *currentPageName = [_dataList objectAtIndex:index];
-//    NSString *currentPageIndex = [[[currentPageName componentsSeparatedByString:@"_"] lastObject] integerValue];
 
     
     if([currentPageName isEqualToString: self.pageName]) {
@@ -361,19 +369,16 @@
     if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
         [viewSlidePage loadThumbnail: thumbnailPath];
     }
-    NSLog(@"%ld, %@", (long)index, thumbnailPath);
+    // NSLog(@"%ld, %@", (long)index, thumbnailPath);
     
+    // enter display view when double click
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionJumpToDisplay:)];
-    tapGesture.numberOfTapsRequired = 2; //点击次数
-    tapGesture.numberOfTouchesRequired = 1; //点击手指数
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
     tapGesture.delegate = self;
     [viewSlidePage.btnMask setTag:index];
     [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
 
-    
-    //[viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
-    [viewSlidePage bringSubviewToFront:viewSlidePage.webViewThumbnail];
-    //[viewSlidePage sendSubviewToBack:viewSlidePage.btnMask];
     [cell setContentView: viewSlidePage];
     
     return cell;

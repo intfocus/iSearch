@@ -279,7 +279,7 @@
 
 #pragma mark - Slide info PopupView
 - (void)popupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
-    if(self.slideInfoView == nil) {
+    if(!self.slideInfoView) {
         self.slideInfoView = [[SlideInfoView alloc] init];
         self.slideInfoView.masterViewController = self;
     }
@@ -295,15 +295,16 @@
  *  强制刷新[收藏界面]；
  */
 - (void)dismissPopupSlideInfo {
-    if (self.popupViewController != nil) {
+    if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
 //            [self.rightViewController performSelector:@selector(viewDidAppear:) withObject:self.rightViewController];
+            self.slideInfoView = nil;
         }];
     }
 }
 #pragma mark - popup show settingViewController
 - (void)popupSettingViewController {
-    if(self.settingViewController == nil) {
+    if(!self.settingViewController) {
         self.settingViewController = [[SettingViewController alloc] init];
         self.settingViewController.masterViewController = self;
     }
@@ -313,7 +314,7 @@
 }
 
 - (void)dimmissPopupSettingViewController {
-    if (self.popupViewController != nil) {
+    if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _settingViewController = nil;
         }];

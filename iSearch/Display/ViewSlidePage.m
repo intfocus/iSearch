@@ -32,7 +32,7 @@
         [self.webViewThumbnail loadRequest:request];
         
     } else if([@[@"png",@"gif",@"jpeg",@"bmp"] containsObject:extName]) {
-        NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", [thumbnailPath lastPathComponent]];
+        NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;height:100%%;'>", [thumbnailPath lastPathComponent]];
         NSURL *url = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
         [self.webViewThumbnail loadHTMLString:html baseURL:url];
         

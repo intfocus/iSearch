@@ -54,7 +54,7 @@
                                 <constraint firstAttribute="width" constant="340" id="Mpt-ub-ljJ"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                            <state key="normal" title="登陆">
+                            <state key="normal" title="登录">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>

@@ -296,6 +296,10 @@
     
     self.selectButton.alpha = selectState ? 1 : 0;
     [self.selectButton setImage:(selectState ? _selectingButtonIcon : nil) forState:UIControlStateNormal];
+
+    if(selectState && !self.selectingButtonIcon) {
+        NSLog(@"selectingButtonIcon is nil");
+    }
     
     self.contentView.userInteractionEnabled = !selectState;
     //NSLog(@"GridViewCell#264 - selectState: %d", selectState);

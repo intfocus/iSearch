@@ -53,8 +53,8 @@
     [self.btnScan addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     self.labelTitle.text = self.slide.title;
     self.labelDesc.text  = self.slide.desc;

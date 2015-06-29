@@ -24,6 +24,7 @@
 - (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide;
 - (void)dismissDisplayViewController;
 - (void)dismissPopupAddToTag;
+- (void)dismissReViewController;
 
 @end
 
