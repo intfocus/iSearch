@@ -23,6 +23,7 @@
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
 #import "DisplayViewController.h"
+//#import "ReViewController.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -34,6 +35,7 @@
 @property(nonatomic,strong) SlideInfoView *slideInfoView;
 @property(nonatomic,strong) SettingViewController *settingViewController;
 @property(nonatomic,strong) DisplayViewController *displayViewController;
+//@property(nonatomic,strong) ReViewController *reViewController;
 
 
 // 头像设置
@@ -336,5 +338,22 @@
         }];
     }
 }
+
+#pragma mark - present view ReViewController
+//- (void)presentViewReViewController {
+//    if(!self.reViewController) {
+//        self.reViewController = [[ReViewController alloc] init];
+//        self.reViewController.masterViewController = self;
+//    }
+//    [self presentViewController:self.reViewController animated:NO completion:nil];
+//}
+//- (void)dismissViewReViewController {
+//    if(self.reViewController) {
+//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+//            _reViewController = nil;
+//            NSLog(@"dismiss ReViewController.");
+//        }];
+//    }
+//}
 
 @end

@@ -42,6 +42,9 @@
 - (void)presentViewDisplayViewController;
 - (void)dismissViewDisplayViewController;
 
+//- (void)presentViewReViewController;
+//- (void)dismissViewReViewController;
+
 - (void)refreshRightViewController;
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;

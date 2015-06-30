@@ -10,19 +10,19 @@
 #import "SSZipArchive.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 
-#import "ReViewController.h"
 #import "MainViewController.h"
 
 #import "OfflineCell.h"
 #import "ViewSlide.h"
 #import "MainViewController.h"
+#import "MainAddNewTagView.h"
+#import "ReViewController.h"
 
 #import "const.h"
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
-#import "MainAddNewTagView.h"
 #import "UIViewController+CWPopup.h"
 
 @interface DisplayViewController ()
@@ -54,10 +54,10 @@
 @property (nonatomic, strong) NSString *slideID;
 @property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, strong) NSString *forbidCss;
-@property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) Slide *slide;
 @property (nonatomic, strong) NSNumber *displayFrom;
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
+@property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
@@ -471,23 +471,11 @@
         [FileUtils writeJSON:configDict Into:configPath];
         
         // 界面跳转至文档页面编辑界面
-        if(self.reViewController == nil) {
+        if(!self.reViewController) {
             self.reViewController = [[ReViewController alloc] init];
+            self.reViewController.masterViewController = self;
         }
-        self.reViewController.masterViewController = self;
-        [self presentViewController:self.reViewController animated:NO completion:^{
-            NSLog(@"present ReViewController.");
-        }];
-    }
-}
-
-- (void)dismissReViewController {
-    if(self.reViewController) {
-        [self.reViewController dismissViewControllerAnimated:NO completion:^{
-            NSLog(@"dismiss ReViewController and release it");
-            self.reViewController = nil;
-        }];
-
+        [self presentViewController:self.reViewController animated:NO completion:nil];
     }
 }
 
@@ -653,6 +641,7 @@
     [targetSlide updateTimestamp];
     [targetSlide save];
 }
+
 -(void)dismissDisplayViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
     
@@ -665,4 +654,29 @@
         }];
     }
 }
+-(void)dismissReViewController {
+    if(self.reViewController) {
+        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+            _reViewController = nil;
+            NSLog(@"dismiss present view ReViewController.");
+        }];
+    }
+}
+
+#pragma mark - present view ReViewController
+//- (void)presentViewReViewController {
+//    if(!self.reViewController) {
+//        self.reViewController = [[ReViewController alloc] init];
+//        self.reViewController.masterViewController = self;
+//    }
+//    [self presentViewController:self.reViewController animated:NO completion:nil];
+//}
+//- (void)dismissViewReViewController {
+//    if(self.reViewController) {
+//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+//            _reViewController = nil;
+//            NSLog(@"dismiss ReViewController.");
+//        }];
+//    }
+//}
 @end

@@ -56,12 +56,13 @@
 #import "ExtendNSLogFunctionality.h"
 
 #import "DisplayViewController.h"
+#import "ReViewController.h"
 #import "MainAddNewTagView.h"
 #import "UIViewController+CWPopup.h"
 
 @interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
-    NSMutableArray       *_dataList;   // 文件的页面信息
+    NSMutableArray       *_dataList;     // 文件的页面信息
     NSMutableArray       *_selectedList; // 内容重组选择的页面序号
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
@@ -84,8 +85,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNavRefresh;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavSaveTo;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavDismiss;
-
-
 @end
 
 @implementation ReViewController
@@ -93,7 +92,6 @@
 @synthesize pageName;
 @synthesize pageInfoTmp;
 @synthesize selectState;
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -199,13 +197,7 @@
     self.labelNavSlideTitle.text = self.slide.title;
 }
 
-- (void) dismissPopupAddToTag {
-    if (self.popupViewController != nil) {
-        [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissPopupAddToTag dismissed");
-        }];
-    }
-}
+
 
 //////////////////////////////////////////////////////////////
 #pragma mark - controls action
@@ -231,14 +223,7 @@
     [self performSelector:@selector(dismissReViewController)];
 }
 
--(void)dismissReViewController {
-    [self performSelector:@selector(dismissPopupAddToTag)];
-    if(self.masterViewController) {
-        [self.masterViewController dismissReViewController];
-    } else {
-        [self dismissViewControllerAnimated:NO completion:nil];
-    }
-}
+
 - (IBAction)actionSaveTo:(UIButton *)sender {
     if(!self.mainAddNewTagView || !self.mainAddNewTagView.masterViewController) {
         self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
@@ -250,7 +235,6 @@
         NSLog(@"mainAddNewTagView popup view presented");
     }];
 }
-
 
 - (IBAction)actionRemovePages:(UIButton *)sender {
     if(!self.selectState) return;
@@ -323,6 +307,17 @@
 }
 
 
+-(void)dismissReViewController {
+    [self performSelector:@selector(dismissPopupAddToTag)];
+    [self.masterViewController dismissReViewController];
+}
+- (void) dismissPopupAddToTag {
+    if (self.popupViewController) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissPopupAddToTag dismissed");
+        }];
+    }
+}
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource

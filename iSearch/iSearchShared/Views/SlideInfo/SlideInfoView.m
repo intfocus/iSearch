@@ -13,14 +13,11 @@
 
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
-#import "ReViewController.h"
 #import "Slide.h"
 #import "PopupView.h"
 
 @interface SlideInfoView()
 @property (nonatomic, nonatomic) PopupView *popupView;
-@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
-@property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UILabel *labelDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
@@ -136,21 +133,21 @@
 }
 
 - (IBAction)actionScanSlide:(UIButton *)sender {
-    if(self.slide.isDownloaded) {
-        // 界面跳转需要传递fileID，通过写入配置文件来实现交互
-        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
-        NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-        
-        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
-        NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
-        [FileUtils writeJSON:config Into:pathName];
-        
-        [self.masterViewController dismissPopupSlideInfo];
-        [self.masterViewController presentViewDisplayViewController];
-    } else {
-        [self showPopupView:@"空空如也,\n编辑何物？"];
-    }
+//    if(self.slide.isDownloaded) {
+//        // 界面跳转需要传递fileID，通过写入配置文件来实现交互
+//        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
+//        NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
+//        
+//        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
+//        NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+//        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
+//        [FileUtils writeJSON:config Into:pathName];
+//        
+//        [self.masterViewController dismissPopupSlideInfo];
+//        [self.masterViewController presentViewReViewController];
+//    } else {
+//        [self showPopupView:@"空空如也,\n编辑何物？"];
+//    }
 }
 
 - (IBAction)actionAddToFavorite:(UIButton *)sender {

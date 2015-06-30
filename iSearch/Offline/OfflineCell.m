@@ -73,11 +73,7 @@
     [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
     [FileUtils writeJSON:configDict Into:configPath];
     
-    if(self.displayViewController == nil) {
-        self.displayViewController = [[DisplayViewController alloc] init];
-        self.displayViewController.callingController1 = self;
-    }
-    [self.offlineViewController presentViewController:self.displayViewController animated:NO completion:nil];
+#warning todo masterViewController call DisplayViewController
 }
 /**
  *  释放DisplayViewController内存
