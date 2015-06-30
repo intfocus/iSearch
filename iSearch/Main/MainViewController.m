@@ -15,22 +15,25 @@
 #import "SettingViewController.h"
 
 #import "FileUtils.h"
+#import "ContentUtils.h"
 #import "PopupView.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
-#import "ContentUtils.h"
+#import "DisplayViewController.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property(nonatomic,strong)IBOutlet UIView *leftView;
 @property(nonatomic,strong)IBOutlet UIView *rightView;
 
-@property(nonatomic,strong)UIViewController *rightViewController;
-@property(nonatomic,strong)SlideInfoView *slideInfoView;
-@property(nonatomic,strong)SettingViewController *settingViewController;
+@property(nonatomic,strong) UIViewController *rightViewController;
+
+@property(nonatomic,strong) SlideInfoView *slideInfoView;
+@property(nonatomic,strong) SettingViewController *settingViewController;
+@property(nonatomic,strong) DisplayViewController *displayViewController;
 
 
 // 头像设置
@@ -289,19 +292,15 @@
         NSLog(@"popup view presented");
     }];
 }
-/**
- *  关闭弹出框；
- *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
- *  强制刷新[收藏界面]；
- */
 - (void)dismissPopupSlideInfo {
     if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-//            [self.rightViewController performSelector:@selector(viewDidAppear:) withObject:self.rightViewController];
-            self.slideInfoView = nil;
+            _slideInfoView = nil;
+            NSLog(@"dismiss SlideInfoView.");
         }];
     }
 }
+
 #pragma mark - popup show settingViewController
 - (void)popupSettingViewController {
     if(!self.settingViewController) {
@@ -312,12 +311,30 @@
         NSLog(@"popup view settingViewController");
     }];
 }
-
 - (void)dimmissPopupSettingViewController {
     if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _settingViewController = nil;
+            NSLog(@"dismiss SettingViewController.");
         }];
     }
 }
+
+#pragma mark - present view DisplayViewController
+- (void)presentViewDisplayViewController {
+    if(!self.displayViewController) {
+        self.displayViewController = [[DisplayViewController alloc] init];
+        self.displayViewController.masterViewController = self;
+    }
+    [self presentViewController:self.displayViewController animated:NO completion:nil];
+}
+- (void)dismissViewDisplayViewController {
+    if(self.displayViewController) {
+        [self.displayViewController dismissViewControllerAnimated:NO completion:^{
+            _displayViewController = nil;
+            NSLog(@"dismiss DisplayViewController.");
+        }];
+    }
+}
+
 @end

@@ -13,7 +13,6 @@
 
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
-#import "DisplayViewController.h"
 #import "ReViewController.h"
 #import "Slide.h"
 #import "PopupView.h"
@@ -108,13 +107,9 @@
         [configDict setObject:[NSNumber numberWithInt:0] forKey:SLIDE_DISPLAY_JUMPTO];
         [configDict writeToFile:configPath atomically:YES];
         
-        if(self.displayViewController == nil) {
-            self.displayViewController = [[DisplayViewController alloc] init];
-        }
-        self.displayViewController.presentReViewController = YES;
         [self.masterViewController dismissPopupSlideInfo];
         [self.slide enterEditState];
-        [self presentViewController:self.displayViewController animated:NO completion:nil];
+        [self.masterViewController presentViewDisplayViewController];
     } else {
         [self showPopupView:@"请君下载"];
     }
@@ -151,17 +146,8 @@
         [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
         
-//        // 界面跳转至文档页面编辑界面
-//        if(self.reViewController == nil) {
-//            self.reViewController = [[ReViewController alloc] init];
-//        }
-        
-        if(self.displayViewController == nil) {
-            self.displayViewController = [[DisplayViewController alloc] init];
-        }
-        self.displayViewController.presentReViewController = YES;
         [self.masterViewController dismissPopupSlideInfo];
-        [self presentViewController:self.displayViewController animated:NO completion:nil];
+        [self.masterViewController presentViewDisplayViewController];
     } else {
         [self showPopupView:@"空空如也,\n编辑何物？"];
     }

@@ -18,10 +18,8 @@
 #import "ExtendNSLogFunctionality.h"
 
 #import "MainViewController.h"
-#import "DisplayViewController.h"
 
 @interface ViewSlide()
-@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
 @property (nonatomic, nonatomic) PopupView *popupView;
 
 // http download variables begin
@@ -108,27 +106,15 @@
     [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
     [FileUtils writeJSON:configDict Into:configPath];
     
- 
-        self.displayViewController = [[DisplayViewController alloc] init];
-        self.displayViewController.callingController2 = self;
     if([self.slide.pages count] > 0) {
         [self.slide enterEditState];
-        self.displayViewController.presentReViewController = NO;
-        [self.masterViewController presentViewController:self.displayViewController animated:NO completion:nil];
+        [self.masterViewController presentViewDisplayViewController];
     } else {
         [self showPopupView:@"it is empty"];
     }
 }
-/**
- *  释放DisplayViewController内存
- */
-- (void)dismissDisplayViewController {
-    _displayViewController = nil;
-    NSLog(@"dismissed here - ViewSlide");
-}
 
 #pragma mark - assistant methods
-
 - (void)showPopupView:(NSString*) text {
     if(self.popupView == nil) {
         self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.masterViewController.view.frame.size.width/4, self.masterViewController.view.frame.size.height/4, self.masterViewController.view.frame.size.width/2, self.masterViewController.view.frame.size.height/2)];

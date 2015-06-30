@@ -424,12 +424,11 @@
     NSString *pagePath = [slidePath stringByAppendingPathComponent:pageID];
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     
+    return [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];;
+    
+    
     NSString *thumbnailPath, *format;
     BOOL isVideo = NO, isSlide = NO;
-    
-    
-    return [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
-    
     
     for(format in @[@"mp4", @"mpg"]) {
         thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];

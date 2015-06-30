@@ -15,6 +15,7 @@
 
 #import "OfflineCell.h"
 #import "ViewSlide.h"
+#import "MainViewController.h"
 
 #import "const.h"
 #import "Slide.h"
@@ -538,22 +539,7 @@
                 NSFileManager *fileManager = [NSFileManager defaultManager];
                 [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
             }
-            if([self.displayFrom intValue] == DisplayFromOfflineCell) {
-                if(self.callingController1 != nil) {
-                    [self.callingController1 dismissDisplayViewController];
-                } else {
-                    NSLog(@"Bug#not set DisplayViewController#callingController1");
-                }
-            }
-            if([self.displayFrom intValue] == DisplayFromSlide) {
-                if(self.callingController2 != nil) {
-                    [self.callingController2 dismissDisplayViewController];
-                } else {
-                    NSLog(@"Bug#not set DisplayViewController#callingController2");
-                }
-            }
-            self.webView = nil;
-            [self dismissViewControllerAnimated:NO completion:nil];
+            [self.masterViewController dismissViewDisplayViewController];
         }
             break;
         case 1: {
@@ -670,10 +656,10 @@
 -(void)dismissDisplayViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
     
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self.masterViewController dismissViewDisplayViewController];
 }
 - (void) dismissPopupAddToTag {
-    if (self.popupViewController != nil) {
+    if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             NSLog(@"popup view dismissPopupAddToTag dismissed");
         }];

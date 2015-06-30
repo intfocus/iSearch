@@ -38,6 +38,10 @@
 
 - (void)popupSettingViewController;
 - (void)dimmissPopupSettingViewController;
+
+- (void)presentViewDisplayViewController;
+- (void)dismissViewDisplayViewController;
+
 - (void)refreshRightViewController;
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;

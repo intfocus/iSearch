@@ -10,15 +10,14 @@
 #define iSearch_ViewSlide_h
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
+
 @class MainViewController;
 @class Slide;
 
 @interface ViewSlide : UIView
-
-// necessary! then do anything through masterViewController
 @property (nonatomic, nonatomic) MainViewController *masterViewController;
-@property (nonatomic, nonatomic) BOOL isFavorite;
 @property (strong, nonatomic) NSMutableDictionary *dict;
+@property (nonatomic, nonatomic) BOOL isFavorite;
 
 
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
@@ -32,9 +31,6 @@
 @property (strong, nonatomic) NSString *dirName;
 @property (strong, nonatomic) Slide *slide;
 
-
-
-- (void)dismissDisplayViewController;
 @end
 
 
