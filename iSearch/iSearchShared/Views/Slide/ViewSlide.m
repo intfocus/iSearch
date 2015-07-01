@@ -229,6 +229,7 @@
     NSString* contentType = [headerDict objectForKey:@"Content-Type"];
     if([[contentType lowercaseString] isEqualToString:@"application/octet-stream"]) {
         self.downloadLength = [NSNumber numberWithFloat:[headerDict[@"Accept-Length"] floatValue]];
+        if([self.downloadLength floatValue] == 0.0) { self.downloadLength = [NSNumber numberWithInteger:1]; }
     } else {
         self.isDownloadRequestValid = NO;
         self.progressView.hidden = YES;
@@ -237,7 +238,9 @@
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
     [self.downloadConnectionData appendData:data];
     
-    self.progressView.progress = (float)[self.downloadConnectionData length] / [self.downloadLength floatValue];
+    float progress = (float)[self.downloadConnectionData length] / [self.downloadLength floatValue];
+    if(progress > 1.0) { progress = 0.99; }
+    self.progressView.progress = progress;
 }
 
 - (void) connectionDidFinishLoading: (NSURLConnection *)connection{

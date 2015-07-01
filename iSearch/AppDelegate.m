@@ -30,6 +30,10 @@
     //  webview 演示pdf，设置不显示黑边
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"WebKitDiskImageCacheEnabled"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *versionStr = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSLog(@"%@", versionStr);
     return YES;
 }
 

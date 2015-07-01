@@ -187,10 +187,8 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     
-    NSString *thumbnailName = @"thumbnailPageSlide.png";
-    NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;'>", thumbnailName];
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
-    [self.webView loadHTMLString:html baseURL:url];
+    NSString *html = [NSString stringWithFormat:@"<html><body></body></html>"];
+    [self.webView loadHTMLString:html baseURL:nil];
 }
 
 - (void)didReceiveMemoryWarning {
