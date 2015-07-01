@@ -302,7 +302,7 @@
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
         [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        NSLog(@"category - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_NAME]);
+        // NSLog(@"category - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_NAME]);
         [cell setContentView: viewCategory];
     } else {
         ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
@@ -312,7 +312,7 @@
         viewSlide.dict = currentDict;
         viewSlide.masterViewController = [self masterViewController];
         
-        NSLog(@"slide - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_TITLE]);
+        //NSLog(@"slide - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_TITLE]);
         [cell setContentView: viewSlide];
     }
     return cell;

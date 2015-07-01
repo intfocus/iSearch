@@ -242,7 +242,11 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     // server field
     _dict[CONTENT_FIELD_TITLE]        = self.title;
     _dict[CONTENT_FIELD_ZIPSIZE]      = self.zipSize;
-    _dict[CONTENT_FIELD_PAGENUM]      = [NSString stringWithFormat:@"%ld", (long)[self.pages count]];
+    NSString *pageNumber = self.pageNum;
+    if(self.pages) {
+        pageNumber = [NSString stringWithFormat:@"%ld", (long)[self.pages count]];
+    }
+    _dict[CONTENT_FIELD_PAGENUM]      = pageNumber;
     _dict[CONTENT_FIELD_CATEGORYID]   = self.categoryID;
     _dict[CONTENT_FIELD_CATEGORYNAME] = self.categoryName;
     _dict[CONTENT_FIELD_CREATEDATE]   = self.createdDate;

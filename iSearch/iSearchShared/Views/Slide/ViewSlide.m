@@ -172,7 +172,7 @@
         basePath =  [[NSBundle mainBundle] bundlePath];
     }
     baseURL = [NSURL fileURLWithPath:basePath];
-    htmlContent = [NSString stringWithFormat:@"<html><body><img src ='%@'></body></html>", thumbnailName];
+    htmlContent = [NSString stringWithFormat:@"<html><body><img src='%@'></body></html>", thumbnailName];
     [self.webViewThumbnail loadHTMLString:htmlContent baseURL:baseURL];
 }
 
