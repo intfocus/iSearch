@@ -8,15 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "PaintView.h"
-@class OfflineCell;
-@class ViewSlide;
+@class Slide;
+@class MainViewController;
 
 @interface DisplayViewController : UIViewController {
      PaintView *paintView;
 }
 
-@property (nonatomic, nonatomic) OfflineCell *callingController1; // 调出者
-@property (nonatomic, nonatomic) ViewSlide   *callingController2; // 调出者
+@property (nonatomic, nonatomic) MainViewController *masterViewController;
+@property (nonatomic, nonatomic) BOOL   presentReViewController; // 调出者
+
+
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide;
+- (void)dismissDisplayViewController;
+- (void)dismissPopupAddToTag;
+- (void)dismissReViewController;
 
 @end
 

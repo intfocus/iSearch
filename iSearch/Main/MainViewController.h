@@ -16,8 +16,8 @@
  */
 @interface MainViewController : UIViewController <UIGestureRecognizerDelegate>
 
-
 @property(nonatomic,strong)UIViewController *leftViewController;
+@property(nonatomic,strong) NSNumber *btnEntrySelectedTag;
 
 - (void)hideLeftView;
 - (void)showLeftView;
@@ -38,7 +38,14 @@
 
 - (void)popupSettingViewController;
 - (void)dimmissPopupSettingViewController;
-- (void)backToLoginViewController;
+
+- (void)presentViewDisplayViewController;
+- (void)dismissViewDisplayViewController;
+
+//- (void)presentViewReViewController;
+//- (void)dismissViewReViewController;
+
+- (void)refreshRightViewController;
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;
 

@@ -9,27 +9,14 @@
 #import "ViewSlidePage.h"
 #import "const.h"
 #import "message.h"
+#import "FileUtils.h"
+#import "ReViewController.h"
 
 @implementation ViewSlidePage
 @synthesize webViewThumbnail;
 @synthesize labelFrom;
 @synthesize labelPageNum;
 
-
-- (id)initWithFrame:(CGRect)theFrame {
-    self = [super initWithFrame:theFrame];
-    if (self) {
-        [self configView];
-    }
-    return self;
-}
-
-
-/**
- *  配置文档页面: 缩略图、第几页、来自那个文档。
- */
-- (void) configView {
-}
 /**
  *  UIWebView浏览PDF或GIF文档
  *
@@ -37,20 +24,9 @@
  *  @param webView      UIWebView
  */
 - (void)loadThumbnail:(NSString *)thumbnailPath {
-    NSString *extName = [thumbnailPath pathExtension];
-    
-    if([extName isEqualToString:@"pdf"]) {
-        NSURL *url = [NSURL fileURLWithPath:thumbnailPath];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [self.webViewThumbnail loadRequest:request];
-        
-    } else if([extName isEqualToString:@"gif"]) {
-        NSString *html = [NSString stringWithFormat:@"<img src ='%@'>", thumbnailPath];
-        [self.webViewThumbnail loadHTMLString:html baseURL:nil];
-    } else {
-        NSLog(@"Load default thumbnail.");
-        NSLog(@"%@", thumbnailPath);
-    }
+    NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
+    NSURL *url = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
+    [self.webViewThumbnail loadHTMLString:html baseURL:url];
 }
 
 - (void)hightLight {

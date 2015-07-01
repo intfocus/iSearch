@@ -11,10 +11,12 @@
 #import "DLRadioButton.h"
 #import "ExtendNSLogFunctionality.h"
 #import "FileUtils.h"
+#import "Slide.h"
 
 #import "MainAddNewTagView.h"
 #import "AddNewTagView.h"
 #import "ReViewController.h"
+#import "DisplayViewController.h"
 
 @interface TagListView()
 @property (weak, nonatomic) IBOutlet UIButton *btnAddNewTag;
@@ -48,7 +50,6 @@
      *  控件控制
      */
     // 有勾选标签则激活
-//    self.barItemSubmit.enabled = NO;
     [self.btnAddNewTag addTarget:self action:@selector(actionAddNewTag:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -59,25 +60,25 @@
      *  标签列表为单选，手工点击[提交]
      *  DLRadioButton单选原理 firstRadioButton.otherButtons = otherButtons;
      */
-    NSMutableArray *fileList = [FileUtils favoriteFileList];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableArray *slideList = [FileUtils favoriteSlideList1];
+    Slide *slide;
     DLRadioButton *firstRadioButton;
     NSMutableArray *otherButtons = [[NSMutableArray alloc] init];
     NSInteger index = 0;
     // firstRadioButton
-    if([fileList count] >= 1) {
-        dict = [fileList objectAtIndex:index];
-        firstRadioButton = [self createRadioButton:dict[SLIDE_DESC_NAME] Index:index];
+    if([slideList count] >= 1) {
+        slide = [slideList objectAtIndex:index];
+        firstRadioButton = [self createRadioButton:slide.title Index:index];
         [firstRadioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
         [self checkNewTagNameInList:firstRadioButton];
         [self.scrollView addSubview:firstRadioButton];
         self.arrayTagName = @[firstRadioButton];
     }
     // otherButtons
-    if([fileList count] >= 2) {
-        for (index = 1; index < [fileList count]; index++) {
-            dict = [fileList objectAtIndex:index];
-            DLRadioButton *radioButton = [self createRadioButton:dict[SLIDE_DESC_NAME] Index:index];
+    if([slideList count] >= 2) {
+        for (index = 1; index < [slideList count]; index++) {
+            slide = [slideList objectAtIndex:index];
+            DLRadioButton *radioButton = [self createRadioButton:slide.title Index:index];
             [radioButton addTarget:self action:@selector(radioButtonMonitor:) forControlEvents:UIControlEventTouchUpInside];
             [self checkNewTagNameInList:radioButton];
             [self.scrollView addSubview:radioButton];
@@ -98,7 +99,7 @@
 - (IBAction)actionDismissPopup:(UIBarButtonItem *)sender {
     MainAddNewTagView *masterView1 = [self masterViewController];
     ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-    [masterView2 dismissPopup];
+    [masterView2 dismissPopupAddToTag];
 }
 
 /**
@@ -107,17 +108,29 @@
  *
  *  @param sender UIBarButtonItem
  */
-#warning todo deal
 - (IBAction)actionSave:(UIBarButtonItem *)sender {
-    NSString *fileName = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
-    NSMutableDictionary *descDict = [FileUtils getDescFromFavoriteWithName:fileName];
-//    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:ADDTAG_CONFIG_FILENAME];
-//    [FileUtils writeJSON:descDict Into:configPath];
+    NSString *slideTitle = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
+    Slide *slide = [Slide findByTitleInFavorited:slideTitle];
     
-//    MainAddNewTagView *masterView1 = [self masterViewController];
-//    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-//    [masterView2 actionSavePagesAndMoveFiles:descDict];
-//    [masterView2 dismissPopup];
+    MainAddNewTagView *masterView1 = [self masterViewController];
+    if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
+        ReViewController *masterView2  = (ReViewController*)[masterView1 masterViewController];
+        [masterView2 actionSavePagesAndMoveFiles:slide];
+        if(masterView1.closeMainViewAfterDone) {
+            [masterView2 dismissReViewController];
+        } else {
+            [masterView2 dismissPopupAddToTag];
+        }
+    }
+    if([masterView1.fromViewControllerName isEqualToString:@"DisplayViewController"]) {
+        DisplayViewController *masterView2  = (DisplayViewController *)[masterView1 masterViewController];
+        [masterView2 actionSavePagesAndMoveFiles:slide];
+        if(masterView1.closeMainViewAfterDone) {
+            [masterView2 dismissDisplayViewController];
+        } else {
+            [masterView2 dismissPopupAddToTag];
+        }
+    }
 }
 
 /**
@@ -135,10 +148,9 @@
 
 - (void)checkNewTagNameInList:(DLRadioButton *)radioButton {
     MainAddNewTagView *masterView = [self masterViewController];
-    NSMutableDictionary *descDict = masterView.descDict;
-    if(descDict[SLIDE_DESC_NAME] &&
-       [descDict[SLIDE_DESC_NAME] length] >0 &&
-       [descDict[SLIDE_DESC_NAME] isEqualToString:radioButton.titleLabel.text]) {
+    if(masterView.addSlide &&
+       masterView.addSlide.title &&
+       [masterView.addSlide.title isEqualToString:radioButton.titleLabel.text]) {
         radioButton.selected = YES;
         self.barItemSubmit.enabled = YES;
     }

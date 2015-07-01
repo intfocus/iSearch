@@ -66,17 +66,16 @@
 }
 
 - (IBAction)actionSubmit:(UIBarButtonItem *)sender {
-    NSString *tagName = [self.fieldName.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *tagDesc = [self.textDesc.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *tagName   = [self.fieldName.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *tagDesc   = [self.textDesc.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:NEW_TAG_FORMAT];
-    NSMutableDictionary *descDict = [FileUtils findOrCreateTag:tagName Desc:tagDesc Timestamp:timestamp];
+    Slide *newSlide     = [FileUtils findOrCreateTag:tagName Desc:tagDesc Timestamp:timestamp];
     
-    [self switchToTagListView:descDict];
+    [self switchToTagListView:newSlide];
 }
 - (IBAction)actionCancel:(UIBarButtonItem *)sender {
-    [self switchToTagListView:[[NSMutableDictionary alloc] init]];
+    [self switchToTagListView:nil];
 }
-
 
 #pragma mark 输入框监听
 
@@ -96,11 +95,11 @@
 
 #pragma mark - helpers
 
-- (void) switchToTagListView:(NSMutableDictionary *)descDict {
+- (void) switchToTagListView:(Slide *)newSlide {
     MainAddNewTagView *masterView = [self masterViewController];
     TagListView *childView = [[TagListView alloc] init];
     [childView setMasterViewController:masterView];
-    masterView.descDict = descDict;
+    masterView.addSlide = newSlide;
     [masterView setMainViewController:childView];
 }
 #pragma mark - gesture recognizer delegate functions

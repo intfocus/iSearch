@@ -75,7 +75,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define DEBUG                  1
 #define PARAM_LANG             @"lang" // 传递给服务器的语言key
 #define APP_LANG               @"zh-CN" // 应用系统的语言
-#define BASE_URL               @"http://elnprd.chinacloudapp.cn" //
+#define BASE_URL               @"http://tsa-china.takeda.com.cn" //
 #define CONFIG_DIRNAME         @"Configs" // 所有配置档放置在些文件夹下
 #define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件
@@ -144,10 +144,10 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
 #define SLIDE_DISPLAY_TYPE      @"DisplayFavoriteOrSlide" // 下载文档位置不同
 #define SLIDE_DISPLAY_FROM      @"DisplayFromType" 
-#define SLIDE_EDIT_TYPE         @"EditFavoriteOrSlide" // 下载文档位置不同
+#define SCAN_SLIDE_FROM         @"ScanFavoriteOrSlide" // 下载文档位置不同
+#define SCAN_SLIDE_ID           @"ScanSlideID" // 演示档时，[编辑]进入文档页面界面
+#define SCAN_SLIDE_PAGEID       @"ScanSLidePageID" // 演示档时，[编辑]进入文档页面界面
 #define SLIDE_DISPLAY_JUMPTO    @"DisplayJumpTo" // 编辑界面，双击进入演示
-#define CONTENT_KEY_EDITID1      @"EditFileID" // 演示档时，[编辑]进入文档页面界面
-#define CONTENT_KEY_EDITID2      @"EditPageID" // 演示档时，[编辑]进入文档页面界面
 // 目录中文件类型
 #define CONTENT_CATEGORY   @"0" // 分类，可以点击再进入
 #define CONTENT_SLIDE      @"1" // 文献 （待确认)
@@ -216,7 +216,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT           @"html"
 #define PAGE_IMAGE_FORMAT          @"gif"
-#define PAGE_IMAGE_NOT_FOUND       @"not_found.png"
+#define PAGE_FROM_SLIDES           @"PageFromSlides"
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"

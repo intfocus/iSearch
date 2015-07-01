@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -27,6 +29,9 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VgM-Az-8j2">
                     <rect key="frame" x="0.0" y="102" width="184" height="85"/>
                     <subviews>
+                        <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="reD-tf-vna">
+                            <rect key="frame" x="0.0" y="75" width="184" height="2"/>
+                        </progressView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT" userLabel="SlideInfo">
                             <rect key="frame" x="8" y="18" width="50" height="50"/>
                             <constraints>
@@ -44,12 +49,15 @@
                     </subviews>
                     <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
+                        <constraint firstAttribute="trailingMargin" secondItem="reD-tf-vna" secondAttribute="trailing" id="8Al-Cy-rIz"/>
                         <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="VgM-Az-8j2" secondAttribute="leading" constant="8" id="AlS-dj-1HH"/>
                         <constraint firstAttribute="trailing" secondItem="ULh-Fg-i9c" secondAttribute="trailing" id="O4w-cJ-JwJ"/>
                         <constraint firstAttribute="centerY" secondItem="sbb-9z-gdT" secondAttribute="centerY" id="On8-oc-5tq"/>
                         <constraint firstItem="ULh-Fg-i9c" firstAttribute="leading" secondItem="sbb-9z-gdT" secondAttribute="trailing" constant="8" symbolic="YES" id="WK4-hP-MaY"/>
+                        <constraint firstAttribute="bottom" secondItem="reD-tf-vna" secondAttribute="bottom" constant="8" id="Wdl-1U-Pgv"/>
                         <constraint firstAttribute="centerY" secondItem="ULh-Fg-i9c" secondAttribute="centerY" id="fls-PT-Ke5"/>
                         <constraint firstAttribute="height" secondItem="ULh-Fg-i9c" secondAttribute="height" id="vQg-NC-ZCj"/>
+                        <constraint firstItem="reD-tf-vna" firstAttribute="leading" secondItem="VgM-Az-8j2" secondAttribute="leadingMargin" id="z5s-zo-gWB"/>
                     </constraints>
                 </view>
             </subviews>
@@ -70,6 +78,7 @@
                 <outlet property="btnDownloadOrDisplay" destination="h2D-sb-vCm" id="zFf-TZ-aBr"/>
                 <outlet property="btnSlideInfo" destination="sbb-9z-gdT" id="IFa-8W-lYZ"/>
                 <outlet property="labelTitle" destination="ULh-Fg-i9c" id="ATE-QO-qkC"/>
+                <outlet property="progressView" destination="reD-tf-vna" id="de7-ZN-pDo"/>
                 <outlet property="webViewThumbnail" destination="wDW-fv-6hN" id="FAP-ay-hjs"/>
             </connections>
             <point key="canvasLocation" x="-23" y="46"/>

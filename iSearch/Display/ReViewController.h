@@ -7,15 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import <Foundation/Foundation.h>
+@class Slide;
+@class DisplayViewController;
 
 @interface ReViewController : UIViewController <UIGestureRecognizerDelegate>
+
+@property (nonatomic , nonatomic) DisplayViewController *masterViewController;
 
 /**
  *  添加标签界面，[取消]或选择标签[完成]时
  */
-- (void)dismissPopup;
-
+- (void)dismissPopupAddToTag;
+- (void)dismissReViewController;
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide;
 
 @end
 

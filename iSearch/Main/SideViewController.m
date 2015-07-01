@@ -24,7 +24,6 @@
 @interface SideViewController ()
 
 @property(nonatomic,weak)NewsListTabView *newsTabView;
-@property (nonatomic) NSMutableArray *buttons;
 
 @end
 
@@ -68,7 +67,7 @@
     }
     
     // warning 此处位置调整时，需要修改
-    NSArray *array=@[@"首页",@"收藏",@"通知",@"下载",@"设置"];//,@"登出"];//
+    NSArray *array=@[@"首页",@"收藏",@"通知"];//,@"下载",@"设置",@"登出"];//
     NSArray *images = @[@"iconIndex",@"iconCollection",@"iconNotification",@"iconDownload",@"iconSetup"];//,@"iconSignOut"];//
 
     //[array objectAtIndex:10];

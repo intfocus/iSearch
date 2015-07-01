@@ -248,7 +248,7 @@
 
     // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    NSString *occurDate = [[NSString alloc] init];
+    NSString *occurDate;
     for(dict in self.dataListTwo) {
         // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
         occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];

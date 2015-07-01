@@ -11,12 +11,17 @@
 #import "FileUtils.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
+#import "Slide.h"
 
 @interface FileUtils()
 @end
 
 @implementation FileUtils
 
++ (NSString *)getBasePath {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    return [paths objectAtIndex:0];
+}
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *
@@ -26,21 +31,23 @@
  */
 + (NSString *)getPathName: (NSString *)dirName {
     //获取应用程序沙盒的Documents目录
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *path = [paths objectAtIndex:0];
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *basePath = [FileUtils getBasePath];
+    BOOL isDir = true, existed;
+    
+    NSString *configPath = [basePath stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    NSString *userSpaceName = [NSString stringWithFormat:@"%@-%@", configDict[USER_DEPTID], configDict[USER_EMPLOYEEID]];
+    NSString *userSpacePath = [basePath stringByAppendingPathComponent:userSpaceName];
     
     // 一级目录路径， 不存在则创建
-    NSString *pathname = [path stringByAppendingPathComponent:dirName];
-    
-    BOOL isDir = true;
-    BOOL existed = [fileManager fileExistsAtPath:pathname isDirectory:&isDir];
+    NSString *pathName = [userSpacePath stringByAppendingPathComponent:dirName];
+    existed = [fileManager fileExistsAtPath:pathName isDirectory:&isDir];
     if ( !(isDir == true && existed == YES) ) {
-        [fileManager createDirectoryAtPath:pathname withIntermediateDirectories:YES attributes:nil error:nil];
+        [fileManager createDirectoryAtPath:pathName withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    return pathname;
+    return pathName;
 }
 
 /**
@@ -88,7 +95,7 @@
     if([self checkFileExist:pathName isDir:false]) {
         dict = [dict initWithContentsOfFile:pathName];
         // 若为空，则为JSON字符串
-        if(dict == nil) {
+        if(!dict) {
             NSError *error;
             BOOL isSuccessfully;
             NSString *descContent = [NSString stringWithContentsOfFile:pathName encoding:NSUTF8StringEncoding error:&error];
@@ -123,18 +130,17 @@
  *  @return 存在即true, 否则false
  */
 + (BOOL) checkSlideExist:(NSString *) slideID
-                     Dir:(NSString *) dir
+                     Dir:(NSString *) dirName
                    Force:(BOOL) isForce {
-    NSError *error;
     NSMutableArray *errors = [[NSMutableArray alloc] init];
-    NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
+    NSString *filePath = [FileUtils getPathName:dirName FileName:slideID];
     // 1. Files/fileID/文件是否存在
     if(![FileUtils checkFileExist:filePath isDir:YES]) {
         [errors addObject:@"fileID文件夹不存在."];
     }
     
     // 2. a)Files/fileID/desc.json是否存在，b)内容是否为空，c)格式是否为json
-    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    NSString *descPath = [filePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
     if(isForce && errors && [errors count] == 0) {
         // a)Files/fileID/desc.json是否存在
         if(![FileUtils checkFileExist:descPath isDir:NO]) {
@@ -145,7 +151,7 @@
         if(errors && [errors count] == 0) {
             // b)内容是否为空，
             NSMutableDictionary *descDict = [FileUtils readConfigFile:descPath];
-            if(descPath == nil) {
+            if(!descDict) {
                 [errors addObject:@"desc is nil"];
             }
         }
@@ -283,35 +289,23 @@
  *
  *  @return @{FILE_DESC_KEY: }
  */
-+ (NSMutableArray *) favoriteFileList {
-    NSMutableArray *fileList = [[NSMutableArray alloc]init];
++ (NSMutableArray *) favoriteSlideList1 {
+    NSMutableArray *slideList = [[NSMutableArray alloc]init];
     
     NSError *error;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     // 重组内容文件名称格式: r150501
     NSString *favoritesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSArray *slides = [fileManager contentsOfDirectoryAtPath:favoritesPath error:&error];
-    
-    //    // 过滤出原重组内容的文件列表进行匹配
-    //    NSPredicate *rPredicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] 'r'"];
-    //    NSArray *reorganizeFiles = [files filteredArrayUsingPredicate:rPredicate];
-    
-    NSString *slideID, *slidePath, *dictPath;
-    NSMutableDictionary *dict;
-    
+
+    NSString *slideID;
+    Slide *slide;
     for(slideID in slides) {
-        slidePath = [favoritesPath stringByAppendingPathComponent:slideID];
-        dictPath = [slidePath stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
-        
-        // 配置档不存在，跳过
-        if(![FileUtils checkSlideExist:slideID Dir:FAVORITE_DIRNAME Force:YES]) continue;
-        
-        dict = [FileUtils readConfigFile:dictPath];
-        
-        [fileList addObject:dict];
+        slide = [Slide findById:slideID isFavorite:YES];
+        if([slide isInFavorited]) { [slideList addObject:slide]; }
     }
     
-    return fileList;
+    return slideList;
 }
 
 /** 创建新标签
@@ -329,71 +323,53 @@
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (NSMutableDictionary *)findOrCreateTag:(NSString *)tagName
-                                    Desc:(NSString *)tagDesc
-                               Timestamp:(NSString *)timestamp {
++ (Slide *)findOrCreateTag:(NSString *)tagName
+                      Desc:(NSString *)tagDesc
+                 Timestamp:(NSString *)timestamp {
     tagName = [tagName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     // step1: 判断该标签名称是否存在
-    NSError *error;
-    NSString *tagFileID = [[NSString alloc] init];
-    NSMutableArray *fileList = [FileUtils favoriteFileList];
-    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    
-    // 检测扫描收藏目录，检测是否存在
-    // 若存在则赋值tagFileID，为后面判断依据
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:0];
-    for(dict in fileList) {
-        if([dict[SLIDE_DESC_NAME] isEqualToString:tagName]) {
-            tagFileID = dict[SLIDE_DESC_ID];
-            break;
-        }
+    Slide *slide;
+    BOOL isExist = NO;
+    for(slide in [FileUtils favoriteSlideList1]) {
+        if([slide.title isEqualToString:tagName]) { isExist = YES; break; }
     }
     
-    // 初始化重组内容文件的配置档
-    // 创建FileID, 格式: r150501010101
-    NSMutableDictionary *descData = [NSMutableDictionary dictionaryWithCapacity:0];
-    NSString *descPath  = [[NSString alloc] init];
     
     // step1.1 若不存在,则创建
-    if([tagFileID length] == 0) {
-        // 内容重组文件新名称，名称格式: r150501010101
-        NSString *newFileID = [NSString stringWithFormat:@"r%@", timestamp];
-        //[ViewUtils dateToStr:[NSDate date] Format:REORGANIZE_FORMAT]];
-        NSString *newFilePath = [favoritePath stringByAppendingPathComponent:newFileID];
-        descPath = [newFilePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
+    if(!isExist) {
+        slide = [[Slide alloc] init];
+        // 初始化重组内容文件的配置档
+        // 创建FileID, 格式: r150501010101
+        NSString *newSlideID = [NSString stringWithFormat:@"r%@", timestamp];
+        slide.ID = newSlideID;
+        // base info
+        slide.isFavorite = YES;
+        slide.type = CONTENT_SLIDE;
         
-        // 检测newFileID路径是否不存在，否则创建
-        if(![FileUtils checkFileExist:newFilePath isDir:true])
-            [fileManager createDirectoryAtPath:newFilePath withIntermediateDirectories:YES attributes:nil error:nil];
         
-        // 创建配置档内容
-        [descData setObject:newFileID forKey:SLIDE_DESC_ID];
-        [descData setObject:tagName forKey:SLIDE_DESC_NAME];
-        [descData setObject:tagDesc forKey:SLIDE_DESC_DESC];
-        [descData setObject:[[NSMutableArray alloc] init] forKey:SLIDE_DESC_ORDER];
+        // slideID需要唯一
+        while([slide isInFavorited]) {
+            timestamp = [DateUtils dateToStr:[NSDate date] Format:NEW_TAG_FORMAT];
+        }
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager createDirectoryAtPath:slide.favoritePath withIntermediateDirectories:YES attributes:nil error:nil];
         
+        slide.name  = tagName;
+        slide.title = tagName;
+        slide.desc  = tagDesc;
         // step2.2 收藏夹中原已存在，修改原配置档，复制页面
     } else {
-        // 读取原有配置档信息
-        NSString *tagFilePath = [favoritePath stringByAppendingPathComponent:tagFileID];
-        descPath = [tagFilePath stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
-        
-        NSString *descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-        NSErrorPrint(error, @"read desc file");
-        descData = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:&error];
-        NSErrorPrint(error, @"desc content convert into json");
-        
         // 重置name/desc
-        [descData setObject:tagName forKey:SLIDE_DESC_NAME];
-        [descData setObject:tagDesc forKey:SLIDE_DESC_DESC];
+        slide.name  = tagName;
+        slide.title = tagName;
+        slide.desc  = tagDesc;
     }
-    [FileUtils writeJSON:descData Into:descPath];
+    [slide assignLocalFields:[[NSMutableDictionary alloc]init]];
+    [slide updateTimestamp];
+    [slide save];
     
-    return descData;
+    return slide;
 }
 
 /**
@@ -403,7 +379,7 @@
  *  @param filePath 目标文件
  */
 + (void) writeJSON:(NSMutableDictionary *)data
-              Into:(NSString *) filePath {
+              Into:(NSString *) slidePath {
     NSError *error;
     if ([NSJSONSerialization isValidJSONObject:data]) {
         // NSMutableDictionary convert to JSON Data
@@ -414,8 +390,8 @@
         // JSON Data convert to NSString
         NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         if(!error) {
-            [jsonStr writeToFile:filePath atomically:true encoding:NSUTF8StringEncoding error:&error];
-            NSErrorPrint(error, @"json string write into desc file#%@", filePath);
+            [jsonStr writeToFile:slidePath atomically:true encoding:NSUTF8StringEncoding error:&error];
+            NSErrorPrint(error, @"json string write into desc file#%@", slidePath);
         }
     }
 }
@@ -428,15 +404,15 @@
  *  @return descJSOn
  */
 + (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName {
-    NSMutableArray *fileList = [FileUtils favoriteFileList];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    for(dict in fileList) {
-        if(dict[SLIDE_DESC_NAME] && [dict[SLIDE_DESC_NAME] isEqualToString:fileName]) {
+    NSMutableArray *slideList = [FileUtils favoriteSlideList1];
+    Slide *slide;
+    for(slide in slideList) {
+        if(slide.title && [slide.title isEqualToString:fileName]) {
             break;
         }
     }
     
-    return dict;
+    return [slide refreshFields];
 }
 
 /**
@@ -449,64 +425,40 @@
  */
 + (NSString*) slideThumbnail:(NSString *)slideID
                      PageID:(NSString *)pageID
-                        Dir:(NSString *)dir {
-    NSString *filePath = [FileUtils getPathName:dir FileName:slideID];
-    NSString *pagePath = [filePath stringByAppendingPathComponent:pageID];
-    NSString *thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.pdf", pageID]];
+                        Dir:(NSString *)dirName {
+    NSString *slidePath = [FileUtils getPathName:dirName FileName:slideID];
+    NSString *pagePath = [slidePath stringByAppendingPathComponent:pageID];
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     
-    if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.gif", pageID]];
-    } else if(![FileUtils checkFileExist:thumbnailPath isDir:false]) {
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4", pageID]];
+    //return [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
+    NSString *thumbnailPath, *format;
+    BOOL isVideo = NO, isSlide = NO;
+    
+    for(format in @[@"mp4", @"mpg"]) {
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
+        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
+            isVideo = YES;
+            break;
+        }
     }
+    if(isVideo) {
+        thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageVideo.png"];
+        return thumbnailPath;
+    };
+    
+    for(format in @[@"Gif",@"gif"]) { // never load pdf, @"pdf"
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
+        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
+            isSlide = YES;
+            break;
+        }
+    }
+    if(isSlide) { return thumbnailPath; }
+    
+    thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
     return thumbnailPath;
 }
 
-/**
- *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
- *  使用block是为了保持FileUtils一方净土
- *
- *  @param slideID                   文档ID
- *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
- *
- *  @return 操作成功否
- */
-+ (BOOL) copySlideToFavorite:(NSString *)slideID
-                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock {
-    NSError *error;
-    BOOL isSuccessfully = YES;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME FileName:slideID];
-    NSString *slidePath = [FileUtils getPathName:SLIDE_DIRNAME FileName:slideID];
-    [fileManager copyItemAtPath:slidePath toPath:favoritePath error:&error];
-    isSuccessfully = NSErrorPrint(error, @"copy slide#%@ from %@ to %@", slideID, favoritePath, slidePath)
-    
-    NSString *descPath = [[NSString alloc] init];
-    NSString *descContent = [[NSString alloc] init];
-    NSMutableDictionary *descDict = [[NSMutableDictionary alloc] init];
-    
-    if(isSuccessfully) {
-        descPath = [FileUtils slideDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
-        descContent = [NSString stringWithContentsOfFile:descPath encoding:NSUTF8StringEncoding error:&error];
-        isSuccessfully = NSErrorPrint(error, @"read slide config at %@", descPath)
-    }
-    
-    if(isSuccessfully) {
-       descDict = [NSJSONSerialization JSONObjectWithData:[descContent dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                    error:&error];
-        isSuccessfully = NSErrorPrint(error, @"convert string into json use data:\n %@", descContent)
-    }
-    
-    if(isSuccessfully) {
-        // modifiy updated_at/created_at with DateUtils
-        // keep clean environment with Block
-        updateSlideTimestampBlock(descDict);
-        [FileUtils writeJSON:descDict Into:descPath];
-    }
-    
-    return isSuccessfully;
-}
 
 #pragma mark - slide download cache
 + (NSString *)slideDownloadCachePath:(NSString *)slideID {
@@ -530,5 +482,33 @@
 + (BOOL)isSlideDownloading:(NSString *)slideID {
     NSString *cachePath = [FileUtils slideDownloadCachePath:slideID];
     return [FileUtils checkFileExist:cachePath isDir:NO];
+}
+
+/**
+ *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
+ *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
+ *
+ *  @param pageName   页面名称fildId_pageId.html
+ *  @param fromFileId 源文件id
+ *  @param toFileId   目标文件id
+ */
++ (void)copyFilePage:(NSString *)pName
+           FromSlide:(Slide *)fromSlide
+             ToSlide:(Slide *)toSlide {
+    NSError *error;
+    NSString *pagePath, *newPagePath, *imagePath, *newImagePath;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // 复制html文件
+    pagePath = [fromSlide.path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pName, PAGE_HTML_FORMAT]];
+    newPagePath = [toSlide.path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pName, PAGE_HTML_FORMAT]];
+    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
+    NSErrorPrint(error, @"copy page html from %@ -> %@", pagePath, newPagePath);
+    
+    // 复制文件夹
+    imagePath = [fromSlide.path stringByAppendingPathComponent:pName];
+    newImagePath = [toSlide.path stringByAppendingPathComponent:pName];
+    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
+    NSErrorPrint(error, @"copy page folder from %@ -> %@", imagePath, newImagePath);
 }
 @end

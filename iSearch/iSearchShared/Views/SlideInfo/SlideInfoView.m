@@ -13,15 +13,11 @@
 
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
-#import "DisplayViewController.h"
-#import "ReViewController.h"
 #import "Slide.h"
 #import "PopupView.h"
 
 @interface SlideInfoView()
 @property (nonatomic, nonatomic) PopupView *popupView;
-@property (nonatomic, nonatomic) DisplayViewController *displayViewController;
-@property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UILabel *labelDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
@@ -30,7 +26,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelCategory;
 @property (strong, nonatomic) IBOutlet UILabel *labelTypeName;
 @property (weak, nonatomic) IBOutlet UIButton *btnDisplay;
-@property (weak, nonatomic) IBOutlet UIButton *btnEdit;
+@property (weak, nonatomic) IBOutlet UIButton *btnScan;
 @property (weak, nonatomic) IBOutlet UIButton *btnAddToTag;
 @property (weak, nonatomic) IBOutlet UIButton *btnRemove;
 @property (weak, nonatomic) IBOutlet UIButton *hideButton;
@@ -49,12 +45,12 @@
      */
     [self.btnRemove addTarget:self action:@selector(actionRemoveSlide:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDisplay addTarget:self action:@selector(actionDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnAddToTag addTarget:self action:@selector(actionAddToTag:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnEdit addTarget:self action:@selector(actionEditSlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnAddToTag addTarget:self action:@selector(actionAddToFavorite:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnScan addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     self.labelTitle.text = self.slide.title;
     self.labelDesc.text  = self.slide.desc;
@@ -105,21 +101,20 @@
         [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
         NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
         [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+        [configDict setObject:[NSNumber numberWithInt:0] forKey:SLIDE_DISPLAY_JUMPTO];
         [configDict writeToFile:configPath atomically:YES];
         
-        if(self.displayViewController == nil) {
-            self.displayViewController = [[DisplayViewController alloc] init];
-        }
-        [self presentViewController:self.displayViewController animated:NO completion:nil];
+        [self.masterViewController dismissPopupSlideInfo];
+        [self.slide enterEditState];
+        [self.masterViewController presentViewDisplayViewController];
     } else {
-        [self showPopupView:@"请先下载"];
+        [self showPopupView:@"请君下载"];
     }
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
     if(self.slide.isDownloading) {
         [self.slide downloaded];
-        [self showPopupView:@"请刷新界面"];
     }else if(self.slide.isDownloaded) {
         NSString *filePath = [FileUtils getPathName:self.dirName FileName:self.slide.ID];
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -127,52 +122,42 @@
         [fileManager removeItemAtPath:filePath error:&error];
         BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
         
-#warning 移除后通知Slide更新状态
         if(isSuccessfully) {
             [self showPopupView:@"移除成功"];
         }
+        [self.masterViewController performSelector:@selector(refreshRightViewController)];
         [self.masterViewController dismissPopupSlideInfo];
     } else {
         [self showPopupView:@"未曾下载，\n何言移除！"];
     }
 }
 
-- (IBAction)actionEditSlide:(UIButton *)sender {
-    if(self.slide.isDownloaded) {
-        // 如果文档已经下载，可以查看文档内部详细信息，
-        // 否则需要下载，该功能在FileSlide内部处理
-        if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
-            // 界面跳转需要传递fileID，通过写入配置文件来实现交互
-            NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
-            NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-            
-            [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
-            NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-            [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
-            [FileUtils writeJSON:config Into:pathName];
-            
-            // 界面跳转至文档页面编辑界面
-            if(self.reViewController == nil) {
-                self.reViewController = [[ReViewController alloc] init];
-            }
-            [self presentViewController:self.reViewController animated:NO completion:nil];
-        }
-    } else {
-        [self showPopupView:@"空空如也,\n编辑何物？"];
-    }
-    
+- (IBAction)actionScanSlide:(UIButton *)sender {
+//    if(self.slide.isDownloaded) {
+//        // 界面跳转需要传递fileID，通过写入配置文件来实现交互
+//        NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
+//        NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
+//        
+//        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
+//        NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+//        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
+//        [FileUtils writeJSON:config Into:pathName];
+//        
+//        [self.masterViewController dismissPopupSlideInfo];
+//        [self.masterViewController presentViewReViewController];
+//    } else {
+//        [self showPopupView:@"空空如也,\n编辑何物？"];
+//    }
 }
 
-- (IBAction)actionAddToTag:(UIButton *)sender {
-    if([FileUtils checkSlideExist:self.slideID Dir:FAVORITE_DIRNAME Force:NO]) {
-        [self showPopupView:@"已在收藏了"];
+- (IBAction)actionAddToFavorite:(UIButton *)sender {
+    if([self.slide isInFavorited]) {
+        [self showPopupView:@"已在收藏"];
+    } else if(self.slide.isDownloaded) {
+        BOOL isSuccessfully = [self.slide addToFavorite];
+        [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
     } else {
-        if(self.slide.isDownloaded) {
-            BOOL isSuccessfully = [self.slide addToFavorite];
-            [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
-        } else {
-            [self showPopupView:@"未曾下载，\n何言收藏！"];
-        }
+        [self showPopupView:@"未曾下载，\n何言收藏！"];
     }
     
 }

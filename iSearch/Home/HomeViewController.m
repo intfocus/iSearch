@@ -30,19 +30,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    /**
-     * 实例变量初始化
-     */
-    OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
-    one.masterViewController   = self;
-    self.oneViewController     = one;
-    TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
-    two.masterViewController   = self;
-    self.twoViewController     = two;
-    ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
-    three.masterViewController   = self;
-    self.threeViewController   = three;
-    
     //导航栏标题
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-8, 0, 44, 44)];
     titleLabel.text = @"主页";
@@ -54,15 +41,42 @@
     UIBarButtonItem *leftTitleBI = [[UIBarButtonItem alloc] initWithCustomView:containerView];
     self.navigationItem.leftBarButtonItem = leftTitleBI;
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    /**
+     * 实例变量初始化
+     */
+    if(!self.oneViewController) {
+        OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
+        one.masterViewController   = self;
+        self.oneViewController     = one;
+    } else {
+        [self.oneViewController performSelector:@selector(viewDidAppear:) withObject:self.oneViewController];
+    }
+    
+    if(!self.twoViewController) {
+        TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
+        two.masterViewController   = self;
+        self.twoViewController     = two;
+    } else {
+        [self.twoViewController performSelector:@selector(viewDidAppear:) withObject:self.twoViewController];
+    }
+    
+    if(!self.threeViewController) {
+        ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
+        three.masterViewController   = self;
+        self.threeViewController   = three;
+    } else {
+        [self.threeViewController performSelector:@selector(viewDidAppear:) withObject:self.threeViewController];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-- (void)calledByPresentedViewController {
-    NSLog(@"called by HomePage view.");
-}
-
 
 - (void)setOneViewController:(UIViewController *)one {
     [_oneViewController removeFromParentViewController];
@@ -105,33 +119,4 @@
     three.view.autoresizingMask=UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     three.view.frame=self.threeView.bounds;
 }
-
-/**
- *  收藏页面，点击文件[明细]，弹出框显示文档信息，及操作
- */
-- (void)actionPopupSlideInfo:(NSMutableDictionary *)dict {
-//    SlideInfoView *slideInfoView = [[SlideInfoView alloc] init];
-//    slideInfoView.masterViewController = self;
-//    slideInfoView.dict = dict;
-//    [self presentPopupViewController:slideInfoView animated:YES completion:^(void) {
-//        NSLog(@"popup view presented");
-//    }];
-}
-
-/**
- *  关闭弹出框；
- *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
- *  强制刷新[收藏界面]；
- */
-- (void)dismissPopup {
-//    if (self.popupViewController != nil) {
-//        [self dismissPopupViewControllerAnimated:YES completion:^{
-//            NSLog(@"popup view dismissed");
-//        }];
-//    }
-//    OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
-//    one.masterViewController   = self;
-//    self.oneViewController     = one;
-}
-
 @end

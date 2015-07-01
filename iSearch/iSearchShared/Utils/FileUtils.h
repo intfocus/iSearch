@@ -12,12 +12,14 @@
 #define iContent_FileUtils_h
 
 #import <UIKit/UIKit.h>
+@class Slide;
 
 /**
  *  处理File相关的代码块合集
  */
 @interface FileUtils : NSObject
 
++ (NSString *)getBasePath;
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *
@@ -78,7 +80,7 @@
  */
 
 + (BOOL) checkSlideExist: (NSString *) slideID
-                     Dir:(NSString *)dir
+                     Dir:(NSString *)dirName
                    Force:(BOOL)isForce;
 
 /**
@@ -153,7 +155,7 @@
  *
  *  @return @{FILE_DESC_KEY: }
  */
-+ (NSMutableArray *) favoriteFileList;
++ (NSMutableArray *) favoriteSlideList1;
 
 /** 创建新标签
  *
@@ -170,9 +172,9 @@
  *  @param tagDesc   标签描述
  *  @param timestamp 时间戳 （创建新FileID时使用)
  */
-+ (NSMutableDictionary *)findOrCreateTag:(NSString*)tagName
-                                    Desc:(NSString *)tagDesc
-                               Timestamp:(NSString *)timestamp;
++ (Slide *)findOrCreateTag:(NSString *)tagName
+                      Desc:(NSString *)tagDesc
+                 Timestamp:(NSString *)timestamp;
 
 /**
  *  NSMutableDictionary写入本地文件
@@ -181,7 +183,7 @@
  *  @param filePath 目标文件
  */
 + (void) writeJSON:(NSMutableDictionary *)data
-              Into:(NSString *) filePath;
+              Into:(NSString *) slidePath;
 
 /**
  *  根据文件名称在收藏夹中查找文件描述档
@@ -204,22 +206,16 @@
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
-/**
- *  文档收藏；把文档从SLIDE_DIRNAME拷贝到FAVORITE_DIRNAME;
- *  使用block是为了保持FileUtils一方净土
- *
- *  @param slideID                   文档ID
- *  @param updateSlideTimestampBlock 使用DateUtils更新日间戳
- *
- *  @return 操作成功否
- */
-+ (BOOL) copySlideToFavorite:(NSString *)slideID
-                       Block:(void (^)(NSMutableDictionary *dict))updateSlideTimestampBlock;
+
 
 #pragma mark - slide download cache
 + (NSString *)slideToDownload:(NSString *)slideID;
 + (NSString *)slideDownloaded:(NSString *)slideID;
 + (BOOL)isSlideDownloading:(NSString *)slideID;
+
++ (void)copyFilePage:(NSString *)pName
+           FromSlide:(Slide *)fromSlide
+             ToSlide:(Slide *)toSlide;
 @end
 
 

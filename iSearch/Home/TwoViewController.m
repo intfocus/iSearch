@@ -44,13 +44,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
     [_gridView reloadData];
     
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
-            [self loadContentData:LOCAL_OR_SERVER_LOCAL];
+            [self loadContentData:LOCAL_OR_SERVER_SREVER];
             [_gridView reloadData];
         }
     });

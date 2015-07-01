@@ -8,7 +8,7 @@
 
 #ifndef iSearch_SlideUtils_h
 #define iSearch_SlideUtils_h
-#import <UIKit/UIKit.h>
+#import "BaseModel.h"
 /**
  *  文档格式: 
  *    1. 已下载文件desc.json
@@ -19,7 +19,7 @@
  *
  *   以目录数据为主，如果已下载，则读取[order]，如果已经离线下载，则读取[categoryName]
  */
-@interface Slide : NSObject
+@interface Slide : BaseModel
 
 // attributes
 @property (nonatomic, strong) NSString *ID;
@@ -44,6 +44,7 @@
 @property (nonatomic, strong) NSMutableDictionary *dict;
 @property (nonatomic, strong) NSMutableDictionary *descDict1; // origin desc.json json
 @property (nonatomic, strong) NSMutableDictionary *cacheDict; // content cache json
+@property (nonatomic, strong) NSMutableDictionary *slides; // pages from slides
 @property (nonatomic, nonatomic) BOOL isFavorite;
 
 // local fields
@@ -56,12 +57,12 @@
 // instance methods
 - (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
++ (Slide *)findByTitleInFavorited:(NSString *)title;
 
 - (void)save;
-- (BOOL)addToFavorite;
 - (void)toCached;
-- (NSString *)inspect;
-- (NSString *)to_s;
+- (void)assignLocalFields:(NSMutableDictionary *)dict;
+- (void)updateTimestamp;
 - (NSMutableDictionary *) refreshFields;
 
 - (NSString *)toDownloaded;
@@ -69,6 +70,11 @@
 - (BOOL)isDownloaded:(BOOL)isForce;
 - (BOOL)isDownloading;
 - (NSString *)downloaded;
+
+- (NSString *)favoritePath;
+- (BOOL)addToFavorite;
+- (BOOL)isInFavorited:(BOOL)isForce;
+- (BOOL)isInFavorited;
 
 - (void)enterEditState;
 - (NSString *)dictSwpPath;

@@ -11,8 +11,9 @@
 #import "GMGridView.h"
 #import "ViewSlide.h"
 #import "FileUtils.h"
-
+#import "ContentUtils.h"
 #import "const.h"
+#import "Slide.h"
 
 #import "MainViewController.h"
 #import "SideViewController.h"
@@ -33,13 +34,30 @@
      */
     _dataList = [[NSMutableArray alloc] init];
     
+    //导航栏标题
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-8, 0, 44, 44)];
+    titleLabel.text = @"收藏";
+    titleLabel.textColor = [UIColor blackColor];
+    titleLabel.font = [UIFont systemFontOfSize:20.0];
+    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    [containerView addSubview:titleLabel];
+    containerView.layer.masksToBounds = NO;
+    UIBarButtonItem *leftTitleBI = [[UIBarButtonItem alloc] initWithCustomView:containerView];
+    self.navigationItem.leftBarButtonItem = leftTitleBI;
+    
     [self configGridView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    _dataList = [FileUtils favoriteFileList];
+    [_dataList removeAllObjects];
+    for(Slide *slide in [FileUtils favoriteSlideList1]) {
+        [_dataList addObject:[slide refreshFields]];
+    }
+    if([_dataList count] > 0) {
+        _dataList = [ContentUtils sortArray:_dataList Key:CONTENT_FIELD_TITLE Ascending:NO];
+    }
     [_gridView reloadData];
     
 }
@@ -63,15 +81,13 @@
     _gridView = gridView;
     
     _gridView.style = GMGridViewStyleSwap;
-    _gridView.itemSpacing = 50;
-    _gridView.minEdgeInsets = UIEdgeInsetsMake(0,0,0,0);//UIEdgeInsetsMake(30, 10, -5, 10);
+    _gridView.itemSpacing = 10;
+    _gridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     _gridView.centerGrid = YES;
     _gridView.dataSource = self;
     _gridView.backgroundColor = [UIColor clearColor];
-    _gridView.mainSuperView = self.view; 
-    
+    _gridView.mainSuperView = self.view;
 }
-
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewDataSource

@@ -18,8 +18,8 @@
  */
 @interface SlideInfoView : UIViewController
 @property (nonatomic , nonatomic) MainViewController *masterViewController;
-@property (nonatomic, nonatomic) BOOL isFavorite;
 @property (strong, nonatomic) NSMutableDictionary *dict;
+@property (nonatomic, nonatomic) BOOL isFavorite;
 
 @property (strong, nonatomic) Slide *slide;
 @property (strong, nonatomic) NSString *slideID;

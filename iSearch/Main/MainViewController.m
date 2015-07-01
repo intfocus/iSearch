@@ -15,22 +15,27 @@
 #import "SettingViewController.h"
 
 #import "FileUtils.h"
+#import "ContentUtils.h"
 #import "PopupView.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
-#import "ContentUtils.h"
+#import "DisplayViewController.h"
+//#import "ReViewController.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property(nonatomic,strong)IBOutlet UIView *leftView;
 @property(nonatomic,strong)IBOutlet UIView *rightView;
 
-@property(nonatomic,strong)UIViewController *rightViewController;
-@property(nonatomic,strong)SlideInfoView *slideInfoView;
-@property(nonatomic,strong)SettingViewController *settingViewController;
+@property(nonatomic,strong) UIViewController *rightViewController;
+
+@property(nonatomic,strong) SlideInfoView *slideInfoView;
+@property(nonatomic,strong) SettingViewController *settingViewController;
+@property(nonatomic,strong) DisplayViewController *displayViewController;
+//@property(nonatomic,strong) ReViewController *reViewController;
 
 
 // 头像设置
@@ -44,29 +49,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
+    /**
+     *  实例变量初始化
+     */
+    self.btnEntrySelectedTag = [NSNumber numberWithInteger:EntryButtonHomePage];
+    
     // CWPopup 事件
     self.useBlurForPopup = YES;
-    
-    // 耗时间的操作放在些block中
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //NSActionLogger(@"主界面加载", @"successfully");
-        
-        SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
-        left.masterViewController = self;
-        self.leftViewController   = left;
-        
-        SideViewController *side     = (id)self.leftViewController;
-        UIViewController *controller = [side viewControllerForTag:EntryButtonHomePage];
-        [self setRightViewController:controller withNav:YES];
-    });
     
 //    BlockTask(^{
 //        //sleep(1);
 //    });
-
+    SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
+    left.masterViewController = self;
+    self.leftViewController   = left;
+    
+    SideViewController *side     = (id)self.leftViewController;
+    UIViewController *controller = [side viewControllerForTag:[self.btnEntrySelectedTag integerValue]];
+    [self setRightViewController:controller withNav:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self refreshRightViewController];
+}
+
+- (void)refreshRightViewController {
+    // presentViewController调出的视图覆盖全屏时，关闭时，会触发此处
+    [self.rightViewController performSelector:@selector(viewDidAppear:) withObject:self.rightViewController];
+}
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置
 ///////////////////////////////////////////////////////////
@@ -99,11 +111,11 @@
     UIControl *entry=sender;
 
     SideViewController *side=(id)self.leftViewController;
-
     #warning viewController的配置集中到sideViewController里
-    UIViewController *controller=[side viewControllerForTag:entry.tag];
+    UIViewController *controller=[side viewControllerForTag:[entry tag]];
     [self setRightViewController:controller withNav:YES];
-
+    self.btnEntrySelectedTag = [NSNumber numberWithInteger:[entry tag]];
+    
     if (!controller) {
         NSLog(@"Exception: sender.tag = %ld", (long)[sender tag]);
     }
@@ -272,7 +284,7 @@
 
 #pragma mark - Slide info PopupView
 - (void)popupSlideInfo:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite {
-    if(self.slideInfoView == nil) {
+    if(!self.slideInfoView) {
         self.slideInfoView = [[SlideInfoView alloc] init];
         self.slideInfoView.masterViewController = self;
     }
@@ -282,21 +294,18 @@
         NSLog(@"popup view presented");
     }];
 }
-/**
- *  关闭弹出框；
- *  由于弹出框没有覆盖整个屏幕，所以关闭弹出框时，不会触发回调事件[viewDidAppear]。
- *  强制刷新[收藏界面]；
- */
 - (void)dismissPopupSlideInfo {
-    if (self.popupViewController != nil) {
+    if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
-#warning refresh view after remove cell
+            _slideInfoView = nil;
+            NSLog(@"dismiss SlideInfoView.");
         }];
     }
 }
+
 #pragma mark - popup show settingViewController
 - (void)popupSettingViewController {
-    if(self.settingViewController == nil) {
+    if(!self.settingViewController) {
         self.settingViewController = [[SettingViewController alloc] init];
         self.settingViewController.masterViewController = self;
     }
@@ -304,12 +313,47 @@
         NSLog(@"popup view settingViewController");
     }];
 }
-
 - (void)dimmissPopupSettingViewController {
-    if (self.popupViewController != nil) {
+    if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _settingViewController = nil;
+            NSLog(@"dismiss SettingViewController.");
         }];
     }
 }
+
+#pragma mark - present view DisplayViewController
+- (void)presentViewDisplayViewController {
+    if(!self.displayViewController) {
+        self.displayViewController = [[DisplayViewController alloc] init];
+        self.displayViewController.masterViewController = self;
+    }
+    [self presentViewController:self.displayViewController animated:NO completion:nil];
+}
+- (void)dismissViewDisplayViewController {
+    if(self.displayViewController) {
+        [self.displayViewController dismissViewControllerAnimated:NO completion:^{
+            _displayViewController = nil;
+            NSLog(@"dismiss DisplayViewController.");
+        }];
+    }
+}
+
+#pragma mark - present view ReViewController
+//- (void)presentViewReViewController {
+//    if(!self.reViewController) {
+//        self.reViewController = [[ReViewController alloc] init];
+//        self.reViewController.masterViewController = self;
+//    }
+//    [self presentViewController:self.reViewController animated:NO completion:nil];
+//}
+//- (void)dismissViewReViewController {
+//    if(self.reViewController) {
+//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+//            _reViewController = nil;
+//            NSLog(@"dismiss ReViewController.");
+//        }];
+//    }
+//}
+
 @end

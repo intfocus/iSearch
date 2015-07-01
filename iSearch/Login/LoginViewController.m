@@ -13,280 +13,185 @@
 //  3. app界面控件的点击或手势事件最好代码实现，组合各功能时只需要关联控件即可
 //
 //  步骤：
-//  一、 界面初始化操作
-//
-//  A. 查找login.plist文件
-//      A.1 找不到，进入空白登陆界面，跳至步骤C
-//      A.2 找到，进入步骤B
-//
-//  B. 界面控件初始化(读取login.plist文件) TODO login.plist为空的情况
-//      B.1 TextField-User输入框信息放置上次登陆成功时输入信息，默认为空字符串
-//      B.2 TextField-PWD输入框，如果上次登陆成功有勾选[记住密码]则预填充密码显示为*，否则置空
-//      B.3 Switch-RememberPassword控件设置上次登陆成功配置，默认@"0" (don't remember password)
-//
-//  C. [登陆]按钮处理步骤
-//      C.1 界面输入框、按钮等控件disabeld
-//      C.2 如果无网络环境，跳至步骤D[离线登陆]
-//      C.3 取得输入内容，并作去除前后空格等处理
-//      C.4 检测TextField-User、TextField-PWD输入框内容不可为空，进入步骤C,否则跳至步骤C.alert
-//      C.5 http post至server
-//          POST /LOGIN_URL_PATH ,{
-//              user: user,         -- user-name or user-email
-//              password: password, -- login password
-//              lang: zh-CN         -- app language, default: zh-CN
-//          }
-//          response {
-//              code: 1,            -- success: 1; failed: 0
-//              info: { uid: 1 ...} -- success: { uid: 1 ...}; failed: { error: ... }
-//           }
-//          *注意* HttpPost响应体中的文本语言取决于Post时params[:lang]
-//
-//          C.5.1 登陆成功,跳至步骤 C.success
-//          C.5.2 服务器端反馈错误信息，跳至步骤 C.alert
-//          C.5.3 服务器无响应，跳至步骤 C.alert
-//      C.alert 弹出警示框显示错误内容，控件内容无修改, 跳至步骤C.done
-//      C.success
-//          last为当前时间(格式LOGIN_DATE_FORMAT)
-//          把user/password/last/remember_password写入login.plist文件
-//          跳至主页
-//      C.done 界面输入框、按钮等控件enabeld
-//
-//   D. [离线登陆]
-//      D.1 如果TextField-User、TextField-PWD与login.plist成功登陆信息一致，
-//          存在且 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
-//      D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
-//
+//  有网络
+//  一、 点击[登录]，通过外浏览器跳转至指定登录网页
+//      1. 如果登录界面一直，未出现，点击[关闭]，再点击[登录]
+//  二、 在指定登录网页，输入正确用户名与密码后，外浏览器会得到指定cookie
+//      1. 点击[登录]后，会启动定时器，每秒读取外浏览器的cookie,当前用户在指定网页登录成功时，定时器扫描到指定cookie
+//      2. 再使用cookie值，访问iSearch服务器，取得用户部门信息
+//          a. 如果失败，则弹出框提示，并返回登录界面
+//          b. 如果成功,保存数据，跳转至主界面
 //
 //   **注意**
-//  1. 读取登陆信息配置档，有则读取，无则使用默认值 #readLoginConfigFile#
+//  1. 读取登陆信息配置档，有则读取，无则使用默认值 #readConfigFile#
 //  2. 修改login.plist只存在于一种情况: 有网络环境下，HttpPost服务器登陆成功时
 
 #import "LoginViewController.h"
+#import "User.h"
 #import "common.h"
 #import "ViewUtils.h"
 #import "MainViewController.h"
-#import "SKSplashIcon.h"
 #import "SSZipArchive.h"
-#import "User.h"
 
 @interface LoginViewController ()
-// i18n controls
-@property (weak, nonatomic) IBOutlet UILabel *labelUser;
-@property (weak, nonatomic) IBOutlet UILabel *labelPwd;
-@property (weak, nonatomic) IBOutlet UILabel *labelSwitch;
-@property (weak, nonatomic) IBOutlet UIView *bgView;
-@property (weak, nonatomic) IBOutlet UIView *inputBgView;
-@property (weak, nonatomic) IBOutlet UIView *inputBg2View;
-@property (weak, nonatomic) IBOutlet UIView *buttonBgView;
-
 // function controls
-@property (weak, nonatomic) IBOutlet UITextField *fieldUser;
-@property (weak, nonatomic) IBOutlet UITextField *fieldPwd;
-@property (weak, nonatomic) IBOutlet UIButton *submit;
-@property (weak, nonatomic) IBOutlet UISwitch *switchRememberPwd;
+@property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 //@property (retain, nonatomic) IBOutlet M13Checkbox *rememberPwd;
 
-// logo动态效果
-@property (strong, nonatomic) SKSplashView *splashView;
-//Demo of how to add other UI elements on top of splash view
+// Demo of how to add other UI elements on top of splash view
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 
+// login outside web
+@property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavBack;
+@property (weak, nonatomic) IBOutlet UILabel *labelLoginTitle;
+
+@property (strong, nonatomic)  NSString *cookieValue;
+@property (strong, nonatomic)  NSTimer *timerReadCookie;
 
 @property (strong, nonatomic) User *user;
+@property (nonatomic, nonatomic) NSInteger timerCount;
 @end
 
 @implementation LoginViewController
 
-/**
- *  界面由无到有时，执行此函数
- */
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     /**
      *  实例变量初始化
      */
     self.user = [[User alloc] init];
-    // 登陆前 Logor动态效果
-    // [self twitterSplash];
-    
-    // 多语言控制
-    self.labelUser.text = LOGIN_LABEL_USER;
-    self.labelPwd.text  = LOGIN_LABEL_PWD;
-    self.labelSwitch.text = LOGIN_REMEMBER_PWD;
-    [self.submit setTitle:LOGIN_BTN_SUBMIT forState:UIControlStateNormal];
-    
-    // TextField-PWD 设置成password格式，显示为*
-    [self.fieldPwd setSecureTextEntry:YES];
-    // [登陆]按钮点击事件
-    [self.submit addTarget:self action:@selector(submitAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-
-    // A.1 找不到配置档，进入空白登陆界面，跳至步骤C
-    if(![FileUtils checkFileExist:self.user.configPath isDir:false]) {
-        // 界面不做任何操作
-    } else {
-        //  B. 界面控件初始化(读取login.plist文件)
-        //      B.1 TextField-User输入框信息放置上次登陆成功时输入信息，默认为空字符串
-        //      B.2 TextField-PWD输入框，如果上次登陆成功有勾选[记住密码]则预填充密码显示为*，否则置空
-        //      B.3 Switch-RememberPassword控件设置上次登陆成功配置，默认@"0" (don't remember password)
-        
-        self.fieldUser.text = self.user.loginUserName;
-        [self.switchRememberPwd setOn:NO];
-        if(self.user.loginRememberPWD) {
-            self.fieldPwd.text  =self.user.loginPassword;
-            [self.switchRememberPwd setOn:YES];
-        }
-    }
-    
-    UIImageView *iconIV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-    iconIV.image = [UIImage imageNamed:@"iconUser"];
-    UIView *imageView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 32)];
-    [imageView addSubview:iconIV];
-    self.fieldUser.leftView = imageView;
-    self.fieldUser.leftViewMode = UITextFieldViewModeAlways;
-    UIImageView *iconIV2 = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-    iconIV2.image = [UIImage imageNamed:@"iconPassword"];
-    UIView *imageView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 40, 32)];
-    [imageView2 addSubview:iconIV2];
-    self.fieldPwd.leftView = imageView2;
-    self.fieldPwd.leftViewMode = UITextFieldViewModeAlways;
-    
-    [self.fieldUser setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [self.fieldPwd setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
-    self.bgView.layer.cornerRadius = 6.0;
-    self.inputBgView.layer.cornerRadius = 4.0;
-    self.inputBg2View.layer.cornerRadius = 4.0;
-    self.buttonBgView.layer.cornerRadius = 4.0;
+    [self hideOutsideLoginControl:YES];
+    /**
+     控件事件
+    */
+    [self.btnNavBack addTarget:self action:@selector(actionOutsideLoginClose:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnSubmit addTarget:self action:@selector(actionSubmit:) forControlEvents:UIControlEventTouchUpInside];
 }
-/**
- *  界面每次出现时都会被触发，动态加载动作放在这里
- */
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 }
 
-/**
- *  twitter加载Logo的动态效果
- */
-//- (void) twitterSplash {    //Twitter style splash
-//    SKSplashIcon *twitterSplashIcon = [[SKSplashIcon alloc] initWithImage:[UIImage imageNamed:@"twitterIcon.png"] animationType:SKIconAnimationTypeBounce];
-//    UIColor *twitterColor = [UIColor colorWithRed:0.25098 green:0.6 blue:1.0 alpha:1.0];
-//    _splashView = [[SKSplashView alloc] initWithSplashIcon:twitterSplashIcon backgroundColor:twitterColor animationType:SKSplashAnimationTypeNone];
-//    _splashView.delegate = self; //Optional -> if you want to receive updates on animation beginning/end
-//    _splashView.animationDuration = 2; //Optional -> set animation duration. Default: 1s
-//    [self.view addSubview:_splashView];
-//    [_splashView startAnimation];
-//}
-
-
-//////////////////////////////////////////////////////////////
 #pragma mark memory management
-//////////////////////////////////////////////////////////////
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-//  C. [登陆]按钮处理步骤
-//      C.1 界面输入框、按钮等控件disabeld
-//      C.2 如果无网络环境，跳至步骤D[离线登陆]
-//      C.3 取得输入内容，并作去除前后空格等处理
-//      C.4 检测TextField-User、TextField-PWD输入框内容不可为空，进入步骤C,否则跳至步骤C.alert
-//      C.5 http post至server
-//          POST /LOGIN_URL_PATH ,{
-//              user: user,         -- user-name or user-email
-//              password: password, -- login password
-//              lang: zh-CN         -- app language, default: zh-CN
-//          }
-//          response {
-//              code: 1,            -- success: 1; failed: 0
-//              info: { uid: 1 ...} -- success: { uid: 1 ...}; failed: { error: ... }
-//           }
-//          *注意* HttpPost响应体中的文本语言取决于Post时params[:lang]
-//
-//          C.5.1 登陆成功,跳至步骤 C.success
-//          C.5.2 服务器端反馈错误信息，跳至步骤 C.alert
-//          C.5.3 服务器无响应，跳至步骤 C.alert
-//      C.alert 弹出警示框显示错误内容，控件内容无修改, 跳至步骤C.done
-//      C.success
-//          last为当前时间(格式LOGIN_DATE_FORMAT)
-//          把user/password/last/remember_password写入login.plist文件
-//          跳至主页
-//      C.done 界面输入框、按钮等控件enabeld
 
-- (IBAction)submitAction:(id)sender {
-    // C.1 界面输入框、按钮等控件disabeld
-    [self switchCtlStateWhenLogin:false];
+#pragma mark - control action selector
 
-    // 不符合登陆条件的错误信息
-    // 以该数组是否为空判断是否符合登陆条件
+- (IBAction)actionOutsideLoginClose:(id)sender {
+    [self hideOutsideLoginControl:YES];
+    [self actionClearCookies];
+    if(self.timerReadCookie) {
+        [self.timerReadCookie invalidate];
+    }
+}
+
+- (IBAction)actionSubmit:(id)sender {
+//    self.cookieValue = @"E00736";
+//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+//    return;
+    
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
+    NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
+    if(isNetworkAvailable) {
+        [self actionClearCookies];
+        [self performSelector:@selector(actionOutsideLogin:) withObject:self];
+    } else {
+        [self performSelector:@selector(actionLoginWithoutNetwork:) withObject:self];
+    }
+    
+}
+
+#pragma mark - assistant methods
+
+#pragma mark - within network
+- (IBAction)actionOutsideLogin:(id)sender {
+    [self performSelector:@selector(actionOutsideLoginRefresh:) withObject:self];
+    [self hideOutsideLoginControl:NO];
+    if(!self.timerReadCookie || ![self.timerReadCookie isValid]) {
+        self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer:) userInfo:nil repeats:YES];
+    }
+    self.timerCount = 0;
+    [self.timerReadCookie fire];
+}
+
+- (IBAction)actionOutsideLoginRefresh:(id)sender {
+    NSString *urlString = @"https://tsa-china.takeda.com.cn/uat/saml/sp/index.php?sso";
+    NSURL *url = [NSURL URLWithString:urlString];
+    [self.webViewLogin loadRequest:[NSURLRequest requestWithURL:url]];
+}
+
+- (IBAction)actionReadCookieTimer:(id)sender {
+    NSString *cookieName = @"samlNameId", *cookieValue = @"";
+    
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [cookieJar cookies]) {
+        NSLog(@"cookie: %@:%@", cookie.name, cookie.value);
+        if([cookie.name isEqualToString:cookieName]) {
+            cookieValue = cookie.value;
+            break;
+        }
+    }
+    if([cookieValue length] > 0) {
+        if([cookieValue isEqualToString:@"error000"]) {
+            [self hideOutsideLoginControl:YES];
+            [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
+        } else {
+            self.cookieValue = cookieValue;
+            [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+        }
+        [self.timerReadCookie invalidate];
+        [self actionClearCookies];
+    }
+    self.timerCount++;
+}
+
+- (void) hideOutsideLoginControl:(BOOL)isHidden {
+    if(isHidden) {
+        [self.view sendSubviewToBack:self.labelLoginTitle];
+        [self.view sendSubviewToBack:self.webViewLogin];
+        [self.view sendSubviewToBack:self.btnNavBack];
+    } else {
+        [self.view bringSubviewToFront:self.labelLoginTitle];
+        [self.view bringSubviewToFront:self.webViewLogin];
+        [self.view bringSubviewToFront:self.btnNavBack];
+    }
+    self.webViewLogin.hidden = isHidden;
+    self.labelLoginTitle.hidden = isHidden;
+    self.btnNavBack.hidden = isHidden;
+}
+- (void) actionClearCookies {
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+
+    for (cookie in [cookieJar cookies]) {
+        [cookieJar deleteCookie:cookie];
+    }
+}
+
+- (IBAction)actionOutsideLoginSuccessfully:(id)sender {
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
-    
-    // C.3 取得输入内容，并作去除前后空格等处理
-    NSString *username = [self.fieldUser.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = [self.fieldPwd.text stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    
-    // 测试期，用户可不输入密码
-    password = username;
 
-    
-    // C.2 如果无网络环境，跳至步骤D[离线登陆]
-    if(![HttpUtils isNetworkAvailable]) {
-        loginErrors = [self loginWithoutNetwork:self.user User:username Pwd:password];
-        
-        
-        // 3.done 界面输入框、按钮等控件enabeld, switch复原
-        [self switchCtlStateWhenLogin:true];
-        
-        return; // 离线登陆，则到此结束
-    }
-    
-    // C.4 检测TextField-User、TextField-PWD输入框内容不可为空，进入步骤C,否则跳至步骤C.alert
-    if(![loginErrors count]) {
-        if(!username.length) [loginErrors addObject:LOGIN_ERROR_USER_EMPTY];
-        if(!password.length)  [loginErrors addObject:LOGIN_ERROR_PWD_EMPTY];
-    }
-
-    // C.5 http post至server
-    if(![loginErrors count]) {
-        //  POST /LOGIN_URL_PATH ,{
-        //      user: user,         -- user-name or user-email
-        //      password: password, -- login password
-        //      lang: zh-CN         -- app language, default: zh-CN
-        //  }
-        //  response {
-        //      code: 1,            -- success: 1; failed: 0
-        //      info: { uid: 1 ...} -- success: { uid: 1 ...}; failed: { error: ... }
-        //  }
-
-        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, username];
+        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, self.cookieValue];
         NSString *response = [HttpUtils httpGet:urlPath];
-        
         NSError *error;
         NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
-                                                                           options:NSJSONReadingMutableContainers
-                                                                             error:&error];
+                                                                            options:NSJSONReadingMutableContainers
+                                                                              error:&error];
         NSErrorPrint(error, @"login response convert into json");
-      
+        
         // 服务器交互成功
         if(!error) {
-            // 服务器响应json格式为: { code: 1, info: {} }
-            //  code = 1 则表示服务器与客户端交互成功, info为用户信息,格式为JSON
-            //  code = 非1 则表示服务器方面查检出有错误， info为错误信息,格式为JSON
-//            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
             NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
-            // C.5.1 登陆成功,跳至步骤 C.success
-            // if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
             if([responseResult length] == 0) {
-                //      3.success
-                //          last为当前时间(格式LOGIN_DATE_FORMAT)
-                //          password = remember_password ? 控件内容 : @""
-                //          把user/password/last/remember_password写入login.plist文件
-                // 界面输入信息
-                self.user.loginUserName    = username;
-                self.user.loginPassword    = password;
-                self.user.loginRememberPWD = self.switchRememberPwd.on;
+                self.user.loginUserName    = self.cookieValue;
+                self.user.loginPassword    = self.cookieValue;
+                self.user.loginRememberPWD = YES;
                 self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
                 
                 // 服务器信息
@@ -298,81 +203,40 @@
                 
                 // write into local config
                 [self.user save];
+                [self.user writeInToPersonal];
                 
                 // 跳至主界面
                 [self enterMainViewController];
                 return;
             } else {
-                // C.5.2 服务器端反馈错误信息，跳至步骤 C.alert
-                NSLog(@"登陆失败.");
-                [loginErrors addObject:[NSString stringWithFormat:@"服务器响应:%@",[responseDict objectForKey:LOGIN_FIELD_RESULT]]];
+                [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", responseResult]];
             }
-        // C.5.3 服务器无响应，跳至步骤 C.alert
         } else {
-            [loginErrors addObject:ALERT_MSG_LOGIN_SERVER_ERROR];
+            [loginErrors addObject:[NSString stringWithFormat:@"服务器响应解析失败:%@", response]];
         }
-    }
-    
-    // 3.alert, 此if判断显得有些多余, loginErrors不可能为空 :)
+
     if([loginErrors count])
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
-    else
-        NSLog(@"测试阶段，登陆成功时界面没有跳转，打印此信息，请勿心慌.");
-        
-    
-    // 3.done 界面输入框、按钮等控件enabeld, switch复原
-    [self switchCtlStateWhenLogin:true];
+    [self hideOutsideLoginControl:YES];
 }
 
-- (void)downloadCategoryThumbnail {
-    NSString *downloadUrl = @"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip";
-    NSString *zipName = [downloadUrl lastPathComponent];
-    NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    if([FileUtils checkFileExist:zipPath isDir:NO]) {
-        return;
-    }
-    NSURL *url = [NSURL URLWithString:downloadUrl];
-    NSData *zipData = [NSData dataWithContentsOfURL:url];
-    NSString *thumbnailPath = [FileUtils getPathName:THUMBNAIL_DIRNAME];
-    [zipData writeToFile:zipPath atomically:YES];
-    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:thumbnailPath];
-    NSLog(@"解压%@  %@", zipPath, state ? @"成功" : @"失败");
-}
-/**
- *  集中管理界面控件是否禁用
- *
- *  @param isEnaled 禁用则设置为false
- */
-- (void) switchCtlStateWhenLogin:(BOOL)isEnaled {
-    [self.fieldPwd setEnabled: isEnaled];
-    [self.fieldUser setEnabled: isEnaled];
-    [self.submit setEnabled: isEnaled];
-    [self.switchRememberPwd setEnabled: isEnaled];
-}
-
+#pragma mark - without network
 /**
  *  C.2 如果无网络环境，跳至步骤D[离线登陆]
  *  D. [离线登陆]
- *     D.1 如果TextField-User、TextField-PWD与login.plist成功登陆信息一致，
- *           存在且 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
+ *     D.1 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
  *     D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
  */
-- (NSMutableArray *)loginWithoutNetwork:(User *)user
-                                   User:(NSString *)username
-                                    Pwd:(NSString *)password {
-    
-    NSMutableArray *errors = [self checkEnableLoginWithoutNetwork:user User:username Pwd:password];
+- (IBAction)actionLoginWithoutNetwork:(id)sender {
+    NSMutableArray *errors = [self checkEnableLoginWithoutNetwork:self.user];
     
     if(![errors count]) {
-        //[ViewUtils simpleAlertView:self Title:@"登陆成功" Message:@"TODO# 跳至主页[离线]" ButtonTitle:BTN_CONFIRM];
         // 跳至主界面
         [self enterMainViewController];
-        return errors;
     // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[errors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
     }
-    return errors;
 }
 
 
@@ -385,9 +249,7 @@
  *
  *  @return 不符合离线登陆条件错误信息数组
  */
-- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user
-                                               User:(NSString *) username
-                                                Pwd:(NSString *) password {
+- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
     
     // 上次登陆日期字符串转换成NSDate
@@ -405,30 +267,12 @@
     if(intervalBetweenDates > LOGIN_KEEP_HOURS*60*60) {
         [errors addObject:LOGIN_ERROR_EXPIRED_OUT_N_HOURS];
     }
-    
-    
-    // 判断3: 输入框user/pwd内容与配置档内容是否一致
-    if(![username isEqualToString:user.loginUserName])
-        [errors addObject:LOGIN_ERROR_USER_NOT_MATCH];
-    if(![password isEqualToString:user.loginPassword])
-        [errors addObject:LOGIN_ERROR_PWD_NOT_MATCH];
 
     return errors;
 }
 
-// pragm mark - 进入主界面
--(void)enterMainViewController{
-    [self downloadCategoryThumbnail];
+#pragma mark - status bar settings
 
-    // 这里最好换成import，不要用NSClassFromString
-    UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
-    //MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
-    UIWindow *window = self.view.window;
-    window.rootViewController = mainView;
-}
-
-
-// pragm mark - screen style setting
 -(BOOL)prefersStatusBarHidden{
     return NO;
 }
@@ -441,6 +285,35 @@
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscape;
 }
+
+#pragma mark - assistant methods
+
+-(void)enterMainViewController{
+    [self downloadCategoryThumbnail:@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip" dir:THUMBNAIL_DIRNAME];
+    [self downloadCategoryThumbnail:@"http://tsa-china.takeda.com.cn/uat/public/999154.zip" dir:SLIDE_DIRNAME];
+    [self downloadCategoryThumbnail:@"http://tsa-china.takeda.com.cn/uat/public/999155.zip" dir:SLIDE_DIRNAME];
+
+    
+    // UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
+    MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
+    UIWindow *window = self.view.window;
+    window.rootViewController = mainView;
+}
+
+- (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName {
+    NSString *zipName = [downloadUrl lastPathComponent];
+    NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
+    if([FileUtils checkFileExist:zipPath isDir:NO]) {
+        return;
+    }
+    NSURL *url = [NSURL URLWithString:downloadUrl];
+    NSData *zipData = [NSData dataWithContentsOfURL:url];
+    NSString *thumbnailPath = [FileUtils getPathName:dirName];
+    [zipData writeToFile:zipPath atomically:YES];
+    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:thumbnailPath];
+    NSLog(@"解压%@  %@", zipPath, state ? @"成功" : @"失败");
+}
+
 
 
 @end

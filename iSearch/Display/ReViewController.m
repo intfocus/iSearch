@@ -55,44 +55,46 @@
 #import "ViewUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
+#import "DisplayViewController.h"
+#import "ReViewController.h"
 #import "MainAddNewTagView.h"
 #import "UIViewController+CWPopup.h"
 
 @interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewActionDelegate> {
     __gm_weak GMGridView *_gmGridView;
-    NSMutableArray       *_dataList;   // 文件的页面信息
+    NSMutableArray       *_dataList;     // 文件的页面信息
     NSMutableArray       *_selectedList; // 内容重组选择的页面序号
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // GridView Container
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigation;
 
 @property (weak, nonatomic) IBOutlet UIView *navBarContainerView;
+@property (weak, nonatomic) IBOutlet UILabel *labelNavSlideTitle;
 @property (nonatomic, nonatomic) BOOL isFavorite; // 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL selectState; // 编辑状态
 @property (nonatomic, strong) Slide  *slide;
 @property (nonatomic, strong) NSString  *slideID;
-@property (nonatomic, strong) NSString  *pageID; // 由展示文档页面跳至本页时需要使用
+@property (nonatomic, strong) NSString  *pageName; // 由展示文档页面跳至本页时需要使用
 @property (nonatomic, strong) NSMutableDictionary *pageInfoTmp;   // 文档页面信息: 自来那个文档，遍历页面时减少本地IO
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 
+
+@property (weak, nonatomic) IBOutlet UIButton *btnNavEdit;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRemove;
+@property (weak, nonatomic) IBOutlet UIButton *btnNavRestore;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavRefresh;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavSaveTo;
-@property (weak, nonatomic) IBOutlet UIButton *btnNavRestore;
-@property (weak, nonatomic) IBOutlet UIButton *btnNavEdit;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavDismiss;
-
-
 @end
 
 @implementation ReViewController
 @synthesize slideID;
-@synthesize pageID;
+@synthesize pageName;
 @synthesize pageInfoTmp;
 @synthesize selectState;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     /**
      * 实例变量初始化
      */
@@ -101,13 +103,11 @@
     _dataList        = [[NSMutableArray alloc] init];
     _selectedList    = [[NSMutableArray alloc] init];
     
-    [self loadConfigInfo];
-
     /**
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
-
+    
     [self configGridView];
     
     /**
@@ -117,9 +117,53 @@
     [self.btnNavRefresh addTarget:self action:@selector(actionRefresh:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavRestore addTarget:self action:@selector(actionRestore:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnNavDismiss addTarget:self action:@selector(actionDismiss:) forControlEvents:UIControlEventTouchUpInside];
-
+    [self.btnNavDismiss addTarget:self action:@selector(actionDismissReViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavRemove addTarget:self action:@selector(actionRemovePages:) forControlEvents:UIControlEventTouchUpInside];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if(self.selectState) {
+        [self performSelector:@selector(actionEdit:) withObject:self.btnNavEdit];
+    }
+    self.btnNavRefresh.enabled = NO;
+    self.btnNavRemove.enabled = NO;
+    self.btnNavSaveTo.enabled = NO;
+    
+    [_dataList removeAllObjects];
+    [_selectedList removeAllObjects];
+    
+    [self loadConfigInfo];
+    
+    if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+        NSMutableDictionary *dictSwp = [self.slide dictSwp];
+        _dataList = dictSwp[SLIDE_DESC_ORDER];
+    } else {
+        _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    }
+
+    [self checkDescSwpContent];
+    [_gmGridView reloadData];
+}
+
+//////////////////////////////////////////////////////////////
+#pragma mark - memory management
+//////////////////////////////////////////////////////////////
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    NSLog(@"receive memory warning.");
+    _gmGridView = nil;
+}
+
+#pragma mark - release
+- (void)dealloc {
+    self.pageInfoTmp = nil;
+    _dataList        = nil;
+    _selectedList    = nil;
+}
+
+#pragma mark - configuration
 
 - (void) configGridView {
     GMGridView *gmGridView      = [[GMGridView alloc] initWithFrame:self.scrollView.bounds];
@@ -140,31 +184,20 @@
     _gmGridView.selectState     = self.selectState;
 }
 
-/**
- *  B1 点击文件[编辑]时，该fileID写入CONFIG_DIRNAME/REORGANIZE_CONFIG_DIRNAME[@"FileID"]
- *
- */
 - (void) loadConfigInfo {
-    NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
+    NSString *pathName          = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
     NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
-    
-    self.slideID    = config[CONTENT_KEY_EDITID1];
-    self.pageID     = config[CONTENT_KEY_EDITID2];
-    self.isFavorite = ([config[SLIDE_EDIT_TYPE] intValue] == SlideTypeFavorite);
 
-    self.slide = [Slide findById:self.slideID isFavorite:self.isFavorite];
-    [self.slide enterEditState];
-    NSMutableDictionary *dict = [self.slide dictSwp];
-    _dataList = dict[SLIDE_DESC_ORDER];
+    self.slideID                = config[SCAN_SLIDE_ID];
+    self.pageName               = config[SCAN_SLIDE_PAGEID];
+    self.isFavorite             = ([config[SCAN_SLIDE_FROM] intValue] == SlideTypeFavorite);
+
+    self.slide                  = [Slide findById:self.slideID isFavorite:self.isFavorite];
+    //[self.slide enterEditState];
+    self.labelNavSlideTitle.text = self.slide.title;
 }
 
-- (void)dismissPopup {
-    if (self.popupViewController != nil) {
-        [self dismissPopupViewControllerAnimated:YES completion:^{
-            NSLog(@"popup view dismissed");
-        }];
-    }
-}
+
 
 //////////////////////////////////////////////////////////////
 #pragma mark - controls action
@@ -176,18 +209,43 @@
  *  bad方法: copy then remove or move; 各种问题
  *  @param gesture UIGestureRecognizer
  */
-- (IBAction)actionDismiss:(UIButton *)sender {
-    [self dismissViewControllerAnimated:NO completion:nil];
+- (IBAction)actionDismissReViewController:(UIButton *)sender {
+    if(self.slide.isFavorite) {
+        self.slide.pages = [NSMutableArray arrayWithArray:_dataList];
+        [self.slide save];
+    } else {
+        if(![self.slide.pages isEqualToArray:_dataList]) {
+            NSMutableDictionary *dictSwp = [NSMutableDictionary dictionaryWithDictionary:self.slide.dictSwp];
+            dictSwp[SLIDE_DESC_ORDER] = _dataList;
+            [FileUtils writeJSON:dictSwp Into:[self.slide dictSwpPath]];
+        }
+    }
+    [self performSelector:@selector(dismissReViewController)];
 }
 
+
 - (IBAction)actionSaveTo:(UIButton *)sender {
-    if(self.mainAddNewTagView == nil) {
+    if(!self.mainAddNewTagView || !self.mainAddNewTagView.masterViewController) {
         self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
         self.mainAddNewTagView.masterViewController = self;
     }
+    self.mainAddNewTagView.closeMainViewAfterDone = YES;
+    self.mainAddNewTagView.fromViewControllerName = @"ReViewController";
     [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
-        NSLog(@"popup view presented");
+        NSLog(@"mainAddNewTagView popup view presented");
     }];
+}
+
+- (IBAction)actionRemovePages:(UIButton *)sender {
+    if(!self.selectState) return;
+    
+    for(NSString *pName in _selectedList) {
+        [_dataList removeObject:pName];
+    }
+    [_selectedList removeAllObjects];
+    [_gmGridView reloadData];
+    
+    [self performSelector:@selector(actionEdit:) withObject:self.btnNavEdit];
 }
 
 - (IBAction)actionRefresh:(id)sender {
@@ -204,9 +262,7 @@
         self.selectState = true;
         _gmGridView.selectState = self.selectState;
         
-        // 导航栏按钮样式
-        self.btnNavSaveTo.enabled = NO;
-        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconCancel"] forState:UIControlStateNormal];
+        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconNavCancel"] forState:UIControlStateNormal];
     } else {
         self.selectState = false;
         _gmGridView.selectState = self.selectState;
@@ -214,9 +270,30 @@
         //[self.barItemEdit setTitle: BTN_EDIT];
         // 在有选择多个页面情况下，[保存][移除]是激活的，
         // 但直接[取消]编辑状态时, 就需要手工禁用
-        self.btnNavSaveTo.enabled = NO;
-        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconEdit2"] forState:UIControlStateNormal];
+        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconNavEdit2"] forState:UIControlStateNormal];
     }
+    [self checkBtnNavState];
+}
+
+/**
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
+ *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
+ *
+ *  并把当前选择的页面拷贝到目标文件ID(FAVORITE_DIRNAME)文件夹下
+ *
+ *  @param dict 目标文件配置
+ */
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide {
+    for(NSString *pName in _selectedList) {
+        // skip when not exist
+        if([targetSlide.pages containsObject:pName]) continue;
+        // copy page/image
+        [FileUtils copyFilePage:pName FromSlide:self.slide ToSlide:targetSlide];
+        
+        [targetSlide.pages addObject:pName];
+    }
+    [targetSlide updateTimestamp];
+    [targetSlide save];
 }
 
 
@@ -229,13 +306,17 @@
     self.btnNavRestore.enabled = ![self.slide.pages isEqualToArray:_dataList];
 }
 
-//////////////////////////////////////////////////////////////
-#pragma mark memory management
-//////////////////////////////////////////////////////////////
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 
-    _gmGridView = nil;
+-(void)dismissReViewController {
+    [self performSelector:@selector(dismissPopupAddToTag)];
+    [self.masterViewController dismissReViewController];
+}
+- (void) dismissPopupAddToTag {
+    if (self.popupViewController) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissPopupAddToTag dismissed");
+        }];
+    }
 }
 
 //////////////////////////////////////////////////////////////
@@ -267,56 +348,63 @@
     cell.selectedButtonOffset  = CGPointMake(0, 0);
     
     ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
-    NSString *currentPageID = [_dataList objectAtIndex:index];
+    NSString *currentPageName = [_dataList objectAtIndex:index];
+
     
-    if([currentPageID isEqualToString: self.pageID]) {
+    if([currentPageName isEqualToString: self.pageName]) {
         [viewSlidePage hightLight];
     }
     viewSlidePage.labelFrom.text = [NSString stringWithFormat:@"来自: %@", self.slide.title];
-    viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)index];
+    viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)(index + 1)];
     
-    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageID Dir:(self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME)];
-    if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
-        [viewSlidePage loadThumbnail: thumbnailPath];
-    } else {
-        NSLog(@"%@", thumbnailPath);
-    }
+    viewSlidePage.slidePageName = currentPageName;
+    viewSlidePage.reViewController = self;
     
-    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(actionJumpToDisplay:)];
-    [doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:self.slide.dirName];
+    [viewSlidePage loadThumbnail: thumbnailPath];
+    // NSLog(@"%ld, %@", (long)index, thumbnailPath);
+    
+    // enter display view when double click
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionJumpToDisplay:)];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    tapGesture.delegate = self;
     [viewSlidePage.btnMask setTag:index];
-    [viewSlidePage.btnMask addGestureRecognizer:doubleTapGestureRecognizer];
-    
-//    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureUpdated:)];
-//    longPressGesture.numberOfTouchesRequired = 1;
-//    longPressGesture.delegate = self;
-//    longPressGesture.cancelsTouchesInView = NO;
-//    [viewSlidePage.btnMask addGestureRecognizer:longPressGesture];
-    
-    [viewSlidePage bringSubviewToFront:viewSlidePage.btnMask];
+    [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
+
     [cell setContentView: viewSlidePage];
     
     return cell;
 }
 
-- (IBAction)longPressGestureUpdated:(id)sender {
-    [_gmGridView performSelector:@selector(longPressGestureUpdated:) withObject:_gmGridView];
-    NSLog(@"long press.");
-}
+
+
 /**
  *  非编辑状态下，双击直接进入演示该页面
  *  编辑状态下，会有selectButton在最外层，不会触发此处双击事件
  *
  *  @param gestureRecognizer gestureRecognizer
  */
-- (IBAction)actionJumpToDisplay:(UIGestureRecognizer*)gestureRecognizer {
-    NSInteger jumpToIndex = gestureRecognizer.view.tag;
-    NSLog(@"jump to %ld",(long)jumpToIndex);
+- (IBAction)actionJumpToDisplay:(UITapGestureRecognizer*)tapRecognizer {
+    NSInteger pageIndex = [tapRecognizer.view tag];
+    NSString *pName = [_dataList objectAtIndex:pageIndex];
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:jumpToIndex];
+    configDict[SLIDE_DISPLAY_JUMPTO] = pName;
     [FileUtils writeJSON:configDict Into:configPath];
     
+    if(self.slide.isFavorite) {
+        if(![self.slide.pages isEqualToArray:_dataList]) {
+            self.slide.pages = [NSMutableArray arrayWithArray:_dataList];
+            [self.slide save];
+        }
+    } else {
+        if(![self.slide.pages isEqualToArray:_dataList]) {
+            NSMutableDictionary *dictSwp = [NSMutableDictionary dictionaryWithDictionary:self.slide.dictSwp];
+            dictSwp[SLIDE_DESC_ORDER] = _dataList;
+            [FileUtils writeJSON:dictSwp Into:[self.slide dictSwpPath]];
+        }
+    }
     
     [self dismissViewControllerAnimated:NO completion:nil];
 }
@@ -338,29 +426,25 @@
     // 仅处理编辑状态下
     if(!self.selectState) return;
     
-    NSNumber *i = [NSNumber numberWithInteger:index];
+    GMGridViewCell *cell = [gridView cellForItemAtIndex:index];
+    ViewSlidePage *viewSlidePage = (ViewSlidePage *)cell.contentView;
+    NSLog(@"click %@", viewSlidePage.slidePageName);
+
     // 未记录该cell的状态，只能过判断_select是否包含i
-    if([_selectedList containsObject:i])
-        [_selectedList removeObject:i];
+    if([_selectedList containsObject:viewSlidePage.slidePageName])
+        [_selectedList removeObject:viewSlidePage.slidePageName];
     else
-        [_selectedList addObject:i];
+        [_selectedList addObject:viewSlidePage.slidePageName];
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
-    if([_selectedList count]) {
-        self.btnNavSaveTo.enabled = YES;
-    } else {
-        self.btnNavSaveTo.enabled = NO;
-    }
+    [self checkBtnNavState];
 }
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewActionDelegate
 //////////////////////////////////////////////////////////////
 
-- (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {
-}
-
-
+- (void)GMGridView:(GMGridView *)gridView didTapOnItemAtIndex:(NSInteger)position {}
 
 //////////////////////////////////////////////////////////////
 #pragma mark GMGridViewSortingDelegate
@@ -408,14 +492,15 @@
 
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
 - (void)GMGridView:(GMGridView *)gridView moveItemAtIndex:(NSInteger)oldIndex toIndex:(NSInteger)newIndex {
-    NSLog(@"%ld => %ld",(long)oldIndex, (long)newIndex);
-    NSString *pageName = [_dataList objectAtIndex:oldIndex];
-    [_dataList insertObject:pageName atIndex:newIndex];
+    NSString *pName = [_dataList objectAtIndex:oldIndex];
     if(oldIndex > newIndex) {
+        [_dataList insertObject:pName atIndex:newIndex];
         [_dataList removeObjectAtIndex:(oldIndex+1)];
     } else {
         [_dataList removeObjectAtIndex:oldIndex];
+        [_dataList insertObject:pName atIndex:newIndex];
     }
+    NSLog(@"%ld => %ld \n%@",(long)oldIndex, (long)newIndex, _dataList);
     [self checkDescSwpContent];
 }
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
@@ -433,39 +518,15 @@
     [FileUtils writeJSON:dict Into:path];
 }
 
-
-/**
- *  拷贝文件FILE_DIRNAME/fromFileId的页面pageName至文件FAVORITE_DIRNAME/toFileId下
- *  FILE_DIRNAME/fileId/{fileId_pageId.html, desc.json, fileID_pageID/}
- *
- *  @param pageName   页面名称fildId_pageId.html
- *  @param fromFileId 源文件id
- *  @param toFileId   目标文件id
- */
-- (void)copyFilePage:(NSString *)pageName
-          FromFileId:(NSString *)fromFileId
-            ToFileId:(NSString *)toFileId {
-    NSError *error;
-    NSString *filePath, *newFilePath, *pagePath, *newPagePath, *imagePath, *newImagePath;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *filesPath = [FileUtils getPathName:dirName];
-    NSString *favoritePath = [FileUtils getPathName:FAVORITE_DIRNAME];
+- (void) checkBtnNavState {
+    if(self.selectState) {
+        self.btnNavRemove.enabled = ([_selectedList count] > 0);
+        self.btnNavSaveTo.enabled = ([_selectedList count] > 0);
+    }
     
-    filePath      = [filesPath stringByAppendingPathComponent:fromFileId];
-    newFilePath   = [favoritePath stringByAppendingPathComponent:toFileId];
-    // 复制html文件
-    pagePath = [filePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
-    newPagePath = [newFilePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageName, PAGE_HTML_FORMAT]];
-    [fileManager copyItemAtPath:pagePath toPath:newPagePath error:&error];
-    NSErrorPrint(error, @"copy page html from %@ -> %@", fromFileId, toFileId);
-    // 复制文件夹
-    imagePath = [filePath stringByAppendingPathComponent:pageName];
-    newImagePath = [newFilePath stringByAppendingPathComponent:pageName];
-    [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
-    NSErrorPrint(error, @"copy page folder from %@ -> %@", fromFileId, toFileId);
+    self.btnNavRestore.enabled = ![_dataList isEqualToArray:self.slide.pages];
+    self.btnNavRefresh.enabled = YES;
 }
-
 
 @end
 

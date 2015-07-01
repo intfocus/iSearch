@@ -149,18 +149,20 @@
     self.view.backgroundColor=[UIColor blackColor];
     
     [self configGridView];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     [self refreshContent];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-}
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
      [self configSpinner];
 }
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     _gridView = nil;
@@ -213,7 +215,6 @@
 }
 
 - (void)configSpinner {
-    
     CGRect frame = self.navLabel.frame;
     frame.origin.x = frame.origin.x + frame.size.width/2;
     frame.origin.y = frame.origin.y + 30;
@@ -301,7 +302,7 @@
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
         [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        NSLog(@"category - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_NAME]);
+        // NSLog(@"category - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_NAME]);
         [cell setContentView: viewCategory];
     } else {
         ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
@@ -311,7 +312,7 @@
         viewSlide.dict = currentDict;
         viewSlide.masterViewController = [self masterViewController];
         
-        NSLog(@"slide - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_TITLE]);
+        //NSLog(@"slide - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_TITLE]);
         [cell setContentView: viewSlide];
     }
     return cell;

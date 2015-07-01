@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "ThreeViewController.h"
+#import "HomeViewController.h"
+#import "MainViewController.h"
 
 #import "GMGridView.h"
 #import "GMGridViewLayoutStrategies.h"
 #import "const.h"
-#import "ViewCategory.h"
+#import "ViewSlide.h"
+#import "FileUtils.h"
+#import "Slide.h"
 
 @interface ThreeViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gmGridView;
     UIImageView          *changeBigImageView;
-    NSMutableArray       *_data;
+    NSMutableArray       *_dataList;
 }
 
 @end
@@ -29,7 +33,7 @@
     /**
      * 实例变量初始化
      */
-    _data = [[NSMutableArray alloc] init];
+    _dataList = [[NSMutableArray alloc] init];
     
     [self configGMGridView];
 }
@@ -37,9 +41,25 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    NSInteger i = 0;
-    for(i=0; i< 13; i++) {
-        [_data addObject:[NSString stringWithFormat:@"我的记录-%ld", (long)i]];
+    [_dataList removeAllObjects];
+    Slide *slide;
+    NSString *dictPath;
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    for(NSString *slideID in @[@"999154", @"999155"]) {
+        dictPath = [FileUtils slideDescPath:slideID Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        if(![FileUtils checkFileExist:dictPath isDir:NO]) continue;
+        
+        dict = [FileUtils readConfigFile:dictPath];
+        dict[CONTENT_FIELD_ID] = slideID;
+        dict[CONTENT_FIELD_TYPE] = @"10000";
+        dict[CONTENT_FIELD_DESC] = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_TITLE] = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_NAME] = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
+        slide = [[Slide alloc] initSlide:dict isFavorite:NO];
+        [slide save];
+        
+        [_dataList addObject:[slide refreshFields]];
     }
     [_gmGridView reloadData];
 }
@@ -87,7 +107,7 @@
 }
 
 - (NSInteger)numberOfItemsInGMGridView:(GMGridView *)gridView {
-    return [_data count];
+    return [_dataList count];
 }
 
 // GridViewCell界面 - 目录界面
@@ -96,17 +116,19 @@
     
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-
     }
-    ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
-    viewCategory.labelTitle.text = [_data objectAtIndex:index];
+    NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+    ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+    viewSlide.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
     
-    [viewCategory setImageWith:@"0" CategoryID:@"3"];
-    [cell setContentView: viewCategory];
+    viewSlide.isFavorite = NO;
+    viewSlide.dict = currentDict;
+    viewSlide.masterViewController = [[self masterViewController] masterViewController];
+
+    [cell setContentView: viewSlide];
+    
     return cell;
 }
 
-- (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {
-    [_data removeObjectAtIndex:index];
-}
+- (void)GMGridView:(GMGridView *)gridView deleteItemAtIndex:(NSInteger)index {}
 @end

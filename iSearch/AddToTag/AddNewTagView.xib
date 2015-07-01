@@ -22,35 +22,36 @@
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zbz-oU-8aD">
-                    <rect key="frame" x="84" y="12" width="308" height="30"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
-                </textField>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6R-4K-7N4">
-                    <rect key="frame" x="8" y="79" width="384" height="413"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6R-4K-7N4">
+                    <rect key="frame" x="8" y="105" width="384" height="380"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="标签描述" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="178-Xb-cR8">
-                    <rect key="frame" x="8" y="50" width="68" height="21"/>
+                    <rect key="frame" x="8" y="77" width="68" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zbz-oU-8aD">
+                    <rect key="frame" x="8" y="42" width="384" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <constraints>
-                <constraint firstItem="s6R-4K-7N4" firstAttribute="top" secondItem="178-Xb-cR8" secondAttribute="bottom" constant="8" id="AEl-RT-EHc"/>
-                <constraint firstItem="n47-d2-dp1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Cwh-sU-mkV"/>
-                <constraint firstAttribute="trailing" secondItem="Zbz-oU-8aD" secondAttribute="trailing" constant="8" id="IT6-hg-XJc"/>
-                <constraint firstAttribute="bottom" secondItem="s6R-4K-7N4" secondAttribute="bottom" constant="8" id="Kc5-rK-4Mj"/>
-                <constraint firstItem="Zbz-oU-8aD" firstAttribute="leading" secondItem="n47-d2-dp1" secondAttribute="trailing" constant="8" id="NOh-qp-3m8"/>
-                <constraint firstItem="178-Xb-cR8" firstAttribute="top" secondItem="n47-d2-dp1" secondAttribute="bottom" constant="13" id="Tub-zf-ebU"/>
-                <constraint firstItem="Zbz-oU-8aD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="Uuh-4c-fqP"/>
-                <constraint firstItem="n47-d2-dp1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="g12-Ec-njM"/>
-                <constraint firstItem="s6R-4K-7N4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="lXx-wG-wRb"/>
-                <constraint firstItem="178-Xb-cR8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="ma4-NM-cSk"/>
+                <constraint firstItem="n47-d2-dp1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="7rH-Xf-I2V"/>
+                <constraint firstItem="Zbz-oU-8aD" firstAttribute="top" secondItem="n47-d2-dp1" secondAttribute="bottom" constant="5" id="BUR-yG-HWA"/>
+                <constraint firstAttribute="trailing" secondItem="s6R-4K-7N4" secondAttribute="trailing" constant="8" id="J11-dW-IGW"/>
+                <constraint firstAttribute="bottom" secondItem="s6R-4K-7N4" secondAttribute="bottom" constant="15" id="LHR-kc-Iw3"/>
+                <constraint firstAttribute="trailing" secondItem="Zbz-oU-8aD" secondAttribute="trailing" constant="8" id="RTR-z0-oKe"/>
+                <constraint firstItem="n47-d2-dp1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="Xv3-0T-ClW"/>
+                <constraint firstItem="Zbz-oU-8aD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="arN-Rb-Ep8"/>
+                <constraint firstItem="178-Xb-cR8" firstAttribute="top" secondItem="Zbz-oU-8aD" secondAttribute="bottom" constant="5" id="n0Y-Ad-ypx"/>
+                <constraint firstItem="s6R-4K-7N4" firstAttribute="top" secondItem="178-Xb-cR8" secondAttribute="bottom" constant="7" id="pQg-c4-xW3"/>
+                <constraint firstItem="178-Xb-cR8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="qZD-DC-AhN"/>
+                <constraint firstItem="s6R-4K-7N4" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="v6C-0Z-gHa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="528" y="271"/>

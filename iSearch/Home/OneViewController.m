@@ -15,6 +15,7 @@
 #import "ViewSlide.h"
 #import "FileUtils.h"
 #import "ContentUtils.h"
+#import "Slide.h"
 
 #import "MainViewController.h"
 #import "HomeViewController.h"
@@ -33,7 +34,7 @@
      * 实例变量初始化
      */
     _dataList = [[NSMutableArray alloc] init];
-    // viewSlideInfo need it.
+    
     HomeViewController *homeViewController = [self masterViewController];
     self.mainViewController = [homeViewController masterViewController];
     
@@ -42,8 +43,14 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    _dataList = [FileUtils favoriteFileList];
-    _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+    
+    [_dataList removeAllObjects];
+    for(Slide *slide in [FileUtils favoriteSlideList1]) {
+        [_dataList addObject:[slide refreshFields]];
+    }
+    if([_dataList count] > 0) {
+        _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+    }
     [_gridView reloadData];
 }
 

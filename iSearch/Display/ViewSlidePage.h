@@ -11,16 +11,18 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-
+@class ReViewController;
 
 @interface ViewSlidePage : UIView
+
+@property (weak, nonatomic) IBOutlet ReViewController *reViewController;
 
 @property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail; // 缩略图
 @property (weak, nonatomic) IBOutlet UILabel *labelPageNum; // 第几页
 @property (weak, nonatomic) IBOutlet UILabel *labelFrom; // 来自那个文件
-@property (weak, nonatomic) IBOutlet UIButton *btnMask; // 蒙板，处理点击事件
+@property (weak, nonatomic) IBOutlet UIButton *btnMask; // 来自那个文件
 
-@property (strong, nonatomic) NSMutableDictionary *dict; // 该文件的信息，json格式
+@property (strong, nonatomic) NSString *slidePageName;
 
 - (void)loadThumbnail:(NSString *)thumbnailPath;
 - (void)hightLight;

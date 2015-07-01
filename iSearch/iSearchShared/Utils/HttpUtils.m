@@ -14,6 +14,7 @@
 #import "sys/utsname.h"
 ////https://github.com/tonymillion/Reachability
 #import "Reachability.h"
+#import "ExtendNSLogFunctionality.h"
 
 @interface HttpUtils()
 
@@ -38,7 +39,9 @@
     NSLog(@"%@", urlStr);
     NSURL *url            = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    NSData *received      = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSError *error;
+    NSData *received      = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
+    NSErrorPrint(error, @"Http#get %@", urlStr);
     NSString *response    = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
     return response;
     
@@ -64,10 +67,11 @@
     NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString *response = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
     
-    if(response)
+    if(response) {
         NSLog(@"POST Response: %@", response);
-    else
+    } else {
         response = @"No input file specified.";
+    }
     return response;
 }
 

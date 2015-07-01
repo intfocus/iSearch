@@ -10,32 +10,40 @@
 #import "SSZipArchive.h"
 #import <JavaScriptCore/JavaScriptCore.h>
 
-#import "ReViewController.h"
 #import "MainViewController.h"
 
 #import "OfflineCell.h"
 #import "ViewSlide.h"
+#import "MainViewController.h"
+#import "MainAddNewTagView.h"
+#import "ReViewController.h"
 
 #import "const.h"
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import "UIViewController+CWPopup.h"
 
 @interface DisplayViewController ()
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView; // 展示html5
-@property (weak, nonatomic) IBOutlet UIButton *editBtn; // 切换显示编辑状态面板的显示
-@property (weak, nonatomic) IBOutlet UIView *editPanelBgView;
-@property (weak, nonatomic) IBOutlet UIButton *colorButton;
-@property (weak, nonatomic) IBOutlet UIView *colorView;
+@property (weak, nonatomic) IBOutlet UIButton *btnEditPanelSwitch; // 切换显示编辑状态面板的显示
+@property (weak, nonatomic) IBOutlet UIView *viewEditPanelBg;
+@property (weak, nonatomic) IBOutlet UIButton *btnColorSwitch;
+@property (weak, nonatomic) IBOutlet UIView *viewColorChoice;
 @property (weak, nonatomic) IBOutlet UIImageView *iconTriangleImageView;
-@property (weak, nonatomic) IBOutlet UIView   *editPanel; // 编辑状态面板
-@property (weak, nonatomic) IBOutlet UIButton *drawBtn;
-@property (weak, nonatomic) IBOutlet UISwitch *laserSwitch; // 激光笔状态切换
-@property (weak, nonatomic) IBOutlet UIButton *redNoteBtn;  // 笔记 - 红色
-@property (weak, nonatomic) IBOutlet UIButton *greenNoteBtn;// 笔记 - 绿色
-@property (weak, nonatomic) IBOutlet UIButton *blueNoteBtn; // 笔记 - 蓝色
+@property (weak, nonatomic) IBOutlet UIView   *viewEditPanel; // 编辑状态面板
+@property (weak, nonatomic) IBOutlet UISwitch *switchLaser;  // 激光笔状态切换
+@property (weak, nonatomic) IBOutlet UIButton *btnRedNote;   // 笔记 - 红色
+@property (weak, nonatomic) IBOutlet UIButton *btnGreenNote; // 笔记 - 绿色
+@property (weak, nonatomic) IBOutlet UIButton *btnBlueNote;  // 笔记 - 蓝色
+@property (weak, nonatomic) IBOutlet UIButton *btnClearNote; // 消除笔记
+
+@property (weak, nonatomic) IBOutlet UIButton *btnScanPages; // 浏览
+@property (weak, nonatomic) IBOutlet UIButton *btnLastPage;  // 上一页
+@property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
+@property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
 @property (nonatomic, nonatomic) PopupView    *popupView;
 
 @property (nonatomic, strong) NSNumber *currentPageIndex;
@@ -46,9 +54,11 @@
 @property (nonatomic, strong) NSString *slideID;
 @property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, strong) NSString *forbidCss;
-@property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) Slide *slide;
 @property (nonatomic, strong) NSNumber *displayFrom;
+@property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
+@property (nonatomic, nonatomic) ReViewController *reViewController;
+@property (nonatomic, strong) NSMutableArray *dataList;
 
 @end
 
@@ -57,57 +67,73 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
 
+    
+    // 作笔记的入口，可切换笔记颜色
+    [self.btnRedNote setBackgroundColor:[UIColor redColor]];
+    [self.btnRedNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnGreenNote setBackgroundColor:[UIColor greenColor]];
+    [self.btnGreenNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnBlueNote setBackgroundColor:[UIColor blueColor]];
+    [self.btnBlueNote addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.btnClearNote addTarget:self action:@selector(actionClearNote:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnLastPage addTarget:self action:@selector(lastPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNextPage addTarget:self action:@selector(nextPage:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnScanPages addTarget:self action:@selector(actionScanSlide:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnDimiss addTarget:self action:@selector(actionDismissDisplayViewController:) forControlEvents:UIControlEventTouchUpInside];
+    
     /**
      *  控件布局、属性
      */
-    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editPanel.frame.size.width, self.editPanel.frame.size.height)];
-    self.editPanel.layer.masksToBounds = NO;
-    self.editPanel.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.editPanel.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
-    self.editPanel.layer.shadowOpacity = 0.8;
-    self.editPanel.layer.shadowPath = shadowPath.CGPath;
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.viewEditPanel.frame.size.width, self.viewEditPanel.frame.size.height)];
+    self.viewEditPanel.layer.masksToBounds = NO;
+    self.viewEditPanel.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.viewEditPanel.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.viewEditPanel.layer.shadowOpacity = 0.8;
+    self.viewEditPanel.layer.shadowPath = shadowPath.CGPath;
     
-    UIBezierPath *shadowPath2 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.colorView.frame.size.width, self.colorView.frame.size.height)];
-    self.colorView.layer.masksToBounds = NO;
-    self.colorView.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.colorView.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
-    self.colorView.layer.shadowOpacity = 0.8;
-    self.colorView.layer.shadowPath = shadowPath2.CGPath;
+    UIBezierPath *shadowPath2 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.viewColorChoice.frame.size.width, self.viewColorChoice.frame.size.height)];
+    self.viewColorChoice.layer.masksToBounds = NO;
+    self.viewColorChoice.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.viewColorChoice.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.viewColorChoice.layer.shadowOpacity = 0.8;
+    self.viewColorChoice.layer.shadowPath = shadowPath2.CGPath;
     
-    UIBezierPath *shadowPath3 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.editBtn.frame.size.width, self.editBtn.frame.size.height)];
-    self.editBtn.layer.masksToBounds = NO;
-    self.editBtn.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.editBtn.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
-    self.editBtn.layer.shadowOpacity = 0;
-    self.editBtn.layer.shadowPath = shadowPath3.CGPath;
+    UIBezierPath *shadowPath3 = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.btnEditPanelSwitch.frame.size.width, self.btnEditPanelSwitch.frame.size.height)];
+    self.btnEditPanelSwitch.layer.masksToBounds = NO;
+    self.btnEditPanelSwitch.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.btnEditPanelSwitch.layer.shadowOffset = CGSizeMake(0.5f, 0.5f);
+    self.btnEditPanelSwitch.layer.shadowOpacity = 0;
+    self.btnEditPanelSwitch.layer.shadowPath = shadowPath3.CGPath;
     
-    self.editPanel.layer.cornerRadius = 4;
-    self.colorView.layer.cornerRadius = 4;
-    self.colorButton.layer.cornerRadius = 4;
-    self.blueNoteBtn.layer.cornerRadius = 4;
-    self.redNoteBtn.layer.cornerRadius = 4;
-    self.greenNoteBtn.layer.cornerRadius = 4;
-    [self.editPanel setHidden: true];
+    self.viewEditPanel.layer.cornerRadius = 4;
+    self.viewColorChoice.layer.cornerRadius = 4;
+    self.btnColorSwitch.layer.cornerRadius = 4;
+    self.btnBlueNote.layer.cornerRadius = 4;
+    self.btnRedNote.layer.cornerRadius = 4;
+    self.btnGreenNote.layer.cornerRadius = 4;
+    [self.viewEditPanel setHidden: true];
     
     /**
      *  控件事件
      */
-    [self.editBtn setTag: SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
-    [self.editBtn addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnEditPanelSwitch setTag:SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
+    [self.btnEditPanelSwitch addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.laserSwitch setOn: false];
-    [self.laserSwitch addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
+    [self.switchLaser setOn: false];
+    [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.forbidCss = @"<style type='text/css'>          \
-                        body { background: black; }     \
-                        * {                             \
-                        -webkit-touch-callout: none;    \
-                        -webkit-user-select: none;      \
-                        }                               \
-                        </style>                        \
-                        </head>";
+    body { background: black; }     \
+    * {                             \
+    -webkit-touch-callout: none;    \
+    -webkit-user-select: none;      \
+    }                               \
+    </style>                        \
+    </head>";
     
     /**
      * webView添加手势，向左即上一页，向右即下一页
@@ -121,44 +147,48 @@
     [self.webView addGestureRecognizer:gestureLeft];
     // webView按手势放大或缩小
     self.webView.scalesPageToFit = YES;
+    //self.webView.userInteractionEnabled = NO;
     
-    
-    // 作笔记的入口，可切换笔记颜色
-    [self.redNoteBtn setBackgroundColor:[UIColor redColor]];
-    [self.redNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.greenNoteBtn setBackgroundColor:[UIColor greenColor]];
-    [self.greenNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.blueNoteBtn setBackgroundColor:[UIColor blueColor]];
-    [self.blueNoteBtn addTarget:self action:@selector(noteBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
+    self.dataList = [[NSMutableArray alloc] init];
     self.currentPageIndex = [NSNumber numberWithInt:0];
     self.isDrawing        = NO;
     self.isLasering       = NO;
     self.paintView        = nil;
-    self.editPanel.layer.zPosition = MAXFLOAT;
+    self.viewEditPanel.layer.zPosition = MAXFLOAT;
     //[self.editPanel setTranslatesAutoresizingMaskIntoConstraints:NO];
+}
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    /**
+     *  CWPopup 事件
+     */
+    self.useBlurForPopup = YES;
     
     [self loadSlideInfo];
-    [self extractResource];
+    if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+        _dataList = [NSMutableArray arrayWithArray:[self.slide dictSwp][SLIDE_DESC_ORDER]];
+    } else {
+        _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSNumber *indexJumpTo = configDict[SLIDE_DISPLAY_JUMPTO];
-    if(indexJumpTo && ![self.currentPageIndex isEqual:indexJumpTo]) {
-        self.currentPageIndex = indexJumpTo;
-        [self showPopupView:[NSString stringWithFormat:@"跳致%@页", indexJumpTo]];
-    }
+    
+    [self stopNote];
+    [self.switchLaser setOn:NO];
+    
+    [self checkLastNextPageBtnState];
     [self loadHtml];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    NSLog(@"see you later.");
+    
+    NSString *html = [NSString stringWithFormat:@"<html><body></body></html>"];
+    [self.webView loadHTMLString:html baseURL:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -166,55 +196,61 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)dealloc {
+    self.slide = nil;
+    self.webView = nil;
+    self.dataList = nil;
+    self.paintView = nil;
+    self.popupView = nil;
+}
+#pragma mark - webview 
+//开始加载数据
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+//    [activityIndicator startAnimating];
+    NSLog(@"start.");
+}
+
+//数据加载完
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    [activityIndicator stopAnimating];
+//    UIView *view = (UIView *)[self.view viewWithTag:103];
+    //    [view removeFromSuperview];
+    NSLog(@"finish.");
+}
+
 /**
  *  控件事件
  */
 - (void) loadHtml {
-    if([self.currentPageIndex integerValue] > [self.slide.pages count]-1) {
+    if([self.currentPageIndex integerValue] > [self.dataList count]-1) {
         self.currentPageIndex = [NSNumber numberWithInteger:0];
         NSLog(@"Bug: DisplayViewController set Jumpto %@", self.currentPageIndex);
     }
-    NSString *htmlName = [self.slide.pages objectAtIndex: [self.currentPageIndex intValue]];
-    NSString *pdfPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"pdf"];
-    NSString *gifPath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"gif"];
-    NSString *mp4Path = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, @"mp4"];
+    NSString *htmlName = [self.dataList objectAtIndex: [self.currentPageIndex intValue]];
+    
     NSString *filePath;
     BOOL isHTML = YES;
-    if([FileUtils checkFileExist:pdfPath isDir:NO]) {
-        filePath = pdfPath;
-        isHTML = NO;
-    } else if([FileUtils checkFileExist:gifPath isDir:NO]) {
-        filePath = gifPath;
-        isHTML = NO;
-    } else if([FileUtils checkFileExist:mp4Path isDir:NO]) {
-        filePath = mp4Path;
-        isHTML = NO;
+    for(NSString *format in @[@"pdf", @"mp4", @"gif"]) {
+        filePath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, format];
+        if([FileUtils checkFileExist:filePath isDir:NO]) {
+            isHTML = NO; break;
+        }
     }
-
     if(isHTML) {
         filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
         NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
         NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+        [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];
+//        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
     }
-    
 }
 
-- (IBAction)addSlideToFavorite:(UIButton *)sender {
-    BOOL isSuccessfully = [FileUtils copySlideToFavorite:self.slideID Block:^(NSMutableDictionary *dict) {
-        [DateUtils updateSlideTimestamp:dict];
-    }];
-    
-    // 信息提示
-    NSString *popupInfo = [NSString stringWithFormat:@"拷贝%@", isSuccessfully ? @"成功" : @"失败"];
-    [self showPopupView: popupInfo];
-    
-}
 - (void) showPopupView: (NSString*) text {
     if(self.popupView == nil) {
         self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
@@ -239,26 +275,26 @@
 - (IBAction)actionToggleShowEditPanel:(UIButton *)sender {
     NSInteger tag = [sender tag];
     [UIView animateWithDuration:.5f animations:^{
-        [self.editPanel setHidden:(tag != SlideEditPanelShow)];
+        [self.viewEditPanel setHidden:(tag != SlideEditPanelShow)];
     }];
     
     switch(tag) {
         case SlideEditPanelHiden: {
-            [self.editBtn setTag:SlideEditPanelShow];
-            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
-            self.editPanelBgView.hidden = YES;
-            self.colorView.hidden = YES;
-            self.editBtn.layer.shadowOpacity = 0;
+            [self.btnEditPanelSwitch setTag:SlideEditPanelShow];
+            [self.btnEditPanelSwitch setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
+            self.viewEditPanelBg.hidden = YES;
+            self.viewColorChoice.hidden = YES;
+            self.btnEditPanelSwitch.layer.shadowOpacity = 0;
             [self stopLaser];
             [self stopNote];
         }
             break;
             
         case SlideEditPanelShow: {
-            [self.editBtn setTag:SlideEditPanelHiden];
-            [self.editBtn setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
-            self.editPanelBgView.hidden = NO;
-            self.editBtn.layer.shadowOpacity = 0.5;
+            [self.btnEditPanelSwitch setTag:SlideEditPanelHiden];
+            [self.btnEditPanelSwitch setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
+            self.viewEditPanelBg.hidden = NO;
+            self.btnEditPanelSwitch.layer.shadowOpacity = 0.5;
             
         }
             break;
@@ -294,13 +330,12 @@
         self.paintView.erase = false;
         [self.view addSubview:self.paintView];
         self.isLasering = !self.isLasering;
-        [self.drawBtn setEnabled:false];
     }
     
-    [self.view sendSubviewToBack:self.colorView];
-    self.colorView.hidden = YES;
-    [self.view bringSubviewToFront:self.editPanel];
-    [self.view bringSubviewToFront:self.editBtn];
+    [self.view sendSubviewToBack:self.viewColorChoice];
+    self.viewColorChoice.hidden = YES;
+    [self.view bringSubviewToFront:self.viewEditPanel];
+    [self.view bringSubviewToFront:self.btnEditPanelSwitch];
 }
 /**
  *  停用激光笔；
@@ -310,20 +345,6 @@
         [self.paintView removeFromSuperview];
         self.isLasering = !self.isLasering;
     }
-}
-
-// 笔记颜色
--(void)noteBtnClick:(UIButton*) sender{
-    // 关闭switch控件，并触发自身函数
-    [self.laserSwitch setOn:false];
-    [self stopLaser];
-    [self startNote];
-    self.paintView.paintColor = sender.backgroundColor;
-    self.colorButton.backgroundColor = sender.backgroundColor;
-    
-    [self.view sendSubviewToBack:self.colorView];
-    self.colorView.hidden = YES;
-    
 }
 
 /**
@@ -339,9 +360,25 @@
         [self.view addSubview:self.paintView];
         self.isDrawing = !self.isDrawing;
         
-        [self.view bringSubviewToFront:self.editPanel];
-        [self.view bringSubviewToFront:self.editBtn];
+        [self.view bringSubviewToFront:self.viewEditPanel];
+        [self.view bringSubviewToFront:self.btnEditPanelSwitch];
     }
+    self.btnClearNote.enabled = YES;
+}
+
+
+// 笔记颜色
+-(void)noteBtnClick:(UIButton*) sender{
+    // 关闭switch控件，并触发自身函数
+    [self.switchLaser setOn:NO];
+    [self stopLaser];
+    [self startNote];
+    self.paintView.paintColor = sender.backgroundColor;
+    self.btnColorSwitch.backgroundColor = sender.backgroundColor;
+    
+    [self.view sendSubviewToBack:self.viewColorChoice];
+    self.viewColorChoice.hidden = YES;
+    
 }
 
 /**
@@ -351,7 +388,15 @@
     if(self.isDrawing) {
         [self.paintView removeFromSuperview];
         self.isDrawing = !self.isDrawing;
-        self.colorButton.backgroundColor = [UIColor whiteColor];
+        self.btnColorSwitch.backgroundColor = [UIColor whiteColor];
+    }
+    self.btnClearNote.enabled = NO;
+}
+
+- (IBAction)actionClearNote:(id)sender {
+    if(self.isDrawing) {
+        [self.paintView clearDrawRect];
+        [self.paintView setNeedsDisplay];
     }
 }
 
@@ -361,37 +406,34 @@
  *  @param sender UIButton
  */
 - (IBAction)nextPage: (id)sender {
-    [self stopLaser];
+//    [self.switchLaser setOn:NO];
     [self stopNote];
     
-    NSInteger pageCount = [self.slide.pages count];
+    NSInteger pageCount = [self.dataList count];
     if([self.currentPageIndex intValue] < pageCount -1) {
         NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
-    } else {
-        [self showPopupView:@"最后一页了."];
     }
-    NSLog(@"next - current page index: %@", self.currentPageIndex);
+    [self checkLastNextPageBtnState];
 }
+
 /**
  *  浏览文档时[上一页], 触发手势: 向右滑动
  *
  *  @param sender UIButton
  */
 - (IBAction)lastPage: (id)sender {
-    [self stopLaser];
+//    [self.switchLaser setOn:NO];
     [self stopNote];
     
-    NSInteger pageCount = [self.slide.pages count];
+    NSInteger pageCount = [self.dataList count];
     if([self.currentPageIndex intValue] != 0) {
         NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
-    } else {
-        [self showPopupView:@"第一页了."];
     }
-    NSLog(@"next - current page index: %@", self.currentPageIndex);
+    [self checkLastNextPageBtnState];
 }
 
 
@@ -409,7 +451,7 @@
  *
  *  @param sender 无返回
  */
-- (IBAction)enterSlidePagesView:(id)sender {
+- (IBAction)actionScanSlide:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
     if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
@@ -417,29 +459,25 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.slide.pages objectAtIndex:[self.currentPageIndex integerValue]];
-        [config setObject:self.slideID forKey:CONTENT_KEY_EDITID1];
-        [config setObject:pageID forKey:CONTENT_KEY_EDITID2];
+        NSString *pageID = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
+        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
+        [config setObject:pageID forKey:SCAN_SLIDE_PAGEID];
         NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-        [config setObject:slideType forKey:SLIDE_EDIT_TYPE];
+        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
         
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+        configDict[SLIDE_DISPLAY_JUMPTO] = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
+        [FileUtils writeJSON:configDict Into:configPath];
+        
         // 界面跳转至文档页面编辑界面
-        if(self.reViewController == nil) {
+        if(!self.reViewController) {
             self.reViewController = [[ReViewController alloc] init];
+            self.reViewController.masterViewController = self;
         }
         [self presentViewController:self.reViewController animated:NO completion:nil];
     }
-}
-
-
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    // Disable user selection
-    NSLog(@"webViewDidFinishLoad");
-    //[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitUserSelect='none';"];
-    // Disable callout
-    //[webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.style.webkitTouchCallout='none';"];
 }
 
 // 做笔记
@@ -465,46 +503,92 @@
  *
  *  @param sender
  */
-- (IBAction)actionDismiss:(id)sender {
-    if([self.displayFrom intValue] == DisplayFromOfflineCell) {
-        if(self.callingController1 != nil) {
-            [self.callingController1 dismissDisplayViewController];
-        } else {
-            NSLog(@"Bug#not set DisplayViewController#callingController1");
+- (IBAction)actionDismissDisplayViewController:(id)sender {
+    if(self.slide.isFavorite) {
+        [self performSelector:@selector(dismissDisplayViewController)];
+    } else {
+        if(![self.dataList isEqualToArray:self.slide.pages]) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否存在？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
+            [alert show];
         }
     }
-    if([self.displayFrom intValue] == DisplayFromSlide) {
-        if(self.callingController2 != nil) {
-            [self.callingController2 dismissDisplayViewController];
-        } else {
-            NSLog(@"Bug#not set DisplayViewController#callingController2");
-        }
-    }
-    self.webView = nil;
-    [self dismissViewControllerAnimated:NO completion:nil];
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:0];
+    [FileUtils writeJSON:configDict Into:configPath];
+    
+    [self dismissDisplayViewController];
 }
 
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0: {
+            if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
+            }
+            [self.masterViewController dismissViewDisplayViewController];
+        }
+            break;
+        case 1: {
+            if(!self.mainAddNewTagView || !self.mainAddNewTagView.masterViewController) {
+                self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
+                self.mainAddNewTagView.masterViewController = self;
+            }
+            self.mainAddNewTagView.closeMainViewAfterDone = YES;
+            self.mainAddNewTagView.fromViewControllerName = @"DisplayViewController";
+            [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
+                NSLog(@"mainAddNewTagView popup view presented");
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+
 - (IBAction)colorButtonTouched:(UIButton *)sender {
-    self.colorView.hidden = !self.colorView.hidden;
+    self.viewColorChoice.hidden = !self.viewColorChoice.hidden;
     self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
-    if(!self.colorView.hidden) {
-        [self.view bringSubviewToFront:self.colorView];
+    if(!self.viewColorChoice.hidden) {
+        [self.view bringSubviewToFront:self.viewColorChoice];
     }
 }
 
 
 #pragma mark - assistant methods
 
+- (void) checkLastNextPageBtnState {
+    [self enabledLastNextPageBtn:self.btnLastPage Enabeld:([self.currentPageIndex intValue] != 0)];
+    [self enabledLastNextPageBtn:self.btnNextPage Enabeld:([self.currentPageIndex intValue] != [self.dataList count]-1)];
+}
+- (void) enabledLastNextPageBtn:(UIButton *)sender
+                        Enabeld:(BOOL)enabled {
+    if(enabled == sender.enabled) return;
+    
+    sender.enabled = enabled;
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
+    NSRange strRange = {0,[str length]};
+    if(enabled) {
+        [str removeAttribute:NSStrikethroughStyleAttributeName range:strRange];
+        
+    } else {
+        [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+    }
+    [sender setAttributedTitle:str forState:UIControlStateNormal];
+}
 - (void) loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
     // Basic Key Check
-    if(configDict[CONTENT_KEY_DISPLAYID] == nil) {
+    if(!configDict[CONTENT_KEY_DISPLAYID]) {
         NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Not Set!");
         abort();
     }
-    if(configDict[SLIDE_DISPLAY_TYPE] == nil) {
+    if(!configDict[SLIDE_DISPLAY_TYPE]) {
         NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
         abort();
     }
@@ -525,30 +609,75 @@
     if(self.slide.pages == nil || ![pageNum isEqualToString:self.slide.pageNum]) {
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
     }
+    
+    NSString *jumpToPageName = configDict[SLIDE_DISPLAY_JUMPTO];
+    NSInteger jumpToPageIndex = [self.slide.pages indexOfObject:jumpToPageName];
+    if(jumpToPageIndex && (jumpToPageIndex < 0 || jumpToPageIndex > [self.slide.pages count] -1)) {
+            jumpToPageIndex = 0;
+    }
+    self.currentPageIndex = [NSNumber numberWithInteger:jumpToPageIndex];
 }
 
 
-
-- (void) extractResource {
-    NSString *zipName = @"pdfJS";
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    // pdfJS
-    NSString *resPath = [documentPath stringByAppendingPathComponent:@"Resources"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    //[fileManager removeItemAtPath:resPath error:nil];
-    BOOL isDir = TRUE;
-    BOOL isDirExist = [fileManager fileExistsAtPath:resPath isDirectory:&isDir];
-    if(!isDirExist)
-        [fileManager createDirectoryAtPath:resPath withIntermediateDirectories:YES attributes:nil error:nil];
+#pragma mark - save slide to favorite
+/**
+ *  编辑状态下，选择多个页面后[保存].（自动归档为收藏）
+ *  弹出[添加标签]， 选择标签或创建标签，返回标签文件的配置档
+ *
+ *  并把当前选择的页面拷贝到目标文件ID(FAVORITE_DIRNAME)文件夹下
+ *
+ *  @param dict 目标文件配置
+ */
+- (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide {
+    NSMutableDictionary *dictSwp = [self.slide dictSwp];
     
-    NSString *pdfJSPath = [resPath stringByAppendingPathComponent:@"pdfJS"];
-    isDirExist = [fileManager fileExistsAtPath:pdfJSPath isDirectory:&isDir];
-    if(!isDirExist) {
-        NSString *pdfJSZip = [bundlePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.zip", zipName]];
-        BOOL state = [SSZipArchive unzipFileAtPath:pdfJSZip toDestination:resPath];
-        NSLog(@"%@", [NSString stringWithFormat:@"pdfJS解压zip: %@", state ? @"成功" : @"失败"]);
+    for(NSString *pName in dictSwp[SLIDE_DESC_ORDER]) {
+        // skip when not exist
+        if([targetSlide.pages containsObject:pName]) continue;
+        // copy page/image
+        [FileUtils copyFilePage:pName FromSlide:self.slide ToSlide:targetSlide];
+        
+        [targetSlide.pages addObject:pName];
+    }
+    [targetSlide updateTimestamp];
+    [targetSlide save];
+}
+
+-(void)dismissDisplayViewController {
+    [self performSelector:@selector(dismissPopupAddToTag)];
+    
+    [self.masterViewController dismissViewDisplayViewController];
+}
+- (void) dismissPopupAddToTag {
+    if (self.popupViewController) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            NSLog(@"popup view dismissPopupAddToTag dismissed");
+        }];
+    }
+}
+-(void)dismissReViewController {
+    if(self.reViewController) {
+        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+            _reViewController = nil;
+            NSLog(@"dismiss present view ReViewController.");
+        }];
     }
 }
 
+#pragma mark - present view ReViewController
+//- (void)presentViewReViewController {
+//    if(!self.reViewController) {
+//        self.reViewController = [[ReViewController alloc] init];
+//        self.reViewController.masterViewController = self;
+//    }
+//    [self presentViewController:self.reViewController animated:NO completion:nil];
+//}
+//- (void)dismissViewReViewController {
+//    if(self.reViewController) {
+//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
+//            _reViewController = nil;
+//            NSLog(@"dismiss ReViewController.");
+//        }];
+//    }
+//}
 @end

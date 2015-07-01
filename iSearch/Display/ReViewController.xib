@@ -9,8 +9,10 @@
                 <outlet property="btnNavDismiss" destination="mst-UN-TaP" id="wLX-XK-zjW"/>
                 <outlet property="btnNavEdit" destination="QuE-w2-dXh" id="WHb-GF-YVW"/>
                 <outlet property="btnNavRefresh" destination="EbM-8Y-DSu" id="bnj-Ni-Tgn"/>
+                <outlet property="btnNavRemove" destination="0Uy-OC-PIc" id="3q9-fq-s5i"/>
                 <outlet property="btnNavRestore" destination="e05-Dp-V6I" id="0fr-VM-zep"/>
                 <outlet property="btnNavSaveTo" destination="CEa-JI-59P" id="yiy-GP-iXa"/>
+                <outlet property="labelNavSlideTitle" destination="qlP-pm-41K" id="bF7-kB-lvv"/>
                 <outlet property="navBarContainerView" destination="lTC-Uy-H1e" id="tXa-5f-yAH"/>
                 <outlet property="scrollView" destination="s9r-Ut-qqt" id="LQK-ED-dys"/>
                 <outlet property="view" destination="iN0-l3-epB" id="BgA-yZ-xCJ"/>
@@ -39,10 +41,9 @@
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="重组" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlP-pm-41K">
-                                    <rect key="frame" x="234" y="1" width="132" height="44"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文档名称" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qlP-pm-41K">
+                                    <rect key="frame" x="79" y="0.0" width="270" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="132" id="VDN-FJ-q5M"/>
                                         <constraint firstAttribute="height" constant="44" id="lwF-Np-n9x"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -50,71 +51,88 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EbM-8Y-DSu" userLabel="refresh">
-                                    <rect key="frame" x="429" y="0.0" width="44" height="44"/>
+                                    <rect key="frame" x="555" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="6du-WT-2ql"/>
                                         <constraint firstAttribute="width" constant="44" id="d3k-zc-eO4"/>
                                     </constraints>
-                                    <state key="normal" image="iconRemove">
+                                    <state key="normal" image="iconNavRefresh">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e05-Dp-V6I" userLabel="restore">
-                                    <rect key="frame" x="490" y="0.0" width="44" height="44"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Uy-OC-PIc" userLabel="refresh">
+                                    <rect key="frame" x="408" y="0.0" width="44" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="UfG-lb-ewp"/>
-                                        <constraint firstAttribute="height" constant="44" id="dBg-QQ-b8N"/>
+                                        <constraint firstAttribute="height" constant="44" id="Vzt-2F-cs7"/>
+                                        <constraint firstAttribute="width" constant="44" id="hyk-ab-ct9"/>
                                     </constraints>
-                                    <state key="normal" image="iconRestore">
+                                    <state key="normal" image="iconNavRemove">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QuE-w2-dXh" userLabel="edit">
-                                    <rect key="frame" x="380" y="0.0" width="44" height="44"/>
+                                    <rect key="frame" x="359" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="EnC-Mn-Cyo"/>
                                         <constraint firstAttribute="height" constant="44" id="ydy-Ov-O0I"/>
                                     </constraints>
-                                    <state key="normal" image="iconEdit2">
+                                    <state key="normal" image="iconNavEdit2">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SjH-VH-2h0">
+                                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SjH-VH-2h0">
                                     <rect key="frame" x="0.0" y="43" width="600" height="1"/>
                                     <color key="backgroundColor" red="0.9137254901960784" green="0.9137254901960784" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="5cw-LZ-SII"/>
                                     </constraints>
                                 </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e05-Dp-V6I" userLabel="restore">
+                                    <rect key="frame" x="457" y="0.0" width="44" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="44" id="UfG-lb-ewp"/>
+                                        <constraint firstAttribute="height" constant="44" id="dBg-QQ-b8N"/>
+                                    </constraints>
+                                    <state key="normal" image="iconNavRestore">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEa-JI-59P" userLabel="saveTo">
-                                    <rect key="frame" x="548" y="0.0" width="44" height="44"/>
+                                    <rect key="frame" x="506" y="0.0" width="44" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="FrE-2N-AUO"/>
                                         <constraint firstAttribute="width" constant="44" id="tZ3-PM-1F1"/>
                                     </constraints>
-                                    <state key="normal" image="iconSaveTo">
+                                    <state key="normal" image="iconNavSaveTo">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="centerY" secondItem="QuE-w2-dXh" secondAttribute="centerY" id="4iq-fH-LS1"/>
-                                <constraint firstItem="EbM-8Y-DSu" firstAttribute="leading" secondItem="QuE-w2-dXh" secondAttribute="trailing" constant="5" id="5bm-Ay-vzT"/>
-                                <constraint firstItem="CEa-JI-59P" firstAttribute="leading" secondItem="e05-Dp-V6I" secondAttribute="trailing" constant="14" id="7rN-Da-t1Q"/>
-                                <constraint firstAttribute="centerY" secondItem="mst-UN-TaP" secondAttribute="centerY" id="9tr-Uz-gFL"/>
-                                <constraint firstAttribute="bottom" secondItem="SjH-VH-2h0" secondAttribute="bottom" id="BwT-V3-4Wj"/>
-                                <constraint firstItem="SjH-VH-2h0" firstAttribute="width" secondItem="lTC-Uy-H1e" secondAttribute="width" id="Cgf-O6-4M3"/>
-                                <constraint firstAttribute="centerX" secondItem="qlP-pm-41K" secondAttribute="centerX" id="IBw-nL-6Gb"/>
+                                <constraint firstAttribute="centerY" secondItem="CEa-JI-59P" secondAttribute="centerY" id="0mD-fd-YqG"/>
+                                <constraint firstAttribute="centerY" secondItem="mst-UN-TaP" secondAttribute="centerY" id="3Hz-uE-0hh"/>
+                                <constraint firstItem="qlP-pm-41K" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="73b-8H-d3R"/>
+                                <constraint firstAttribute="centerY" secondItem="qlP-pm-41K" secondAttribute="centerY" id="88z-lF-JWs"/>
+                                <constraint firstItem="CEa-JI-59P" firstAttribute="leading" secondItem="e05-Dp-V6I" secondAttribute="trailing" constant="5" id="8SD-Cw-nnI"/>
+                                <constraint firstItem="e05-Dp-V6I" firstAttribute="leading" secondItem="0Uy-OC-PIc" secondAttribute="trailing" constant="5" id="BtT-xN-JTC"/>
+                                <constraint firstItem="0Uy-OC-PIc" firstAttribute="leading" secondItem="QuE-w2-dXh" secondAttribute="trailing" constant="5" id="Jqm-R4-KBx"/>
                                 <constraint firstAttribute="height" constant="44" id="OOu-l0-RKY"/>
-                                <constraint firstItem="mst-UN-TaP" firstAttribute="leading" secondItem="lTC-Uy-H1e" secondAttribute="leading" id="czK-qP-wOd"/>
-                                <constraint firstAttribute="centerX" secondItem="SjH-VH-2h0" secondAttribute="centerX" id="gMW-0V-9OX"/>
-                                <constraint firstAttribute="centerY" secondItem="e05-Dp-V6I" secondAttribute="centerY" id="mW4-ZA-oYj"/>
-                                <constraint firstItem="e05-Dp-V6I" firstAttribute="leading" secondItem="EbM-8Y-DSu" secondAttribute="trailing" constant="17" id="t6L-iT-yrc"/>
-                                <constraint firstAttribute="trailing" secondItem="CEa-JI-59P" secondAttribute="trailing" constant="8" id="vbz-qc-5cJ"/>
-                                <constraint firstAttribute="centerY" secondItem="EbM-8Y-DSu" secondAttribute="centerY" id="yIm-he-Gnt"/>
-                                <constraint firstAttribute="centerY" secondItem="CEa-JI-59P" secondAttribute="centerY" id="yhx-N6-li1"/>
-                                <constraint firstAttribute="centerY" secondItem="qlP-pm-41K" secondAttribute="centerY" id="zM1-xd-Ect"/>
+                                <constraint firstItem="CEa-JI-59P" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="Po3-wo-YMk"/>
+                                <constraint firstItem="mst-UN-TaP" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="T6g-mq-cnw"/>
+                                <constraint firstAttribute="centerY" secondItem="e05-Dp-V6I" secondAttribute="centerY" id="WeB-Aa-smm"/>
+                                <constraint firstItem="QuE-w2-dXh" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="ai1-nv-DRh"/>
+                                <constraint firstItem="qlP-pm-41K" firstAttribute="leading" secondItem="mst-UN-TaP" secondAttribute="trailing" constant="13" id="dBT-ID-TQV"/>
+                                <constraint firstItem="mst-UN-TaP" firstAttribute="leading" secondItem="lTC-Uy-H1e" secondAttribute="leading" id="hA7-NL-jy6"/>
+                                <constraint firstItem="e05-Dp-V6I" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="jZB-t0-kHE"/>
+                                <constraint firstItem="QuE-w2-dXh" firstAttribute="leading" secondItem="qlP-pm-41K" secondAttribute="trailing" constant="10" id="mK3-X6-07a"/>
+                                <constraint firstAttribute="centerY" secondItem="EbM-8Y-DSu" secondAttribute="centerY" id="pkp-fz-iue"/>
+                                <constraint firstAttribute="centerY" secondItem="0Uy-OC-PIc" secondAttribute="centerY" id="r2b-Ev-4kh"/>
+                                <constraint firstAttribute="trailing" secondItem="EbM-8Y-DSu" secondAttribute="trailing" constant="1" id="tiW-cr-lZU"/>
+                                <constraint firstItem="EbM-8Y-DSu" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="xSz-cl-O8w"/>
+                                <constraint firstAttribute="centerY" secondItem="QuE-w2-dXh" secondAttribute="centerY" id="xUK-Mh-58f"/>
+                                <constraint firstItem="EbM-8Y-DSu" firstAttribute="leading" secondItem="CEa-JI-59P" secondAttribute="trailing" constant="5" id="yOr-Jb-C8p"/>
+                                <constraint firstItem="0Uy-OC-PIc" firstAttribute="top" secondItem="lTC-Uy-H1e" secondAttribute="top" id="zsQ-pc-1KW"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -145,9 +163,10 @@
     </objects>
     <resources>
         <image name="iconBack" width="22" height="22"/>
-        <image name="iconEdit2" width="60" height="63"/>
-        <image name="iconRemove" width="44" height="44"/>
-        <image name="iconRestore" width="44" height="44"/>
-        <image name="iconSaveTo" width="44" height="44"/>
+        <image name="iconNavEdit2" width="44" height="44"/>
+        <image name="iconNavRefresh" width="44" height="44"/>
+        <image name="iconNavRemove" width="44" height="44"/>
+        <image name="iconNavRestore" width="44" height="44"/>
+        <image name="iconNavSaveTo" width="44" height="44"/>
     </resources>
 </document>

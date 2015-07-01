@@ -6,7 +6,6 @@ platform :ios, '7.0'
 pod 'Reachability', '~>3.2'
 # 公告通知时日历控件
 pod 'JTCalendar', '~>1.2.3'
-pod 'SKSplashView', '~>0.1.0'
 pod 'MMMaterialDesignSpinner', '~>0.2.0'
 pod 'SSZipArchive', '~>0.3.2'
 pod 'DLRadioButton', '~>1.1.1'
