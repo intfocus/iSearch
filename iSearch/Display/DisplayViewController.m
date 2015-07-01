@@ -186,7 +186,11 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    NSLog(@"see you later.");
+    
+    NSString *thumbnailName = @"thumbnailPageSlide.png";
+    NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;'>", thumbnailName];
+    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+    [self.webView loadHTMLString:html baseURL:url];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -228,7 +232,7 @@
     
     NSString *filePath;
     BOOL isHTML = YES;
-    for(NSString *format in @[@"pdf", @"gif", @"mp4"]) {
+    for(NSString *format in @[@"pdf", @"mp4", @"gif"]) {
         filePath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, format];
         if([FileUtils checkFileExist:filePath isDir:NO]) {
             isHTML = NO; break;
@@ -242,9 +246,8 @@
         [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
-        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];
-        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
+//        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
     }

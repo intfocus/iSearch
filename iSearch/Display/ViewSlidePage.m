@@ -24,33 +24,10 @@
  *  @param webView      UIWebView
  */
 - (void)loadThumbnail:(NSString *)thumbnailPath {
-    NSString *extName = [thumbnailPath pathExtension];
-    
-    if([@[@"pdf"] containsObject:extName]) {
-        NSURL *url = [NSURL fileURLWithPath:thumbnailPath];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [self.webViewThumbnail loadRequest:request];
-        
-    } else if([@[@"png",@"gif",@"jpeg",@"bmp"] containsObject:extName]) {
-        NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;height:100%%;'>", [thumbnailPath lastPathComponent]];
-        NSURL *url = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
-        [self.webViewThumbnail loadHTMLString:html baseURL:url];
-        
-    } else {
-        NSLog(@"Load default thumbnail.");
-        NSLog(@"%@", thumbnailPath);
-    }
+    NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
+    NSURL *url = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
+    [self.webViewThumbnail loadHTMLString:html baseURL:url];
 }
-
-- (void)setReViewController:(ReViewController *)reViewController {
-    _reViewController = reViewController;
-
-    self.webViewThumbnail.scrollView.scrollEnabled = NO;
-    self.webViewThumbnail.scrollView.bounces       = NO;
-    self.webViewThumbnail.scalesPageToFit          = YES;
-    self.webViewThumbnail.userInteractionEnabled   = NO;
-}
-
 
 - (void)hightLight {
     self.webViewThumbnail.layer.borderWidth = 2.0f;

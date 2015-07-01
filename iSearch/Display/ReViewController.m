@@ -361,9 +361,7 @@
     viewSlidePage.reViewController = self;
     
     NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:self.slide.dirName];
-    if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
-        [viewSlidePage loadThumbnail: thumbnailPath];
-    }
+    [viewSlidePage loadThumbnail: thumbnailPath];
     // NSLog(@"%ld, %@", (long)index, thumbnailPath);
     
     // enter display view when double click

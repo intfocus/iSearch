@@ -430,9 +430,7 @@
     NSString *pagePath = [slidePath stringByAppendingPathComponent:pageID];
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     
-    return [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];;
-    
-    
+    //return [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
     NSString *thumbnailPath, *format;
     BOOL isVideo = NO, isSlide = NO;
     
@@ -448,7 +446,7 @@
         return thumbnailPath;
     };
     
-    for(format in @[@"pdf", @"gif"]) {
+    for(format in @[@"Gif",@"gif"]) { // never load pdf, @"pdf"
         thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
         if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
             isSlide = YES;

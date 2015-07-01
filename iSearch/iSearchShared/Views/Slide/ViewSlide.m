@@ -187,15 +187,16 @@
  *
  *  @param urlString 下载zip链接
  */
-#warning 监测下载进程及进程
 - (void) downloadZip:(NSURL *)url {
     [self.slide toDownloaded];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    NSMutableData *data = [[NSMutableData alloc] init];
+    NSURLRequest *request       = [NSURLRequest requestWithURL:url];
+    NSMutableData *data         = [[NSMutableData alloc] init];
     self.downloadConnectionData = data;
-    NSURLConnection *newConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
-    self.downloadConnection = newConnection;
+    self.downloadConnection     = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
+    self.progressView.progress  = 0.0;
+    self.progressView.hidden    = NO;
+    
     if (self.downloadConnection){
         NSLog(@"Successfully created the connection");
     } else {
@@ -228,9 +229,9 @@
     NSString* contentType = [headerDict objectForKey:@"Content-Type"];
     if([[contentType lowercaseString] isEqualToString:@"application/octet-stream"]) {
         self.downloadLength = [NSNumber numberWithFloat:[headerDict[@"Accept-Length"] floatValue]];
-        self.progressView.hidden = NO;
     } else {
         self.isDownloadRequestValid = NO;
+        self.progressView.hidden = YES;
     }
 }
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{

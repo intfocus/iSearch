@@ -67,9 +67,6 @@
     */
     [self.btnNavBack addTarget:self action:@selector(actionOutsideLoginClose:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnSubmit addTarget:self action:@selector(actionSubmit:) forControlEvents:UIControlEventTouchUpInside];
-    
-    NSLog(@"view:%@", NSStringFromCGRect(self.view.bounds));
-    NSLog(@"webview:%@", NSStringFromCGRect(self.webViewLogin.bounds));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -94,9 +91,9 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-    self.cookieValue = @"E00736";
-    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
-    return;
+//    self.cookieValue = @"E00736";
+//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+//    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");

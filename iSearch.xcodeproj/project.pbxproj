@@ -546,7 +546,6 @@
 			isa = PBXGroup;
 			children = (
 				C4B6F2941B4158CD0057A8A1 /* close_x.png */,
-				C4B6F2951B4158CD0057A8A1 /* covers */,
 				C4B6F2961B4158CD0057A8A1 /* coverSlideSelected.png */,
 				C4B6F2971B4158CD0057A8A1 /* coverSlideSelecting.png */,
 				C4B6F2991B4158CD0057A8A1 /* overlay_selected@2x.png */,
@@ -558,13 +557,6 @@
 				C4B6F29F1B4158CD0057A8A1 /* ToView.png */,
 			);
 			path = Images;
-			sourceTree = "<group>";
-		};
-		C4B6F2951B4158CD0057A8A1 /* covers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = covers;
 			sourceTree = "<group>";
 		};
 		C4BED03D1B2FFEE2000147A2 /* iSearchShared */ = {
