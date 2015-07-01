@@ -18,6 +18,10 @@
 
 @implementation FileUtils
 
++ (NSString *)getBasePath {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    return [paths objectAtIndex:0];
+}
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *
@@ -27,21 +31,23 @@
  */
 + (NSString *)getPathName: (NSString *)dirName {
     //获取应用程序沙盒的Documents目录
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *path = [paths objectAtIndex:0];
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
-#warning todo userID_deptID/一级目录
-    // 一级目录路径， 不存在则创建
-    NSString *pathname = [path stringByAppendingPathComponent:dirName];
+    NSString *basePath = [FileUtils getBasePath];
+    BOOL isDir = true, existed;
     
-    BOOL isDir = true;
-    BOOL existed = [fileManager fileExistsAtPath:pathname isDirectory:&isDir];
+    NSString *configPath = [basePath stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
+    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+    NSString *userSpaceName = [NSString stringWithFormat:@"%@-%@", configDict[USER_DEPTID], configDict[USER_EMPLOYEEID]];
+    NSString *userSpacePath = [basePath stringByAppendingPathComponent:userSpaceName];
+    
+    // 一级目录路径， 不存在则创建
+    NSString *pathName = [userSpacePath stringByAppendingPathComponent:dirName];
+    existed = [fileManager fileExistsAtPath:pathName isDirectory:&isDir];
     if ( !(isDir == true && existed == YES) ) {
-        [fileManager createDirectoryAtPath:pathname withIntermediateDirectories:YES attributes:nil error:nil];
+        [fileManager createDirectoryAtPath:pathName withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
-    return pathname;
+    return pathName;
 }
 
 /**
@@ -89,7 +95,7 @@
     if([self checkFileExist:pathName isDir:false]) {
         dict = [dict initWithContentsOfFile:pathName];
         // 若为空，则为JSON字符串
-        if(dict == nil) {
+        if(!dict) {
             NSError *error;
             BOOL isSuccessfully;
             NSString *descContent = [NSString stringWithContentsOfFile:pathName encoding:NSUTF8StringEncoding error:&error];

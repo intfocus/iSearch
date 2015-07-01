@@ -11,6 +11,7 @@
 #import "Slide.h"
 #import "message.h"
 
+#import "ApiUtils.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
@@ -20,12 +21,16 @@
 #import "MainViewController.h"
 
 @interface ViewSlide()
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 @property (nonatomic, nonatomic) PopupView *popupView;
 
 // http download variables begin
 @property (strong, nonatomic) NSString   *downloadURL;
 @property (strong, nonatomic) NSURLConnection *downloadConnection;
 @property (strong, nonatomic) NSMutableData   *downloadConnectionData;
+@property (strong, nonatomic) NSNumber *downloadZipSize;
+@property (strong, nonatomic) NSNumber *downloadLength;
+@property (nonatomic, nonatomic) BOOL isDownloadRequestValid;
 // http download variables end
 @end
 
@@ -72,9 +77,8 @@
         [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
     } else {
         if([HttpUtils isNetworkAvailable]) {
-            self.downloadURL = [NSString stringWithFormat:@"%@%@?%@=%@",
-                                     BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, self.slideID];
-            [self downloadZip:self.downloadURL];
+            self.isDownloadRequestValid = YES;
+            [self downloadZip:[ApiUtils downloadSlideURL:self.slideID]];
         } else {
             [self showPopupView:@"无网络，\n不下载"];
         }
@@ -84,7 +88,7 @@
 
 - (IBAction)actionDisplaySlideInfo:(UIButton *)sender {
     MainViewController *mainViewController = [self masterViewController];
-//    [mainViewController poupSlideInfo:self.slideID Dir:self.dirName];
+
     [mainViewController popupSlideInfo:[self.slide refreshFields] isFavorite:self.isFavorite];
 }
 
@@ -184,16 +188,15 @@
  *  @param urlString 下载zip链接
  */
 #warning 监测下载进程及进程
-- (void) downloadZip: (NSString *) urlString {
-    [FileUtils slideToDownload:self.slideID];
+- (void) downloadZip:(NSURL *)url {
+    [self.slide toDownloaded];
     
-    NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSMutableData *data = [[NSMutableData alloc] init];
     self.downloadConnectionData = data;
     NSURLConnection *newConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:YES];
     self.downloadConnection = newConnection;
-    if (self.downloadConnection != nil){
+    if (self.downloadConnection){
         NSLog(@"Successfully created the connection");
     } else {
         NSLog(@"Could not create the connection");
@@ -204,34 +207,56 @@
     NSLog(@"An error happened");
     NSLog(@"%@", error);
 }
-
+/**
+ *  Response Header
+ *
+ *   "Accept-Length" = 9010551;
+ *   "Accept-Ranges" = bytes;
+ *   "Content-Disposition" = "attachment; filename=93.zip";
+ *   "Content-Type" = "application/octet-stream";
+ *   Date = "Wed, 01 Jul 2015 06:00:48 GMT";
+ *   Server = "Microsoft-IIS/7.5";
+ *   "Transfer-Encoding" = Identity;
+ *   "X-Powered-By" = "PHP/5.6.8, ASP.NET";
+ *
+ *  @param connection <#connection description#>
+ *  @param response   <#response description#>
+ */
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    NSHTTPURLResponse* http = (NSHTTPURLResponse*)response;
+    NSDictionary* headerDict = http.allHeaderFields;
+    NSString* contentType = [headerDict objectForKey:@"Content-Type"];
+    if([[contentType lowercaseString] isEqualToString:@"application/octet-stream"]) {
+        self.downloadLength = [NSNumber numberWithFloat:[headerDict[@"Accept-Length"] floatValue]];
+        self.progressView.hidden = NO;
+    } else {
+        self.isDownloadRequestValid = NO;
+    }
+}
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data{
-    NSLog(@"Received data: %@", self.slideID);
     [self.downloadConnectionData appendData:data];
+    
+    self.progressView.progress = (float)[self.downloadConnectionData length] / [self.downloadLength floatValue];
 }
 
 - (void) connectionDidFinishLoading: (NSURLConnection *)connection{
     /* 下载的数据 */
-    NSLog(@"%@", [NSString stringWithFormat:@"下载<#id:%@ url:%@> 成功", self.slideID, self.downloadURL]);
     NSString *zipName = [NSString stringWithFormat:@"%@.zip", self.slideID];
     NSString *pathName = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
     
     BOOL state = [self.downloadConnectionData writeToFile:pathName atomically:YES];
-    NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ url:%@> %@", self.slideID, self.downloadURL, state ? @"成功" : @"失败"]);
+    NSLog(@"%@", [NSString stringWithFormat:@"保存<#id:%@ %@> %@", self.slideID, pathName, state ? @"成功" : @"失败"]);
     
-#warning 服务器端响应文字处理：文件不存在
     // 下载zip动作为异步，解压动作应该放在此处
     if(state) {
         [self extractZipFile];
         [self reloadSlideDesc];
         
         [self.slide downloaded];
+        self.progressView.hidden = YES;
     }
     
     [self updateBtnDownloadOrDisplayIcon];
-}
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response{
-    [self.downloadConnectionData setLength:0];
 }
 
 /**

@@ -28,8 +28,10 @@
 // attribute fields
 @property (nonatomic, strong) NSString *configPath;
 @property (nonatomic, strong) NSMutableDictionary *configDict;
+@property (nonatomic, strong) NSString *personalPath;
 
 // instance methods
 - (void)save;
+- (void)writeInToPersonal;
 @end
 #endif

@@ -74,8 +74,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self.view bringSubviewToFront:self.btnSubmit];
 }
 
 #pragma mark memory management
@@ -131,7 +129,6 @@
 }
 
 - (IBAction)actionReadCookieTimer:(id)sender {
-    NSLog(@"timer: %ld", (long)self.timerCount);
     NSString *cookieName = @"samlNameId", *cookieValue = @"";
     
     NSHTTPCookie *cookie;
@@ -144,7 +141,6 @@
         }
     }
     if([cookieValue length] > 0) {
-        NSLog(@"got it, samlNameId: %@", cookieValue);
         if([cookieValue isEqualToString:@"error000"]) {
             [self hideOutsideLoginControl:YES];
             [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
@@ -159,9 +155,6 @@
 }
 
 - (void) hideOutsideLoginControl:(BOOL)isHidden {
-    NSLog(@"view:%@", NSStringFromCGRect(self.view.bounds));
-    NSLog(@"webview:%@", NSStringFromCGRect(self.webViewLogin.bounds));
-    NSLog(@"hidden:%@, webview:%@", (isHidden ? @"true" : @"false"), NSStringFromCGRect(self.webViewLogin.bounds));
     if(isHidden) {
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
@@ -197,19 +190,8 @@
         
         // 服务器交互成功
         if(!error) {
-            // 服务器响应json格式为: { code: 1, info: {} }
-            //  code = 1 则表示服务器与客户端交互成功, info为用户信息,格式为JSON
-            //  code = 非1 则表示服务器方面查检出有错误， info为错误信息,格式为JSON
-            //            NSNumber *responseStatus = [responseDict objectForKey:LOGIN_FIELD_STATUS];
             NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
-            // C.5.1 登陆成功,跳至步骤 C.success
-            // if([responseStatus isEqualToNumber:[NSNumber numberWithInt:1]]) {
             if([responseResult length] == 0) {
-                //      3.success
-                //          last为当前时间(格式LOGIN_DATE_FORMAT)
-                //          password = remember_password ? 控件内容 : @""
-                //          把user/password/last/remember_password写入login.plist文件
-                // 界面输入信息
                 self.user.loginUserName    = self.cookieValue;
                 self.user.loginPassword    = self.cookieValue;
                 self.user.loginRememberPWD = YES;
@@ -224,6 +206,7 @@
                 
                 // write into local config
                 [self.user save];
+                [self.user writeInToPersonal];
                 
                 // 跳至主界面
                 [self enterMainViewController];
@@ -321,7 +304,6 @@
 }
 
 - (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName {
-//    NSString *downloadUrl = @"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip";
     NSString *zipName = [downloadUrl lastPathComponent];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
     if([FileUtils checkFileExist:zipPath isDir:NO]) {

@@ -21,7 +21,11 @@
 @end
 @implementation ApiUtils
 
-
++ (NSURL *)downloadSlideURL:(NSString *)slideID {
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?%@=%@",
+            BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, slideID];
+    return [NSURL URLWithString:urlString];
+}
 + (NSMutableDictionary *)notifications {
     NSMutableDictionary *notificationDatas = [[NSMutableDictionary alloc] init];
     // 服务器获取成功则写入cache,否则读取cache

@@ -11,6 +11,7 @@
 
 @interface ApiUtils : NSObject
 
++ (NSURL *)downloadSlideURL:(NSString *)slideID;
 + (NSMutableDictionary *)notifications;
 
 @end

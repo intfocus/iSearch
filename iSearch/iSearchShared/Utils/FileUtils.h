@@ -19,6 +19,7 @@
  */
 @interface FileUtils : NSObject
 
++ (NSString *)getBasePath;
 /**
  *  传递目录名取得沙盒中的绝对路径(一级),不存在则创建，请慎用！
  *

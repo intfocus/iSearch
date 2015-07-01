@@ -14,8 +14,7 @@
 
 - (User *)init {
     if(self = [super init]) {
-    
-        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+        NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
         NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
         
         _configPath = configPath;
@@ -37,6 +36,8 @@
         if(!self.ID) {
             _ID = @"0";
             NSLog(@"User#ID is nil.");
+        } else {
+            _personalPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
         }
         if(!self.deptID) {
             _deptID = @"0";
@@ -66,5 +67,8 @@
     [FileUtils writeJSON:self.configDict Into:self.configPath];
 }
 
-
+- (void)writeInToPersonal {
+    _personalPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
+    [FileUtils writeJSON:self.configDict Into:self.personalPath];
+}
 @end
