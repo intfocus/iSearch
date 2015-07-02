@@ -197,9 +197,9 @@
 }
 
 - (void)dealloc {
-    self.slide = nil;
-    self.webView = nil;
-    self.dataList = nil;
+    self.slide     = nil;
+    self.webView   = nil;
+    self.dataList  = nil;
     self.paintView = nil;
     self.popupView = nil;
 }
@@ -508,7 +508,7 @@
         [self performSelector:@selector(dismissDisplayViewController)];
     } else {
         if(![self.dataList isEqualToArray:self.slide.pages]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否存在？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否保存？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
             [alert show];
         }
     }

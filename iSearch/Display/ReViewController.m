@@ -127,7 +127,6 @@
     if(self.selectState) {
         [self performSelector:@selector(actionEdit:) withObject:self.btnNavEdit];
     }
-    self.btnNavRefresh.enabled = NO;
     self.btnNavRemove.enabled = NO;
     self.btnNavSaveTo.enabled = NO;
     
@@ -493,14 +492,9 @@
 // B4 页面顺序 - 长按[页面]至颤动，搬动至指定位置，重置fileId/desc[@"order"]
 - (void)GMGridView:(GMGridView *)gridView moveItemAtIndex:(NSInteger)oldIndex toIndex:(NSInteger)newIndex {
     NSString *pName = [_dataList objectAtIndex:oldIndex];
-    if(oldIndex > newIndex) {
-        [_dataList insertObject:pName atIndex:newIndex];
-        [_dataList removeObjectAtIndex:(oldIndex+1)];
-    } else {
-        [_dataList removeObjectAtIndex:oldIndex];
-        [_dataList insertObject:pName atIndex:newIndex];
-    }
-    NSLog(@"%ld => %ld \n%@",(long)oldIndex, (long)newIndex, _dataList);
+    [_dataList removeObjectAtIndex:oldIndex];
+    [_dataList insertObject:pName atIndex:newIndex];
+    NSLog(@"----------%ld => %ld------------",(long)oldIndex, (long)newIndex);
     [self checkDescSwpContent];
 }
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
@@ -525,7 +519,6 @@
     }
     
     self.btnNavRestore.enabled = ![_dataList isEqualToArray:self.slide.pages];
-    self.btnNavRefresh.enabled = YES;
 }
 
 @end
