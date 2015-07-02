@@ -516,8 +516,6 @@
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:0];
     [FileUtils writeJSON:configDict Into:configPath];
-    
-    [self dismissDisplayViewController];
 }
 
 
@@ -528,7 +526,7 @@
                 NSFileManager *fileManager = [NSFileManager defaultManager];
                 [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
             }
-            [self.masterViewController dismissViewDisplayViewController];
+            [self dismissDisplayViewController];
         }
             break;
         case 1: {
