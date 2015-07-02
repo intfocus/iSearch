@@ -24,6 +24,12 @@
 #define COCOAPODS_VERSION_MINOR_JTCalendar 2
 #define COCOAPODS_VERSION_PATCH_JTCalendar 3
 
+// MBProgressHUD
+#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
+#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
+#define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
+#define COCOAPODS_VERSION_PATCH_MBProgressHUD 1
+
 // MMMaterialDesignSpinner
 #define COCOAPODS_POD_AVAILABLE_MMMaterialDesignSpinner
 #define COCOAPODS_VERSION_MAJOR_MMMaterialDesignSpinner 0
@@ -41,12 +47,6 @@
 #define COCOAPODS_VERSION_MAJOR_SCLAlertView_Objective_C 0
 #define COCOAPODS_VERSION_MINOR_SCLAlertView_Objective_C 7
 #define COCOAPODS_VERSION_PATCH_SCLAlertView_Objective_C 3
-
-// SKSplashView
-#define COCOAPODS_POD_AVAILABLE_SKSplashView
-#define COCOAPODS_VERSION_MAJOR_SKSplashView 0
-#define COCOAPODS_VERSION_MINOR_SKSplashView 1
-#define COCOAPODS_VERSION_PATCH_SKSplashView 0
 
 // SSZipArchive
 #define COCOAPODS_POD_AVAILABLE_SSZipArchive

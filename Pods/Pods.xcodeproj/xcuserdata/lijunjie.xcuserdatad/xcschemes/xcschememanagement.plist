@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MBProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MMMaterialDesignSpinner-MaterialDesignSpinner.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -39,11 +44,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-SKSplashView.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-SSZipArchive.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,52 +57,52 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3CB3A887E1B6518F02D74D69</key>
+		<key>356E724A447748298A7BEE8D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3F45B0DF7579FB090481B0AA</key>
+		<key>3788434F541A253329F02977</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>43510A6156C737D6BE37316C</key>
+		<key>49B66E5E5507F1B30CE8A485</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5EB4867BEFF10F58A26E21DF</key>
+		<key>58C4FDFF7B80B04822CCD6E5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>60F6448C895BADFE532E628B</key>
+		<key>5985BF2A33702D192D447037</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>716A6DEC03DAE0BE38DED0CA</key>
+		<key>72F458B23A81330957368889</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>81D4D8BE05D71C561E4B2BD1</key>
+		<key>AD919BFE4C5433B2DE86EF07</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AA544C092240E50E5364341A</key>
+		<key>C5196EE9BCAC2F8684C419A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DE37B0D5C5FB15357821315C</key>
+		<key>F501BA3A1C4469E7B5138597</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E4C0A06A3AF702B421EC2B47</key>
+		<key>FAF3FDB4094E9C55760132ED</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginViewController : UIViewController//<SKSplashDelegate>
+@interface LoginViewController : UIViewController
 
 
 @end

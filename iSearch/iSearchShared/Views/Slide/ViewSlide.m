@@ -58,6 +58,9 @@
     [self loadThumbnail];
     [self updateBtnDownloadOrDisplayIcon];
     [self bringSubviewToFront:self.btnDownloadOrDisplay];
+
+    self.progressView.hidden = ![self.slide isDownloading];
+
 }
 
 - (IBAction)setMasterViewController:(MainViewController *)masterViewController {
@@ -161,19 +164,19 @@
  */
 - (void)loadThumbnail {
     self.webViewThumbnail.hidden = NO;
-    NSString *thumbnailName = [NSString stringWithFormat:@"%@.png", self.slideID];
-    NSString *slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
-    NSString *thumbanilPath = [slidePath stringByAppendingPathComponent:thumbnailName];
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *thumbnailPath;
     
-    NSString *htmlContent, *basePath = slidePath;
-    NSURL *baseURL;
-    if(![FileUtils checkFileExist:thumbanilPath isDir:NO]) {
-        thumbnailName = @"thumbnailSlideDefault.png";
-        basePath =  [[NSBundle mainBundle] bundlePath];
+    if(self.slide.pages && [self.slide.pages count] > 0) {
+        thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:self.slide.pages[0] Dir:self.dirName];
     }
-    baseURL = [NSURL fileURLWithPath:basePath];
-    htmlContent = [NSString stringWithFormat:@"<html><body><img src='%@'></body></html>", thumbnailName];
-    [self.webViewThumbnail loadHTMLString:htmlContent baseURL:baseURL];
+    if(!thumbnailPath || [[thumbnailPath stringByDeletingLastPathComponent] isEqualToString:bundlePath]) {
+        thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailSlideDefault.png"];
+    }
+    NSLog(@"%@", thumbnailPath);
+    NSString * html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
+    NSURL *baseURL = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
+    [self.webViewThumbnail loadHTMLString:html baseURL:baseURL];
 }
 
 

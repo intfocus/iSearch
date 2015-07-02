@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -10,6 +11,7 @@
                 <outlet property="btnNavBack" destination="Bdw-Aj-1SF" id="TiQ-fL-uHU"/>
                 <outlet property="btnSubmit" destination="yJR-ta-GTh" id="dKV-IG-uI0"/>
                 <outlet property="labelLoginTitle" destination="rrt-ZS-qms" id="cy9-rr-Sqd"/>
+                <outlet property="labelPropmt" destination="MlP-EZ-hZK" id="niD-96-K5B"/>
                 <outlet property="view" destination="iN0-l3-epB" id="sGg-Pi-nNb"/>
                 <outlet property="webViewLogin" destination="KY7-T3-Gjb" id="3YA-wT-8u4"/>
             </connections>
@@ -59,6 +61,16 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="loading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlP-EZ-hZK">
+                            <rect key="frame" x="110" y="260" width="340" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="huW-5M-7D6"/>
+                                <constraint firstAttribute="width" constant="340" id="lnp-yX-9LH"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -67,13 +79,15 @@
                         <constraint firstAttribute="centerX" secondItem="D9w-hW-aQo" secondAttribute="centerX" id="Ef4-WC-EBh"/>
                         <constraint firstAttribute="height" constant="350" id="MjW-wd-6Gp"/>
                         <constraint firstAttribute="width" secondItem="D9w-hW-aQo" secondAttribute="width" id="NgR-Wv-q0w"/>
+                        <constraint firstAttribute="centerX" secondItem="MlP-EZ-hZK" secondAttribute="centerX" id="OxI-4b-GHs"/>
                         <constraint firstAttribute="width" constant="560" id="PRR-O2-ugu"/>
                         <constraint firstItem="ti5-11-0JQ" firstAttribute="top" secondItem="HLW-CY-Pr2" secondAttribute="bottom" constant="44" id="Sbh-iN-nAn"/>
                         <constraint firstAttribute="height" secondItem="D9w-hW-aQo" secondAttribute="height" id="Xs1-6e-ws0"/>
                         <constraint firstAttribute="centerX" secondItem="yJR-ta-GTh" secondAttribute="centerX" id="f4L-0O-HNv"/>
+                        <constraint firstItem="MlP-EZ-hZK" firstAttribute="top" secondItem="yJR-ta-GTh" secondAttribute="bottom" id="fgD-vD-4LW"/>
                         <constraint firstAttribute="centerY" secondItem="D9w-hW-aQo" secondAttribute="centerY" id="l2C-JX-w05"/>
-                        <constraint firstAttribute="bottomMargin" secondItem="yJR-ta-GTh" secondAttribute="bottom" constant="82" id="qYE-6K-eP0"/>
                         <constraint firstAttribute="centerX" secondItem="ti5-11-0JQ" secondAttribute="centerX" id="qZ1-m9-KsT"/>
+                        <constraint firstAttribute="bottom" secondItem="MlP-EZ-hZK" secondAttribute="bottom" constant="69" id="via-3i-12i"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdw-Aj-1SF" userLabel="btnNavBack">

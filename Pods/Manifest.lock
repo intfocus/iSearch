@@ -2,30 +2,30 @@ PODS:
   - CWPopup (1.2.6)
   - DLRadioButton (1.1.1)
   - JTCalendar (1.2.3)
+  - MBProgressHUD (0.9.1)
   - MMMaterialDesignSpinner (0.2.0)
   - Reachability (3.2)
   - SCLAlertView-Objective-C (0.7.3)
-  - SKSplashView (0.1.0)
   - SSZipArchive (0.3.2)
 
 DEPENDENCIES:
   - CWPopup (~> 1.2.4)
   - DLRadioButton (~> 1.1.1)
   - JTCalendar (~> 1.2.3)
+  - MBProgressHUD
   - MMMaterialDesignSpinner (~> 0.2.0)
   - Reachability (~> 3.2)
   - SCLAlertView-Objective-C
-  - SKSplashView (~> 0.1.0)
   - SSZipArchive (~> 0.3.2)
 
 SPEC CHECKSUMS:
   CWPopup: 3f8b0704a9914813d90372d66525d31f24b27d49
   DLRadioButton: 1aad82f913b621432d51f8d5f4139265c39d202d
   JTCalendar: 246ea3e338fb97624846ec77cdcde448242c4d5c
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MMMaterialDesignSpinner: 8f1a50270b789c76ec500957e518fc3e05e55b9d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SCLAlertView-Objective-C: 4bf9a07c8a8d1840e5174e643e16bc032239914d
-  SKSplashView: 8cdb1bfccb5857cb141751d01b03cf132b110168
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
 
 COCOAPODS: 0.37.2

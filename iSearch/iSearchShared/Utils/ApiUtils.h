@@ -11,6 +11,7 @@
 
 @interface ApiUtils : NSObject
 
++ (NSString *)loginUrl:(NSString *)cookieValue;
 + (NSURL *)downloadSlideURL:(NSString *)slideID;
 + (NSMutableDictionary *)notifications;
 

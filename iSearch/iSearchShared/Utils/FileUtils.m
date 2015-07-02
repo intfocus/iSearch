@@ -434,26 +434,24 @@
     NSString *thumbnailPath, *format;
     BOOL isVideo = NO, isSlide = NO;
     
+    for(format in @[@"Gif",@"gif"]) { // never load pdf, @"pdf"
+        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
+        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
+            isSlide = YES; break;
+        }
+    }
+    if(isSlide) { return thumbnailPath; }
+    
     for(format in @[@"mp4", @"mpg"]) {
         thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
         if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
-            isVideo = YES;
-            break;
+            isVideo = YES; break;
         }
     }
     if(isVideo) {
         thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageVideo.png"];
         return thumbnailPath;
     };
-    
-    for(format in @[@"Gif",@"gif"]) { // never load pdf, @"pdf"
-        thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
-        if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
-            isSlide = YES;
-            break;
-        }
-    }
-    if(isSlide) { return thumbnailPath; }
     
     thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
     return thumbnailPath;
