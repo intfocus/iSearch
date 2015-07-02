@@ -60,7 +60,7 @@
      *  实例变量初始化
      */
     self.user = [[User alloc] init];
-//    self.labelPropmt.text = @"";
+    self.labelPropmt.text = @"";
     [self hideOutsideLoginControl:YES];
     
     /**
@@ -182,7 +182,8 @@
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
     
     self.labelPropmt.text = @"获取用户信息...";
-    sleep(15);
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+
     NSString *response = [HttpUtils httpGet:[ApiUtils loginUrl:self.cookieValue]];
     NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
                                                                         options:NSJSONReadingMutableContainers
@@ -293,14 +294,14 @@
 
 #pragma mark - assistant methods
 
--(void)enterMainViewController{
+-(void)enterMainViewController {
     for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图"],
                             @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", SLIDE_DIRNAME,@"使用手册1"],
                             @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", SLIDE_DIRNAME,@"使用手册2"]]) {
         
-        self.labelPropmt.text = [NSString stringWithFormat:@"下载-%@", array[2]];
+        self.labelPropmt.text = [NSString stringWithFormat:@"下载<%@>...", array[2]];
         [self downloadCategoryThumbnail:array[0] dir:array[1]];
-        sleep(15);
+         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     }
     
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
