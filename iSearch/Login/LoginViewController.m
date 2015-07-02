@@ -182,7 +182,7 @@
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
     
     self.labelPropmt.text = @"获取用户信息...";
-    //sleep(5);
+    sleep(15);
     NSString *response = [HttpUtils httpGet:[ApiUtils loginUrl:self.cookieValue]];
     NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
                                                                         options:NSJSONReadingMutableContainers
@@ -300,7 +300,7 @@
         
         self.labelPropmt.text = [NSString stringWithFormat:@"下载-%@", array[2]];
         [self downloadCategoryThumbnail:array[0] dir:array[1]];
-        //sleep(5);
+        sleep(15);
     }
     
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
