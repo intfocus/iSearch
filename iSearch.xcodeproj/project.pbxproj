@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C31A5A26A50B79A54B9722 /* libPods.a */; };
 		C419AF791B46399E007FE00C /* SlideInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C419AF781B46399E007FE00C /* SlideInfoView.xib */; };
+		C419AF841B468681007FE00C /* ViewUpgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = C419AF821B468681007FE00C /* ViewUpgrade.m */; };
+		C419AF851B468681007FE00C /* ViewUpgrade.xib in Resources */ = {isa = PBXBuildFile; fileRef = C419AF831B468681007FE00C /* ViewUpgrade.xib */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8791B289082000F84EF /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC8771B289082000F84EF /* LoginViewController.m */; };
 		C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C42EC87D1B28908B000F84EF /* NotificationCell.m */; };
@@ -118,6 +120,9 @@
 		69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		75C31A5A26A50B79A54B9722 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C419AF781B46399E007FE00C /* SlideInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SlideInfoView.xib; sourceTree = "<group>"; };
+		C419AF811B468681007FE00C /* ViewUpgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUpgrade.h; sourceTree = "<group>"; };
+		C419AF821B468681007FE00C /* ViewUpgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUpgrade.m; sourceTree = "<group>"; };
+		C419AF831B468681007FE00C /* ViewUpgrade.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewUpgrade.xib; sourceTree = "<group>"; };
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8761B289082000F84EF /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		C42EC8771B289082000F84EF /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -308,6 +313,16 @@
 				69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		C419AF801B468681007FE00C /* upgrade */ = {
+			isa = PBXGroup;
+			children = (
+				C419AF811B468681007FE00C /* ViewUpgrade.h */,
+				C419AF821B468681007FE00C /* ViewUpgrade.m */,
+				C419AF831B468681007FE00C /* ViewUpgrade.xib */,
+			);
+			path = upgrade;
 			sourceTree = "<group>";
 		};
 		C42EC8751B289082000F84EF /* Login */ = {
@@ -629,6 +644,7 @@
 		C4BED0701B2FFEE2000147A2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C419AF801B468681007FE00C /* upgrade */,
 				C4D253EA1B32FE2F0033F697 /* SlideInfo */,
 				C4D253DA1B32FE030033F697 /* Slide */,
 				C4D253DE1B32FE030033F697 /* PaintView */,
@@ -858,6 +874,7 @@
 				C4B6F2A71B4158CD0057A8A1 /* thumbnailPageVideo.png in Resources */,
 				C4B6F2A61B4158CD0057A8A1 /* thumbnailPageSlide.png in Resources */,
 				C4B6F2A21B4158CD0057A8A1 /* coverSlideSelecting.png in Resources */,
+				C419AF851B468681007FE00C /* ViewUpgrade.xib in Resources */,
 				C4B6F2A91B4158CD0057A8A1 /* ToDownload.png in Resources */,
 				C4B6F2A01B4158CD0057A8A1 /* close_x.png in Resources */,
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
@@ -954,6 +971,7 @@
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
+				C419AF841B468681007FE00C /* ViewUpgrade.m in Sources */,
 				C4BED08B1B2FFEE2000147A2 /* PopupView.m in Sources */,
 				C4BED0791B2FFEE2000147A2 /* GMGridView.m in Sources */,
 				C4357C2B1B391B5600854524 /* User.m in Sources */,

@@ -69,5 +69,4 @@
     }
     return notificationDatas;
 }
-
 @end

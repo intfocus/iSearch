@@ -7,909 +7,986 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0276A02A7723D0204AA97217 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		02A47DB89FDA4BF475AACAC6 /* Pods-CWPopup-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B9AF6F42278212036412BB /* Pods-CWPopup-dummy.m */; };
-		02B9E20114346D1F1CBAF270 /* Pods-Reachability-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 536DFB95056C36DAF50BD8A5 /* Pods-Reachability-dummy.m */; };
-		06D82447901E0B20BB68A01A /* JTCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 78BA78D873E03AF4BF16BB40 /* JTCalendarMonthView.m */; };
-		08865C07375C4C0BF26D8ACE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		08C93A41100D0125C47C20AD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6678678A327B7C53FFEC34 /* CoreGraphics.framework */; };
-		09AA8C6E2729C80A0F8A00F4 /* JTCalendarMenuMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AAB9901B151A59783E54923 /* JTCalendarMenuMonthView.m */; };
-		13597A08D3503DD7D3CCA198 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		18BD72EBB76F05BCC2E7DA57 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D7485E8E61CDBA14ECE6C26E /* Reachability.m */; };
-		1BBCE36AEC52427ACCE89E37 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FD600B33C2A975D18AAA840 /* ioapi.h */; };
-		1E6FFC1D2AEB7E522070F9ED /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 16B0CE990E87CBE9237ED098 /* DLRadioButton.m */; };
-		20FAABBA1B4792DF21A24819 /* Pods-MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F705FE9C4989437C3D12C0D /* Pods-MBProgressHUD-dummy.m */; };
-		24B87C553A5909D79BAC3907 /* JTCalendarContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = 444B680B5F35812E597412DF /* JTCalendarContentView.h */; };
-		265676664C1C49C3EE9774C6 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 4B28AE30E5EDB9436EAD5D66 /* unzip.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		27438171835FB9DFCE6EFEA0 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 2C441B1BCCBF0387154B64CA /* zip.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		2B0FFA108F1F3FD15A0110A5 /* Pods-JTCalendar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1ABD1C108B25F5389EC506 /* Pods-JTCalendar-dummy.m */; };
-		30517097C7582825B51F9AB2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		315B399FB968417F6954EFE6 /* Pods-SCLAlertView-Objective-C-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CC2C58273AAC1F8F43C9F772 /* Pods-SCLAlertView-Objective-C-dummy.m */; };
-		3D0C9F1B7EFEE091C7D995E9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		3EE1FF1D8BA06621440352FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		437435049401B791CFC4F295 /* JTCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 230EEDD329FA514DEF054FBF /* JTCalendarAppearance.m */; };
-		447E75874FA9AD7D82BD8576 /* JTCalendarMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70F3EA3B84BD4DE31CD7F051 /* JTCalendarMenuView.m */; };
-		481E72C8B3E6DE49BDCC154B /* JTCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = E315F4CC023E6060D0C1EF2D /* JTCalendar.h */; };
-		49AC4EDD115B3D7D46E2CF95 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		4CA9FB6419B2F41F1FBC64A3 /* SCLAlertViewStyleKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 61C68ADB88D94028FF7C3978 /* SCLAlertViewStyleKit.h */; };
-		4E487D7D6287025EBC37F62C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E9CE8CAEBABF64630644BD3 /* UIKit.framework */; };
-		5064524ECA05E1CC71A88BBF /* JTCalendarWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2BA27F81A89F31A30D968 /* JTCalendarWeekView.m */; };
-		527C71F77D04B784C8C9F69E /* SSZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 025ED92D99819A15D022F9A7 /* SSZipArchive.h */; };
-		588B8A07A569F0DB97FA4F7B /* DLRadioButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 9638FA3B4393A5704C558074 /* DLRadioButton.h */; };
-		5E7F34F4AD8D97FF2C27116F /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ECA383DE2F27CAECACDF73DC /* Pods-dummy.m */; };
-		606D711ECD6BE5D718E6C993 /* SCLAlertViewResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 944DD95A2BCF1B23BCBAB480 /* SCLAlertViewResponder.m */; };
-		6351109A3A59A0DC58289E03 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 915F8AB5CFD5E88A56B22CAB /* mztools.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		69B42AEAE99BBF51FB3C8793 /* JTCalendarAppearance.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E2CB86CA4F12B8E4A45A0CF /* JTCalendarAppearance.h */; };
-		6A1F3CE9BE9DA0642CC1E10E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
-		6D0C0834262F9E97D9F8B3D6 /* Pods-MMMaterialDesignSpinner-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 902F8BF3BAE54D273B9FE107 /* Pods-MMMaterialDesignSpinner-dummy.m */; };
-		6D1A958A6B4CB82BDC2C176A /* JTCalendarViewDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = BECF1736BBA52319B500C9BB /* JTCalendarViewDataSource.h */; };
-		6FBDB7C647129177768BFE3A /* JTCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 545DEB0DEC8A3EC703A71F8F /* JTCalendar.m */; };
-		6FF8D988273431F00D1AF7D0 /* JTCalendarMenuMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 45104FFD21740F95BA0018F4 /* JTCalendarMenuMonthView.h */; };
-		791A21DD54CB539F1F98D69A /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = D25289FE0EA30542FA9621B2 /* crypt.h */; };
-		7CA159DF7F200100F78E7D80 /* JTCalendarDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = A05214B93F09B192935474B7 /* JTCalendarDataCache.h */; };
-		7D0DFE133AFA48BB4FAAF42C /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D1014169BED4B3D7F11473 /* unzip.h */; };
-		7E515986DB2BCE8DF8EAC7F4 /* JTCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7267CDFB2A4DAF54F87A154 /* JTCircleView.m */; };
-		817FAF2A2D33B9273FF0D73D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F25B0E5BB3BB79630385ED1 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		818DF3B23CC3E4F2ABFD1241 /* JTCalendarDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD14A265A9E89601DEA328E /* JTCalendarDataCache.m */; };
-		838403C580ED9FAD903F285D /* JTCalendarDayView.h in Headers */ = {isa = PBXBuildFile; fileRef = B19105091D1BFAC663399D4C /* JTCalendarDayView.h */; };
-		90A480249489A49451816716 /* UIViewController+CWPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = BD96D41012C4E8DEFCCEDF68 /* UIViewController+CWPopup.h */; };
-		937AE6A7C7765B83AE1CAA25 /* SCLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56672BF57A4A25C812178C33 /* SCLButton.m */; };
-		9395C45C2346BAB161A4CB33 /* SCLAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = 04F602C0A90BE10B9290D07B /* SCLAlertView.h */; };
-		9B54E2187CB43530B91D523F /* JTCalendarMonthWeekDaysView.h in Headers */ = {isa = PBXBuildFile; fileRef = 98E6BE009765CD2AAA9BE0BA /* JTCalendarMonthWeekDaysView.h */; };
-		9CF0F634D228CD7D84915854 /* JTCalendarMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92B42ACDAA1D784BBAA61084 /* JTCalendarMenuView.h */; };
-		A34A5A850E724556BFA6C958 /* MMMaterialDesignSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = A463E8C27187A8DB027E572A /* MMMaterialDesignSpinner.m */; };
-		A3B68FF6EFC58EA40AA9DEA1 /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AD18EDA9F428B2F377AE934 /* MBProgressHUD.h */; };
-		A4EBFA75A786B58E424E052C /* mztools.h in Headers */ = {isa = PBXBuildFile; fileRef = E76853CABAC8F08C51D93332 /* mztools.h */; };
-		A726CA00CB58FE15DE16B6C3 /* Pods-SSZipArchive-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA12A2197DA426B456460B1 /* Pods-SSZipArchive-dummy.m */; };
-		AAC09117F97DA4532CD0304A /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 848928B8795C6E4CD5CF4F41 /* ioapi.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		B274A1E821FA1D2157509EAF /* MMMaterialDesignSpinner.h in Headers */ = {isa = PBXBuildFile; fileRef = 5186DD927C29875640F35FEF /* MMMaterialDesignSpinner.h */; };
-		B33E1F9519AFBC48D2C021D1 /* SCLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F9D0B061CF244A1DD2E880E /* SCLAlertView.m */; };
-		BB4494044D2077C45E1DCDFB /* JTCalendarContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D23926F8ABABE311349FFD /* JTCalendarContentView.m */; };
-		BDE8FAB1A0753E5FB0342E35 /* JTCircleView.h in Headers */ = {isa = PBXBuildFile; fileRef = DCAA1C763CA4AAB38DB51665 /* JTCircleView.h */; };
-		C716F39714C05518C2357AAF /* UIViewController+CWPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = B2BA25D2B952C6F18C8FE736 /* UIViewController+CWPopup.m */; settings = {COMPILER_FLAGS = "-fmodules -DOS_OBJECT_USE_OBJC=0"; }; };
-		C784B2B780319CD2F1469E80 /* Pods-DLRadioButton-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9F74F0111106260A610C9 /* Pods-DLRadioButton-dummy.m */; };
-		CB6A7BF6348437C0BDDC60A0 /* JTCalendarWeekView.h in Headers */ = {isa = PBXBuildFile; fileRef = FA4DFC4249DF61CCF76666B7 /* JTCalendarWeekView.h */; };
-		CC4A645E99B6A33970ACD4D4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6678678A327B7C53FFEC34 /* CoreGraphics.framework */; };
-		CCA368F0D6EBE6395D1BFD0B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7427799C0EBCF8490DF4D7B0 /* SystemConfiguration.framework */; };
-		D081AA6AA05E1420EA7A17FF /* JTCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CC157D31F9C25CFB4707F56 /* JTCalendarDayView.m */; };
-		D14931F48FD0ACD2C3742665 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 0578E796934DB10E6DE179BC /* UIImage+ImageEffects.m */; };
-		D4D0C94B88B3E6406CFB71F0 /* UIImage+ImageEffects.h in Headers */ = {isa = PBXBuildFile; fileRef = 658D6D3A962C4D7E6A03D723 /* UIImage+ImageEffects.h */; };
-		D6869190B31E75E076D3A7AD /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = EA0ABABD4267A37503BE4E26 /* zip.h */; };
-		DAC1DCC2EC6334910EDD55A4 /* JTCalendarMonthWeekDaysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B0C782A1044D6DA3AFDC46 /* JTCalendarMonthWeekDaysView.m */; };
-		DFCB02C33AC520218A09C172 /* SCLMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = D59DE660EB36EA4F879F1CA2 /* SCLMacros.h */; };
-		E60F50DDC16187F9B0B9D69E /* SCLAlertViewResponder.h in Headers */ = {isa = PBXBuildFile; fileRef = 63DE4A05DA6EE4F5F7ED086A /* SCLAlertViewResponder.h */; };
-		EF3FF4E1D5BC204D7463719F /* SCLButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 41E08E803594E6550CDC6FB0 /* SCLButton.h */; };
-		F521676F23D7DD25456EECFC /* JTCalendarMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F61E6B3EC1F6F3EAC075ADC /* JTCalendarMonthView.h */; };
-		F699B29ABC1FD99C4CD79316 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = EACD81C3766762383B844977 /* SSZipArchive.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		F6CDEE18AB5DDE92ACEE1501 /* SCLAlertViewStyleKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 07F15468844DD750DC3D7BB5 /* SCLAlertViewStyleKit.m */; };
-		F7E83D42C60CFAE3942D2C1C /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 28585E24A5153CF1F983E92C /* Reachability.h */; };
-		F9584AB2765558FCDDD742DD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272D6991FC5286AA07045D28 /* Foundation.framework */; };
+		0000452F6F9E07D0914E67F0 /* JTCalendarContentView.h in Headers */ = {isa = PBXBuildFile; fileRef = D75CA34960A6D3CA7EA32D3E /* JTCalendarContentView.h */; };
+		01B98EC1268FBAD4FC4E68F5 /* JTCalendarMenuMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0523D925BD2ADFE234A517C2 /* JTCalendarMenuMonthView.m */; };
+		04AF4C9EC820C37710F8FFCB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A54457C776EA91C7E8F8F8F /* Security.framework */; };
+		05BAD79FD7D00412D32ED3C5 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 15AEB51CC95947FB8E97C6DB /* AFNetworkReachabilityManager.m */; };
+		05F69621EE7C6FB1B04A951A /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = CB0CC0E7855D0A39DA3C1F6F /* ioapi.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		0A9D6CC4AE0B929CEDFFC9BB /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9250379BE209833B69378607 /* AFHTTPSessionManager.m */; };
+		0C4628F1831028E84827D7C6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B8FAFD8CB15495033C72A15 /* CoreGraphics.framework */; };
+		101BD0C85C9438D31AE729EF /* MMMaterialDesignSpinner.h in Headers */ = {isa = PBXBuildFile; fileRef = 0537EB075824A8BA39CBDFA0 /* MMMaterialDesignSpinner.h */; };
+		121939C82725258F3E13BE88 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = B42A90FE57FCF15CAC51E65A /* AFNetworking.h */; };
+		1848C50C21EABB1C231BFC86 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = DB93404298B55D07BE812CA3 /* mztools.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		19E846EA613BF2F5AB0BBEE2 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FF34EC85AB7233C3A139E5A /* crypt.h */; };
+		1AC65615B46572352D053053 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		1CAB417E3493D0503E4B5230 /* JTCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D071BF8C281526FCB803C3 /* JTCalendar.m */; };
+		1CB44C12C099FD2760C706A7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B6B0AC712A3FB3D64453C57D /* UIKit.framework */; };
+		2073F824E2F8CBD1F2269667 /* UIActivityIndicatorView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = B834EEF6DAC936DDF37A88CF /* UIActivityIndicatorView+AFNetworking.h */; };
+		234988AEF6EF81C5832A1B63 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = DC4B310960ABB049FDFF6181 /* unzip.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		256A37E87E2B617475E358F9 /* JTCalendarAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF250E24E2B8FC562D7BCA9 /* JTCalendarAppearance.m */; };
+		28B85CD5B7AD5383ABACA7A4 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 840560D92280C9F432308A68 /* AFURLConnectionOperation.m */; };
+		28D3DA7BE6A70AD340293EB1 /* JTCalendarAppearance.h in Headers */ = {isa = PBXBuildFile; fileRef = 6744BD94BC3706D8E465C71A /* JTCalendarAppearance.h */; };
+		2A10452AD6E82E44DF02740D /* JTCalendarViewDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 4460CD652F3B0EB8C2A7C0FE /* JTCalendarViewDataSource.h */; };
+		2A7D192D3B6D02FC0630C794 /* UIAlertView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EE9F9CB45DE0B90456117C1 /* UIAlertView+AFNetworking.h */; };
+		2C9B65142200D553599294D4 /* SCLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FA65CB41FE9677033E35A61D /* SCLButton.m */; };
+		2F765B34A0800F017FD9612E /* Pods-CWPopup-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AEF17E23D6F991A56784FB6 /* Pods-CWPopup-dummy.m */; };
+		3053592A302E5D238A4D8622 /* UIViewController+CWPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 222DE6105D67747EE3C585DE /* UIViewController+CWPopup.m */; settings = {COMPILER_FLAGS = "-fmodules -DOS_OBJECT_USE_OBJC=0"; }; };
+		3264C36112B8D1DD32F0FE48 /* SCLAlertViewStyleKit.h in Headers */ = {isa = PBXBuildFile; fileRef = AE737F81B86911F8498367D8 /* SCLAlertViewStyleKit.h */; };
+		34B8CA8EF5EFDD29ADF9F382 /* AFHTTPRequestOperationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C6BD0306D79226F3D1BCF7AD /* AFHTTPRequestOperationManager.h */; };
+		35436147495D75DA9D2578A6 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = D63A1A14FF08363E8ACCD576 /* UIImage+ImageEffects.m */; };
+		35F700A13B2E2EA87B14E1B1 /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = B9A91F7FC2C52C463A86E9FB /* AFURLConnectionOperation.h */; };
+		37E6B9A22FEA2180AA8EFAE0 /* AFSecurityPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = DA68F0B33E74DD3651338897 /* AFSecurityPolicy.h */; };
+		3B9F670D620C373CE8B57172 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		3CD672939AD9CD85E5B83D71 /* JTCalendarWeekView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FD7C61B6937C826E86B820E /* JTCalendarWeekView.m */; };
+		4060A7E00B695945574E0ACC /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D5ADB9DFC981B1B745913B61 /* AFNetworkActivityIndicatorManager.h */; };
+		44414F425AC9E6B588514819 /* AFURLSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C2988650FA988EF7B439D3 /* AFURLSessionManager.h */; };
+		474B36221EA4870085A3391B /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = E4CFF76EA680EF609341FCD5 /* AFSecurityPolicy.m */; };
+		4CA3B729F4C346AB2770EFE3 /* SCLAlertViewResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CDB37169B8D3F50B623D6A7 /* SCLAlertViewResponder.m */; };
+		508CF3A9E025ABC35DCA0ACC /* SSZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 47D01C02EAE1B6933DD5B2C6 /* SSZipArchive.h */; };
+		515556FA34A92ED253DE6919 /* JTCalendarDataCache.h in Headers */ = {isa = PBXBuildFile; fileRef = ADC8589B5D8869BEE7BEC7DE /* JTCalendarDataCache.h */; };
+		51AA69C6BAE90469C6AA68A6 /* JTCalendarContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = ED57415C4978A9E7C81991DC /* JTCalendarContentView.m */; };
+		529E0323D917D85176EECA68 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 04CF08ACC1A75506C9939034 /* UIImageView+AFNetworking.m */; };
+		56A41FC46A153DBAFA0E9E5F /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 4508AAD36427963ECEAF3772 /* MBProgressHUD.h */; };
+		57AFDDB26EED5E48BD2C7563 /* DLRadioButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA9BAC419B5C189F77355 /* DLRadioButton.m */; };
+		583B5B636D23E3E84DB6A1ED /* DLRadioButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 79716E88FD9DA9A1DF839725 /* DLRadioButton.h */; };
+		5D4374214790341C4724F464 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		5DE17947D063CE99141A9436 /* JTCalendarMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A79F26E2FEF4495AD0ECA55 /* JTCalendarMenuView.m */; };
+		5E304372CBAA876C1534F851 /* AFURLRequestSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 8834C03F87724B67B9D997D6 /* AFURLRequestSerialization.h */; };
+		62DB30E9818C893A81D95F56 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		6445E3B76EB0CB0348D6398A /* Pods-MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ADC32FF6831098671ADE046 /* Pods-MBProgressHUD-dummy.m */; };
+		6546E476260FDCB4EC3D1EDF /* AFHTTPSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2243EFE1A30E53BA8D6F3802 /* AFHTTPSessionManager.h */; };
+		661E5D6C2302AC60DE1F3F98 /* JTCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F1CB6F349F7C8033C720D8D /* JTCalendarMonthView.m */; };
+		6DB7450BC1A482DE9B42F336 /* Pods-JTCalendar-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D8181E70897AD3C5E939ABBC /* Pods-JTCalendar-dummy.m */; };
+		6E109C750BCBE103184A7995 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		725BD734BC8E55F816628FA7 /* JTCalendarDayView.h in Headers */ = {isa = PBXBuildFile; fileRef = EA3252AD64A395A6B099D276 /* JTCalendarDayView.h */; };
+		7300AEE7F206EFDB28AA4BCE /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 000711E558D305F741BA36F7 /* AFHTTPRequestOperation.h */; };
+		7456CCDAE8CFE7D6AE9F410B /* AFNetworkReachabilityManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CC12040DABFC06913732F7C /* AFNetworkReachabilityManager.h */; };
+		747E592CE51994905734DF6A /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 275504DB652FB56FE9FED4E9 /* AFURLSessionManager.m */; };
+		76106E47F1C64EEADA439ACF /* SCLButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 2445944A5C364E45080BD4C7 /* SCLButton.h */; };
+		7921CB3F1E1FDD4B6DDCD637 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B8FAFD8CB15495033C72A15 /* CoreGraphics.framework */; };
+		7BC4AAC66316D1FF970A989F /* JTCalendarMonthWeekDaysView.h in Headers */ = {isa = PBXBuildFile; fileRef = 270F562A9FCA12126D153123 /* JTCalendarMonthWeekDaysView.h */; };
+		7CE446AA0857660A7F08BB2D /* MMMaterialDesignSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F15BDF4330AFCB4EAE40EC /* MMMaterialDesignSpinner.m */; };
+		7E40ABAF3B4C2CBE4C57354D /* Pods-AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 33AC0DF3D9827AE7A18F9343 /* Pods-AFNetworking-dummy.m */; };
+		7E5A50A10335BF91026E7D7D /* AFURLResponseSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BE3B583A695D36B7459DFD3 /* AFURLResponseSerialization.h */; };
+		7EDAE71DACB7AB2EBD5F99CA /* JTCalendarMonthWeekDaysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3899A5384560437B43F7CF1B /* JTCalendarMonthWeekDaysView.m */; };
+		80E6C5E49CFDB170B2E0E228 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		82310712A7A70B06A843ADE6 /* UIWebView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 118A46304D8B7028278A9124 /* UIWebView+AFNetworking.h */; };
+		86A611520600C414A7A7B866 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = A0867415C2C9DAF1F1FEA92E /* SSZipArchive.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		86CFB846D3D9BAE1F11EB7FA /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = F73038C96CDE59227F97324E /* zip.c */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		884F4B7F995D8ED3BAAC9BFC /* UIImage+ImageEffects.h in Headers */ = {isa = PBXBuildFile; fileRef = 344F8E72C620A0E66E9E20D7 /* UIImage+ImageEffects.h */; };
+		8A520FF7D97BCDB79A745FA1 /* UIRefreshControl+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 044723084BE7CB6F9D14AD89 /* UIRefreshControl+AFNetworking.h */; };
+		8CA853D4CF4E82C04D8468DE /* JTCalendarMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 2F91E4DC352DA5E4F804B397 /* JTCalendarMonthView.h */; };
+		8CE02A14B6B6E90C1866C739 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = D71EC5E47A266DA89B76CB12 /* UIProgressView+AFNetworking.m */; };
+		90AF54C460BBE5E6F7A7712A /* Pods-MMMaterialDesignSpinner-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 42966625E285123D3DA10F78 /* Pods-MMMaterialDesignSpinner-dummy.m */; };
+		941D2165C6BA33DEDEF4376B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		94BD2271EA8353310A9763F6 /* Pods-DLRadioButton-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E55F086DC45854F8FB6C865F /* Pods-DLRadioButton-dummy.m */; };
+		95CBD358BA7CD4DAF9F923CB /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B6999B0A15F1193DCDBBEE8 /* UIAlertView+AFNetworking.m */; };
+		96F5EC76A05E47856A307455 /* UIButton+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 81ACC2002293ECF0BB6D1C88 /* UIButton+AFNetworking.h */; };
+		9C5836283A10FC6EB25FBEA4 /* JTCalendarWeekView.h in Headers */ = {isa = PBXBuildFile; fileRef = D8E969CB3FE6AC6C666EB3E3 /* JTCalendarWeekView.h */; };
+		9D789EEF80107C360A85C864 /* JTCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = E89819CB0665806058F21F3E /* JTCircleView.m */; };
+		9DB571CD0F438E994D9F52AE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28680B8E7F710FFA01F82F2A /* SystemConfiguration.framework */; };
+		A2B40A39E65DF746B1971D64 /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 615D9AC6B56195B5FC408F93 /* UIButton+AFNetworking.m */; };
+		A4259DFA6F35D6F326FC4545 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 27EEC04DF840A3D18B206773 /* AFHTTPRequestOperation.m */; };
+		A7ADF9799183E5EFE7DFF7BB /* JTCalendarMenuMonthView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DA6B1C4DBB45A62DC92DB64 /* JTCalendarMenuMonthView.h */; };
+		A8749D666CC66BAE6D66DB14 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BC006AA77B41FDEE4A07F90 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		AD594CD408600F253765E599 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 58619F20F1582A0096C89402 /* zip.h */; };
+		B0B27109D5E3E05BAE495AEF /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D0500C4D99F5D807995522C /* Reachability.h */; };
+		B2B8FBC1E4D217C612874D03 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A175C0F2C667D16E7069992 /* AFNetworkActivityIndicatorManager.m */; };
+		B4EBC0757A0D5FBB2F9A5834 /* JTCircleView.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CFA99D6145A91E6A68D4392 /* JTCircleView.h */; };
+		B7AE4808C79FBA72A83E02AA /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D2368EEE3CF6B39D8FAA2C16 /* Reachability.m */; };
+		B8CC8A117825F6678FF96736 /* JTCalendarDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A2E2196E89A27219A56FC542 /* JTCalendarDataCache.m */; };
+		BD93EB6AA510FE7CB1134682 /* SCLAlertViewResponder.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E88BE4DB8C4504667ABAD7C /* SCLAlertViewResponder.h */; };
+		BFF6E5DF4F504AF1023F17DB /* SCLAlertViewStyleKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A9934BF921ECB01B07FD9E3 /* SCLAlertViewStyleKit.m */; };
+		C0C1EF9E7D01A694EEB013D3 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E5A0AF017F7CC64E8DBA7604 /* Pods-dummy.m */; };
+		C0DBF787C11C3D3F889AEF08 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		C3B6E705D186E7F6F5982B79 /* mztools.h in Headers */ = {isa = PBXBuildFile; fileRef = 38712A104841E82E0C859FE7 /* mztools.h */; };
+		C50632A8C2C332747DE13FEB /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BC87E9307B6A867BE813154 /* UIWebView+AFNetworking.m */; };
+		D01ADAA5C702114F122569FA /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A6122E1E3CFAABD35FABDBC0 /* UIActivityIndicatorView+AFNetworking.m */; };
+		D16B1C85E3018B3DA4E76AD0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		D22E460E4ACD73A85398F7CD /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28680B8E7F710FFA01F82F2A /* SystemConfiguration.framework */; };
+		D44B65E0420F6B19288F53B8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56C6530364EF8F0FB6770BBE /* MobileCoreServices.framework */; };
+		D6897746F72CD95F5A540F40 /* Pods-Reachability-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D687B189A55E890E7B9A10A2 /* Pods-Reachability-dummy.m */; };
+		DC85F76ED4B97686FCDBA587 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B8FAFD8CB15495033C72A15 /* CoreGraphics.framework */; };
+		DF274026C677C885C8891FAE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 111FA018800558BF85C336DB /* Foundation.framework */; };
+		DF4F2E7FECEB5C8C77D22261 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 8017475FD0DC7887747485B3 /* AFURLResponseSerialization.m */; };
+		E01EAA6657BBDCFB7FB8C433 /* UIViewController+CWPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A81B37D61DD9510C98C7D76 /* UIViewController+CWPopup.h */; };
+		E087B28A3384DE7547FACE6F /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = ED77433B28EB09D46D263514 /* AFURLRequestSerialization.m */; };
+		E14DFBC7158CE80F7E719AAC /* SCLAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = AC9BE726DB8C8E67BBFE7D56 /* SCLAlertView.h */; };
+		E50012401A59C1DDC2A0408A /* Pods-SSZipArchive-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6253743D426A6D075ABA6890 /* Pods-SSZipArchive-dummy.m */; };
+		E57337357773DA1DE4682C48 /* SCLAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7542E949B852F9403A21C239 /* SCLAlertView.m */; };
+		E9A9F5CD6F903E190266DE46 /* Pods-SCLAlertView-Objective-C-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DAE64528C5939F8286F27D /* Pods-SCLAlertView-Objective-C-dummy.m */; };
+		EEA715406FFF929733BC5D4A /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 6AC0F5B9BF4AFDA035302C36 /* unzip.h */; };
+		EEF4C1245F7E353D60EB72FE /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = B50957DFD0C5A203593E71DD /* UIImageView+AFNetworking.h */; };
+		EFFC201950841D72132FDF7E /* JTCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CD1270DC3F6338DD45D937C /* JTCalendar.h */; };
+		F224AB528DF4A91ED9214EF5 /* JTCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BE9C906B1D41DA82BE7B27F /* JTCalendarDayView.m */; };
+		F2E57439952AD9F702C01E08 /* UIProgressView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = EC08860CA8A5FD3812F55FA6 /* UIProgressView+AFNetworking.h */; };
+		F2F8DA9264D59D5218CC1CB1 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FCD59633A3DA4ADBD7F5FF5 /* AFHTTPRequestOperationManager.m */; };
+		F46AE9A79CFF4432E5EF63E8 /* UIKit+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = F06AC67E1EEFB4948F9230C2 /* UIKit+AFNetworking.h */; };
+		F70568104DD2028E2A8AD963 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = A3B5AA131ABCB46C50D53614 /* ioapi.h */; };
+		F9DC79CA93746CBFAA8F761D /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 24A680128DBACE3775D48574 /* UIRefreshControl+AFNetworking.m */; };
+		FE5E9BC0BD6AB924990DBF52 /* SCLMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 32B6BAEB66636ADBE3F22FC1 /* SCLMacros.h */; };
+		FF73937ED7947B01F99F6B95 /* JTCalendarMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = D40305A3A3DF76C7424A951F /* JTCalendarMenuView.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0381D8D58B11503C4B168E2A /* PBXContainerItemProxy */ = {
+		005490FCA2E8664EC54B69A5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = F501BA3A1C4469E7B5138597;
-			remoteInfo = "Pods-Reachability";
-		};
-		1F3A324950F618C0577ABB10 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = AD919BFE4C5433B2DE86EF07;
-			remoteInfo = "Pods-CWPopup";
-		};
-		68277E6A24521FB5539E9D47 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 72F458B23A81330957368889;
-			remoteInfo = "Pods-DLRadioButton";
-		};
-		69D675A3F92611912CA67AD5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FAF3FDB4094E9C55760132ED;
-			remoteInfo = "Pods-JTCalendar";
-		};
-		7AEF51052F3F24BA329E8208 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 356E724A447748298A7BEE8D;
+			remoteGlobalIDString = 5054236E393F07CB9EB4F588;
 			remoteInfo = "Pods-MBProgressHUD";
 		};
-		9D2074B67AE9A96EC588D30A /* PBXContainerItemProxy */ = {
+		3874C467ABC913A47B232098 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 58C4FDFF7B80B04822CCD6E5;
+			remoteGlobalIDString = 509A6B6FD8BA6A7B70E7F5F1;
 			remoteInfo = "Pods-SSZipArchive";
 		};
-		CAC04CDB4B01C2C429C07F8E /* PBXContainerItemProxy */ = {
+		3B03FD19B7048AC955CB1A4A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3788434F541A253329F02977;
-			remoteInfo = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
+			remoteGlobalIDString = 9FADFD42E3AD4E149EEE6241;
+			remoteInfo = "Pods-CWPopup";
 		};
-		EBF2411E4CC184F5BA52C648 /* PBXContainerItemProxy */ = {
+		45D20FF14ACC102F4F7E5B7D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5985BF2A33702D192D447037;
+			remoteGlobalIDString = 07484EF65F2FBF9BF5F0776B;
+			remoteInfo = "Pods-JTCalendar";
+		};
+		5F44B1D6D542B9B49B06EA4A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7ABED63838D621E4A7E51ACA;
+			remoteInfo = "Pods-AFNetworking";
+		};
+		B4005105E457BF51CD510B88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6240589300167391CB5ABEC1;
+			remoteInfo = "Pods-Reachability";
+		};
+		C9F8D6C56E4C631BFF66506A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95500A810516EAF85BCC6DFA;
 			remoteInfo = "Pods-MMMaterialDesignSpinner";
 		};
-		F0A5B1A41DF9F8EE3A351C64 /* PBXContainerItemProxy */ = {
+		D390B35D626B8EC8F84AF902 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = A05F557C774EA98D082077C7 /* Project object */;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = C5196EE9BCAC2F8684C419A0;
+			remoteGlobalIDString = 5572C820129253CD2CDD6834;
 			remoteInfo = "Pods-SCLAlertView-Objective-C";
+		};
+		D7F0A1FAD9AC6AE8DB29C377 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 584B7BBEFB857E74C2FD3D1B;
+			remoteInfo = "Pods-DLRadioButton";
+		};
+		F47EAAEE3DE52D0CA3AF3898 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7005ECE13A2B274D2DA85CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 076B68B93D7D7EA114B5E370;
+			remoteInfo = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		025ED92D99819A15D022F9A7 /* SSZipArchive.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = SSZipArchive/SSZipArchive.h; sourceTree = "<group>"; };
-		04F602C0A90BE10B9290D07B /* SCLAlertView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLAlertView.h; path = SCLAlertView/SCLAlertView.h; sourceTree = "<group>"; };
-		0578E796934DB10E6DE179BC /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "SCLAlertView/UIImage+ImageEffects.m"; sourceTree = "<group>"; };
-		07F15468844DD750DC3D7BB5 /* SCLAlertViewStyleKit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLAlertViewStyleKit.m; path = SCLAlertView/SCLAlertViewStyleKit.m; sourceTree = "<group>"; };
-		090C8B96DC17FC264304F0AA /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		13F7A207CB907BFA75BB365B /* Pods-CWPopup-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CWPopup-prefix.pch"; sourceTree = "<group>"; };
-		1535FD883B49BD777A5C425D /* Pods-MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
-		16B0CE990E87CBE9237ED098 /* DLRadioButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DLRadioButton.m; path = DLRadioButton/DLRadioButton.m; sourceTree = "<group>"; };
-		18324B2C3D55778664FEEB69 /* Pods-SCLAlertView-Objective-C-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SCLAlertView-Objective-C-prefix.pch"; sourceTree = "<group>"; };
-		1AAB9901B151A59783E54923 /* JTCalendarMenuMonthView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMenuMonthView.m; path = JTCalendar/JTCalendarMenuMonthView.m; sourceTree = "<group>"; };
-		1C74C809CBF0F57E62107641 /* Pods-DLRadioButton.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DLRadioButton.xcconfig"; sourceTree = "<group>"; };
-		1FBC4E07BD74686E1BD2E337 /* Pods-MBProgressHUD-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MBProgressHUD-Private.xcconfig"; sourceTree = "<group>"; };
-		230EEDD329FA514DEF054FBF /* JTCalendarAppearance.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarAppearance.m; path = JTCalendar/JTCalendarAppearance.m; sourceTree = "<group>"; };
-		272D6991FC5286AA07045D28 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		28585E24A5153CF1F983E92C /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		29B50322BE2ACA236D7FBFB5 /* Pods-SCLAlertView-Objective-C-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SCLAlertView-Objective-C-Private.xcconfig"; sourceTree = "<group>"; };
-		2C441B1BCCBF0387154B64CA /* zip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = zip.c; path = SSZipArchive/minizip/zip.c; sourceTree = "<group>"; };
-		2D572DCC4272AEA1F3D6691A /* Pods-MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MBProgressHUD.xcconfig"; sourceTree = "<group>"; };
-		2E297645067CB2A454025161 /* Pods-Reachability-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Reachability-prefix.pch"; sourceTree = "<group>"; };
-		2E9CE8CAEBABF64630644BD3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		2F1ABD1C108B25F5389EC506 /* Pods-JTCalendar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JTCalendar-dummy.m"; sourceTree = "<group>"; };
-		3AB496A52EA8A6C5AAEF6784 /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
-		3AD18EDA9F428B2F377AE934 /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		3F25B0E5BB3BB79630385ED1 /* MBProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		3F705FE9C4989437C3D12C0D /* Pods-MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
-		41E08E803594E6550CDC6FB0 /* SCLButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLButton.h; path = SCLAlertView/SCLButton.h; sourceTree = "<group>"; };
-		43622A86868DFFBB6B19F480 /* Pods-MMMaterialDesignSpinner-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MMMaterialDesignSpinner-prefix.pch"; sourceTree = "<group>"; };
-		444B680B5F35812E597412DF /* JTCalendarContentView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarContentView.h; path = JTCalendar/JTCalendarContentView.h; sourceTree = "<group>"; };
-		45104FFD21740F95BA0018F4 /* JTCalendarMenuMonthView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMenuMonthView.h; path = JTCalendar/JTCalendarMenuMonthView.h; sourceTree = "<group>"; };
-		4B28AE30E5EDB9436EAD5D66 /* unzip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = SSZipArchive/minizip/unzip.c; sourceTree = "<group>"; };
-		4B80903A09DE74D9BDF2AF04 /* Pods-SSZipArchive.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SSZipArchive.xcconfig"; sourceTree = "<group>"; };
-		4BA9F74F0111106260A610C9 /* Pods-DLRadioButton-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DLRadioButton-dummy.m"; sourceTree = "<group>"; };
-		4FD14A265A9E89601DEA328E /* JTCalendarDataCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarDataCache.m; path = JTCalendar/JTCalendarDataCache.m; sourceTree = "<group>"; };
-		5186DD927C29875640F35FEF /* MMMaterialDesignSpinner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMMaterialDesignSpinner.h; path = Pod/Classes/MMMaterialDesignSpinner.h; sourceTree = "<group>"; };
-		536DFB95056C36DAF50BD8A5 /* Pods-Reachability-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Reachability-dummy.m"; sourceTree = "<group>"; };
-		543E35E00FAE148B4FFB5448 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
-		545DEB0DEC8A3EC703A71F8F /* JTCalendar.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendar.m; path = JTCalendar/JTCalendar.m; sourceTree = "<group>"; };
-		54C475A48C4C21CF8F5C1F53 /* Pods-MMMaterialDesignSpinner.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MMMaterialDesignSpinner.xcconfig"; sourceTree = "<group>"; };
-		56672BF57A4A25C812178C33 /* SCLButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLButton.m; path = SCLAlertView/SCLButton.m; sourceTree = "<group>"; };
-		5C2DAF5BA2810ADB66B1C039 /* Pods-SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
-		5E2CB86CA4F12B8E4A45A0CF /* JTCalendarAppearance.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarAppearance.h; path = JTCalendar/JTCalendarAppearance.h; sourceTree = "<group>"; };
-		5F61E6B3EC1F6F3EAC075ADC /* JTCalendarMonthView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMonthView.h; path = JTCalendar/JTCalendarMonthView.h; sourceTree = "<group>"; };
-		5FA12A2197DA426B456460B1 /* Pods-SSZipArchive-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SSZipArchive-dummy.m"; sourceTree = "<group>"; };
-		5FE2BA27F81A89F31A30D968 /* JTCalendarWeekView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarWeekView.m; path = JTCalendar/JTCalendarWeekView.m; sourceTree = "<group>"; };
-		61C68ADB88D94028FF7C3978 /* SCLAlertViewStyleKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLAlertViewStyleKit.h; path = SCLAlertView/SCLAlertViewStyleKit.h; sourceTree = "<group>"; };
-		6269D154529DAE6AFDC3D427 /* libPods-SCLAlertView-Objective-C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SCLAlertView-Objective-C.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		63B0C782A1044D6DA3AFDC46 /* JTCalendarMonthWeekDaysView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMonthWeekDaysView.m; path = JTCalendar/JTCalendarMonthWeekDaysView.m; sourceTree = "<group>"; };
-		63DE4A05DA6EE4F5F7ED086A /* SCLAlertViewResponder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLAlertViewResponder.h; path = SCLAlertView/SCLAlertViewResponder.h; sourceTree = "<group>"; };
-		658D6D3A962C4D7E6A03D723 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "SCLAlertView/UIImage+ImageEffects.h"; sourceTree = "<group>"; };
-		6F21D8427E027E53E32C4512 /* libPods-DLRadioButton.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DLRadioButton.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		70F3EA3B84BD4DE31CD7F051 /* JTCalendarMenuView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMenuView.m; path = JTCalendar/JTCalendarMenuView.m; sourceTree = "<group>"; };
-		7129098B2FC5199B52845EF5 /* libPods-JTCalendar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JTCalendar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7200A50CD1C076AEF9A31D1B /* Pods-Reachability-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Reachability-Private.xcconfig"; sourceTree = "<group>"; };
-		7427799C0EBCF8490DF4D7B0 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		76D1014169BED4B3D7F11473 /* unzip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = SSZipArchive/minizip/unzip.h; sourceTree = "<group>"; };
-		78BA78D873E03AF4BF16BB40 /* JTCalendarMonthView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMonthView.m; path = JTCalendar/JTCalendarMonthView.m; sourceTree = "<group>"; };
-		78E308D552655F704400FC73 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MMMaterialDesignSpinner-Private.xcconfig"; sourceTree = "<group>"; };
-		7B15DA11953BD0C7250DC547 /* libPods-Reachability.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Reachability.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7C1D10D3FA7C3B01F77BE7D7 /* libPods-SSZipArchive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SSZipArchive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7CC157D31F9C25CFB4707F56 /* JTCalendarDayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarDayView.m; path = JTCalendar/JTCalendarDayView.m; sourceTree = "<group>"; };
-		7FC0DB072913C1D409CB377A /* libPods-CWPopup.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CWPopup.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7FD2DA9AD1264E556EFCE704 /* Pods-CWPopup.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CWPopup.xcconfig"; sourceTree = "<group>"; };
-		80CC0FC2D05EB49C827E808A /* Pods-CWPopup-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CWPopup-Private.xcconfig"; sourceTree = "<group>"; };
-		848928B8795C6E4CD5CF4F41 /* ioapi.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = SSZipArchive/minizip/ioapi.c; sourceTree = "<group>"; };
-		858D4B7E5CB4305D1FE54864 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
-		8AD3D5AD8DDEC21AA121B5A5 /* Pods-SSZipArchive-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SSZipArchive-Private.xcconfig"; sourceTree = "<group>"; };
-		8FD600B33C2A975D18AAA840 /* ioapi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = SSZipArchive/minizip/ioapi.h; sourceTree = "<group>"; };
-		902F8BF3BAE54D273B9FE107 /* Pods-MMMaterialDesignSpinner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MMMaterialDesignSpinner-dummy.m"; sourceTree = "<group>"; };
-		915F8AB5CFD5E88A56B22CAB /* mztools.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = mztools.c; path = SSZipArchive/minizip/mztools.c; sourceTree = "<group>"; };
-		92B42ACDAA1D784BBAA61084 /* JTCalendarMenuView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMenuView.h; path = JTCalendar/JTCalendarMenuView.h; sourceTree = "<group>"; };
-		944DD95A2BCF1B23BCBAB480 /* SCLAlertViewResponder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLAlertViewResponder.m; path = SCLAlertView/SCLAlertViewResponder.m; sourceTree = "<group>"; };
-		9464DD22C5131E99BE29F9EE /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9638FA3B4393A5704C558074 /* DLRadioButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DLRadioButton.h; path = DLRadioButton/DLRadioButton.h; sourceTree = "<group>"; };
-		98E6BE009765CD2AAA9BE0BA /* JTCalendarMonthWeekDaysView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMonthWeekDaysView.h; path = JTCalendar/JTCalendarMonthWeekDaysView.h; sourceTree = "<group>"; };
-		9EC5B9DB0895BE2FF2BBFF34 /* Pods-DLRadioButton-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DLRadioButton-prefix.pch"; sourceTree = "<group>"; };
-		9F617D48A8CBF775360A5032 /* libPods-MMMaterialDesignSpinner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MMMaterialDesignSpinner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9F9D0B061CF244A1DD2E880E /* SCLAlertView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLAlertView.m; path = SCLAlertView/SCLAlertView.m; sourceTree = "<group>"; };
-		A05214B93F09B192935474B7 /* JTCalendarDataCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarDataCache.h; path = JTCalendar/JTCalendarDataCache.h; sourceTree = "<group>"; };
-		A463E8C27187A8DB027E572A /* MMMaterialDesignSpinner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMMaterialDesignSpinner.m; path = Pod/Classes/MMMaterialDesignSpinner.m; sourceTree = "<group>"; };
-		A5B9AF6F42278212036412BB /* Pods-CWPopup-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CWPopup-dummy.m"; sourceTree = "<group>"; };
-		B19105091D1BFAC663399D4C /* JTCalendarDayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarDayView.h; path = JTCalendar/JTCalendarDayView.h; sourceTree = "<group>"; };
-		B25143C34A0FCE39AF048457 /* Pods-Reachability.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Reachability.xcconfig"; sourceTree = "<group>"; };
-		B29A267E74B71D813509FAFC /* Pods-DLRadioButton-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DLRadioButton-Private.xcconfig"; sourceTree = "<group>"; };
-		B2BA25D2B952C6F18C8FE736 /* UIViewController+CWPopup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+CWPopup.m"; path = "CWPopup/UIViewController+CWPopup.m"; sourceTree = "<group>"; };
-		B2CA2F23955EF2F3D30434BD /* MaterialDesignSpinner.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MaterialDesignSpinner.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
-		B4A6DD7BA2528EAE9BE8E1E2 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
-		BA6678678A327B7C53FFEC34 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		BD96D41012C4E8DEFCCEDF68 /* UIViewController+CWPopup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+CWPopup.h"; path = "CWPopup/UIViewController+CWPopup.h"; sourceTree = "<group>"; };
-		BECF1736BBA52319B500C9BB /* JTCalendarViewDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarViewDataSource.h; path = JTCalendar/JTCalendarViewDataSource.h; sourceTree = "<group>"; };
-		C213A957FD5E2EF1E08D56D1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC2C58273AAC1F8F43C9F772 /* Pods-SCLAlertView-Objective-C-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SCLAlertView-Objective-C-dummy.m"; sourceTree = "<group>"; };
-		D03991E1F30450C2929711A0 /* Pods-JTCalendar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JTCalendar-prefix.pch"; sourceTree = "<group>"; };
-		D25289FE0EA30542FA9621B2 /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
-		D59DE660EB36EA4F879F1CA2 /* SCLMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLMacros.h; path = SCLAlertView/SCLMacros.h; sourceTree = "<group>"; };
-		D7485E8E61CDBA14ECE6C26E /* Reachability.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		D7D23926F8ABABE311349FFD /* JTCalendarContentView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarContentView.m; path = JTCalendar/JTCalendarContentView.m; sourceTree = "<group>"; };
-		DCAA1C763CA4AAB38DB51665 /* JTCircleView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCircleView.h; path = JTCalendar/JTCircleView.h; sourceTree = "<group>"; };
-		E0823FF6F3D3C7037FBF01BC /* Pods-JTCalendar-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JTCalendar-Private.xcconfig"; sourceTree = "<group>"; };
-		E315F4CC023E6060D0C1EF2D /* JTCalendar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendar.h; path = JTCalendar/JTCalendar.h; sourceTree = "<group>"; };
-		E76853CABAC8F08C51D93332 /* mztools.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mztools.h; path = SSZipArchive/minizip/mztools.h; sourceTree = "<group>"; };
-		E7DD9CB9D35F6D4728A093F3 /* Pods-JTCalendar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JTCalendar.xcconfig"; sourceTree = "<group>"; };
-		E8B4D9D34423B0E34924DAAA /* libPods-MBProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MBProgressHUD.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA0ABABD4267A37503BE4E26 /* zip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = zip.h; path = SSZipArchive/minizip/zip.h; sourceTree = "<group>"; };
-		EACD81C3766762383B844977 /* SSZipArchive.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = SSZipArchive/SSZipArchive.m; sourceTree = "<group>"; };
-		EBCDB164BD93944317FE6051 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		ECA383DE2F27CAECACDF73DC /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		F1A72C746E86DB1F53376BD4 /* Pods-SCLAlertView-Objective-C.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SCLAlertView-Objective-C.xcconfig"; sourceTree = "<group>"; };
-		F7267CDFB2A4DAF54F87A154 /* JTCircleView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCircleView.m; path = JTCalendar/JTCircleView.m; sourceTree = "<group>"; };
-		FA4DFC4249DF61CCF76666B7 /* JTCalendarWeekView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarWeekView.h; path = JTCalendar/JTCalendarWeekView.h; sourceTree = "<group>"; };
+		000711E558D305F741BA36F7 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperation.h; path = AFNetworking/AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		044723084BE7CB6F9D14AD89 /* UIRefreshControl+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIRefreshControl+AFNetworking.h"; path = "UIKit+AFNetworking/UIRefreshControl+AFNetworking.h"; sourceTree = "<group>"; };
+		04CF08ACC1A75506C9939034 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImageView+AFNetworking.m"; path = "UIKit+AFNetworking/UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		0523D925BD2ADFE234A517C2 /* JTCalendarMenuMonthView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMenuMonthView.m; path = JTCalendar/JTCalendarMenuMonthView.m; sourceTree = "<group>"; };
+		0537EB075824A8BA39CBDFA0 /* MMMaterialDesignSpinner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MMMaterialDesignSpinner.h; path = Pod/Classes/MMMaterialDesignSpinner.h; sourceTree = "<group>"; };
+		0B6999B0A15F1193DCDBBEE8 /* UIAlertView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIAlertView+AFNetworking.m"; path = "UIKit+AFNetworking/UIAlertView+AFNetworking.m"; sourceTree = "<group>"; };
+		0BBB9B20ED432C0F483B19D2 /* libPods-MMMaterialDesignSpinner.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MMMaterialDesignSpinner.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C9623DB0B4CAD5D659A9EDB /* MaterialDesignSpinner.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MaterialDesignSpinner.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		0CC12040DABFC06913732F7C /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkReachabilityManager.h; path = AFNetworking/AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		0CE225A7A71260A70ED3BDD3 /* Pods-CWPopup-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CWPopup-Private.xcconfig"; sourceTree = "<group>"; };
+		0FF34EC85AB7233C3A139E5A /* crypt.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = crypt.h; path = SSZipArchive/minizip/crypt.h; sourceTree = "<group>"; };
+		111FA018800558BF85C336DB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		118A46304D8B7028278A9124 /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIWebView+AFNetworking.h"; path = "UIKit+AFNetworking/UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
+		13E82397572754CCBD6262DA /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		15AEB51CC95947FB8E97C6DB /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkReachabilityManager.m; path = AFNetworking/AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		17D071BF8C281526FCB803C3 /* JTCalendar.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendar.m; path = JTCalendar/JTCalendar.m; sourceTree = "<group>"; };
+		1FD7C61B6937C826E86B820E /* JTCalendarWeekView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarWeekView.m; path = JTCalendar/JTCalendarWeekView.m; sourceTree = "<group>"; };
+		222DE6105D67747EE3C585DE /* UIViewController+CWPopup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+CWPopup.m"; path = "CWPopup/UIViewController+CWPopup.m"; sourceTree = "<group>"; };
+		2243EFE1A30E53BA8D6F3802 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPSessionManager.h; path = AFNetworking/AFHTTPSessionManager.h; sourceTree = "<group>"; };
+		227038C0892EE52BA10E9D4E /* Pods-JTCalendar-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JTCalendar-Private.xcconfig"; sourceTree = "<group>"; };
+		2445944A5C364E45080BD4C7 /* SCLButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLButton.h; path = SCLAlertView/SCLButton.h; sourceTree = "<group>"; };
+		24A680128DBACE3775D48574 /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIRefreshControl+AFNetworking.m"; path = "UIKit+AFNetworking/UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
+		270F562A9FCA12126D153123 /* JTCalendarMonthWeekDaysView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMonthWeekDaysView.h; path = JTCalendar/JTCalendarMonthWeekDaysView.h; sourceTree = "<group>"; };
+		275504DB652FB56FE9FED4E9 /* AFURLSessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLSessionManager.m; path = AFNetworking/AFURLSessionManager.m; sourceTree = "<group>"; };
+		27EEC04DF840A3D18B206773 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperation.m; path = AFNetworking/AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		28679B8CCA2EE08B3D48C815 /* Pods-AFNetworking.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AFNetworking.xcconfig"; sourceTree = "<group>"; };
+		28680B8E7F710FFA01F82F2A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		2A79F26E2FEF4495AD0ECA55 /* JTCalendarMenuView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMenuView.m; path = JTCalendar/JTCalendarMenuView.m; sourceTree = "<group>"; };
+		2BE9C906B1D41DA82BE7B27F /* JTCalendarDayView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarDayView.m; path = JTCalendar/JTCalendarDayView.m; sourceTree = "<group>"; };
+		2F1CB6F349F7C8033C720D8D /* JTCalendarMonthView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMonthView.m; path = JTCalendar/JTCalendarMonthView.m; sourceTree = "<group>"; };
+		2F91E4DC352DA5E4F804B397 /* JTCalendarMonthView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMonthView.h; path = JTCalendar/JTCalendarMonthView.h; sourceTree = "<group>"; };
+		32B6BAEB66636ADBE3F22FC1 /* SCLMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLMacros.h; path = SCLAlertView/SCLMacros.h; sourceTree = "<group>"; };
+		33AC0DF3D9827AE7A18F9343 /* Pods-AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AFNetworking-dummy.m"; sourceTree = "<group>"; };
+		344F8E72C620A0E66E9E20D7 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "SCLAlertView/UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		38712A104841E82E0C859FE7 /* mztools.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = mztools.h; path = SSZipArchive/minizip/mztools.h; sourceTree = "<group>"; };
+		3899A5384560437B43F7CF1B /* JTCalendarMonthWeekDaysView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarMonthWeekDaysView.m; path = JTCalendar/JTCalendarMonthWeekDaysView.m; sourceTree = "<group>"; };
+		3994EDDC886A9428F767F0CB /* Pods-MMMaterialDesignSpinner-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MMMaterialDesignSpinner-prefix.pch"; sourceTree = "<group>"; };
+		3A175C0F2C667D16E7069992 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFNetworkActivityIndicatorManager.m; path = "UIKit+AFNetworking/AFNetworkActivityIndicatorManager.m"; sourceTree = "<group>"; };
+		3B8FAFD8CB15495033C72A15 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		3BC87E9307B6A867BE813154 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIWebView+AFNetworking.m"; path = "UIKit+AFNetworking/UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		42966625E285123D3DA10F78 /* Pods-MMMaterialDesignSpinner-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MMMaterialDesignSpinner-dummy.m"; sourceTree = "<group>"; };
+		442BF6C7B4DE38C2397A4721 /* Pods-CWPopup.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CWPopup.xcconfig"; sourceTree = "<group>"; };
+		4460CD652F3B0EB8C2A7C0FE /* JTCalendarViewDataSource.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarViewDataSource.h; path = JTCalendar/JTCalendarViewDataSource.h; sourceTree = "<group>"; };
+		44DAE64528C5939F8286F27D /* Pods-SCLAlertView-Objective-C-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SCLAlertView-Objective-C-dummy.m"; sourceTree = "<group>"; };
+		4508AAD36427963ECEAF3772 /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		47D01C02EAE1B6933DD5B2C6 /* SSZipArchive.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = SSZipArchive/SSZipArchive.h; sourceTree = "<group>"; };
+		4A81B37D61DD9510C98C7D76 /* UIViewController+CWPopup.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+CWPopup.h"; path = "CWPopup/UIViewController+CWPopup.h"; sourceTree = "<group>"; };
+		4B8CA9BAC419B5C189F77355 /* DLRadioButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DLRadioButton.m; path = DLRadioButton/DLRadioButton.m; sourceTree = "<group>"; };
+		4BC006AA77B41FDEE4A07F90 /* MBProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		4EE9F9CB45DE0B90456117C1 /* UIAlertView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+AFNetworking.h"; path = "UIKit+AFNetworking/UIAlertView+AFNetworking.h"; sourceTree = "<group>"; };
+		5309C2DDDB88C60598F067B1 /* Pods-SSZipArchive-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SSZipArchive-Private.xcconfig"; sourceTree = "<group>"; };
+		56C6530364EF8F0FB6770BBE /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
+		58619F20F1582A0096C89402 /* zip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = zip.h; path = SSZipArchive/minizip/zip.h; sourceTree = "<group>"; };
+		5A54457C776EA91C7E8F8F8F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		5A6484249B60F6132A6ADF64 /* Pods-MMMaterialDesignSpinner.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MMMaterialDesignSpinner.xcconfig"; sourceTree = "<group>"; };
+		5AC14A8DFC1CDAC929594ADC /* Pods-MBProgressHUD-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MBProgressHUD-Private.xcconfig"; sourceTree = "<group>"; };
+		5AEF17E23D6F991A56784FB6 /* Pods-CWPopup-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CWPopup-dummy.m"; sourceTree = "<group>"; };
+		5BA99C08CAF3D8002A368CF0 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MMMaterialDesignSpinner-Private.xcconfig"; sourceTree = "<group>"; };
+		5DA6B1C4DBB45A62DC92DB64 /* JTCalendarMenuMonthView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMenuMonthView.h; path = JTCalendar/JTCalendarMenuMonthView.h; sourceTree = "<group>"; };
+		5EF250E24E2B8FC562D7BCA9 /* JTCalendarAppearance.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarAppearance.m; path = JTCalendar/JTCalendarAppearance.m; sourceTree = "<group>"; };
+		615D9AC6B56195B5FC408F93 /* UIButton+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIButton+AFNetworking.m"; path = "UIKit+AFNetworking/UIButton+AFNetworking.m"; sourceTree = "<group>"; };
+		6253743D426A6D075ABA6890 /* Pods-SSZipArchive-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SSZipArchive-dummy.m"; sourceTree = "<group>"; };
+		6744BD94BC3706D8E465C71A /* JTCalendarAppearance.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarAppearance.h; path = JTCalendar/JTCalendarAppearance.h; sourceTree = "<group>"; };
+		69F09C787C8587E1D89E5549 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		6A24146CC8A9B4217C909F71 /* Pods-DLRadioButton-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DLRadioButton-Private.xcconfig"; sourceTree = "<group>"; };
+		6AC0F5B9BF4AFDA035302C36 /* unzip.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = unzip.h; path = SSZipArchive/minizip/unzip.h; sourceTree = "<group>"; };
+		6AC88DA6611202D37D671C21 /* Pods-Reachability-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Reachability-Private.xcconfig"; sourceTree = "<group>"; };
+		6EA951FA4499A654C1EFF5F0 /* Pods-Reachability-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Reachability-prefix.pch"; sourceTree = "<group>"; };
+		7196E005D2936881116B4A81 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
+		7542E949B852F9403A21C239 /* SCLAlertView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLAlertView.m; path = SCLAlertView/SCLAlertView.m; sourceTree = "<group>"; };
+		7650BD9B47A59DE486FF0DA7 /* libPods-AFNetworking.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFNetworking.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79716E88FD9DA9A1DF839725 /* DLRadioButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DLRadioButton.h; path = DLRadioButton/DLRadioButton.h; sourceTree = "<group>"; };
+		7CD1270DC3F6338DD45D937C /* JTCalendar.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendar.h; path = JTCalendar/JTCalendar.h; sourceTree = "<group>"; };
+		7CFA99D6145A91E6A68D4392 /* JTCircleView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCircleView.h; path = JTCalendar/JTCircleView.h; sourceTree = "<group>"; };
+		7D0500C4D99F5D807995522C /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		7FEDDDEAB05AFDC557C03D62 /* libPods-MBProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MBProgressHUD.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8017475FD0DC7887747485B3 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
+		81ACC2002293ECF0BB6D1C88 /* UIButton+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIButton+AFNetworking.h"; path = "UIKit+AFNetworking/UIButton+AFNetworking.h"; sourceTree = "<group>"; };
+		840560D92280C9F432308A68 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		8834C03F87724B67B9D997D6 /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLRequestSerialization.h; path = AFNetworking/AFURLRequestSerialization.h; sourceTree = "<group>"; };
+		8BE3B583A695D36B7459DFD3 /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLResponseSerialization.h; path = AFNetworking/AFURLResponseSerialization.h; sourceTree = "<group>"; };
+		8CDB37169B8D3F50B623D6A7 /* SCLAlertViewResponder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLAlertViewResponder.m; path = SCLAlertView/SCLAlertViewResponder.m; sourceTree = "<group>"; };
+		91F15BDF4330AFCB4EAE40EC /* MMMaterialDesignSpinner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MMMaterialDesignSpinner.m; path = Pod/Classes/MMMaterialDesignSpinner.m; sourceTree = "<group>"; };
+		9250379BE209833B69378607 /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPSessionManager.m; path = AFNetworking/AFHTTPSessionManager.m; sourceTree = "<group>"; };
+		930A81DA627FCB487B8C4329 /* libPods-SSZipArchive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SSZipArchive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9470220B6E8293ACBABA5C61 /* Pods-AFNetworking-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AFNetworking-Private.xcconfig"; sourceTree = "<group>"; };
+		9679E3E4C493F040CDDB3359 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		99223EFEFF7C4B3AA4F68692 /* Pods-DLRadioButton.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-DLRadioButton.xcconfig"; sourceTree = "<group>"; };
+		9A9934BF921ECB01B07FD9E3 /* SCLAlertViewStyleKit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLAlertViewStyleKit.m; path = SCLAlertView/SCLAlertViewStyleKit.m; sourceTree = "<group>"; };
+		9ADC32FF6831098671ADE046 /* Pods-MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
+		9AF8026DDCE24DC9E79F1566 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		9E88BE4DB8C4504667ABAD7C /* SCLAlertViewResponder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLAlertViewResponder.h; path = SCLAlertView/SCLAlertViewResponder.h; sourceTree = "<group>"; };
+		9ED9EF707C7310F35DEEBF20 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9FCD59633A3DA4ADBD7F5FF5 /* AFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPRequestOperationManager.m; path = AFNetworking/AFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		A0867415C2C9DAF1F1FEA92E /* SSZipArchive.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = SSZipArchive/SSZipArchive.m; sourceTree = "<group>"; };
+		A26F0A81D924F874CED6CEE3 /* libPods-Reachability.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Reachability.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2E2196E89A27219A56FC542 /* JTCalendarDataCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarDataCache.m; path = JTCalendar/JTCalendarDataCache.m; sourceTree = "<group>"; };
+		A3B5AA131ABCB46C50D53614 /* ioapi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ioapi.h; path = SSZipArchive/minizip/ioapi.h; sourceTree = "<group>"; };
+		A6122E1E3CFAABD35FABDBC0 /* UIActivityIndicatorView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIActivityIndicatorView+AFNetworking.m"; path = "UIKit+AFNetworking/UIActivityIndicatorView+AFNetworking.m"; sourceTree = "<group>"; };
+		A762D015C1830DDB76B5767A /* Pods-SCLAlertView-Objective-C-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SCLAlertView-Objective-C-Private.xcconfig"; sourceTree = "<group>"; };
+		A7BE7BE9E368CA8262491B5F /* Pods-JTCalendar-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-JTCalendar-prefix.pch"; sourceTree = "<group>"; };
+		AC9BE726DB8C8E67BBFE7D56 /* SCLAlertView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLAlertView.h; path = SCLAlertView/SCLAlertView.h; sourceTree = "<group>"; };
+		ADC8589B5D8869BEE7BEC7DE /* JTCalendarDataCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarDataCache.h; path = JTCalendar/JTCalendarDataCache.h; sourceTree = "<group>"; };
+		AE737F81B86911F8498367D8 /* SCLAlertViewStyleKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SCLAlertViewStyleKit.h; path = SCLAlertView/SCLAlertViewStyleKit.h; sourceTree = "<group>"; };
+		AFF33ADB7CC7259E5C520646 /* Pods-DLRadioButton-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DLRadioButton-prefix.pch"; sourceTree = "<group>"; };
+		B25BD6E719CE4EACCBD08626 /* Pods-SCLAlertView-Objective-C-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SCLAlertView-Objective-C-prefix.pch"; sourceTree = "<group>"; };
+		B2AE034877CFCC42A52E45F8 /* Pods-Reachability.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Reachability.xcconfig"; sourceTree = "<group>"; };
+		B2B10ABE5B0DA664FD6C5F46 /* Pods-CWPopup-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CWPopup-prefix.pch"; sourceTree = "<group>"; };
+		B42A90FE57FCF15CAC51E65A /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
+		B50957DFD0C5A203593E71DD /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+AFNetworking.h"; path = "UIKit+AFNetworking/UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		B5BB8D5A3F7FDCA68912C473 /* Pods-SSZipArchive.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SSZipArchive.xcconfig"; sourceTree = "<group>"; };
+		B6B0AC712A3FB3D64453C57D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		B834EEF6DAC936DDF37A88CF /* UIActivityIndicatorView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIActivityIndicatorView+AFNetworking.h"; path = "UIKit+AFNetworking/UIActivityIndicatorView+AFNetworking.h"; sourceTree = "<group>"; };
+		B8428E0F756AA55344554F7D /* libPods-SCLAlertView-Objective-C.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SCLAlertView-Objective-C.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9A91F7FC2C52C463A86E9FB /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLConnectionOperation.h; path = AFNetworking/AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		BC754EA94B493E012146E5AE /* Pods-AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AFNetworking-prefix.pch"; sourceTree = "<group>"; };
+		BCFFB74A7E61E436309D5599 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		BDD6F1A69E4081C899D8CE8A /* libPods-DLRadioButton.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DLRadioButton.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6BD0306D79226F3D1BCF7AD /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPRequestOperationManager.h; path = AFNetworking/AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		C75909CD665D04AA08DB0C7D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C795819203A4D2DC1B9451AA /* libPods-CWPopup.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CWPopup.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB0CC0E7855D0A39DA3C1F6F /* ioapi.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = ioapi.c; path = SSZipArchive/minizip/ioapi.c; sourceTree = "<group>"; };
+		CE00EEED6C887F0EE171504F /* Pods-SSZipArchive-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-SSZipArchive-prefix.pch"; sourceTree = "<group>"; };
+		D2368EEE3CF6B39D8FAA2C16 /* Reachability.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		D40305A3A3DF76C7424A951F /* JTCalendarMenuView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarMenuView.h; path = JTCalendar/JTCalendarMenuView.h; sourceTree = "<group>"; };
+		D5ADB9DFC981B1B745913B61 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkActivityIndicatorManager.h; path = "UIKit+AFNetworking/AFNetworkActivityIndicatorManager.h"; sourceTree = "<group>"; };
+		D63A1A14FF08363E8ACCD576 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "SCLAlertView/UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		D687B189A55E890E7B9A10A2 /* Pods-Reachability-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Reachability-dummy.m"; sourceTree = "<group>"; };
+		D6C2988650FA988EF7B439D3 /* AFURLSessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLSessionManager.h; path = AFNetworking/AFURLSessionManager.h; sourceTree = "<group>"; };
+		D71EC5E47A266DA89B76CB12 /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIProgressView+AFNetworking.m"; path = "UIKit+AFNetworking/UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
+		D75CA34960A6D3CA7EA32D3E /* JTCalendarContentView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarContentView.h; path = JTCalendar/JTCalendarContentView.h; sourceTree = "<group>"; };
+		D8181E70897AD3C5E939ABBC /* Pods-JTCalendar-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-JTCalendar-dummy.m"; sourceTree = "<group>"; };
+		D8E969CB3FE6AC6C666EB3E3 /* JTCalendarWeekView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarWeekView.h; path = JTCalendar/JTCalendarWeekView.h; sourceTree = "<group>"; };
+		DA68F0B33E74DD3651338897 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFSecurityPolicy.h; path = AFNetworking/AFSecurityPolicy.h; sourceTree = "<group>"; };
+		DB93404298B55D07BE812CA3 /* mztools.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = mztools.c; path = SSZipArchive/minizip/mztools.c; sourceTree = "<group>"; };
+		DC4B310960ABB049FDFF6181 /* unzip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = unzip.c; path = SSZipArchive/minizip/unzip.c; sourceTree = "<group>"; };
+		DCC62DE5E84E2A87735AA38A /* Pods-MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
+		DD4221F8FC0C888ADC1A7030 /* Pods-MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MBProgressHUD.xcconfig"; sourceTree = "<group>"; };
+		E4CFF76EA680EF609341FCD5 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFSecurityPolicy.m; path = AFNetworking/AFSecurityPolicy.m; sourceTree = "<group>"; };
+		E55F086DC45854F8FB6C865F /* Pods-DLRadioButton-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DLRadioButton-dummy.m"; sourceTree = "<group>"; };
+		E5A0AF017F7CC64E8DBA7604 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		E6DBD167B62D482F93A3299F /* Pods-SCLAlertView-Objective-C.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SCLAlertView-Objective-C.xcconfig"; sourceTree = "<group>"; };
+		E89819CB0665806058F21F3E /* JTCircleView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCircleView.m; path = JTCalendar/JTCircleView.m; sourceTree = "<group>"; };
+		EA3252AD64A395A6B099D276 /* JTCalendarDayView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JTCalendarDayView.h; path = JTCalendar/JTCalendarDayView.h; sourceTree = "<group>"; };
+		EBB37362F223FA51D2335E7F /* Pods-JTCalendar.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-JTCalendar.xcconfig"; sourceTree = "<group>"; };
+		EC08860CA8A5FD3812F55FA6 /* UIProgressView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIProgressView+AFNetworking.h"; path = "UIKit+AFNetworking/UIProgressView+AFNetworking.h"; sourceTree = "<group>"; };
+		ED57415C4978A9E7C81991DC /* JTCalendarContentView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JTCalendarContentView.m; path = JTCalendar/JTCalendarContentView.m; sourceTree = "<group>"; };
+		ED77433B28EB09D46D263514 /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLRequestSerialization.m; path = AFNetworking/AFURLRequestSerialization.m; sourceTree = "<group>"; };
+		F06AC67E1EEFB4948F9230C2 /* UIKit+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIKit+AFNetworking.h"; path = "UIKit+AFNetworking/UIKit+AFNetworking.h"; sourceTree = "<group>"; };
+		F73038C96CDE59227F97324E /* zip.c */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.c; name = zip.c; path = SSZipArchive/minizip/zip.c; sourceTree = "<group>"; };
+		FA65CB41FE9677033E35A61D /* SCLButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCLButton.m; path = SCLAlertView/SCLButton.m; sourceTree = "<group>"; };
+		FD663A43CC422CE026C792C9 /* libPods-JTCalendar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JTCalendar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		185BFFD4DC1A0915781BFD85 /* Frameworks */ = {
+		3F437250365F0785EBC77853 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7921CB3F1E1FDD4B6DDCD637 /* CoreGraphics.framework in Frameworks */,
+				941D2165C6BA33DEDEF4376B /* Foundation.framework in Frameworks */,
+				1CB44C12C099FD2760C706A7 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47B1956C4209B9F358F412BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0DBF787C11C3D3F889AEF08 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		495CEC1343E39AE1A01E582A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				80E6C5E49CFDB170B2E0E228 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5BBB24FEEE25E319141FF1F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C4628F1831028E84827D7C6 /* CoreGraphics.framework in Frameworks */,
+				3B9F670D620C373CE8B57172 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		663141D14AC6D9E8588F0707 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC85F76ED4B97686FCDBA587 /* CoreGraphics.framework in Frameworks */,
+				62DB30E9818C893A81D95F56 /* Foundation.framework in Frameworks */,
+				D44B65E0420F6B19288F53B8 /* MobileCoreServices.framework in Frameworks */,
+				04AF4C9EC820C37710F8FFCB /* Security.framework in Frameworks */,
+				9DB571CD0F438E994D9F52AE /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6EFFDA1441FCE6BBFDA07D11 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D4374214790341C4724F464 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8729775B79BA2B73583AAD31 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E109C750BCBE103184A7995 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		887782174809DBF143DB90A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D16B1C85E3018B3DA4E76AD0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C9920E091AAFE7BBD1C33BBC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		24D160D190B2B762D4BA3530 /* Frameworks */ = {
+		DB9E15D6D739E92D143238FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08865C07375C4C0BF26D8ACE /* Foundation.framework in Frameworks */,
+				DF274026C677C885C8891FAE /* Foundation.framework in Frameworks */,
+				D22E460E4ACD73A85398F7CD /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27B5B9091DFC937126C06A24 /* Frameworks */ = {
+		F49EA5C607FE859DCE9888EF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				49AC4EDD115B3D7D46E2CF95 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4AB9F6350E118D802289798A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				30517097C7582825B51F9AB2 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		60FBB5E38648D519DFE689F2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CC4A645E99B6A33970ACD4D4 /* CoreGraphics.framework in Frameworks */,
-				F9584AB2765558FCDDD742DD /* Foundation.framework in Frameworks */,
-				4E487D7D6287025EBC37F62C /* UIKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		612391E604162E763EFD329E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0276A02A7723D0204AA97217 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		670C3D8E5E54321C7F4C0C5D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				08C93A41100D0125C47C20AD /* CoreGraphics.framework in Frameworks */,
-				3EE1FF1D8BA06621440352FD /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A57B7D75B9E12945A742BDE /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3D0C9F1B7EFEE091C7D995E9 /* Foundation.framework in Frameworks */,
-				CCA368F0D6EBE6395D1BFD0B /* SystemConfiguration.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9C063C00245E27842BE75282 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				13597A08D3503DD7D3CCA198 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E45E9DE531646089E91E5E1D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6A1F3CE9BE9DA0642CC1E10E /* Foundation.framework in Frameworks */,
+				1AC65615B46572352D053053 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08FAFDA7FE122708966AFC66 = {
+		0300A2A075DCEBF3C16F311B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				9464DD22C5131E99BE29F9EE /* Podfile */,
-				C5DE32931FE2883118FFB599 /* Frameworks */,
-				5023DD90A46BC78B2A2A9913 /* Pods */,
-				85F87024BE08432069B4D867 /* Products */,
-				0F19EF6D869FDDE6A30E325D /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		0F19EF6D869FDDE6A30E325D /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				E025F9E6761CB7A21B926279 /* Pods */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		2C6BE9637CEB8917ECFAA75A /* SSZipArchive */ = {
-			isa = PBXGroup;
-			children = (
-				025ED92D99819A15D022F9A7 /* SSZipArchive.h */,
-				EACD81C3766762383B844977 /* SSZipArchive.m */,
-				D25289FE0EA30542FA9621B2 /* crypt.h */,
-				848928B8795C6E4CD5CF4F41 /* ioapi.c */,
-				8FD600B33C2A975D18AAA840 /* ioapi.h */,
-				915F8AB5CFD5E88A56B22CAB /* mztools.c */,
-				E76853CABAC8F08C51D93332 /* mztools.h */,
-				4B28AE30E5EDB9436EAD5D66 /* unzip.c */,
-				76D1014169BED4B3D7F11473 /* unzip.h */,
-				2C441B1BCCBF0387154B64CA /* zip.c */,
-				EA0ABABD4267A37503BE4E26 /* zip.h */,
-				3C28841D089C354245FD1CC9 /* Support Files */,
-			);
-			path = SSZipArchive;
-			sourceTree = "<group>";
-		};
-		3C28841D089C354245FD1CC9 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				4B80903A09DE74D9BDF2AF04 /* Pods-SSZipArchive.xcconfig */,
-				8AD3D5AD8DDEC21AA121B5A5 /* Pods-SSZipArchive-Private.xcconfig */,
-				5FA12A2197DA426B456460B1 /* Pods-SSZipArchive-dummy.m */,
-				5C2DAF5BA2810ADB66B1C039 /* Pods-SSZipArchive-prefix.pch */,
+				B5BB8D5A3F7FDCA68912C473 /* Pods-SSZipArchive.xcconfig */,
+				5309C2DDDB88C60598F067B1 /* Pods-SSZipArchive-Private.xcconfig */,
+				6253743D426A6D075ABA6890 /* Pods-SSZipArchive-dummy.m */,
+				CE00EEED6C887F0EE171504F /* Pods-SSZipArchive-prefix.pch */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/Pods-SSZipArchive";
 			sourceTree = "<group>";
 		};
-		4E81C8BB4173D4A60DD5EABA /* Support Files */ = {
+		03D8406B14498157D459B21D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				54C475A48C4C21CF8F5C1F53 /* Pods-MMMaterialDesignSpinner.xcconfig */,
-				78E308D552655F704400FC73 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */,
-				902F8BF3BAE54D273B9FE107 /* Pods-MMMaterialDesignSpinner-dummy.m */,
-				43622A86868DFFBB6B19F480 /* Pods-MMMaterialDesignSpinner-prefix.pch */,
+				3B8FAFD8CB15495033C72A15 /* CoreGraphics.framework */,
+				111FA018800558BF85C336DB /* Foundation.framework */,
+				56C6530364EF8F0FB6770BBE /* MobileCoreServices.framework */,
+				5A54457C776EA91C7E8F8F8F /* Security.framework */,
+				28680B8E7F710FFA01F82F2A /* SystemConfiguration.framework */,
+				B6B0AC712A3FB3D64453C57D /* UIKit.framework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-MMMaterialDesignSpinner";
+			name = iOS;
 			sourceTree = "<group>";
 		};
-		5023DD90A46BC78B2A2A9913 /* Pods */ = {
+		124605CACCC0A6DF43D054EC /* Serialization */ = {
 			isa = PBXGroup;
 			children = (
-				BF6AFD2F3CEFE3E9F5E73853 /* CWPopup */,
-				A2A978310A95DA8BC7E6C03C /* DLRadioButton */,
-				932E238627A45A05DAA830AA /* JTCalendar */,
-				B8E2838785352069DC1EF3CB /* MBProgressHUD */,
-				86C2CB26C3C83E6CCB4C36EB /* MMMaterialDesignSpinner */,
-				EF534D15969C932B639496AD /* Reachability */,
-				D72EAD56D85A8BB1B1692F94 /* SCLAlertView-Objective-C */,
-				2C6BE9637CEB8917ECFAA75A /* SSZipArchive */,
+				8834C03F87724B67B9D997D6 /* AFURLRequestSerialization.h */,
+				ED77433B28EB09D46D263514 /* AFURLRequestSerialization.m */,
+				8BE3B583A695D36B7459DFD3 /* AFURLResponseSerialization.h */,
+				8017475FD0DC7887747485B3 /* AFURLResponseSerialization.m */,
 			);
-			name = Pods;
+			name = Serialization;
 			sourceTree = "<group>";
 		};
-		652F165E638F34CC5AA9E6A3 /* Support Files */ = {
+		12D40218968691149DC80EDB /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B25143C34A0FCE39AF048457 /* Pods-Reachability.xcconfig */,
-				7200A50CD1C076AEF9A31D1B /* Pods-Reachability-Private.xcconfig */,
-				536DFB95056C36DAF50BD8A5 /* Pods-Reachability-dummy.m */,
-				2E297645067CB2A454025161 /* Pods-Reachability-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-Reachability";
-			sourceTree = "<group>";
-		};
-		687C17526497AD21C19E43C9 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				E7DD9CB9D35F6D4728A093F3 /* Pods-JTCalendar.xcconfig */,
-				E0823FF6F3D3C7037FBF01BC /* Pods-JTCalendar-Private.xcconfig */,
-				2F1ABD1C108B25F5389EC506 /* Pods-JTCalendar-dummy.m */,
-				D03991E1F30450C2929711A0 /* Pods-JTCalendar-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-JTCalendar";
-			sourceTree = "<group>";
-		};
-		6C5E96E945E49C31B27B0177 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				F1A72C746E86DB1F53376BD4 /* Pods-SCLAlertView-Objective-C.xcconfig */,
-				29B50322BE2ACA236D7FBFB5 /* Pods-SCLAlertView-Objective-C-Private.xcconfig */,
-				CC2C58273AAC1F8F43C9F772 /* Pods-SCLAlertView-Objective-C-dummy.m */,
-				18324B2C3D55778664FEEB69 /* Pods-SCLAlertView-Objective-C-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-SCLAlertView-Objective-C";
-			sourceTree = "<group>";
-		};
-		72E63A22C461334267C68E49 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				7FD2DA9AD1264E556EFCE704 /* Pods-CWPopup.xcconfig */,
-				80CC0FC2D05EB49C827E808A /* Pods-CWPopup-Private.xcconfig */,
-				A5B9AF6F42278212036412BB /* Pods-CWPopup-dummy.m */,
-				13F7A207CB907BFA75BB365B /* Pods-CWPopup-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-CWPopup";
-			sourceTree = "<group>";
-		};
-		7CF7073C75334D53CACCCEEE /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				2D572DCC4272AEA1F3D6691A /* Pods-MBProgressHUD.xcconfig */,
-				1FBC4E07BD74686E1BD2E337 /* Pods-MBProgressHUD-Private.xcconfig */,
-				3F705FE9C4989437C3D12C0D /* Pods-MBProgressHUD-dummy.m */,
-				1535FD883B49BD777A5C425D /* Pods-MBProgressHUD-prefix.pch */,
+				DD4221F8FC0C888ADC1A7030 /* Pods-MBProgressHUD.xcconfig */,
+				5AC14A8DFC1CDAC929594ADC /* Pods-MBProgressHUD-Private.xcconfig */,
+				9ADC32FF6831098671ADE046 /* Pods-MBProgressHUD-dummy.m */,
+				DCC62DE5E84E2A87735AA38A /* Pods-MBProgressHUD-prefix.pch */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/Pods-MBProgressHUD";
 			sourceTree = "<group>";
 		};
-		85F87024BE08432069B4D867 /* Products */ = {
+		1943FBB2BA568A2D931C65B5 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
-				B2CA2F23955EF2F3D30434BD /* MaterialDesignSpinner.bundle */,
-				C213A957FD5E2EF1E08D56D1 /* libPods.a */,
-				7FC0DB072913C1D409CB377A /* libPods-CWPopup.a */,
-				6F21D8427E027E53E32C4512 /* libPods-DLRadioButton.a */,
-				7129098B2FC5199B52845EF5 /* libPods-JTCalendar.a */,
-				E8B4D9D34423B0E34924DAAA /* libPods-MBProgressHUD.a */,
-				9F617D48A8CBF775360A5032 /* libPods-MMMaterialDesignSpinner.a */,
-				7B15DA11953BD0C7250DC547 /* libPods-Reachability.a */,
-				6269D154529DAE6AFDC3D427 /* libPods-SCLAlertView-Objective-C.a */,
-				7C1D10D3FA7C3B01F77BE7D7 /* libPods-SSZipArchive.a */,
+				B42A90FE57FCF15CAC51E65A /* AFNetworking.h */,
+				FC31D6FA90719277DE767B90 /* NSURLConnection */,
+				419212BAFCDA3B4B1BA976E0 /* NSURLSession */,
+				44711E10285BF0043DB661B8 /* Reachability */,
+				C3B9465C18B037D7F9ADCA38 /* Security */,
+				124605CACCC0A6DF43D054EC /* Serialization */,
+				53DB3D6C7DF69F18D0FDEFE4 /* Support Files */,
+				DE2A786FDF490B876916A5EA /* UIKit */,
 			);
-			name = Products;
+			path = AFNetworking;
 			sourceTree = "<group>";
 		};
-		86C2CB26C3C83E6CCB4C36EB /* MMMaterialDesignSpinner */ = {
+		20ABB8623849891D1E06F81C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5186DD927C29875640F35FEF /* MMMaterialDesignSpinner.h */,
-				A463E8C27187A8DB027E572A /* MMMaterialDesignSpinner.m */,
-				4E81C8BB4173D4A60DD5EABA /* Support Files */,
-			);
-			path = MMMaterialDesignSpinner;
-			sourceTree = "<group>";
-		};
-		8D2759E4F82319EE77DBC8C5 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				BA6678678A327B7C53FFEC34 /* CoreGraphics.framework */,
-				272D6991FC5286AA07045D28 /* Foundation.framework */,
-				7427799C0EBCF8490DF4D7B0 /* SystemConfiguration.framework */,
-				2E9CE8CAEBABF64630644BD3 /* UIKit.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		932E238627A45A05DAA830AA /* JTCalendar */ = {
-			isa = PBXGroup;
-			children = (
-				E315F4CC023E6060D0C1EF2D /* JTCalendar.h */,
-				545DEB0DEC8A3EC703A71F8F /* JTCalendar.m */,
-				5E2CB86CA4F12B8E4A45A0CF /* JTCalendarAppearance.h */,
-				230EEDD329FA514DEF054FBF /* JTCalendarAppearance.m */,
-				444B680B5F35812E597412DF /* JTCalendarContentView.h */,
-				D7D23926F8ABABE311349FFD /* JTCalendarContentView.m */,
-				A05214B93F09B192935474B7 /* JTCalendarDataCache.h */,
-				4FD14A265A9E89601DEA328E /* JTCalendarDataCache.m */,
-				B19105091D1BFAC663399D4C /* JTCalendarDayView.h */,
-				7CC157D31F9C25CFB4707F56 /* JTCalendarDayView.m */,
-				45104FFD21740F95BA0018F4 /* JTCalendarMenuMonthView.h */,
-				1AAB9901B151A59783E54923 /* JTCalendarMenuMonthView.m */,
-				92B42ACDAA1D784BBAA61084 /* JTCalendarMenuView.h */,
-				70F3EA3B84BD4DE31CD7F051 /* JTCalendarMenuView.m */,
-				5F61E6B3EC1F6F3EAC075ADC /* JTCalendarMonthView.h */,
-				78BA78D873E03AF4BF16BB40 /* JTCalendarMonthView.m */,
-				98E6BE009765CD2AAA9BE0BA /* JTCalendarMonthWeekDaysView.h */,
-				63B0C782A1044D6DA3AFDC46 /* JTCalendarMonthWeekDaysView.m */,
-				BECF1736BBA52319B500C9BB /* JTCalendarViewDataSource.h */,
-				FA4DFC4249DF61CCF76666B7 /* JTCalendarWeekView.h */,
-				5FE2BA27F81A89F31A30D968 /* JTCalendarWeekView.m */,
-				DCAA1C763CA4AAB38DB51665 /* JTCircleView.h */,
-				F7267CDFB2A4DAF54F87A154 /* JTCircleView.m */,
-				687C17526497AD21C19E43C9 /* Support Files */,
-			);
-			path = JTCalendar;
-			sourceTree = "<group>";
-		};
-		A2A978310A95DA8BC7E6C03C /* DLRadioButton */ = {
-			isa = PBXGroup;
-			children = (
-				9638FA3B4393A5704C558074 /* DLRadioButton.h */,
-				16B0CE990E87CBE9237ED098 /* DLRadioButton.m */,
-				B70499E479B8223B6129023B /* Support Files */,
-			);
-			path = DLRadioButton;
-			sourceTree = "<group>";
-		};
-		B70499E479B8223B6129023B /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				1C74C809CBF0F57E62107641 /* Pods-DLRadioButton.xcconfig */,
-				B29A267E74B71D813509FAFC /* Pods-DLRadioButton-Private.xcconfig */,
-				4BA9F74F0111106260A610C9 /* Pods-DLRadioButton-dummy.m */,
-				9EC5B9DB0895BE2FF2BBFF34 /* Pods-DLRadioButton-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Pods-DLRadioButton";
-			sourceTree = "<group>";
-		};
-		B8E2838785352069DC1EF3CB /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				3AD18EDA9F428B2F377AE934 /* MBProgressHUD.h */,
-				3F25B0E5BB3BB79630385ED1 /* MBProgressHUD.m */,
-				7CF7073C75334D53CACCCEEE /* Support Files */,
-			);
-			path = MBProgressHUD;
-			sourceTree = "<group>";
-		};
-		BF6AFD2F3CEFE3E9F5E73853 /* CWPopup */ = {
-			isa = PBXGroup;
-			children = (
-				BD96D41012C4E8DEFCCEDF68 /* UIViewController+CWPopup.h */,
-				B2BA25D2B952C6F18C8FE736 /* UIViewController+CWPopup.m */,
-				72E63A22C461334267C68E49 /* Support Files */,
-			);
-			path = CWPopup;
-			sourceTree = "<group>";
-		};
-		C5DE32931FE2883118FFB599 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8D2759E4F82319EE77DBC8C5 /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D72EAD56D85A8BB1B1692F94 /* SCLAlertView-Objective-C */ = {
-			isa = PBXGroup;
-			children = (
-				04F602C0A90BE10B9290D07B /* SCLAlertView.h */,
-				9F9D0B061CF244A1DD2E880E /* SCLAlertView.m */,
-				63DE4A05DA6EE4F5F7ED086A /* SCLAlertViewResponder.h */,
-				944DD95A2BCF1B23BCBAB480 /* SCLAlertViewResponder.m */,
-				61C68ADB88D94028FF7C3978 /* SCLAlertViewStyleKit.h */,
-				07F15468844DD750DC3D7BB5 /* SCLAlertViewStyleKit.m */,
-				41E08E803594E6550CDC6FB0 /* SCLButton.h */,
-				56672BF57A4A25C812178C33 /* SCLButton.m */,
-				D59DE660EB36EA4F879F1CA2 /* SCLMacros.h */,
-				658D6D3A962C4D7E6A03D723 /* UIImage+ImageEffects.h */,
-				0578E796934DB10E6DE179BC /* UIImage+ImageEffects.m */,
-				6C5E96E945E49C31B27B0177 /* Support Files */,
-			);
-			path = "SCLAlertView-Objective-C";
-			sourceTree = "<group>";
-		};
-		E025F9E6761CB7A21B926279 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B4A6DD7BA2528EAE9BE8E1E2 /* Pods-acknowledgements.markdown */,
-				858D4B7E5CB4305D1FE54864 /* Pods-acknowledgements.plist */,
-				ECA383DE2F27CAECACDF73DC /* Pods-dummy.m */,
-				3AB496A52EA8A6C5AAEF6784 /* Pods-environment.h */,
-				090C8B96DC17FC264304F0AA /* Pods-resources.sh */,
-				EBCDB164BD93944317FE6051 /* Pods.debug.xcconfig */,
-				543E35E00FAE148B4FFB5448 /* Pods.release.xcconfig */,
+				69F09C787C8587E1D89E5549 /* Pods-acknowledgements.markdown */,
+				BCFFB74A7E61E436309D5599 /* Pods-acknowledgements.plist */,
+				E5A0AF017F7CC64E8DBA7604 /* Pods-dummy.m */,
+				13E82397572754CCBD6262DA /* Pods-environment.h */,
+				9679E3E4C493F040CDDB3359 /* Pods-resources.sh */,
+				7196E005D2936881116B4A81 /* Pods.debug.xcconfig */,
+				9AF8026DDCE24DC9E79F1566 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
 			path = "Target Support Files/Pods";
 			sourceTree = "<group>";
 		};
-		EF534D15969C932B639496AD /* Reachability */ = {
+		2DD38A4B72BA9E19B012367F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				28585E24A5153CF1F983E92C /* Reachability.h */,
-				D7485E8E61CDBA14ECE6C26E /* Reachability.m */,
-				652F165E638F34CC5AA9E6A3 /* Support Files */,
+				1943FBB2BA568A2D931C65B5 /* AFNetworking */,
+				808271DAD675991E3875289D /* CWPopup */,
+				494AE32620FE96E85CC4D5EF /* DLRadioButton */,
+				B4F3D6D73C7FA37F57BF7BAF /* JTCalendar */,
+				6D7F8047978757C986F0FAA8 /* MBProgressHUD */,
+				716F70F191719720C8DD7517 /* MMMaterialDesignSpinner */,
+				DD3B4120A18FB6B52A550220 /* Reachability */,
+				3ADDC08BA448AE459733A0E0 /* SCLAlertView-Objective-C */,
+				3B7A825B7D9B884A171407FC /* SSZipArchive */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		3ADDC08BA448AE459733A0E0 /* SCLAlertView-Objective-C */ = {
+			isa = PBXGroup;
+			children = (
+				AC9BE726DB8C8E67BBFE7D56 /* SCLAlertView.h */,
+				7542E949B852F9403A21C239 /* SCLAlertView.m */,
+				9E88BE4DB8C4504667ABAD7C /* SCLAlertViewResponder.h */,
+				8CDB37169B8D3F50B623D6A7 /* SCLAlertViewResponder.m */,
+				AE737F81B86911F8498367D8 /* SCLAlertViewStyleKit.h */,
+				9A9934BF921ECB01B07FD9E3 /* SCLAlertViewStyleKit.m */,
+				2445944A5C364E45080BD4C7 /* SCLButton.h */,
+				FA65CB41FE9677033E35A61D /* SCLButton.m */,
+				32B6BAEB66636ADBE3F22FC1 /* SCLMacros.h */,
+				344F8E72C620A0E66E9E20D7 /* UIImage+ImageEffects.h */,
+				D63A1A14FF08363E8ACCD576 /* UIImage+ImageEffects.m */,
+				62EB4E47E8A1DF8D73DF0FF0 /* Support Files */,
+			);
+			path = "SCLAlertView-Objective-C";
+			sourceTree = "<group>";
+		};
+		3B7A825B7D9B884A171407FC /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				47D01C02EAE1B6933DD5B2C6 /* SSZipArchive.h */,
+				A0867415C2C9DAF1F1FEA92E /* SSZipArchive.m */,
+				0FF34EC85AB7233C3A139E5A /* crypt.h */,
+				CB0CC0E7855D0A39DA3C1F6F /* ioapi.c */,
+				A3B5AA131ABCB46C50D53614 /* ioapi.h */,
+				DB93404298B55D07BE812CA3 /* mztools.c */,
+				38712A104841E82E0C859FE7 /* mztools.h */,
+				DC4B310960ABB049FDFF6181 /* unzip.c */,
+				6AC0F5B9BF4AFDA035302C36 /* unzip.h */,
+				F73038C96CDE59227F97324E /* zip.c */,
+				58619F20F1582A0096C89402 /* zip.h */,
+				0300A2A075DCEBF3C16F311B /* Support Files */,
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		3BA96811ABD1C55292033FDA /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5A6484249B60F6132A6ADF64 /* Pods-MMMaterialDesignSpinner.xcconfig */,
+				5BA99C08CAF3D8002A368CF0 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */,
+				42966625E285123D3DA10F78 /* Pods-MMMaterialDesignSpinner-dummy.m */,
+				3994EDDC886A9428F767F0CB /* Pods-MMMaterialDesignSpinner-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-MMMaterialDesignSpinner";
+			sourceTree = "<group>";
+		};
+		419212BAFCDA3B4B1BA976E0 /* NSURLSession */ = {
+			isa = PBXGroup;
+			children = (
+				2243EFE1A30E53BA8D6F3802 /* AFHTTPSessionManager.h */,
+				9250379BE209833B69378607 /* AFHTTPSessionManager.m */,
+				D6C2988650FA988EF7B439D3 /* AFURLSessionManager.h */,
+				275504DB652FB56FE9FED4E9 /* AFURLSessionManager.m */,
+			);
+			name = NSURLSession;
+			sourceTree = "<group>";
+		};
+		44711E10285BF0043DB661B8 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				0CC12040DABFC06913732F7C /* AFNetworkReachabilityManager.h */,
+				15AEB51CC95947FB8E97C6DB /* AFNetworkReachabilityManager.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		494AE32620FE96E85CC4D5EF /* DLRadioButton */ = {
+			isa = PBXGroup;
+			children = (
+				79716E88FD9DA9A1DF839725 /* DLRadioButton.h */,
+				4B8CA9BAC419B5C189F77355 /* DLRadioButton.m */,
+				A7B40C0ACE5E9FF0FE615AD9 /* Support Files */,
+			);
+			path = DLRadioButton;
+			sourceTree = "<group>";
+		};
+		53DB3D6C7DF69F18D0FDEFE4 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				28679B8CCA2EE08B3D48C815 /* Pods-AFNetworking.xcconfig */,
+				9470220B6E8293ACBABA5C61 /* Pods-AFNetworking-Private.xcconfig */,
+				33AC0DF3D9827AE7A18F9343 /* Pods-AFNetworking-dummy.m */,
+				BC754EA94B493E012146E5AE /* Pods-AFNetworking-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-AFNetworking";
+			sourceTree = "<group>";
+		};
+		59A815CEEE3785A018E3383B /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				20ABB8623849891D1E06F81C /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		62EB4E47E8A1DF8D73DF0FF0 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				E6DBD167B62D482F93A3299F /* Pods-SCLAlertView-Objective-C.xcconfig */,
+				A762D015C1830DDB76B5767A /* Pods-SCLAlertView-Objective-C-Private.xcconfig */,
+				44DAE64528C5939F8286F27D /* Pods-SCLAlertView-Objective-C-dummy.m */,
+				B25BD6E719CE4EACCBD08626 /* Pods-SCLAlertView-Objective-C-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-SCLAlertView-Objective-C";
+			sourceTree = "<group>";
+		};
+		6D7F8047978757C986F0FAA8 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				4508AAD36427963ECEAF3772 /* MBProgressHUD.h */,
+				4BC006AA77B41FDEE4A07F90 /* MBProgressHUD.m */,
+				12D40218968691149DC80EDB /* Support Files */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		6E191867A1976A7BB38C4F90 = {
+			isa = PBXGroup;
+			children = (
+				9ED9EF707C7310F35DEEBF20 /* Podfile */,
+				93108BB1E780B6A7A791DF47 /* Frameworks */,
+				2DD38A4B72BA9E19B012367F /* Pods */,
+				DCD52A56CDA25EC372808B77 /* Products */,
+				59A815CEEE3785A018E3383B /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		716F70F191719720C8DD7517 /* MMMaterialDesignSpinner */ = {
+			isa = PBXGroup;
+			children = (
+				0537EB075824A8BA39CBDFA0 /* MMMaterialDesignSpinner.h */,
+				91F15BDF4330AFCB4EAE40EC /* MMMaterialDesignSpinner.m */,
+				3BA96811ABD1C55292033FDA /* Support Files */,
+			);
+			path = MMMaterialDesignSpinner;
+			sourceTree = "<group>";
+		};
+		808271DAD675991E3875289D /* CWPopup */ = {
+			isa = PBXGroup;
+			children = (
+				4A81B37D61DD9510C98C7D76 /* UIViewController+CWPopup.h */,
+				222DE6105D67747EE3C585DE /* UIViewController+CWPopup.m */,
+				DA62E539E47118B563808496 /* Support Files */,
+			);
+			path = CWPopup;
+			sourceTree = "<group>";
+		};
+		93108BB1E780B6A7A791DF47 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				03D8406B14498157D459B21D /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A1B6E746941BC3134AE5C51E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				EBB37362F223FA51D2335E7F /* Pods-JTCalendar.xcconfig */,
+				227038C0892EE52BA10E9D4E /* Pods-JTCalendar-Private.xcconfig */,
+				D8181E70897AD3C5E939ABBC /* Pods-JTCalendar-dummy.m */,
+				A7BE7BE9E368CA8262491B5F /* Pods-JTCalendar-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-JTCalendar";
+			sourceTree = "<group>";
+		};
+		A7B40C0ACE5E9FF0FE615AD9 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				99223EFEFF7C4B3AA4F68692 /* Pods-DLRadioButton.xcconfig */,
+				6A24146CC8A9B4217C909F71 /* Pods-DLRadioButton-Private.xcconfig */,
+				E55F086DC45854F8FB6C865F /* Pods-DLRadioButton-dummy.m */,
+				AFF33ADB7CC7259E5C520646 /* Pods-DLRadioButton-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-DLRadioButton";
+			sourceTree = "<group>";
+		};
+		B4F3D6D73C7FA37F57BF7BAF /* JTCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				7CD1270DC3F6338DD45D937C /* JTCalendar.h */,
+				17D071BF8C281526FCB803C3 /* JTCalendar.m */,
+				6744BD94BC3706D8E465C71A /* JTCalendarAppearance.h */,
+				5EF250E24E2B8FC562D7BCA9 /* JTCalendarAppearance.m */,
+				D75CA34960A6D3CA7EA32D3E /* JTCalendarContentView.h */,
+				ED57415C4978A9E7C81991DC /* JTCalendarContentView.m */,
+				ADC8589B5D8869BEE7BEC7DE /* JTCalendarDataCache.h */,
+				A2E2196E89A27219A56FC542 /* JTCalendarDataCache.m */,
+				EA3252AD64A395A6B099D276 /* JTCalendarDayView.h */,
+				2BE9C906B1D41DA82BE7B27F /* JTCalendarDayView.m */,
+				5DA6B1C4DBB45A62DC92DB64 /* JTCalendarMenuMonthView.h */,
+				0523D925BD2ADFE234A517C2 /* JTCalendarMenuMonthView.m */,
+				D40305A3A3DF76C7424A951F /* JTCalendarMenuView.h */,
+				2A79F26E2FEF4495AD0ECA55 /* JTCalendarMenuView.m */,
+				2F91E4DC352DA5E4F804B397 /* JTCalendarMonthView.h */,
+				2F1CB6F349F7C8033C720D8D /* JTCalendarMonthView.m */,
+				270F562A9FCA12126D153123 /* JTCalendarMonthWeekDaysView.h */,
+				3899A5384560437B43F7CF1B /* JTCalendarMonthWeekDaysView.m */,
+				4460CD652F3B0EB8C2A7C0FE /* JTCalendarViewDataSource.h */,
+				D8E969CB3FE6AC6C666EB3E3 /* JTCalendarWeekView.h */,
+				1FD7C61B6937C826E86B820E /* JTCalendarWeekView.m */,
+				7CFA99D6145A91E6A68D4392 /* JTCircleView.h */,
+				E89819CB0665806058F21F3E /* JTCircleView.m */,
+				A1B6E746941BC3134AE5C51E /* Support Files */,
+			);
+			path = JTCalendar;
+			sourceTree = "<group>";
+		};
+		C3B9465C18B037D7F9ADCA38 /* Security */ = {
+			isa = PBXGroup;
+			children = (
+				DA68F0B33E74DD3651338897 /* AFSecurityPolicy.h */,
+				E4CFF76EA680EF609341FCD5 /* AFSecurityPolicy.m */,
+			);
+			name = Security;
+			sourceTree = "<group>";
+		};
+		DA62E539E47118B563808496 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				442BF6C7B4DE38C2397A4721 /* Pods-CWPopup.xcconfig */,
+				0CE225A7A71260A70ED3BDD3 /* Pods-CWPopup-Private.xcconfig */,
+				5AEF17E23D6F991A56784FB6 /* Pods-CWPopup-dummy.m */,
+				B2B10ABE5B0DA664FD6C5F46 /* Pods-CWPopup-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-CWPopup";
+			sourceTree = "<group>";
+		};
+		DCD52A56CDA25EC372808B77 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0C9623DB0B4CAD5D659A9EDB /* MaterialDesignSpinner.bundle */,
+				C75909CD665D04AA08DB0C7D /* libPods.a */,
+				7650BD9B47A59DE486FF0DA7 /* libPods-AFNetworking.a */,
+				C795819203A4D2DC1B9451AA /* libPods-CWPopup.a */,
+				BDD6F1A69E4081C899D8CE8A /* libPods-DLRadioButton.a */,
+				FD663A43CC422CE026C792C9 /* libPods-JTCalendar.a */,
+				7FEDDDEAB05AFDC557C03D62 /* libPods-MBProgressHUD.a */,
+				0BBB9B20ED432C0F483B19D2 /* libPods-MMMaterialDesignSpinner.a */,
+				A26F0A81D924F874CED6CEE3 /* libPods-Reachability.a */,
+				B8428E0F756AA55344554F7D /* libPods-SCLAlertView-Objective-C.a */,
+				930A81DA627FCB487B8C4329 /* libPods-SSZipArchive.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD3B4120A18FB6B52A550220 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				7D0500C4D99F5D807995522C /* Reachability.h */,
+				D2368EEE3CF6B39D8FAA2C16 /* Reachability.m */,
+				E67018DF1DB1F5BF9FBF1CC8 /* Support Files */,
 			);
 			path = Reachability;
+			sourceTree = "<group>";
+		};
+		DE2A786FDF490B876916A5EA /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				D5ADB9DFC981B1B745913B61 /* AFNetworkActivityIndicatorManager.h */,
+				3A175C0F2C667D16E7069992 /* AFNetworkActivityIndicatorManager.m */,
+				B834EEF6DAC936DDF37A88CF /* UIActivityIndicatorView+AFNetworking.h */,
+				A6122E1E3CFAABD35FABDBC0 /* UIActivityIndicatorView+AFNetworking.m */,
+				4EE9F9CB45DE0B90456117C1 /* UIAlertView+AFNetworking.h */,
+				0B6999B0A15F1193DCDBBEE8 /* UIAlertView+AFNetworking.m */,
+				81ACC2002293ECF0BB6D1C88 /* UIButton+AFNetworking.h */,
+				615D9AC6B56195B5FC408F93 /* UIButton+AFNetworking.m */,
+				B50957DFD0C5A203593E71DD /* UIImageView+AFNetworking.h */,
+				04CF08ACC1A75506C9939034 /* UIImageView+AFNetworking.m */,
+				F06AC67E1EEFB4948F9230C2 /* UIKit+AFNetworking.h */,
+				EC08860CA8A5FD3812F55FA6 /* UIProgressView+AFNetworking.h */,
+				D71EC5E47A266DA89B76CB12 /* UIProgressView+AFNetworking.m */,
+				044723084BE7CB6F9D14AD89 /* UIRefreshControl+AFNetworking.h */,
+				24A680128DBACE3775D48574 /* UIRefreshControl+AFNetworking.m */,
+				118A46304D8B7028278A9124 /* UIWebView+AFNetworking.h */,
+				3BC87E9307B6A867BE813154 /* UIWebView+AFNetworking.m */,
+			);
+			name = UIKit;
+			sourceTree = "<group>";
+		};
+		E67018DF1DB1F5BF9FBF1CC8 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B2AE034877CFCC42A52E45F8 /* Pods-Reachability.xcconfig */,
+				6AC88DA6611202D37D671C21 /* Pods-Reachability-Private.xcconfig */,
+				D687B189A55E890E7B9A10A2 /* Pods-Reachability-dummy.m */,
+				6EA951FA4499A654C1EFF5F0 /* Pods-Reachability-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Pods-Reachability";
+			sourceTree = "<group>";
+		};
+		FC31D6FA90719277DE767B90 /* NSURLConnection */ = {
+			isa = PBXGroup;
+			children = (
+				000711E558D305F741BA36F7 /* AFHTTPRequestOperation.h */,
+				27EEC04DF840A3D18B206773 /* AFHTTPRequestOperation.m */,
+				C6BD0306D79226F3D1BCF7AD /* AFHTTPRequestOperationManager.h */,
+				9FCD59633A3DA4ADBD7F5FF5 /* AFHTTPRequestOperationManager.m */,
+				B9A91F7FC2C52C463A86E9FB /* AFURLConnectionOperation.h */,
+				840560D92280C9F432308A68 /* AFURLConnectionOperation.m */,
+			);
+			name = NSURLConnection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		25967FAFB79B4399BDF7E857 /* Headers */ = {
+		12485AFB56E0896D0133740A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B274A1E821FA1D2157509EAF /* MMMaterialDesignSpinner.h in Headers */,
+				7300AEE7F206EFDB28AA4BCE /* AFHTTPRequestOperation.h in Headers */,
+				34B8CA8EF5EFDD29ADF9F382 /* AFHTTPRequestOperationManager.h in Headers */,
+				6546E476260FDCB4EC3D1EDF /* AFHTTPSessionManager.h in Headers */,
+				4060A7E00B695945574E0ACC /* AFNetworkActivityIndicatorManager.h in Headers */,
+				7456CCDAE8CFE7D6AE9F410B /* AFNetworkReachabilityManager.h in Headers */,
+				121939C82725258F3E13BE88 /* AFNetworking.h in Headers */,
+				37E6B9A22FEA2180AA8EFAE0 /* AFSecurityPolicy.h in Headers */,
+				35F700A13B2E2EA87B14E1B1 /* AFURLConnectionOperation.h in Headers */,
+				5E304372CBAA876C1534F851 /* AFURLRequestSerialization.h in Headers */,
+				7E5A50A10335BF91026E7D7D /* AFURLResponseSerialization.h in Headers */,
+				44414F425AC9E6B588514819 /* AFURLSessionManager.h in Headers */,
+				2073F824E2F8CBD1F2269667 /* UIActivityIndicatorView+AFNetworking.h in Headers */,
+				2A7D192D3B6D02FC0630C794 /* UIAlertView+AFNetworking.h in Headers */,
+				96F5EC76A05E47856A307455 /* UIButton+AFNetworking.h in Headers */,
+				EEF4C1245F7E353D60EB72FE /* UIImageView+AFNetworking.h in Headers */,
+				F46AE9A79CFF4432E5EF63E8 /* UIKit+AFNetworking.h in Headers */,
+				F2E57439952AD9F702C01E08 /* UIProgressView+AFNetworking.h in Headers */,
+				8A520FF7D97BCDB79A745FA1 /* UIRefreshControl+AFNetworking.h in Headers */,
+				82310712A7A70B06A843ADE6 /* UIWebView+AFNetworking.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3CB3DC1E5E2FDA9E2F704150 /* Headers */ = {
+		24BE3A9E30880568AB08DA73 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				481E72C8B3E6DE49BDCC154B /* JTCalendar.h in Headers */,
-				69B42AEAE99BBF51FB3C8793 /* JTCalendarAppearance.h in Headers */,
-				24B87C553A5909D79BAC3907 /* JTCalendarContentView.h in Headers */,
-				7CA159DF7F200100F78E7D80 /* JTCalendarDataCache.h in Headers */,
-				838403C580ED9FAD903F285D /* JTCalendarDayView.h in Headers */,
-				6FF8D988273431F00D1AF7D0 /* JTCalendarMenuMonthView.h in Headers */,
-				9CF0F634D228CD7D84915854 /* JTCalendarMenuView.h in Headers */,
-				F521676F23D7DD25456EECFC /* JTCalendarMonthView.h in Headers */,
-				9B54E2187CB43530B91D523F /* JTCalendarMonthWeekDaysView.h in Headers */,
-				6D1A958A6B4CB82BDC2C176A /* JTCalendarViewDataSource.h in Headers */,
-				CB6A7BF6348437C0BDDC60A0 /* JTCalendarWeekView.h in Headers */,
-				BDE8FAB1A0753E5FB0342E35 /* JTCircleView.h in Headers */,
+				EFFC201950841D72132FDF7E /* JTCalendar.h in Headers */,
+				28D3DA7BE6A70AD340293EB1 /* JTCalendarAppearance.h in Headers */,
+				0000452F6F9E07D0914E67F0 /* JTCalendarContentView.h in Headers */,
+				515556FA34A92ED253DE6919 /* JTCalendarDataCache.h in Headers */,
+				725BD734BC8E55F816628FA7 /* JTCalendarDayView.h in Headers */,
+				A7ADF9799183E5EFE7DFF7BB /* JTCalendarMenuMonthView.h in Headers */,
+				FF73937ED7947B01F99F6B95 /* JTCalendarMenuView.h in Headers */,
+				8CA853D4CF4E82C04D8468DE /* JTCalendarMonthView.h in Headers */,
+				7BC4AAC66316D1FF970A989F /* JTCalendarMonthWeekDaysView.h in Headers */,
+				2A10452AD6E82E44DF02740D /* JTCalendarViewDataSource.h in Headers */,
+				9C5836283A10FC6EB25FBEA4 /* JTCalendarWeekView.h in Headers */,
+				B4EBC0757A0D5FBB2F9A5834 /* JTCircleView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		581383EE6574D472BCE65110 /* Headers */ = {
+		2E73C12B3CA083FEEC951FA3 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90A480249489A49451816716 /* UIViewController+CWPopup.h in Headers */,
+				583B5B636D23E3E84DB6A1ED /* DLRadioButton.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7A9EA62722A62986DA1EAC3A /* Headers */ = {
+		302F36FDD71B7B87949F0160 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9395C45C2346BAB161A4CB33 /* SCLAlertView.h in Headers */,
-				E60F50DDC16187F9B0B9D69E /* SCLAlertViewResponder.h in Headers */,
-				4CA9FB6419B2F41F1FBC64A3 /* SCLAlertViewStyleKit.h in Headers */,
-				EF3FF4E1D5BC204D7463719F /* SCLButton.h in Headers */,
-				DFCB02C33AC520218A09C172 /* SCLMacros.h in Headers */,
-				D4D0C94B88B3E6406CFB71F0 /* UIImage+ImageEffects.h in Headers */,
+				508CF3A9E025ABC35DCA0ACC /* SSZipArchive.h in Headers */,
+				19E846EA613BF2F5AB0BBEE2 /* crypt.h in Headers */,
+				F70568104DD2028E2A8AD963 /* ioapi.h in Headers */,
+				C3B6E705D186E7F6F5982B79 /* mztools.h in Headers */,
+				EEA715406FFF929733BC5D4A /* unzip.h in Headers */,
+				AD594CD408600F253765E599 /* zip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		981CB1EAA1FFBE0A1D574CB2 /* Headers */ = {
+		41395C96B18421EAF55D3731 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7E83D42C60CFAE3942D2C1C /* Reachability.h in Headers */,
+				B0B27109D5E3E05BAE495AEF /* Reachability.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D9B2EC118BEB42C98597F9BD /* Headers */ = {
+		6654CC49C8B18D3B27784EAE /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3B68FF6EFC58EA40AA9DEA1 /* MBProgressHUD.h in Headers */,
+				E14DFBC7158CE80F7E719AAC /* SCLAlertView.h in Headers */,
+				BD93EB6AA510FE7CB1134682 /* SCLAlertViewResponder.h in Headers */,
+				3264C36112B8D1DD32F0FE48 /* SCLAlertViewStyleKit.h in Headers */,
+				76106E47F1C64EEADA439ACF /* SCLButton.h in Headers */,
+				FE5E9BC0BD6AB924990DBF52 /* SCLMacros.h in Headers */,
+				884F4B7F995D8ED3BAAC9BFC /* UIImage+ImageEffects.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DBFEF9A62622D2AB77448A40 /* Headers */ = {
+		6966F091DDD285A89BEE0FA9 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				527C71F77D04B784C8C9F69E /* SSZipArchive.h in Headers */,
-				791A21DD54CB539F1F98D69A /* crypt.h in Headers */,
-				1BBCE36AEC52427ACCE89E37 /* ioapi.h in Headers */,
-				A4EBFA75A786B58E424E052C /* mztools.h in Headers */,
-				7D0DFE133AFA48BB4FAAF42C /* unzip.h in Headers */,
-				D6869190B31E75E076D3A7AD /* zip.h in Headers */,
+				101BD0C85C9438D31AE729EF /* MMMaterialDesignSpinner.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EF076A1DD4D04C5472095148 /* Headers */ = {
+		A2C3FD49129589C0AD3F0C66 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				588B8A07A569F0DB97FA4F7B /* DLRadioButton.h in Headers */,
+				56A41FC46A153DBAFA0E9E5F /* MBProgressHUD.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEF6CCD5CA9BE0AE4377D0A8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E01EAA6657BBDCFB7FB8C433 /* UIViewController+CWPopup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		356E724A447748298A7BEE8D /* Pods-MBProgressHUD */ = {
+		07484EF65F2FBF9BF5F0776B /* Pods-JTCalendar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A4D1A338E1CC752517072DD5 /* Build configuration list for PBXNativeTarget "Pods-MBProgressHUD" */;
+			buildConfigurationList = 6175E1728FBF450F95168C53 /* Build configuration list for PBXNativeTarget "Pods-JTCalendar" */;
 			buildPhases = (
-				6952ADFBD08FEA4CF43A3710 /* Sources */,
-				670C3D8E5E54321C7F4C0C5D /* Frameworks */,
-				D9B2EC118BEB42C98597F9BD /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-MBProgressHUD";
-			productName = "Pods-MBProgressHUD";
-			productReference = E8B4D9D34423B0E34924DAAA /* libPods-MBProgressHUD.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		3788434F541A253329F02977 /* Pods-MMMaterialDesignSpinner-MaterialDesignSpinner */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3AFE4D0F3615774DC17B3FDC /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner" */;
-			buildPhases = (
-				1B99E1CAEBC869A9605C56B8 /* Sources */,
-				185BFFD4DC1A0915781BFD85 /* Frameworks */,
-				12F87D574458F3EEB439FC5B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
-			productName = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
-			productReference = B2CA2F23955EF2F3D30434BD /* MaterialDesignSpinner.bundle */;
-			productType = "com.apple.product-type.bundle";
-		};
-		49B66E5E5507F1B30CE8A485 /* Pods */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 41BF031385998541EF4756CE /* Build configuration list for PBXNativeTarget "Pods" */;
-			buildPhases = (
-				CEE792A978810B2FEAEDEBD2 /* Sources */,
-				612391E604162E763EFD329E /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				D3965583928769233B1697C8 /* PBXTargetDependency */,
-				710C90565CFDB2B51FD8C6B6 /* PBXTargetDependency */,
-				4A5E4899F4515063EEB2BFBE /* PBXTargetDependency */,
-				3A3753EDEA4F661DEB01079D /* PBXTargetDependency */,
-				0D89B42BBECDD8642821C32C /* PBXTargetDependency */,
-				6FFA37802D9021917C7F4BB0 /* PBXTargetDependency */,
-				9D4E8259C01A264BFE9B8C94 /* PBXTargetDependency */,
-				F3C7B8CE5D72E594E282AA31 /* PBXTargetDependency */,
-			);
-			name = Pods;
-			productName = Pods;
-			productReference = C213A957FD5E2EF1E08D56D1 /* libPods.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		58C4FDFF7B80B04822CCD6E5 /* Pods-SSZipArchive */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0AA1B69E5EE65F883F6AABA5 /* Build configuration list for PBXNativeTarget "Pods-SSZipArchive" */;
-			buildPhases = (
-				F7C535BA1A6103A2D929F9A2 /* Sources */,
-				27B5B9091DFC937126C06A24 /* Frameworks */,
-				DBFEF9A62622D2AB77448A40 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-SSZipArchive";
-			productName = "Pods-SSZipArchive";
-			productReference = 7C1D10D3FA7C3B01F77BE7D7 /* libPods-SSZipArchive.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		5985BF2A33702D192D447037 /* Pods-MMMaterialDesignSpinner */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0F2BDC0886B85358F4BFAB40 /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner" */;
-			buildPhases = (
-				894E9596130AA70C1A2314AD /* Sources */,
-				60FBB5E38648D519DFE689F2 /* Frameworks */,
-				25967FAFB79B4399BDF7E857 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				404A4F92587F391D00FCBA9F /* PBXTargetDependency */,
-			);
-			name = "Pods-MMMaterialDesignSpinner";
-			productName = "Pods-MMMaterialDesignSpinner";
-			productReference = 9F617D48A8CBF775360A5032 /* libPods-MMMaterialDesignSpinner.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		72F458B23A81330957368889 /* Pods-DLRadioButton */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7692C6BA08699A42DDAD4446 /* Build configuration list for PBXNativeTarget "Pods-DLRadioButton" */;
-			buildPhases = (
-				09BBF9C69CE10A4EB24AB5B3 /* Sources */,
-				4AB9F6350E118D802289798A /* Frameworks */,
-				EF076A1DD4D04C5472095148 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-DLRadioButton";
-			productName = "Pods-DLRadioButton";
-			productReference = 6F21D8427E027E53E32C4512 /* libPods-DLRadioButton.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		AD919BFE4C5433B2DE86EF07 /* Pods-CWPopup */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = B8418CCA5529411D49776097 /* Build configuration list for PBXNativeTarget "Pods-CWPopup" */;
-			buildPhases = (
-				0150C53BA8F679C8BBA8AE4B /* Sources */,
-				9C063C00245E27842BE75282 /* Frameworks */,
-				581383EE6574D472BCE65110 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-CWPopup";
-			productName = "Pods-CWPopup";
-			productReference = 7FC0DB072913C1D409CB377A /* libPods-CWPopup.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		C5196EE9BCAC2F8684C419A0 /* Pods-SCLAlertView-Objective-C */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 390DEA78D6BA67C40EA535EB /* Build configuration list for PBXNativeTarget "Pods-SCLAlertView-Objective-C" */;
-			buildPhases = (
-				DBA159BBFEA928B7FF7B4BE8 /* Sources */,
-				24D160D190B2B762D4BA3530 /* Frameworks */,
-				7A9EA62722A62986DA1EAC3A /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-SCLAlertView-Objective-C";
-			productName = "Pods-SCLAlertView-Objective-C";
-			productReference = 6269D154529DAE6AFDC3D427 /* libPods-SCLAlertView-Objective-C.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		F501BA3A1C4469E7B5138597 /* Pods-Reachability */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A456A63A68F2554F4B3AA0A0 /* Build configuration list for PBXNativeTarget "Pods-Reachability" */;
-			buildPhases = (
-				8A009444370079155865EF20 /* Sources */,
-				9A57B7D75B9E12945A742BDE /* Frameworks */,
-				981CB1EAA1FFBE0A1D574CB2 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pods-Reachability";
-			productName = "Pods-Reachability";
-			productReference = 7B15DA11953BD0C7250DC547 /* libPods-Reachability.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		FAF3FDB4094E9C55760132ED /* Pods-JTCalendar */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D97E5DEF84C9F34C95050560 /* Build configuration list for PBXNativeTarget "Pods-JTCalendar" */;
-			buildPhases = (
-				DDA28C9C0BC600755B0D33F1 /* Sources */,
-				E45E9DE531646089E91E5E1D /* Frameworks */,
-				3CB3DC1E5E2FDA9E2F704150 /* Headers */,
+				F0EC772A3A2CC99E7200FE0E /* Sources */,
+				8729775B79BA2B73583AAD31 /* Frameworks */,
+				24BE3A9E30880568AB08DA73 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -917,45 +994,225 @@
 			);
 			name = "Pods-JTCalendar";
 			productName = "Pods-JTCalendar";
-			productReference = 7129098B2FC5199B52845EF5 /* libPods-JTCalendar.a */;
+			productReference = FD663A43CC422CE026C792C9 /* libPods-JTCalendar.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		076B68B93D7D7EA114B5E370 /* Pods-MMMaterialDesignSpinner-MaterialDesignSpinner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F84FBAA8876698E9297CDD6 /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner" */;
+			buildPhases = (
+				048F87E555A4832DA9FBB0A4 /* Sources */,
+				C9920E091AAFE7BBD1C33BBC /* Frameworks */,
+				9B0FCF77EF39DE341F023803 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
+			productName = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
+			productReference = 0C9623DB0B4CAD5D659A9EDB /* MaterialDesignSpinner.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		5054236E393F07CB9EB4F588 /* Pods-MBProgressHUD */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CF2FFAE29EF8385F51547F3 /* Build configuration list for PBXNativeTarget "Pods-MBProgressHUD" */;
+			buildPhases = (
+				5307674A5665E271BB68B2E7 /* Sources */,
+				5BBB24FEEE25E319141FF1F6 /* Frameworks */,
+				A2C3FD49129589C0AD3F0C66 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-MBProgressHUD";
+			productName = "Pods-MBProgressHUD";
+			productReference = 7FEDDDEAB05AFDC557C03D62 /* libPods-MBProgressHUD.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		509A6B6FD8BA6A7B70E7F5F1 /* Pods-SSZipArchive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FDEEF682E48FCFEA1789A9BE /* Build configuration list for PBXNativeTarget "Pods-SSZipArchive" */;
+			buildPhases = (
+				25EDBEF1450A6CC3DA3BE574 /* Sources */,
+				6EFFDA1441FCE6BBFDA07D11 /* Frameworks */,
+				302F36FDD71B7B87949F0160 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SSZipArchive";
+			productName = "Pods-SSZipArchive";
+			productReference = 930A81DA627FCB487B8C4329 /* libPods-SSZipArchive.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5572C820129253CD2CDD6834 /* Pods-SCLAlertView-Objective-C */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E01261CEDCE24BD81B9588EA /* Build configuration list for PBXNativeTarget "Pods-SCLAlertView-Objective-C" */;
+			buildPhases = (
+				B658F7CD523D80839B463D6D /* Sources */,
+				495CEC1343E39AE1A01E582A /* Frameworks */,
+				6654CC49C8B18D3B27784EAE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SCLAlertView-Objective-C";
+			productName = "Pods-SCLAlertView-Objective-C";
+			productReference = B8428E0F756AA55344554F7D /* libPods-SCLAlertView-Objective-C.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		584B7BBEFB857E74C2FD3D1B /* Pods-DLRadioButton */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22BFAD07843EE4226C870273 /* Build configuration list for PBXNativeTarget "Pods-DLRadioButton" */;
+			buildPhases = (
+				45BB47A464EDF7653F921F8F /* Sources */,
+				F49EA5C607FE859DCE9888EF /* Frameworks */,
+				2E73C12B3CA083FEEC951FA3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-DLRadioButton";
+			productName = "Pods-DLRadioButton";
+			productReference = BDD6F1A69E4081C899D8CE8A /* libPods-DLRadioButton.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		6240589300167391CB5ABEC1 /* Pods-Reachability */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F49B08B98011BFE72383FC85 /* Build configuration list for PBXNativeTarget "Pods-Reachability" */;
+			buildPhases = (
+				63FB424E3EFD57FC31837414 /* Sources */,
+				DB9E15D6D739E92D143238FB /* Frameworks */,
+				41395C96B18421EAF55D3731 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Reachability";
+			productName = "Pods-Reachability";
+			productReference = A26F0A81D924F874CED6CEE3 /* libPods-Reachability.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		7ABED63838D621E4A7E51ACA /* Pods-AFNetworking */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B43F7744DEDE253054170AE /* Build configuration list for PBXNativeTarget "Pods-AFNetworking" */;
+			buildPhases = (
+				CEE517EA1D78D859CAF2918C /* Sources */,
+				663141D14AC6D9E8588F0707 /* Frameworks */,
+				12485AFB56E0896D0133740A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-AFNetworking";
+			productName = "Pods-AFNetworking";
+			productReference = 7650BD9B47A59DE486FF0DA7 /* libPods-AFNetworking.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		95500A810516EAF85BCC6DFA /* Pods-MMMaterialDesignSpinner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0CBAC8D8CB524F7FE8A99044 /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner" */;
+			buildPhases = (
+				EE1F2A9C5E3361C834D481AB /* Sources */,
+				3F437250365F0785EBC77853 /* Frameworks */,
+				6966F091DDD285A89BEE0FA9 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D7E1E77B2BC12E7B6610FB5 /* PBXTargetDependency */,
+			);
+			name = "Pods-MMMaterialDesignSpinner";
+			productName = "Pods-MMMaterialDesignSpinner";
+			productReference = 0BBB9B20ED432C0F483B19D2 /* libPods-MMMaterialDesignSpinner.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9E8F5DE387BB78F84E97FB91 /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AF258AA68D52E76624C1E451 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				60E6790A6ABCA164FCD1A152 /* Sources */,
+				887782174809DBF143DB90A3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4AD527A02B22D80F9ACCF24D /* PBXTargetDependency */,
+				67F20685DCF4B4C58A49632F /* PBXTargetDependency */,
+				7D03E72E9D5BA70C4911C31A /* PBXTargetDependency */,
+				5CDFDBF626F897B2031B1CFA /* PBXTargetDependency */,
+				2AA2DF2955D99766E5A61468 /* PBXTargetDependency */,
+				BDA420915924384E687F1F5E /* PBXTargetDependency */,
+				E2F3BDDCF8498D188834B9E3 /* PBXTargetDependency */,
+				5F8AB86EC2C5450708022A0B /* PBXTargetDependency */,
+				C1EF9D066AB626A68AE17332 /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = C75909CD665D04AA08DB0C7D /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9FADFD42E3AD4E149EEE6241 /* Pods-CWPopup */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B5D36BCE48FD46E9FB0DD2D /* Build configuration list for PBXNativeTarget "Pods-CWPopup" */;
+			buildPhases = (
+				FE989984B91A785C8B0230ED /* Sources */,
+				47B1956C4209B9F358F412BA /* Frameworks */,
+				EEF6CCD5CA9BE0AE4377D0A8 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-CWPopup";
+			productName = "Pods-CWPopup";
+			productReference = C795819203A4D2DC1B9451AA /* libPods-CWPopup.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A05F557C774EA98D082077C7 /* Project object */ = {
+		7005ECE13A2B274D2DA85CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0640;
 			};
-			buildConfigurationList = C3E5310B061EFD3802D253B3 /* Build configuration list for PBXProject "Pods" */;
+			buildConfigurationList = F3A37A5971FF332A35258877 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 08FAFDA7FE122708966AFC66;
-			productRefGroup = 85F87024BE08432069B4D867 /* Products */;
+			mainGroup = 6E191867A1976A7BB38C4F90;
+			productRefGroup = DCD52A56CDA25EC372808B77 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				49B66E5E5507F1B30CE8A485 /* Pods */,
-				AD919BFE4C5433B2DE86EF07 /* Pods-CWPopup */,
-				72F458B23A81330957368889 /* Pods-DLRadioButton */,
-				FAF3FDB4094E9C55760132ED /* Pods-JTCalendar */,
-				356E724A447748298A7BEE8D /* Pods-MBProgressHUD */,
-				5985BF2A33702D192D447037 /* Pods-MMMaterialDesignSpinner */,
-				3788434F541A253329F02977 /* Pods-MMMaterialDesignSpinner-MaterialDesignSpinner */,
-				F501BA3A1C4469E7B5138597 /* Pods-Reachability */,
-				C5196EE9BCAC2F8684C419A0 /* Pods-SCLAlertView-Objective-C */,
-				58C4FDFF7B80B04822CCD6E5 /* Pods-SSZipArchive */,
+				9E8F5DE387BB78F84E97FB91 /* Pods */,
+				7ABED63838D621E4A7E51ACA /* Pods-AFNetworking */,
+				9FADFD42E3AD4E149EEE6241 /* Pods-CWPopup */,
+				584B7BBEFB857E74C2FD3D1B /* Pods-DLRadioButton */,
+				07484EF65F2FBF9BF5F0776B /* Pods-JTCalendar */,
+				5054236E393F07CB9EB4F588 /* Pods-MBProgressHUD */,
+				95500A810516EAF85BCC6DFA /* Pods-MMMaterialDesignSpinner */,
+				076B68B93D7D7EA114B5E370 /* Pods-MMMaterialDesignSpinner-MaterialDesignSpinner */,
+				6240589300167391CB5ABEC1 /* Pods-Reachability */,
+				5572C820129253CD2CDD6834 /* Pods-SCLAlertView-Objective-C */,
+				509A6B6FD8BA6A7B70E7F5F1 /* Pods-SSZipArchive */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		12F87D574458F3EEB439FC5B /* Resources */ = {
+		9B0FCF77EF39DE341F023803 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -965,177 +1222,208 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		0150C53BA8F679C8BBA8AE4B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				02A47DB89FDA4BF475AACAC6 /* Pods-CWPopup-dummy.m in Sources */,
-				C716F39714C05518C2357AAF /* UIViewController+CWPopup.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		09BBF9C69CE10A4EB24AB5B3 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1E6FFC1D2AEB7E522070F9ED /* DLRadioButton.m in Sources */,
-				C784B2B780319CD2F1469E80 /* Pods-DLRadioButton-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1B99E1CAEBC869A9605C56B8 /* Sources */ = {
+		048F87E555A4832DA9FBB0A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6952ADFBD08FEA4CF43A3710 /* Sources */ = {
+		25EDBEF1450A6CC3DA3BE574 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				817FAF2A2D33B9273FF0D73D /* MBProgressHUD.m in Sources */,
-				20FAABBA1B4792DF21A24819 /* Pods-MBProgressHUD-dummy.m in Sources */,
+				E50012401A59C1DDC2A0408A /* Pods-SSZipArchive-dummy.m in Sources */,
+				86A611520600C414A7A7B866 /* SSZipArchive.m in Sources */,
+				05F69621EE7C6FB1B04A951A /* ioapi.c in Sources */,
+				1848C50C21EABB1C231BFC86 /* mztools.c in Sources */,
+				234988AEF6EF81C5832A1B63 /* unzip.c in Sources */,
+				86CFB846D3D9BAE1F11EB7FA /* zip.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		894E9596130AA70C1A2314AD /* Sources */ = {
+		45BB47A464EDF7653F921F8F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A34A5A850E724556BFA6C958 /* MMMaterialDesignSpinner.m in Sources */,
-				6D0C0834262F9E97D9F8B3D6 /* Pods-MMMaterialDesignSpinner-dummy.m in Sources */,
+				57AFDDB26EED5E48BD2C7563 /* DLRadioButton.m in Sources */,
+				94BD2271EA8353310A9763F6 /* Pods-DLRadioButton-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8A009444370079155865EF20 /* Sources */ = {
+		5307674A5665E271BB68B2E7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02B9E20114346D1F1CBAF270 /* Pods-Reachability-dummy.m in Sources */,
-				18BD72EBB76F05BCC2E7DA57 /* Reachability.m in Sources */,
+				A8749D666CC66BAE6D66DB14 /* MBProgressHUD.m in Sources */,
+				6445E3B76EB0CB0348D6398A /* Pods-MBProgressHUD-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CEE792A978810B2FEAEDEBD2 /* Sources */ = {
+		60E6790A6ABCA164FCD1A152 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E7F34F4AD8D97FF2C27116F /* Pods-dummy.m in Sources */,
+				C0C1EF9E7D01A694EEB013D3 /* Pods-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DBA159BBFEA928B7FF7B4BE8 /* Sources */ = {
+		63FB424E3EFD57FC31837414 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				315B399FB968417F6954EFE6 /* Pods-SCLAlertView-Objective-C-dummy.m in Sources */,
-				B33E1F9519AFBC48D2C021D1 /* SCLAlertView.m in Sources */,
-				606D711ECD6BE5D718E6C993 /* SCLAlertViewResponder.m in Sources */,
-				F6CDEE18AB5DDE92ACEE1501 /* SCLAlertViewStyleKit.m in Sources */,
-				937AE6A7C7765B83AE1CAA25 /* SCLButton.m in Sources */,
-				D14931F48FD0ACD2C3742665 /* UIImage+ImageEffects.m in Sources */,
+				D6897746F72CD95F5A540F40 /* Pods-Reachability-dummy.m in Sources */,
+				B7AE4808C79FBA72A83E02AA /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DDA28C9C0BC600755B0D33F1 /* Sources */ = {
+		B658F7CD523D80839B463D6D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FBDB7C647129177768BFE3A /* JTCalendar.m in Sources */,
-				437435049401B791CFC4F295 /* JTCalendarAppearance.m in Sources */,
-				BB4494044D2077C45E1DCDFB /* JTCalendarContentView.m in Sources */,
-				818DF3B23CC3E4F2ABFD1241 /* JTCalendarDataCache.m in Sources */,
-				D081AA6AA05E1420EA7A17FF /* JTCalendarDayView.m in Sources */,
-				09AA8C6E2729C80A0F8A00F4 /* JTCalendarMenuMonthView.m in Sources */,
-				447E75874FA9AD7D82BD8576 /* JTCalendarMenuView.m in Sources */,
-				06D82447901E0B20BB68A01A /* JTCalendarMonthView.m in Sources */,
-				DAC1DCC2EC6334910EDD55A4 /* JTCalendarMonthWeekDaysView.m in Sources */,
-				5064524ECA05E1CC71A88BBF /* JTCalendarWeekView.m in Sources */,
-				7E515986DB2BCE8DF8EAC7F4 /* JTCircleView.m in Sources */,
-				2B0FFA108F1F3FD15A0110A5 /* Pods-JTCalendar-dummy.m in Sources */,
+				E9A9F5CD6F903E190266DE46 /* Pods-SCLAlertView-Objective-C-dummy.m in Sources */,
+				E57337357773DA1DE4682C48 /* SCLAlertView.m in Sources */,
+				4CA3B729F4C346AB2770EFE3 /* SCLAlertViewResponder.m in Sources */,
+				BFF6E5DF4F504AF1023F17DB /* SCLAlertViewStyleKit.m in Sources */,
+				2C9B65142200D553599294D4 /* SCLButton.m in Sources */,
+				35436147495D75DA9D2578A6 /* UIImage+ImageEffects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F7C535BA1A6103A2D929F9A2 /* Sources */ = {
+		CEE517EA1D78D859CAF2918C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A726CA00CB58FE15DE16B6C3 /* Pods-SSZipArchive-dummy.m in Sources */,
-				F699B29ABC1FD99C4CD79316 /* SSZipArchive.m in Sources */,
-				AAC09117F97DA4532CD0304A /* ioapi.c in Sources */,
-				6351109A3A59A0DC58289E03 /* mztools.c in Sources */,
-				265676664C1C49C3EE9774C6 /* unzip.c in Sources */,
-				27438171835FB9DFCE6EFEA0 /* zip.c in Sources */,
+				A4259DFA6F35D6F326FC4545 /* AFHTTPRequestOperation.m in Sources */,
+				F2F8DA9264D59D5218CC1CB1 /* AFHTTPRequestOperationManager.m in Sources */,
+				0A9D6CC4AE0B929CEDFFC9BB /* AFHTTPSessionManager.m in Sources */,
+				B2B8FBC1E4D217C612874D03 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				05BAD79FD7D00412D32ED3C5 /* AFNetworkReachabilityManager.m in Sources */,
+				474B36221EA4870085A3391B /* AFSecurityPolicy.m in Sources */,
+				28B85CD5B7AD5383ABACA7A4 /* AFURLConnectionOperation.m in Sources */,
+				E087B28A3384DE7547FACE6F /* AFURLRequestSerialization.m in Sources */,
+				DF4F2E7FECEB5C8C77D22261 /* AFURLResponseSerialization.m in Sources */,
+				747E592CE51994905734DF6A /* AFURLSessionManager.m in Sources */,
+				7E40ABAF3B4C2CBE4C57354D /* Pods-AFNetworking-dummy.m in Sources */,
+				D01ADAA5C702114F122569FA /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				95CBD358BA7CD4DAF9F923CB /* UIAlertView+AFNetworking.m in Sources */,
+				A2B40A39E65DF746B1971D64 /* UIButton+AFNetworking.m in Sources */,
+				529E0323D917D85176EECA68 /* UIImageView+AFNetworking.m in Sources */,
+				8CE02A14B6B6E90C1866C739 /* UIProgressView+AFNetworking.m in Sources */,
+				F9DC79CA93746CBFAA8F761D /* UIRefreshControl+AFNetworking.m in Sources */,
+				C50632A8C2C332747DE13FEB /* UIWebView+AFNetworking.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EE1F2A9C5E3361C834D481AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CE446AA0857660A7F08BB2D /* MMMaterialDesignSpinner.m in Sources */,
+				90AF54C460BBE5E6F7A7712A /* Pods-MMMaterialDesignSpinner-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F0EC772A3A2CC99E7200FE0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CAB417E3493D0503E4B5230 /* JTCalendar.m in Sources */,
+				256A37E87E2B617475E358F9 /* JTCalendarAppearance.m in Sources */,
+				51AA69C6BAE90469C6AA68A6 /* JTCalendarContentView.m in Sources */,
+				B8CC8A117825F6678FF96736 /* JTCalendarDataCache.m in Sources */,
+				F224AB528DF4A91ED9214EF5 /* JTCalendarDayView.m in Sources */,
+				01B98EC1268FBAD4FC4E68F5 /* JTCalendarMenuMonthView.m in Sources */,
+				5DE17947D063CE99141A9436 /* JTCalendarMenuView.m in Sources */,
+				661E5D6C2302AC60DE1F3F98 /* JTCalendarMonthView.m in Sources */,
+				7EDAE71DACB7AB2EBD5F99CA /* JTCalendarMonthWeekDaysView.m in Sources */,
+				3CD672939AD9CD85E5B83D71 /* JTCalendarWeekView.m in Sources */,
+				9D789EEF80107C360A85C864 /* JTCircleView.m in Sources */,
+				6DB7450BC1A482DE9B42F336 /* Pods-JTCalendar-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE989984B91A785C8B0230ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F765B34A0800F017FD9612E /* Pods-CWPopup-dummy.m in Sources */,
+				3053592A302E5D238A4D8622 /* UIViewController+CWPopup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0D89B42BBECDD8642821C32C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-MMMaterialDesignSpinner";
-			target = 5985BF2A33702D192D447037 /* Pods-MMMaterialDesignSpinner */;
-			targetProxy = EBF2411E4CC184F5BA52C648 /* PBXContainerItemProxy */;
-		};
-		3A3753EDEA4F661DEB01079D /* PBXTargetDependency */ = {
+		2AA2DF2955D99766E5A61468 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-MBProgressHUD";
-			target = 356E724A447748298A7BEE8D /* Pods-MBProgressHUD */;
-			targetProxy = 7AEF51052F3F24BA329E8208 /* PBXContainerItemProxy */;
+			target = 5054236E393F07CB9EB4F588 /* Pods-MBProgressHUD */;
+			targetProxy = 005490FCA2E8664EC54B69A5 /* PBXContainerItemProxy */;
 		};
-		404A4F92587F391D00FCBA9F /* PBXTargetDependency */ = {
+		3D7E1E77B2BC12E7B6610FB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner";
-			target = 3788434F541A253329F02977 /* Pods-MMMaterialDesignSpinner-MaterialDesignSpinner */;
-			targetProxy = CAC04CDB4B01C2C429C07F8E /* PBXContainerItemProxy */;
+			target = 076B68B93D7D7EA114B5E370 /* Pods-MMMaterialDesignSpinner-MaterialDesignSpinner */;
+			targetProxy = F47EAAEE3DE52D0CA3AF3898 /* PBXContainerItemProxy */;
 		};
-		4A5E4899F4515063EEB2BFBE /* PBXTargetDependency */ = {
+		4AD527A02B22D80F9ACCF24D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-AFNetworking";
+			target = 7ABED63838D621E4A7E51ACA /* Pods-AFNetworking */;
+			targetProxy = 5F44B1D6D542B9B49B06EA4A /* PBXContainerItemProxy */;
+		};
+		5CDFDBF626F897B2031B1CFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-JTCalendar";
-			target = FAF3FDB4094E9C55760132ED /* Pods-JTCalendar */;
-			targetProxy = 69D675A3F92611912CA67AD5 /* PBXContainerItemProxy */;
+			target = 07484EF65F2FBF9BF5F0776B /* Pods-JTCalendar */;
+			targetProxy = 45D20FF14ACC102F4F7E5B7D /* PBXContainerItemProxy */;
 		};
-		6FFA37802D9021917C7F4BB0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-Reachability";
-			target = F501BA3A1C4469E7B5138597 /* Pods-Reachability */;
-			targetProxy = 0381D8D58B11503C4B168E2A /* PBXContainerItemProxy */;
-		};
-		710C90565CFDB2B51FD8C6B6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Pods-DLRadioButton";
-			target = 72F458B23A81330957368889 /* Pods-DLRadioButton */;
-			targetProxy = 68277E6A24521FB5539E9D47 /* PBXContainerItemProxy */;
-		};
-		9D4E8259C01A264BFE9B8C94 /* PBXTargetDependency */ = {
+		5F8AB86EC2C5450708022A0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-SCLAlertView-Objective-C";
-			target = C5196EE9BCAC2F8684C419A0 /* Pods-SCLAlertView-Objective-C */;
-			targetProxy = F0A5B1A41DF9F8EE3A351C64 /* PBXContainerItemProxy */;
+			target = 5572C820129253CD2CDD6834 /* Pods-SCLAlertView-Objective-C */;
+			targetProxy = D390B35D626B8EC8F84AF902 /* PBXContainerItemProxy */;
 		};
-		D3965583928769233B1697C8 /* PBXTargetDependency */ = {
+		67F20685DCF4B4C58A49632F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-CWPopup";
-			target = AD919BFE4C5433B2DE86EF07 /* Pods-CWPopup */;
-			targetProxy = 1F3A324950F618C0577ABB10 /* PBXContainerItemProxy */;
+			target = 9FADFD42E3AD4E149EEE6241 /* Pods-CWPopup */;
+			targetProxy = 3B03FD19B7048AC955CB1A4A /* PBXContainerItemProxy */;
 		};
-		F3C7B8CE5D72E594E282AA31 /* PBXTargetDependency */ = {
+		7D03E72E9D5BA70C4911C31A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-DLRadioButton";
+			target = 584B7BBEFB857E74C2FD3D1B /* Pods-DLRadioButton */;
+			targetProxy = D7F0A1FAD9AC6AE8DB29C377 /* PBXContainerItemProxy */;
+		};
+		BDA420915924384E687F1F5E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-MMMaterialDesignSpinner";
+			target = 95500A810516EAF85BCC6DFA /* Pods-MMMaterialDesignSpinner */;
+			targetProxy = C9F8D6C56E4C631BFF66506A /* PBXContainerItemProxy */;
+		};
+		C1EF9D066AB626A68AE17332 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-SSZipArchive";
-			target = 58C4FDFF7B80B04822CCD6E5 /* Pods-SSZipArchive */;
-			targetProxy = 9D2074B67AE9A96EC588D30A /* PBXContainerItemProxy */;
+			target = 509A6B6FD8BA6A7B70E7F5F1 /* Pods-SSZipArchive */;
+			targetProxy = 3874C467ABC913A47B232098 /* PBXContainerItemProxy */;
+		};
+		E2F3BDDCF8498D188834B9E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-Reachability";
+			target = 6240589300167391CB5ABEC1 /* Pods-Reachability */;
+			targetProxy = B4005105E457BF51CD510B88 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0BC9CAE7826C95A639259DCF /* Release */ = {
+		04C2E947D7AFB219B3BCA0C5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B29A267E74B71D813509FAFC /* Pods-DLRadioButton-Private.xcconfig */;
+			baseConfigurationReference = 6AC88DA6611202D37D671C21 /* Pods-Reachability-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-DLRadioButton/Pods-DLRadioButton-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-Reachability/Pods-Reachability-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -1146,23 +1434,23 @@
 			};
 			name = Release;
 		};
-		14FFDBDA880696A631C85BB5 /* Release */ = {
+		07329AFBA710FD7A0DECECE7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 543E35E00FAE148B4FFB5448 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 227038C0892EE52BA10E9D4E /* Pods-JTCalendar-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-JTCalendar/Pods-JTCalendar-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
-		2BA7C620DEB889DA0B88E228 /* Debug */ = {
+		1B0008AFF10FC2B0D579E92D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1201,25 +1489,25 @@
 			};
 			name = Debug;
 		};
-		3868A50CC635B81506041B22 /* Release */ = {
+		200AE478DD5C3B539EF53CEB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0823FF6F3D3C7037FBF01BC /* Pods-JTCalendar-Private.xcconfig */;
+			baseConfigurationReference = 0CE225A7A71260A70ED3BDD3 /* Pods-CWPopup-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-JTCalendar/Pods-JTCalendar-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-CWPopup/Pods-CWPopup-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
-		3EDA4E9FEE054CC9E702596F /* Release */ = {
+		3FA9DF5624D97AC62488D37F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 80CC0FC2D05EB49C827E808A /* Pods-CWPopup-Private.xcconfig */;
+			baseConfigurationReference = 0CE225A7A71260A70ED3BDD3 /* Pods-CWPopup-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-CWPopup/Pods-CWPopup-prefix.pch";
@@ -1233,28 +1521,12 @@
 			};
 			name = Release;
 		};
-		4915950A9359280E7E15A184 /* Debug */ = {
+		49C8AE3E57850B9A4A868F0C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AD3D5AD8DDEC21AA121B5A5 /* Pods-SSZipArchive-Private.xcconfig */;
+			baseConfigurationReference = 6A24146CC8A9B4217C909F71 /* Pods-DLRadioButton-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SSZipArchive/Pods-SSZipArchive-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		4BCA7035BB723436D8A3EDB0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 78E308D552655F704400FC73 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MMMaterialDesignSpinner/Pods-MMMaterialDesignSpinner-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-DLRadioButton/Pods-DLRadioButton-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -1265,13 +1537,41 @@
 			};
 			name = Release;
 		};
-		52FB714F70E83096C5385213 /* Debug */ = {
+		4E8AF075C3D1FCF9103673C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBCDB164BD93944317FE6051 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 6AC88DA6611202D37D671C21 /* Pods-Reachability-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-Reachability/Pods-Reachability-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5D469B58196C1BD3B60A566F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BA99C08CAF3D8002A368CF0 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				PRODUCT_NAME = MaterialDesignSpinner;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		5F738AEBB5E1BEE75043C0A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9AF8026DDCE24DC9E79F1566 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1279,14 +1579,14 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
-		7A50AF989284CF1E26E33E8D /* Debug */ = {
+		60BC5BDEA322435A055B3A67 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B29A267E74B71D813509FAFC /* Pods-DLRadioButton-Private.xcconfig */;
+			baseConfigurationReference = 227038C0892EE52BA10E9D4E /* Pods-JTCalendar-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-DLRadioButton/Pods-DLRadioButton-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-JTCalendar/Pods-JTCalendar-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -1297,159 +1597,7 @@
 			};
 			name = Debug;
 		};
-		8C619485A30E251EBA7B22E1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29B50322BE2ACA236D7FBFB5 /* Pods-SCLAlertView-Objective-C-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SCLAlertView-Objective-C/Pods-SCLAlertView-Objective-C-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		8EB18C8DB581787AEE718F34 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7200A50CD1C076AEF9A31D1B /* Pods-Reachability-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-Reachability/Pods-Reachability-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		9052494FE492251C80544775 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7200A50CD1C076AEF9A31D1B /* Pods-Reachability-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-Reachability/Pods-Reachability-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		9F8A9163B6348CCD3ECD5D17 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 78E308D552655F704400FC73 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				PRODUCT_NAME = MaterialDesignSpinner;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		A67E733D25FB76049B2DD2CC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FBC4E07BD74686E1BD2E337 /* Pods-MBProgressHUD-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MBProgressHUD/Pods-MBProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		B3C7F12EF9527219F03844B3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AD3D5AD8DDEC21AA121B5A5 /* Pods-SSZipArchive-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SSZipArchive/Pods-SSZipArchive-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		BB84BBD6B381D4A6A7CD2F41 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 78E308D552655F704400FC73 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MMMaterialDesignSpinner/Pods-MMMaterialDesignSpinner-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		BE7DDC06388145402425EA63 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29B50322BE2ACA236D7FBFB5 /* Pods-SCLAlertView-Objective-C-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SCLAlertView-Objective-C/Pods-SCLAlertView-Objective-C-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		CEE41C29DD9BC9308EF2B0FE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 78E308D552655F704400FC73 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				PRODUCT_NAME = MaterialDesignSpinner;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		D2FED5ED8F36001746B39213 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FBC4E07BD74686E1BD2E337 /* Pods-MBProgressHUD-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-MBProgressHUD/Pods-MBProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		D56FFC05A2796EDCDC177BC8 /* Release */ = {
+		6F3CD1D521C70F4CF2836B3B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1483,12 +1631,40 @@
 			};
 			name = Release;
 		};
-		EECB740E2E24188574A8977B /* Debug */ = {
+		782AD60F0E61336CF27BD620 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 80CC0FC2D05EB49C827E808A /* Pods-CWPopup-Private.xcconfig */;
+			baseConfigurationReference = 5BA99C08CAF3D8002A368CF0 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-CWPopup/Pods-CWPopup-prefix.pch";
+				PRODUCT_NAME = MaterialDesignSpinner;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		7A459F6A9104BF6EA39E9C92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9470220B6E8293ACBABA5C61 /* Pods-AFNetworking-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-AFNetworking/Pods-AFNetworking-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		853E838B205A034A3F47EEB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5309C2DDDB88C60598F067B1 /* Pods-SSZipArchive-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SSZipArchive/Pods-SSZipArchive-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -1499,12 +1675,12 @@
 			};
 			name = Debug;
 		};
-		F0ACB9CB06F8D54E4D0BC7BB /* Debug */ = {
+		97CBB8D767B12C5290749072 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E0823FF6F3D3C7037FBF01BC /* Pods-JTCalendar-Private.xcconfig */;
+			baseConfigurationReference = 5AC14A8DFC1CDAC929594ADC /* Pods-MBProgressHUD-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-JTCalendar/Pods-JTCalendar-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MBProgressHUD/Pods-MBProgressHUD-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -1514,110 +1690,263 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
+		};
+		9EA8F45DA55662DE2E9AE105 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BA99C08CAF3D8002A368CF0 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MMMaterialDesignSpinner/Pods-MMMaterialDesignSpinner-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		B3F2CAD9577BE62AC1FAEF32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AC14A8DFC1CDAC929594ADC /* Pods-MBProgressHUD-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MBProgressHUD/Pods-MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		BDA5B358AC0EEB5DD54139AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A762D015C1830DDB76B5767A /* Pods-SCLAlertView-Objective-C-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SCLAlertView-Objective-C/Pods-SCLAlertView-Objective-C-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		BF0187423E11F0A8DCE7A691 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9470220B6E8293ACBABA5C61 /* Pods-AFNetworking-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-AFNetworking/Pods-AFNetworking-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C1F6FEF57B8C8842B0B18EFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7196E005D2936881116B4A81 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C386E336DF131E7130F8B1F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A762D015C1830DDB76B5767A /* Pods-SCLAlertView-Objective-C-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SCLAlertView-Objective-C/Pods-SCLAlertView-Objective-C-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		DD1FB69DAB057D6947210AC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BA99C08CAF3D8002A368CF0 /* Pods-MMMaterialDesignSpinner-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-MMMaterialDesignSpinner/Pods-MMMaterialDesignSpinner-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		F865A80C41D8F90C30D17783 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6A24146CC8A9B4217C909F71 /* Pods-DLRadioButton-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-DLRadioButton/Pods-DLRadioButton-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		F885FA7D8524DE41C5694223 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5309C2DDDB88C60598F067B1 /* Pods-SSZipArchive-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SSZipArchive/Pods-SSZipArchive-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0AA1B69E5EE65F883F6AABA5 /* Build configuration list for PBXNativeTarget "Pods-SSZipArchive" */ = {
+		0CBAC8D8CB524F7FE8A99044 /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4915950A9359280E7E15A184 /* Debug */,
-				B3C7F12EF9527219F03844B3 /* Release */,
+				9EA8F45DA55662DE2E9AE105 /* Debug */,
+				DD1FB69DAB057D6947210AC1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0F2BDC0886B85358F4BFAB40 /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner" */ = {
+		22BFAD07843EE4226C870273 /* Build configuration list for PBXNativeTarget "Pods-DLRadioButton" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BB84BBD6B381D4A6A7CD2F41 /* Debug */,
-				4BCA7035BB723436D8A3EDB0 /* Release */,
+				F865A80C41D8F90C30D17783 /* Debug */,
+				49C8AE3E57850B9A4A868F0C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		390DEA78D6BA67C40EA535EB /* Build configuration list for PBXNativeTarget "Pods-SCLAlertView-Objective-C" */ = {
+		5B5D36BCE48FD46E9FB0DD2D /* Build configuration list for PBXNativeTarget "Pods-CWPopup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BE7DDC06388145402425EA63 /* Debug */,
-				8C619485A30E251EBA7B22E1 /* Release */,
+				200AE478DD5C3B539EF53CEB /* Debug */,
+				3FA9DF5624D97AC62488D37F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3AFE4D0F3615774DC17B3FDC /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner" */ = {
+		6175E1728FBF450F95168C53 /* Build configuration list for PBXNativeTarget "Pods-JTCalendar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CEE41C29DD9BC9308EF2B0FE /* Debug */,
-				9F8A9163B6348CCD3ECD5D17 /* Release */,
+				60BC5BDEA322435A055B3A67 /* Debug */,
+				07329AFBA710FD7A0DECECE7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		41BF031385998541EF4756CE /* Build configuration list for PBXNativeTarget "Pods" */ = {
+		6F84FBAA8876698E9297CDD6 /* Build configuration list for PBXNativeTarget "Pods-MMMaterialDesignSpinner-MaterialDesignSpinner" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				52FB714F70E83096C5385213 /* Debug */,
-				14FFDBDA880696A631C85BB5 /* Release */,
+				5D469B58196C1BD3B60A566F /* Debug */,
+				782AD60F0E61336CF27BD620 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7692C6BA08699A42DDAD4446 /* Build configuration list for PBXNativeTarget "Pods-DLRadioButton" */ = {
+		8CF2FFAE29EF8385F51547F3 /* Build configuration list for PBXNativeTarget "Pods-MBProgressHUD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7A50AF989284CF1E26E33E8D /* Debug */,
-				0BC9CAE7826C95A639259DCF /* Release */,
+				97CBB8D767B12C5290749072 /* Debug */,
+				B3F2CAD9577BE62AC1FAEF32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A456A63A68F2554F4B3AA0A0 /* Build configuration list for PBXNativeTarget "Pods-Reachability" */ = {
+		9B43F7744DEDE253054170AE /* Build configuration list for PBXNativeTarget "Pods-AFNetworking" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9052494FE492251C80544775 /* Debug */,
-				8EB18C8DB581787AEE718F34 /* Release */,
+				BF0187423E11F0A8DCE7A691 /* Debug */,
+				7A459F6A9104BF6EA39E9C92 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A4D1A338E1CC752517072DD5 /* Build configuration list for PBXNativeTarget "Pods-MBProgressHUD" */ = {
+		AF258AA68D52E76624C1E451 /* Build configuration list for PBXNativeTarget "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A67E733D25FB76049B2DD2CC /* Debug */,
-				D2FED5ED8F36001746B39213 /* Release */,
+				C1F6FEF57B8C8842B0B18EFA /* Debug */,
+				5F738AEBB5E1BEE75043C0A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B8418CCA5529411D49776097 /* Build configuration list for PBXNativeTarget "Pods-CWPopup" */ = {
+		E01261CEDCE24BD81B9588EA /* Build configuration list for PBXNativeTarget "Pods-SCLAlertView-Objective-C" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EECB740E2E24188574A8977B /* Debug */,
-				3EDA4E9FEE054CC9E702596F /* Release */,
+				BDA5B358AC0EEB5DD54139AC /* Debug */,
+				C386E336DF131E7130F8B1F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C3E5310B061EFD3802D253B3 /* Build configuration list for PBXProject "Pods" */ = {
+		F3A37A5971FF332A35258877 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2BA7C620DEB889DA0B88E228 /* Debug */,
-				D56FFC05A2796EDCDC177BC8 /* Release */,
+				1B0008AFF10FC2B0D579E92D /* Debug */,
+				6F3CD1D521C70F4CF2836B3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D97E5DEF84C9F34C95050560 /* Build configuration list for PBXNativeTarget "Pods-JTCalendar" */ = {
+		F49B08B98011BFE72383FC85 /* Build configuration list for PBXNativeTarget "Pods-Reachability" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F0ACB9CB06F8D54E4D0BC7BB /* Debug */,
-				3868A50CC635B81506041B22 /* Release */,
+				4E8AF075C3D1FCF9103673C9 /* Debug */,
+				04C2E947D7AFB219B3BCA0C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FDEEF682E48FCFEA1789A9BE /* Build configuration list for PBXNativeTarget "Pods-SSZipArchive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				853E838B205A034A3F47EEB5 /* Debug */,
+				F885FA7D8524DE41C5694223 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A05F557C774EA98D082077C7 /* Project object */;
+	rootObject = 7005ECE13A2B274D2DA85CEA /* Project object */;
 }
