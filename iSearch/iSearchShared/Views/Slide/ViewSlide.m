@@ -15,14 +15,13 @@
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
-#import "PopupView.h"
+#import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "MainViewController.h"
 
 @interface ViewSlide()
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-@property (nonatomic, nonatomic) PopupView *popupView;
 
 // http download variables begin
 @property (strong, nonatomic) NSString   *downloadURL;
@@ -83,7 +82,7 @@
             self.isDownloadRequestValid = YES;
             [self downloadZip:[ApiUtils downloadSlideURL:self.slideID]];
         } else {
-            [self showPopupView:@"无网络，\n不下载"];
+            [self showPopupView:@"无网络，不下载"];
         }
     }
     [self updateBtnDownloadOrDisplayIcon];
@@ -122,15 +121,16 @@
 }
 
 #pragma mark - assistant methods
-- (void)showPopupView:(NSString*) text {
-    if(self.popupView == nil) {
-        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.masterViewController.view.frame.size.width/4, self.masterViewController.view.frame.size.height/4, self.masterViewController.view.frame.size.width/2, self.masterViewController.view.frame.size.height/2)];
-        
-        self.popupView.ParentView = self.masterViewController.view;
-    }
+- (void)showPopupView:(NSString*)text {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self animated:YES];
     
-    [self.popupView setText: text];
-    [self.masterViewController.view addSubview:self.popupView];
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText =text;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1];
 }
 
 

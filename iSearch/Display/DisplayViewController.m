@@ -22,6 +22,7 @@
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
+#import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"
 #import "UIViewController+CWPopup.h"
 
@@ -44,7 +45,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnLastPage;  // 上一页
 @property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
 @property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
-@property (nonatomic, nonatomic) PopupView    *popupView;
 
 @property (nonatomic, strong) NSNumber *currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
@@ -201,7 +201,6 @@
     self.webView   = nil;
     self.dataList  = nil;
     self.paintView = nil;
-    self.popupView = nil;
 }
 #pragma mark - webview 
 //开始加载数据
@@ -252,14 +251,15 @@
 }
 
 - (void) showPopupView: (NSString*) text {
-    if(self.popupView == nil) {
-        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
-        
-        self.popupView.ParentView = self.view;
-    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    [self.popupView setText: text];
-    [self.view addSubview:self.popupView];
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText =text;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1.5];
 }
 
 /**
@@ -476,7 +476,18 @@
             self.reViewController = [[ReViewController alloc] init];
             self.reViewController.masterViewController = self;
         }
-        [self presentViewController:self.reViewController animated:NO completion:nil];
+        
+        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
+        hud.labelText = @"加载中...";
+        
+        [hud showAnimated:YES whileExecutingBlock:^{
+            [self presentViewController:self.reViewController animated:NO completion:^{
+                [hud removeFromSuperview];
+            }];
+        } completionBlock:^{
+        }];
+        
     }
 }
 

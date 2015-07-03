@@ -79,7 +79,6 @@
 		C4BED0881B2FFEE2000147A2 /* FileUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED0671B2FFEE2000147A2 /* FileUtils.m */; };
 		C4BED0891B2FFEE2000147A2 /* HttpUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED0691B2FFEE2000147A2 /* HttpUtils.m */; };
 		C4BED08A1B2FFEE2000147A2 /* LogUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED06B1B2FFEE2000147A2 /* LogUtils.m */; };
-		C4BED08B1B2FFEE2000147A2 /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED06D1B2FFEE2000147A2 /* PopupView.m */; };
 		C4BED08C1B2FFEE2000147A2 /* ViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED06F1B2FFEE2000147A2 /* ViewUtils.m */; };
 		C4BED0951B2FFF49000147A2 /* ViewSlidePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BED0931B2FFF49000147A2 /* ViewSlidePage.m */; };
 		C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4BED0941B2FFF49000147A2 /* ViewSlidePage.xib */; };
@@ -206,7 +205,6 @@
 		C4B6F29D1B4158CD0057A8A1 /* thumbnailSlideDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnailSlideDefault.png; sourceTree = "<group>"; };
 		C4B6F29E1B4158CD0057A8A1 /* ToDownload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToDownload.png; sourceTree = "<group>"; };
 		C4B6F29F1B4158CD0057A8A1 /* ToView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ToView.png; sourceTree = "<group>"; };
-		C4BED03F1B2FFEE2000147A2 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		C4BED0401B2FFEE2000147A2 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
 		C4BED0411B2FFEE2000147A2 /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
 		C4BED0431B2FFEE2000147A2 /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
@@ -233,8 +231,6 @@
 		C4BED0691B2FFEE2000147A2 /* HttpUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtils.m; sourceTree = "<group>"; };
 		C4BED06A1B2FFEE2000147A2 /* LogUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogUtils.h; sourceTree = "<group>"; };
 		C4BED06B1B2FFEE2000147A2 /* LogUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogUtils.m; sourceTree = "<group>"; };
-		C4BED06C1B2FFEE2000147A2 /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
-		C4BED06D1B2FFEE2000147A2 /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
 		C4BED06E1B2FFEE2000147A2 /* ViewUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUtils.h; sourceTree = "<group>"; };
 		C4BED06F1B2FFEE2000147A2 /* ViewUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUtils.m; sourceTree = "<group>"; };
 		C4BED0921B2FFF49000147A2 /* ViewSlidePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlidePage.h; sourceTree = "<group>"; };
@@ -315,13 +311,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		C419AF801B468681007FE00C /* upgrade */ = {
+		C419AF801B468681007FE00C /* Upgrade */ = {
 			isa = PBXGroup;
 			children = (
 				C419AF811B468681007FE00C /* ViewUpgrade.h */,
 				C419AF821B468681007FE00C /* ViewUpgrade.m */,
 				C419AF831B468681007FE00C /* ViewUpgrade.xib */,
 			);
+			name = Upgrade;
 			path = upgrade;
 			sourceTree = "<group>";
 		};
@@ -590,7 +587,6 @@
 		C4BED03E1B2FFEE2000147A2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				C4BED03F1B2FFEE2000147A2 /* common.h */,
 				C4BED0401B2FFEE2000147A2 /* const.h */,
 				C4BED0411B2FFEE2000147A2 /* message.h */,
 			);
@@ -631,8 +627,6 @@
 				C4BED0691B2FFEE2000147A2 /* HttpUtils.m */,
 				C4BED06A1B2FFEE2000147A2 /* LogUtils.h */,
 				C4BED06B1B2FFEE2000147A2 /* LogUtils.m */,
-				C4BED06C1B2FFEE2000147A2 /* PopupView.h */,
-				C4BED06D1B2FFEE2000147A2 /* PopupView.m */,
 				C4BED06E1B2FFEE2000147A2 /* ViewUtils.h */,
 				C4BED06F1B2FFEE2000147A2 /* ViewUtils.m */,
 				C4357C1D1B38F23000854524 /* ApiUtils.h */,
@@ -644,7 +638,7 @@
 		C4BED0701B2FFEE2000147A2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C419AF801B468681007FE00C /* upgrade */,
+				C419AF801B468681007FE00C /* Upgrade */,
 				C4D253EA1B32FE2F0033F697 /* SlideInfo */,
 				C4D253DA1B32FE030033F697 /* Slide */,
 				C4D253DE1B32FE030033F697 /* PaintView */,
@@ -972,7 +966,6 @@
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
 				C419AF841B468681007FE00C /* ViewUpgrade.m in Sources */,
-				C4BED08B1B2FFEE2000147A2 /* PopupView.m in Sources */,
 				C4BED0791B2FFEE2000147A2 /* GMGridView.m in Sources */,
 				C4357C2B1B391B5600854524 /* User.m in Sources */,
 				C4D253CB1B326B410033F697 /* AddNewTagView.m in Sources */,

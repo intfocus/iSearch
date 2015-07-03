@@ -14,11 +14,10 @@
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 #import "Slide.h"
-#import "PopupView.h"
+#import "MBProgressHUD.h"
 #import "SCLAlertView.h"
 
 @interface SlideInfoView()
-@property (nonatomic, nonatomic) PopupView *popupView;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UITextView *textViewDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
@@ -77,15 +76,16 @@
 
 #pragma mark - assistant methods
 
-- (void)showPopupView:(NSString*) text {
-    if(self.popupView == nil) {
-        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
-        
-        self.popupView.ParentView = self.view;
-    }
+- (void)showPopupView:(NSString*)text {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    [self.popupView setText: text];
-    [self.view addSubview:self.popupView];
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText =text;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1.5];
 }
 
 #pragma mark - setter rewrite
@@ -140,7 +140,7 @@
         [alert showError:self.masterViewController title:@"确认删除" subTitle:self.slide.title closeButtonTitle:@"取消" duration:0.0f];
 
     } else {
-        [self showPopupView:@"未曾下载，\n何言移除！"];
+        [self showPopupView:@"未曾下载,何言移除！"];
     }
 }
 
@@ -169,7 +169,7 @@
         BOOL isSuccessfully = [self.slide addToFavorite];
         [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
     } else {
-        [self showPopupView:@"未曾下载，\n何言收藏！"];
+        [self showPopupView:@"未曾下载,何言收藏！"];
     }
     
 }
