@@ -70,12 +70,15 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _zipSize      = (NSString *)psd(dict[CONTENT_FIELD_ZIPSIZE], @"0");
     _categoryID   = (NSString *)psd(dict[CONTENT_FIELD_CATEGORYID], @"");
     _categoryName = (NSString *)psd(dict[CONTENT_FIELD_CATEGORYNAME], @"");
+    
+    _slides     = dict[PAGE_FROM_SLIDES] ? dict[PAGE_FROM_SLIDES] : [[NSMutableArray alloc] init];
+    _folderSize = (NSString *)psd(dict[SLIDE_DESC_FOLDERSIZE], @"");
+    
     if(dict[SLIDE_DESC_ORDER]) {
         _pages = dict[SLIDE_DESC_ORDER];
     }
     // ID/DirName is necessary
     [self assignLocalFields:[NSMutableDictionary dictionaryWithDictionary:dict]];
-    
     
     return self;
 }
@@ -86,15 +89,19 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _path     = [FileUtils getPathName:self.dirName FileName:self.ID];
     _descPath = [self.path stringByAppendingPathComponent:SLIDE_CONFIG_FILENAME];
     _dictPath = [self.path stringByAppendingPathComponent:SLIDE_DICT_FILENAME];
+    
     if([self isDownloaded] && !self.isFavorite) {
         _descContent = [NSString stringWithContentsOfFile:self.descPath encoding:NSUTF8StringEncoding error:NULL];
-        _descDict1 = [FileUtils readConfigFile:self.descPath];
-        NSMutableDictionary *dict = [FileUtils readConfigFile:self.dictPath];
+        _descDict1   = [FileUtils readConfigFile:self.descPath];
+        dict         = [FileUtils readConfigFile:self.dictPath];
         
         if(!self.pages) {
             _pages = (NSMutableArray *)psd(_descDict1[SLIDE_DESC_ORDER], [[NSMutableArray alloc] init]);
         }
-        _isDisplay = (dict[SLIDE_DESC_ISDISPLAY] && [dict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"]);
+        _isDisplay  = (dict[SLIDE_DESC_ISDISPLAY] && [dict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"]);
+
+        _slides     = dict[PAGE_FROM_SLIDES] ? dict[PAGE_FROM_SLIDES] : [[NSMutableArray alloc] init];
+        _folderSize = dict[SLIDE_DESC_FOLDERSIZE] ? dict[SLIDE_DESC_FOLDERSIZE] : [self reCaculateSlideFolderSize];
     }
     
     // local fields
@@ -106,10 +113,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
         _typeName = @"文档";
     } else if ([self.type isEqualToString:@"3"]) {
         _typeName = @"视频";
-    } else if ([self.type isEqualToString:@"0"]) {
-        _typeName = @"分类";
+    } else if ([self.type isEqualToString:@"-1"]) {
+        _typeName = @"收藏";
     } else if ([self.type isEqualToString:@"10000"]) {
         _typeName = @"说明文档";
+    } else if ([self.type isEqualToString:@"0"]) {
+        _typeName = @"分类";
     } else {
         _typeName = @"未知文档";
     }
@@ -119,6 +128,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
     if(!self.localCreatedDate) { _localCreatedDate = timestamp; }
     _localUpdatedDate = timestamp;
+    _folderSize = [self reCaculateSlideFolderSize];
 }
 
 #pragma mark - around slide download
@@ -153,6 +163,8 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     NSErrorPrint(error, @"slide#%@ %@ => %@", self.ID, self.path, [self favoritePath]);
     Slide *slide = [[Slide alloc] initSlide:[self refreshFields] isFavorite:YES];
     [slide updateTimestamp];
+    slide.type = @"-1";
+    slide.categoryName= @"收藏";
     [slide save];
     return isNil(error);
 }
@@ -184,12 +196,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 
 - (void)save {
     [self refreshFields];
-    [self clearRemovePages];
+    [self clearRemovedPages];
 
     [FileUtils writeJSON:self.dict Into:self.dictPath];
 }
 
-- (void)clearRemovePages {
+- (void)clearRemovedPages {
     // TODO clearRemovePages
 }
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
@@ -228,25 +240,21 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 #pragma mark - private methods
 
 - (NSMutableDictionary *) refreshFields {
-
     // slide's desc field
     _dict[SLIDE_DESC_ID]              = self.ID;
     _dict[SLIDE_DESC_DESC]            = self.desc;
+    _dict[CONTENT_FIELD_DESC]         = self.desc;
     _dict[CONTENT_FIELD_ID]           = self.ID;
     _dict[CONTENT_FIELD_NAME]         = self.name;
     _dict[CONTENT_FIELD_TYPE]         = self.type;
     if(!isNil(self.pages)) {
-    _dict[SLIDE_DESC_ORDER]           = self.pages;
+        _dict[SLIDE_DESC_ORDER]       = self.pages;
     }
 
     // server field
     _dict[CONTENT_FIELD_TITLE]        = self.title;
     _dict[CONTENT_FIELD_ZIPSIZE]      = self.zipSize;
-    NSString *pageNumber = self.pageNum;
-    if(self.pages) {
-        pageNumber = [NSString stringWithFormat:@"%ld", (long)[self.pages count]];
-    }
-    _dict[CONTENT_FIELD_PAGENUM]      = pageNumber;
+    _dict[CONTENT_FIELD_PAGENUM]      = (self.pages ? [NSString stringWithFormat:@"%ld", (long)[self.pages count]] : self.pageNum);
     _dict[CONTENT_FIELD_CATEGORYID]   = self.categoryID;
     _dict[CONTENT_FIELD_CATEGORYNAME] = self.categoryName;
     _dict[CONTENT_FIELD_CREATEDATE]   = self.createdDate;
@@ -256,7 +264,17 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _dict[SLIDE_DESC_LOCAL_UPDATEAT]  = self.localUpdatedDate;
     _dict[SLIDE_DESC_ISDISPLAY]       = (self.isDisplay ? @"1" : @"0");
     _dict[PAGE_FROM_SLIDES]           = (self.slides ? self.slides : [[NSMutableDictionary alloc] init]);
+    _dict[SLIDE_DESC_FOLDERSIZE]      = self.folderSize;
     
     return self.dict;
+}
+
+- (NSString *)reCaculateSlideFolderSize {
+    NSString *fSize = [FileUtils folderSize:self.path];
+    NSMutableDictionary *tmpDict = [FileUtils readConfigFile:self.dictPath];
+    [tmpDict setObject:fSize forKey:SLIDE_DESC_FOLDERSIZE];
+    [FileUtils writeJSON:tmpDict Into:self.dictPath];
+    
+    return fSize;
 }
 @end

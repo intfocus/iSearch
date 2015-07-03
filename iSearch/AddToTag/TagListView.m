@@ -24,7 +24,6 @@
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemCancel; // 取消
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemSubmit; // 完成
 @property (nonatomic) NSArray *arrayTagName;
-
 @end
 
 @implementation TagListView
@@ -114,7 +113,7 @@
     
     MainAddNewTagView *masterView1 = [self masterViewController];
     if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
-        ReViewController *masterView2  = (ReViewController*)[masterView1 masterViewController];
+        ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
         [masterView2 actionSavePagesAndMoveFiles:slide];
         if(masterView1.closeMainViewAfterDone) {
             [masterView2 dismissReViewController];
@@ -123,7 +122,7 @@
         }
     }
     if([masterView1.fromViewControllerName isEqualToString:@"DisplayViewController"]) {
-        DisplayViewController *masterView2  = (DisplayViewController *)[masterView1 masterViewController];
+        DisplayViewController *masterView2 = (DisplayViewController *)[masterView1 masterViewController];
         [masterView2 actionSavePagesAndMoveFiles:slide];
         if(masterView1.closeMainViewAfterDone) {
             [masterView2 dismissDisplayViewController];

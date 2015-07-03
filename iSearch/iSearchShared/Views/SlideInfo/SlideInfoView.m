@@ -19,7 +19,7 @@
 @interface SlideInfoView()
 @property (nonatomic, nonatomic) PopupView *popupView;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
-@property (strong, nonatomic) IBOutlet UILabel *labelDesc;
+@property (strong, nonatomic) IBOutlet UITextView *textViewDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
 @property (strong, nonatomic) IBOutlet UILabel *labelPageNum;
 @property (strong, nonatomic) IBOutlet UILabel *labelZipSize;
@@ -51,23 +51,28 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+    self.labelTitle.text    = self.slide.title;
+    self.labelCategory.text = [NSString stringWithFormat:@"%@: %@", @"分类", self.slide.categoryName];
+    self.labelPageNum.text  = [NSString stringWithFormat:@"%@: %@", @"页数", self.slide.pageNum];
+    self.labelTypeName.text = [NSString stringWithFormat:@"%@: %@", @"属性", self.slide.typeName];
+    self.textViewDesc.text  = self.slide.desc;
     
-    self.labelTitle.text = self.slide.title;
-    self.labelDesc.text  = self.slide.desc;
-    self.labelTypeName.text = self.slide.typeName;
-    [self.labelDesc sizeToFit];
-    if (self.labelDesc.frame.size.height > 67) {
-        self.labelDesc.frame = CGRectMake(self.labelDesc.frame.origin.x, self.labelDesc.frame.origin.y, self.labelDesc.frame.size.width, 67);
+    NSString *sizeInfo, *editTime;
+    if(self.isFavorite) {
+        sizeInfo = [NSString stringWithFormat:@"%@: %@",
+                    @"文件体积", [FileUtils humanFileSize:self.slide.folderSize]];
+        editTime = [NSString stringWithFormat:@"%@: %@", @"收藏时间", self.slide.localCreatedDate];
+    } else {
+        sizeInfo = [NSString stringWithFormat:@"%@: %@", @"压缩包", [FileUtils humanFileSize:self.slide.folderSize]];
+        editTime = [NSString stringWithFormat:@"%@: %@", @"上架时间", self.slide.createdDate];
     }
-    self.labelEditTime.text = self.slide.createdDate;
-    self.labelPageNum.text  = self.slide.pageNum;
-    self.labelZipSize.text  = [FileUtils humanFileSize:self.slide.zipSize];
-    self.labelCategory.text = self.slide.categoryName;
+    
+    self.labelEditTime.text = editTime;
+    self.labelZipSize.text  = sizeInfo;
     
     [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopupSlideInfo) forControlEvents:UIControlEventTouchUpInside];
 }
-
-
 
 #pragma mark - assistant methods
 

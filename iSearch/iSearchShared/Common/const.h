@@ -213,10 +213,12 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
 #define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
 #define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
+#define SLIDE_DESC_FOLDERSIZE       @"slide_folder_size"  // 下载解压后文件大小
+#define SLIDE_DESC_THUMBNAIL        @"thumbnail_path"  // slidePath/thumbnailPath
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
-#define PAGE_HTML_FORMAT           @"html"
-#define PAGE_IMAGE_FORMAT          @"gif"
-#define PAGE_FROM_SLIDES           @"PageFromSlides"
+#define PAGE_HTML_FORMAT            @"html"
+#define PAGE_IMAGE_FORMAT           @"gif"
+#define PAGE_FROM_SLIDES            @"PageFromSlides"
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"

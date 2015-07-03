@@ -510,6 +510,8 @@
         if(![self.dataList isEqualToArray:self.slide.pages]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否保存？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
             [alert show];
+        } else {
+            [self dismissDisplayViewController];
         }
     }
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];

@@ -365,6 +365,8 @@
         slide.title = tagName;
         slide.desc  = tagDesc;
     }
+    slide.type         = @"-1";
+    slide.categoryName = @"收藏";
     [slide assignLocalFields:[[NSMutableDictionary alloc]init]];
     [slide updateTimestamp];
     [slide save];
@@ -508,5 +510,47 @@
     newImagePath = [toSlide.path stringByAppendingPathComponent:pName];
     [fileManager copyItemAtPath:imagePath toPath:newImagePath error:&error];
     NSErrorPrint(error, @"copy page folder from %@ -> %@", imagePath, newImagePath);
+}
+
+/**
+ *  计算指定文件路径的文件大小
+ *
+ *  @param filePath 文件绝对路径
+ *
+ *  @return 文件体积
+ */
++ (NSString *)fileSize:(NSString *)filePath {
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if([fileManager fileExistsAtPath:filePath]) {
+        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:filePath error:&error];
+        NSErrorPrint(error, @"caculate file size - %@", filePath);
+        return [NSString stringWithFormat:@"%lld", [[fileAttributes objectForKey:NSFileSize] longLongValue]];
+    }
+    return @"0";
+}
+
+/**
+ *  计算指定文件夹路径的文件体积
+ *
+ *  @param folderPath 文件夹路径
+ *
+ *  @return 文件夹体积
+ */
++ (NSString *)folderSize:(NSString *)folderPath {
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *filesArray = [fileManager subpathsOfDirectoryAtPath:folderPath error:&error];
+    NSEnumerator *filesEnumerator = [filesArray objectEnumerator];
+    NSString *fileName, *filePath;
+    unsigned long long int folderSize = 0;
+    
+    while (fileName = [filesEnumerator nextObject]) {
+        filePath = [folderPath stringByAppendingPathComponent:fileName];
+        NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:filePath error:&error];
+        NSErrorPrint(error, @"caculate file size - %@", filePath);
+        folderSize +=  [[fileAttributes objectForKey:NSFileSize] longLongValue];
+    }
+    return [NSString stringWithFormat:@"%lld", folderSize];
 }
 @end

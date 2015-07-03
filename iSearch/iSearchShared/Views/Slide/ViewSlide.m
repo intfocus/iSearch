@@ -130,7 +130,6 @@
     }
     
     [self.popupView setText: text];
-    // [self.popupView removeFromSuperview];
     [self.masterViewController.view addSubview:self.popupView];
 }
 
@@ -301,11 +300,10 @@
  */
 - (void) reloadSlideDesc {
     NSMutableDictionary *descDict = [FileUtils readConfigFile:self.slide.descPath];
-    if(descDict[SLIDE_DESC_ORDER] != nil) {
-        self.slide.pages = descDict[SLIDE_DESC_ORDER];
-        NSMutableDictionary *pageFromSlides = [[NSMutableDictionary alloc] init];
-        [pageFromSlides setObject:self.slide.title forKey:self.slide.ID];
-        self.slide.slides = pageFromSlides;
+    if(descDict[SLIDE_DESC_ORDER]) {
+        self.slide.pages    = descDict[SLIDE_DESC_ORDER];
+        self.slide.slides   = [[NSMutableDictionary alloc] initWithObjectsAndKeys:self.slide.title, self.slide.ID, nil];
+        self.slide.folderSize = [FileUtils folderSize:self.slide.path];
         [self.slide save];
     } else {
         NSLog(@"Bug Slide#order is nil, %@", self.slide.dictPath);

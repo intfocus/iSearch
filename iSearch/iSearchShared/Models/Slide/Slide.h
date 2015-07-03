@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSString *categoryName;
 @property (nonatomic, strong) NSString *pageNum;
 @property (nonatomic, strong) NSString *zipSize;
+@property (nonatomic, strong) NSString *folderSize;
 @property (nonatomic, strong) NSString *zipUrl;
 @property (nonatomic, strong) NSString *createdDate;
 @property (nonatomic, strong) NSMutableArray *pages;
