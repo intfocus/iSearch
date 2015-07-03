@@ -41,8 +41,8 @@
     [self configGMGridView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     [_dataList removeAllObjects];
     for(Slide *slide in [FileUtils favoriteSlideList1]) {

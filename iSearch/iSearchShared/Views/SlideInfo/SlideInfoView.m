@@ -15,6 +15,7 @@
 #import "MainViewController.h"
 #import "Slide.h"
 #import "PopupView.h"
+#import "SCLAlertView.h"
 
 @interface SlideInfoView()
 @property (nonatomic, nonatomic) PopupView *popupView;
@@ -120,18 +121,24 @@
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
     if(self.slide.isDownloading) {
         [self.slide downloaded];
-    }else if(self.slide.isDownloaded) {
-        NSString *filePath = [FileUtils getPathName:self.dirName FileName:self.slide.ID];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSError *error;
-        [fileManager removeItemAtPath:filePath error:&error];
-        BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
+    } else if(self.slide.isDownloaded) {
+        SCLAlertView *alert = [[SCLAlertView alloc] init];
         
-        if(isSuccessfully) {
-            [self showPopupView:@"移除成功"];
-        }
-        [self.masterViewController performSelector:@selector(refreshRightViewController)];
-        [self.masterViewController dismissPopupSlideInfo];
+        [alert addButton:@"确认" actionBlock:^(void) {
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSError *error;
+            [fileManager removeItemAtPath:self.slide.path error:&error];
+            BOOL isSuccessfully = NSErrorPrint(error, @"remove slide#%@", self.slide.path);
+    
+            if(isSuccessfully) {
+                [self showPopupView:@"移除成功"];
+            }
+            [self.masterViewController performSelector:@selector(refreshRightViewController)];
+            [self.masterViewController dismissPopupSlideInfo];
+        }];
+        
+        [alert showError:self.masterViewController title:@"确认删除" subTitle:self.slide.title closeButtonTitle:@"取消" duration:0.0f];
+
     } else {
         [self showPopupView:@"未曾下载，\n何言移除！"];
     }

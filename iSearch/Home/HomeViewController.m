@@ -42,8 +42,8 @@
     self.navigationItem.leftBarButtonItem = leftTitleBI;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 
     /**
      * 实例变量初始化
@@ -53,7 +53,7 @@
         one.masterViewController   = self;
         self.oneViewController     = one;
     } else {
-        [self.oneViewController performSelector:@selector(viewDidAppear:) withObject:self.oneViewController];
+        [self.oneViewController performSelector:@selector(viewWillAppear:)];
     }
     
     if(!self.twoViewController) {
@@ -61,7 +61,7 @@
         two.masterViewController   = self;
         self.twoViewController     = two;
     } else {
-        [self.twoViewController performSelector:@selector(viewDidAppear:) withObject:self.twoViewController];
+        [self.twoViewController performSelector:@selector(viewWillAppear:)];
     }
     
     if(!self.threeViewController) {
@@ -69,7 +69,7 @@
         three.masterViewController   = self;
         self.threeViewController   = three;
     } else {
-        [self.threeViewController performSelector:@selector(viewDidAppear:) withObject:self.threeViewController];
+        [self.threeViewController performSelector:@selector(viewWillAppear:)];
     }
 }
 

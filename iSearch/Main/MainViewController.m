@@ -23,7 +23,6 @@
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
 #import "DisplayViewController.h"
-//#import "ReViewController.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -77,7 +76,7 @@
 
 - (void)refreshRightViewController {
     // presentViewController调出的视图覆盖全屏时，关闭时，会触发此处
-    [self.rightViewController performSelector:@selector(viewDidAppear:) withObject:self.rightViewController];
+    [self.rightViewController performSelector:@selector(viewWillAppear:) withObject:self.rightViewController];
 }
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置

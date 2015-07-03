@@ -80,9 +80,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if([HttpUtils isNetworkAvailable]) {
-        [self checkAppVersionUpgrade];
-    }
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management
