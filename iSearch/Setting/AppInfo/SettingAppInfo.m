@@ -1,5 +1,5 @@
 //
-//  SettingUserInfo.m
+//  SettingAppInfo.m
 //  iSearch
 //
 //  Created by lijunjie on 15/7/5.
@@ -7,17 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SettingUserInfo.h"
+#import "SettingAppInfo.h"
 #import "MainViewController.h"
 #import "SettingViewController.h"
 #import "SettingMainView.h"
-#import "User.h"
 
-@interface SettingUserInfo()<UITableViewDelegate, UITableViewDataSource>
+
+@interface SettingAppInfo()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSMutableArray *dataList;
 @end
 
-@implementation SettingUserInfo
+@implementation SettingAppInfo
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,17 +30,17 @@
      *  控件事件
      */
     UIBarButtonItem *navBtnBackToMain = [[UIBarButtonItem alloc] initWithTitle:@"返回"
-                                                                    style:UIBarButtonItemStylePlain
-                                                                   target:self
-                                                                   action:@selector(actionBackToMain:)];
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(actionBackToMain:)];
     self.navigationItem.leftBarButtonItem = navBtnBackToMain;
-    self.navigationItem.title = @"用户信息";
+    self.navigationItem.title = @"版本信息";
     
+    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
+    NSString *currVersion = [localVersionInfo objectForKey:@"CFBundleShortVersionString"];
     
-    User *user = [[User alloc] init];
-    [self.dataList addObject:[NSString stringWithFormat:@"%@: %@", @"名称", user.name]];
-    [self.dataList addObject:[NSString stringWithFormat:@"%@: %@", @"员工编号", user.employeeID]];
-    [self.dataList addObject:[NSString stringWithFormat:@"%@: %@", @"所属部门", user.deptID]];
+    [self.dataList addObject:@[@"应用版本", currVersion]];
+    
 }
 
 - (IBAction)actionBackToMain:(id)sender {
@@ -60,10 +60,11 @@
     NSInteger row = [indexPath row];
     UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    cell.textLabel.text = self.dataList[row];
+    cell.textLabel.text = self.dataList[row][0];
+    cell.detailTextLabel.text = self.dataList[row][1];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }

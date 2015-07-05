@@ -13,6 +13,7 @@
 #import "MainViewController.h"
 #import "SettingViewController.h"
 #import "SettingUserInfo.h"
+#import "SettingAppInfo.h"
 
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingAppInfoIndex  = 0,
@@ -96,7 +97,6 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     return cell;
 }
 
-// 选择某行, 跳转至[首页][通知]
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch ([indexPath row]) {
         case SettingUserInfoIndex:{
@@ -106,6 +106,14 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
             self.settingViewController.containerViewController = viewController;
         }
             break;
+        case SettingAppInfoIndex:{
+            SettingAppInfo *viewController = [[SettingAppInfo alloc] init];
+            viewController.settingViewController = self.settingViewController;
+            viewController.mainViewController = self.mainViewController;
+            self.settingViewController.containerViewController = viewController;
+        }
+            break;
+            
             
         default:
             break;

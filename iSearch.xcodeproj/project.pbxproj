@@ -45,6 +45,8 @@
 		C483230C1B49490D00E7251D /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48323081B49490D00E7251D /* SettingMainView.xib */; };
 		C483230E1B4963C100E7251D /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C483230D1B4963C100E7251D /* SettingUserInfo.m */; };
 		C48323111B4963DA00E7251D /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48323101B4963DA00E7251D /* SettingUserInfo.xib */; };
+		C48323131B49714F00E7251D /* SettingAppInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48323121B49714F00E7251D /* SettingAppInfo.xib */; };
+		C48323151B49715D00E7251D /* SettingAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C48323141B49715D00E7251D /* SettingAppInfo.m */; };
 		C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C495D8731B341EE700C98FB4 /* DisplayViewController.m */; };
 		C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */; };
 		C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */; };
@@ -179,6 +181,9 @@
 		C483230D1B4963C100E7251D /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
 		C483230F1B4963CE00E7251D /* SettingUserInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
 		C48323101B4963DA00E7251D /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
+		C48323121B49714F00E7251D /* SettingAppInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAppInfo.xib; sourceTree = "<group>"; };
+		C48323141B49715D00E7251D /* SettingAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAppInfo.m; sourceTree = "<group>"; };
+		C48323161B49716500E7251D /* SettingAppInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingAppInfo.h; sourceTree = "<group>"; };
 		C495D8731B341EE700C98FB4 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
 		C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
@@ -568,6 +573,9 @@
 		C48323091B49490D00E7251D /* AppInfo */ = {
 			isa = PBXGroup;
 			children = (
+				C48323161B49716500E7251D /* SettingAppInfo.h */,
+				C48323141B49715D00E7251D /* SettingAppInfo.m */,
+				C48323121B49714F00E7251D /* SettingAppInfo.xib */,
 			);
 			path = AppInfo;
 			sourceTree = "<group>";
@@ -946,6 +954,7 @@
 				C4A618F31B2C7AEC00D0E91B /* MainEntryButton.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C4A618EB1B2C7AEC00D0E91B /* UserHeadView.xib in Resources */,
+				C48323131B49714F00E7251D /* SettingAppInfo.xib in Resources */,
 				C46497321B2D678B005E3903 /* HomeViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1009,6 +1018,7 @@
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
+				C48323151B49715D00E7251D /* SettingAppInfo.m in Sources */,
 				C419AF841B468681007FE00C /* ViewUpgrade.m in Sources */,
 				C4BED0791B2FFEE2000147A2 /* GMGridView.m in Sources */,
 				C4357C2B1B391B5600854524 /* User.m in Sources */,
