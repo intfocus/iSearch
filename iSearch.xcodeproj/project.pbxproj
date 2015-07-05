@@ -41,6 +41,10 @@
 		C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497451B2D8BFB005E3903 /* ContentUtis.m */; };
 		C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497491B2D9737005E3903 /* OfflineCell.m */; };
 		C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464974B1B2D973F005E3903 /* OfflineCell.xib */; };
+		C483230B1B49490D00E7251D /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C48323071B49490D00E7251D /* SettingMainView.m */; };
+		C483230C1B49490D00E7251D /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48323081B49490D00E7251D /* SettingMainView.xib */; };
+		C483230E1B4963C100E7251D /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C483230D1B4963C100E7251D /* SettingUserInfo.m */; };
+		C48323111B4963DA00E7251D /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C48323101B4963DA00E7251D /* SettingUserInfo.xib */; };
 		C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C495D8731B341EE700C98FB4 /* DisplayViewController.m */; };
 		C4A3AF0F1B2B0CCB00A12170 /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */; };
 		C4A3AF101B2B0CCB00A12170 /* ReViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A3AF0C1B2B0CCB00A12170 /* ReViewController.m */; };
@@ -169,6 +173,12 @@
 		C46497481B2D972E005E3903 /* OfflineCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OfflineCell.h; sourceTree = "<group>"; };
 		C46497491B2D9737005E3903 /* OfflineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineCell.m; sourceTree = "<group>"; };
 		C464974B1B2D973F005E3903 /* OfflineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineCell.xib; sourceTree = "<group>"; };
+		C48323061B49490D00E7251D /* SettingMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMainView.h; sourceTree = "<group>"; };
+		C48323071B49490D00E7251D /* SettingMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMainView.m; sourceTree = "<group>"; };
+		C48323081B49490D00E7251D /* SettingMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingMainView.xib; sourceTree = "<group>"; };
+		C483230D1B4963C100E7251D /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
+		C483230F1B4963CE00E7251D /* SettingUserInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
+		C48323101B4963DA00E7251D /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
 		C495D8731B341EE700C98FB4 /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C4A3AF081B2B0CCB00A12170 /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
 		C4A3AF0A1B2B0CCB00A12170 /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
@@ -468,6 +478,9 @@
 		C44785FC1B3BC04A006D4806 /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				C48323051B49490D00E7251D /* MainView */,
+				C48323091B49490D00E7251D /* AppInfo */,
+				C483230A1B49490D00E7251D /* UserInfo */,
 				C44785FD1B3BC055006D4806 /* SettingViewController.h */,
 				C44785FE1B3BC065006D4806 /* SettingViewController.m */,
 				C44786001B3BC06F006D4806 /* SettingViewController.xib */,
@@ -540,6 +553,33 @@
 				C464973A1B2D88CC005E3903 /* ThreeViewController.xib */,
 			);
 			name = "Three - records";
+			sourceTree = "<group>";
+		};
+		C48323051B49490D00E7251D /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				C48323061B49490D00E7251D /* SettingMainView.h */,
+				C48323071B49490D00E7251D /* SettingMainView.m */,
+				C48323081B49490D00E7251D /* SettingMainView.xib */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		C48323091B49490D00E7251D /* AppInfo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AppInfo;
+			sourceTree = "<group>";
+		};
+		C483230A1B49490D00E7251D /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				C483230F1B4963CE00E7251D /* SettingUserInfo.h */,
+				C483230D1B4963C100E7251D /* SettingUserInfo.m */,
+				C48323101B4963DA00E7251D /* SettingUserInfo.xib */,
+			);
+			path = UserInfo;
 			sourceTree = "<group>";
 		};
 		C4A3AF071B2B0CCB00A12170 /* Display */ = {
@@ -871,10 +911,12 @@
 				C419AF851B468681007FE00C /* ViewUpgrade.xib in Resources */,
 				C4B6F2A91B4158CD0057A8A1 /* ToDownload.png in Resources */,
 				C4B6F2A01B4158CD0057A8A1 /* close_x.png in Resources */,
+				C483230C1B49490D00E7251D /* SettingMainView.xib in Resources */,
 				C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */,
 				C4B6F2A11B4158CD0057A8A1 /* coverSlideSelected.png in Resources */,
 				C4BED0961B2FFF49000147A2 /* ViewSlidePage.xib in Resources */,
 				C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */,
+				C48323111B4963DA00E7251D /* SettingUserInfo.xib in Resources */,
 				C419AF791B46399E007FE00C /* SlideInfoView.xib in Resources */,
 				C4D253CC1B326B410033F697 /* AddNewTagView.xib in Resources */,
 				C44EF65F1B3E4BE3006AB765 /* LoginViewController.xib in Resources */,
@@ -957,8 +999,10 @@
 			files = (
 				C4A618F01B2C7AEC00D0E91B /* NewsListTabView.m in Sources */,
 				C4BED08C1B2FFEE2000147A2 /* ViewUtils.m in Sources */,
+				C483230B1B49490D00E7251D /* SettingMainView.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
 				C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */,
+				C483230E1B4963C100E7251D /* SettingUserInfo.m in Sources */,
 				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
 				C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */,
 				C4BED0851B2FFEE2000147A2 /* DatabaseUtils.m in Sources */,

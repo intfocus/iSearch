@@ -426,8 +426,8 @@
  *  @return pdf/gif文档路径
  */
 + (NSString*) slideThumbnail:(NSString *)slideID
-                     PageID:(NSString *)pageID
-                        Dir:(NSString *)dirName {
+                      PageID:(NSString *)pageID
+                         Dir:(NSString *)dirName {
     NSString *slidePath = [FileUtils getPathName:dirName FileName:slideID];
     NSString *pagePath = [slidePath stringByAppendingPathComponent:pageID];
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];

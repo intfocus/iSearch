@@ -10,13 +10,17 @@
 #define iSearch_ViewUpgrade_h
 #import <UIKit/UIKit.h>
 
+@protocol ViewUpgradeProtocol <NSObject>
+- (void)dismissViewUpgrade;
+@end
+
 @interface ViewUpgrade:UIViewController
-@property (weak, nonatomic) IBOutlet UILabel *labelCurrentVersion;
-@property (weak, nonatomic) IBOutlet UILabel *labelLatestVersion;
-@property (weak, nonatomic) IBOutlet UITextView *textViewChangLog;
-@property (weak, nonatomic) IBOutlet UIButton *btnSkip;
-@property (weak, nonatomic) IBOutlet UIButton *btnUpgrade;
-@property (strong, nonatomic) NSString *insertUrl;
+
+
+@property (nonatomic, weak) id <ViewUpgradeProtocol> delegate;
+
+- (void)checkAppVersionUpgrade:(void(^)())successBloc
+                     FailBlock:(void(^)())failBlock;
 @end
 
 #endif

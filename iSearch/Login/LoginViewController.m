@@ -45,7 +45,7 @@
 #import "UIViewController+CWPopup.h"
 #import "ViewUpgrade.h"
 
-@interface LoginViewController ()
+@interface LoginViewController () <ViewUpgradeProtocol>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
@@ -85,9 +85,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-//    if([HttpUtils isNetworkAvailable]) {
-//        [self checkAppVersionUpgrade];
-//    }
+    if([HttpUtils isNetworkAvailable]) {
+        [self checkAppVersionUpgrade];
+    }
 }
 
 #pragma mark memory management
@@ -103,52 +103,22 @@
     self.btnSubmit.enabled = NO;
     [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
     
-    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-    NSString *currVersion = [localVersionInfo objectForKey:@"CFBundleShortVersionString"];
-    
-    NSString *versionInfoUrl = [NSString stringWithFormat:@"http://fir.im/api/v2/app/version/%@",FIRIM_APP_ID];
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"token": FIRIM_USER_TOKEN};
-    [manager GET:versionInfoUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *latestVersion = responseObject[FIRIM_VERSION];
-        
-        if(![latestVersion isEqualToString:currVersion] && ![latestVersion containsString:currVersion]) {
-            NSString *installUrl = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", responseObject[FIRIM_INSTALL_URL]];
-            NSString *changeLog = responseObject[FIRIM_CHANGE_LOG];
-            [self popupViewShowUpgrade:currVersion Latest:latestVersion ChangeLog:changeLog InstallUrl:installUrl];
-        } else {
-            NSLog(@"lastestVersion: %@, current version: %@", latestVersion, currVersion);
-            self.btnSubmit.enabled = YES;
-            [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+    if(!self.viewUpgrade) {
+        self.viewUpgrade = [[ViewUpgrade alloc] init];
+    }
+    self.viewUpgrade.delegate = self;
+    [self.viewUpgrade checkAppVersionUpgrade:^{
+        [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
+            NSLog(@"popup view presented viewUpgrade");
+        }];
+    } FailBlock:^{
         self.btnSubmit.enabled = YES;
         [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
     }];
 }
 
-- (void)popupViewShowUpgrade:(NSString *)currentVersion
-                      Latest:(NSString *)lastestVersion
-                      ChangeLog:(NSString *)changeLog
-                  InstallUrl:(NSString *)installUrl {
-    
-    if(!self.viewUpgrade) {
-        self.viewUpgrade = [[ViewUpgrade alloc] init];
-    }
-    self.viewUpgrade.labelCurrentVersion.text = [NSString stringWithFormat:@"当前版本: %@", currentVersion];
-    self.viewUpgrade.labelLatestVersion.text  = [NSString stringWithFormat:@"最新版本: %@", lastestVersion];
-    self.viewUpgrade.textViewChangLog.text    = changeLog;
-    self.viewUpgrade.insertUrl                = installUrl;
-    [self.viewUpgrade.btnSkip addTarget:self action:@selector(dismissViewUpgrade) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
-        NSLog(@"popup view presented viewUpgrade");
-    }];
-}
-
-- (IBAction)dismissViewUpgrade {
+#pragma mark - ViewUpgradeProtocol
+- (void)dismissViewUpgrade {
     if(self.viewUpgrade) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _viewUpgrade = nil;
@@ -171,9 +141,9 @@
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
     
-//    self.cookieValue = @"E99658602";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
-//    return;
+    self.cookieValue = @"E99658602";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");

@@ -14,9 +14,8 @@ typedef NS_ENUM(NSInteger, EntryButtonTag){
     EntryButtonHomePage     = 0,
     EntryButtonFavorite     = 1,
     EntryButtonNotification = 2,
-    EntryButtonDownload     = 3,
-    EntryButtonSetting      = 4,
-    EntryButtonLogout       = 5
+    EntryButtonSetting      = 3,
+    EntryButtonDownload     = 4
 };
 
 // HomePage GridViewTag
