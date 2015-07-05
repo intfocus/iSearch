@@ -24,6 +24,27 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgSignIn" translatesAutoresizingMaskIntoConstraints="NO" id="pjR-tn-azA">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdw-Aj-1SF" userLabel="btnNavBack">
+                    <rect key="frame" x="0.0" y="10" width="66" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="66" id="LRP-vV-q8w"/>
+                        <constraint firstAttribute="height" constant="44" id="QWL-c1-Ft3"/>
+                    </constraints>
+                    <state key="normal" title="返回" image="iconBackWhite">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="登录" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrt-ZS-qms">
+                    <rect key="frame" x="267" y="10" width="66" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="66" id="3s8-bh-jlr"/>
+                        <constraint firstAttribute="height" constant="44" id="99M-gp-F0A"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KY7-T3-Gjb">
                     <rect key="frame" x="0.0" y="54" width="600" height="546"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -90,27 +111,6 @@
                         <constraint firstAttribute="bottom" secondItem="MlP-EZ-hZK" secondAttribute="bottom" constant="69" id="via-3i-12i"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdw-Aj-1SF" userLabel="btnNavBack">
-                    <rect key="frame" x="0.0" y="10" width="66" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="66" id="LRP-vV-q8w"/>
-                        <constraint firstAttribute="height" constant="44" id="QWL-c1-Ft3"/>
-                    </constraints>
-                    <state key="normal" title="返回" image="iconBackWhite">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="登录" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rrt-ZS-qms">
-                    <rect key="frame" x="267" y="10" width="66" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="66" id="3s8-bh-jlr"/>
-                        <constraint firstAttribute="height" constant="44" id="99M-gp-F0A"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本次登录有效期12小时，为避免网络不佳，请您在拜访前预先登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyz-cH-AOw">
                     <rect key="frame" x="20" y="571" width="560" height="21"/>
                     <constraints>
@@ -128,15 +128,15 @@
                 <constraint firstAttribute="centerX" secondItem="rrt-ZS-qms" secondAttribute="centerX" id="5tZ-4C-TKd"/>
                 <constraint firstAttribute="bottom" secondItem="pjR-tn-azA" secondAttribute="bottom" id="6ya-Ah-m2T"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Byf-LC-hrq"/>
+                <constraint firstItem="pjR-tn-azA" firstAttribute="leading" secondItem="Bdw-Aj-1SF" secondAttribute="trailing" constant="-66" id="IlG-RT-YDT"/>
                 <constraint firstItem="KY7-T3-Gjb" firstAttribute="top" secondItem="Bdw-Aj-1SF" secondAttribute="bottom" id="Jgi-h5-Jln"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="K6O-gG-klW"/>
-                <constraint firstAttribute="bottomMargin" secondItem="KY7-T3-Gjb" secondAttribute="bottom" id="MCg-xO-Nes"/>
                 <constraint firstItem="Bdw-Aj-1SF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="NsK-Df-bjo"/>
                 <constraint firstAttribute="centerY" secondItem="O2n-uM-dVG" secondAttribute="centerY" id="QbM-xC-SU2"/>
-                <constraint firstItem="Bdw-Aj-1SF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="RTn-Im-RiX"/>
+                <constraint firstAttribute="centerX" secondItem="KY7-T3-Gjb" secondAttribute="centerX" id="YVu-G8-NwV"/>
                 <constraint firstItem="rrt-ZS-qms" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="biO-Jo-5sa"/>
-                <constraint firstItem="KY7-T3-Gjb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="hAD-qp-MfT"/>
-                <constraint firstAttribute="trailingMargin" secondItem="KY7-T3-Gjb" secondAttribute="trailing" id="oRh-ad-jRw"/>
+                <constraint firstItem="pjR-tn-azA" firstAttribute="width" secondItem="KY7-T3-Gjb" secondAttribute="width" id="ccm-86-yiS"/>
+                <constraint firstItem="pjR-tn-azA" firstAttribute="height" secondItem="KY7-T3-Gjb" secondAttribute="height" constant="-44" id="nh5-2A-muH"/>
                 <constraint firstAttribute="centerX" secondItem="O2n-uM-dVG" secondAttribute="centerX" id="pWU-Xg-ADl"/>
                 <constraint firstAttribute="trailing" secondItem="pjR-tn-azA" secondAttribute="trailing" id="wyG-O6-Rg2"/>
             </constraints>

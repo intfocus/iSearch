@@ -1132,7 +1132,7 @@
 				INFOPLIST_FILE = iSearch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d84eff92-3a7f-460d-a048-d33d84c3df84";
+				PROVISIONING_PROFILE = "8002ace2-f613-4bc5-9ce4-362ddd72ce20";
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_FILE = iSearch;
@@ -1153,7 +1153,7 @@
 				INFOPLIST_FILE = iSearch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d84eff92-3a7f-460d-a048-d33d84c3df84";
+				PROVISIONING_PROFILE = "8002ace2-f613-4bc5-9ce4-362ddd72ce20";
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_FILE = iSearch;
