@@ -40,15 +40,22 @@
 }
 
 - (void)checkUpdate:(void(^)())successBlock FailBloc:(void(^)())failBlock {
-    NSString *versionInfoUrl = [NSString stringWithFormat:@"http://fir.im/api/v2/app/version/%@",FIRIM_APP_ID];
+    NSString *versionInfoUrl = @"http://demo.solife.us/isearch";
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"token": FIRIM_USER_TOKEN};
-    [manager GET:versionInfoUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        _latest = responseObject[FIRIM_VERSION];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    [manager GET:versionInfoUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSString *responseStr = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSData* plistData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *error;
+        NSPropertyListFormat format;
+        NSDictionary* plist = [NSPropertyListSerialization propertyListFromData:plistData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
+        _latest = plist[@"items"][0][@"metadata"][@"version"];
         
         if([self isUpgrade]) {
-            _insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", responseObject[FIRIM_INSTALL_URL]];
-            _changeLog = responseObject[FIRIM_CHANGE_LOG];
+            _insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", plist[@"items"][0][@"assets"][0][@"url"]];
+            _changeLog = plist[@"items"][0][@"metadata"][@"changelog"];
 
             [self updateTimestamp];
             [self save];
@@ -71,16 +78,16 @@
 - (void)reload {
     NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    _latest    = configDict[FIRIM_VERSION];
-    _insertURL = configDict[FIRIM_INSTALL_URL];
-    _changeLog = configDict[FIRIM_CHANGE_LOG];
+    _latest    = configDict[VERSION_LATEST];
+    _insertURL = configDict[VERSION_INSERTURL];
+    _changeLog = configDict[VERSION_CHANGELOG];
 }
 - (void)save {
     NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    configDict[FIRIM_CHANGE_LOG]    = self.changeLog;
-    configDict[FIRIM_VERSION]       = self.latest;
-    configDict[FIRIM_INSTALL_URL]   = self.insertURL;
+    configDict[VERSION_CHANGELOG]   = self.changeLog;
+    configDict[VERSION_LATEST]      = self.latest;
+    configDict[VERSION_INSERTURL]   = self.insertURL;
     configDict[SLIDE_DESC_LOCAL_CREATEAT] = self.localCreatedDate;
     configDict[SLIDE_DESC_LOCAL_UPDATEAT] = self.localUpdatedDate;
     

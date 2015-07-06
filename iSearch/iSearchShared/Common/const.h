@@ -241,16 +241,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define NOTIFICATION_FIELD_CREATEDATE @"EditTime" // 创建日期
 #define NOTIFICATION_FIELD_OCCURDATE  @"OccurTime"// 发生日期（公告为空)
 
-// fir.im版本控制
-#define FIRIM_APP_ID                  @"5590bb2244f742197a00184b"
-#define FIRIM_USER_TOKEN              @"13801569d0aef0dbfe690c49fa8fad71"
-#define FIRIM_USER_ID                 @"5587bcf6f6e01ae634001bef"
-
-#define FIRIM_VERSION                 @"versionShort"
-#define FIRIM_BUNDLE                  @"version"
-#define FIRIM_INSTALL_URL             @"installUrl"
-#define FIRIM_CHANGE_LOG              @"changelog"
-#define FIRIM_UPDATE_URL              @"update_url"
-#define FIRIM_NAME                    @"name"
-
+// app版本控件
+#define VERSION_LATEST                @"latest_version"
+#define VERSION_CHANGELOG             @"change_log"
+#define VERSION_INSERTURL             @"insert_url"
 #endif
