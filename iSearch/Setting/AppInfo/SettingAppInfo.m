@@ -41,9 +41,9 @@
     
     [self.dataList addObject:@[@"应用名称", version.appName]];
     [self.dataList addObject:@[@"应用版本", version.current]];
-    [self.dataList addObject:@[@"当前语言", version.lang]];
-    [self.dataList addObject:@[@"支持最低版本",version.suport]];
-    [self.dataList addObject:@[@"当前版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""]]];
+    [self.dataList addObject:@[@"系统语言", version.lang]];
+    [self.dataList addObject:@[@"支持最低IOS版本",version.suport]];
+    [self.dataList addObject:@[@"当前IOS版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""]]];
 }
 
 - (IBAction)actionBackToMain:(id)sender {

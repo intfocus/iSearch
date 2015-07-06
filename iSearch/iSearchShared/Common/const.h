@@ -243,7 +243,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // fir.im版本控制
 #define FIRIM_APP_ID                  @"5590bb2244f742197a00184b"
-#define FIRIM_USER_TOKEN              @"926a182018b211e5b1c4805444c8991240f2ace0"
+#define FIRIM_USER_TOKEN              @"13801569d0aef0dbfe690c49fa8fad71"
 #define FIRIM_USER_ID                 @"5587bcf6f6e01ae634001bef"
 
 #define FIRIM_VERSION                 @"versionShort"

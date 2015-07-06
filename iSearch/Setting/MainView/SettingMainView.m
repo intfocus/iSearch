@@ -17,8 +17,8 @@
 #import "ViewUpgrade.h"
 
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
-    SettingAppInfoIndex  = 0,
-    SettingUserInfoIndex = 1,
+    SettingUserInfoIndex = 0,
+    SettingAppInfoIndex  = 1,
     SettingUpgradeIndex  = 2,
     SettingRegularIndex  = 3
 };
@@ -60,10 +60,10 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     }
     NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
     
-    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
     [self.dataList addObject:@[@"用户名称", self.user.name]];
+    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
     [self.dataList addObject:@[@"版本更新", @""]];
-    [self.dataList addObject:@[@"常规设置", @""]];
+    //[self.dataList addObject:@[@"常规设置", @""]];
 }
 
 #pragma mark - controls action

@@ -24,8 +24,8 @@
         _appName  = localVersionInfo[@"CFBundleExecutable"];
         _lang     = localVersionInfo[@"CFBundleDevelopmentRegion"];
         _suport   = localVersionInfo[@"MinimumOSVersion"];
-        _platform = localVersionInfo[@"DTSDKName"];
-        _sdkName  = localVersionInfo[@"DTPlatformName"];
+        _sdkName  = localVersionInfo[@"DTSDKName"];
+        _platform = localVersionInfo[@"DTPlatformName"];
     
         [self reload];
         [self updateTimestamp];

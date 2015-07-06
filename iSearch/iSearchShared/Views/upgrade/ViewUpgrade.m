@@ -75,6 +75,7 @@
 #pragma mark - controls action
 - (IBAction)actionUpgrade:(id)sender {
     NSURL *url = [NSURL URLWithString:self.insertUrl];
+    NSLog(@"url: %@", url);
     [[UIApplication sharedApplication] openURL:url];
 }
 
