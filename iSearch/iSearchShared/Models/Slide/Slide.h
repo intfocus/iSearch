@@ -77,7 +77,7 @@
 - (BOOL)isInFavorited:(BOOL)isForce;
 - (BOOL)isInFavorited;
 
-- (void)enterEditState;
+- (void)enterDisplayOrScanState;
 - (NSString *)dictSwpPath;
 - (NSMutableDictionary *)dictSwp;
 

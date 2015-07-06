@@ -167,11 +167,6 @@
     self.useBlurForPopup = YES;
     
     [self loadSlideInfo];
-    if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
-        _dataList = [NSMutableArray arrayWithArray:[self.slide dictSwp][SLIDE_DESC_ORDER]];
-    } else {
-        _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -205,15 +200,11 @@
 #pragma mark - webview 
 //开始加载数据
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-//    [activityIndicator startAnimating];
     NSLog(@"start.");
 }
 
 //数据加载完
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    [activityIndicator stopAnimating];
-//    UIView *view = (UIView *)[self.view viewWithTag:103];
-    //    [view removeFromSuperview];
     NSLog(@"finish.");
 }
 
@@ -244,7 +235,7 @@
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];
-//        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
+        // NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
     }
@@ -535,10 +526,8 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0: {
-            if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
-                NSFileManager *fileManager = [NSFileManager defaultManager];
-                [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
-            }
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
             [self dismissDisplayViewController];
         }
             break;
@@ -590,6 +579,10 @@
     }
     [sender setAttributedTitle:str forState:UIControlStateNormal];
 }
+
+/**
+ *  core method
+ */
 - (void) loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
@@ -621,10 +614,16 @@
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
     }
     
+    if(![FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+        [self.slide enterDisplayOrScanState];
+    }
+    _dataList = [self.slide dictSwp][SLIDE_DESC_ORDER];
+    
+    // 浏览页面调整页面顺序，播放实时更新
     NSString *jumpToPageName = configDict[SLIDE_DISPLAY_JUMPTO];
-    NSInteger jumpToPageIndex = [self.slide.pages indexOfObject:jumpToPageName];
+    NSInteger jumpToPageIndex = [self.dataList indexOfObject:jumpToPageName];
     if(jumpToPageIndex && (jumpToPageIndex < 0 || jumpToPageIndex > [self.slide.pages count] -1)) {
-            jumpToPageIndex = 0;
+        jumpToPageIndex = 0;
     }
     self.currentPageIndex = [NSNumber numberWithInteger:jumpToPageIndex];
 }

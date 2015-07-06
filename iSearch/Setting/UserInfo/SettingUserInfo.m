@@ -38,9 +38,11 @@
     
     
     User *user = [[User alloc] init];
-    [self.dataList addObject:[NSString stringWithFormat:@"%@: %@", @"名称", user.name]];
-    [self.dataList addObject:[NSString stringWithFormat:@"%@: %@", @"员工编号", user.employeeID]];
-    [self.dataList addObject:[NSString stringWithFormat:@"%@: %@", @"所属部门", user.deptID]];
+    [self.dataList addObject:@[@"名称", user.name]];
+    [self.dataList addObject:@[@"邮箱", user.email]];
+    [self.dataList addObject:@[@"员工编号", user.employeeID]];
+    [self.dataList addObject:@[@"所属部门", user.deptID]];
+    [self.dataList addObject:@[@"上次登录时间", user.loginLast]];
 }
 
 - (IBAction)actionBackToMain:(id)sender {
@@ -60,10 +62,11 @@
     NSInteger row = [indexPath row];
     UITableViewCell *cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    cell.textLabel.text = self.dataList[row];
+    cell.textLabel.text = self.dataList[row][0];
+    cell.detailTextLabel.text = self.dataList[row][1];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }

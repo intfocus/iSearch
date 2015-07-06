@@ -233,7 +233,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 - (NSMutableDictionary *)dictSwp {
     return [FileUtils readConfigFile:[self dictSwpPath]];
 }
-- (void)enterEditState {
+- (void)enterDisplayOrScanState {
     return [FileUtils writeJSON:[self refreshFields] Into:[self dictSwpPath]];
 }
 

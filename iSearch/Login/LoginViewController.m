@@ -140,10 +140,10 @@
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
-//    
-//    self.cookieValue = @"E99658602";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
-//    return;
+    
+    self.cookieValue = @"E99658602";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");

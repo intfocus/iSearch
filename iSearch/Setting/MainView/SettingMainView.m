@@ -18,7 +18,8 @@
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingAppInfoIndex  = 0,
     SettingUserInfoIndex = 1,
-    SettingRegularIndex  = 2
+    SettingUpgradeIndex  = 2,
+    SettingRegularIndex  = 3
 };
 
 @interface SettingMainView()<UITableViewDelegate, UITableViewDataSource>
@@ -57,10 +58,10 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
         self.user = [[User alloc] init];
     }
     NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-    NSString *currVersion = [localVersionInfo objectForKey:@"CFBundleShortVersionString"];
     
-    [self.dataList addObject:@[@"app版本", currVersion]];
-    [self.dataList addObject:@[@"登录用户", self.user.name]];
+    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
+    [self.dataList addObject:@[@"用户名称", self.user.name]];
+    [self.dataList addObject:@[@"软件更新", @""]];
     [self.dataList addObject:@[@"常规设置", @""]];
 }
 
@@ -113,8 +114,13 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
             self.settingViewController.containerViewController = viewController;
         }
             break;
-            
-            
+        case SettingUpgradeIndex:{
+            SettingAppInfo *viewController = [[SettingAppInfo alloc] init];
+            viewController.settingViewController = self.settingViewController;
+            viewController.mainViewController = self.mainViewController;
+            self.settingViewController.containerViewController = viewController;
+        }
+            break;
         default:
             break;
     }

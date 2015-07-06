@@ -113,7 +113,7 @@
     [FileUtils writeJSON:configDict Into:configPath];
     
     if([self.slide.pages count] > 0) {
-        [self.slide enterEditState];
+        [self.slide enterDisplayOrScanState];
         [self.masterViewController presentViewDisplayViewController];
     } else {
         [self showPopupView:@"it is empty"];
@@ -172,7 +172,7 @@
     if(!thumbnailPath || [[thumbnailPath stringByDeletingLastPathComponent] isEqualToString:bundlePath]) {
         thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailSlideDefault.png"];
     }
-    NSLog(@"%@", thumbnailPath);
+    //NSLog(@"%@", thumbnailPath);
     NSString * html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
     NSURL *baseURL = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
     [self.webViewThumbnail loadHTMLString:html baseURL:baseURL];

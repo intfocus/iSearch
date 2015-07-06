@@ -111,7 +111,7 @@
         [configDict writeToFile:configPath atomically:YES];
         
         [self.masterViewController dismissPopupSlideInfo];
-        [self.slide enterEditState];
+        [self.slide enterDisplayOrScanState];
         [self.masterViewController presentViewDisplayViewController];
     } else {
         [self showPopupView:@"请君下载"];

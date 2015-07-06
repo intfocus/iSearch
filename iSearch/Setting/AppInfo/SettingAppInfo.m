@@ -34,13 +34,15 @@
                                                                         target:self
                                                                         action:@selector(actionBackToMain:)];
     self.navigationItem.leftBarButtonItem = navBtnBackToMain;
-    self.navigationItem.title = @"版本信息";
+    self.navigationItem.title = @"应用信息";
     
     NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-    NSString *currVersion = [localVersionInfo objectForKey:@"CFBundleShortVersionString"];
     
-    [self.dataList addObject:@[@"应用版本", currVersion]];
-    
+    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
+    [self.dataList addObject:@[@"应用版本", localVersionInfo[@"CFBundleShortVersionString"]]];
+    [self.dataList addObject:@[@"当前语言", localVersionInfo[@"CFBundleDevelopmentRegion"]]];
+    [self.dataList addObject:@[@"支持最低版本",localVersionInfo[@"MinimumOSVersion"]]];
+    [self.dataList addObject:@[@"当前版本",  [localVersionInfo[@"DTSDKName"] stringByReplacingOccurrencesOfString:localVersionInfo[@"DTPlatformName"] withString:@""]]];
 }
 
 - (IBAction)actionBackToMain:(id)sender {

@@ -135,12 +135,11 @@
     
     [self loadConfigInfo];
     
-    if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
-        NSMutableDictionary *dictSwp = [self.slide dictSwp];
-        _dataList = dictSwp[SLIDE_DESC_ORDER];
-    } else {
-        _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    if(![FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+        [self.slide enterDisplayOrScanState];
     }
+    _dataList = [self.slide dictSwp][SLIDE_DESC_ORDER];
+
 
     [self checkDescSwpContent];
     [_gmGridView reloadData];
@@ -192,7 +191,6 @@
     self.isFavorite             = ([config[SCAN_SLIDE_FROM] intValue] == SlideTypeFavorite);
 
     self.slide                  = [Slide findById:self.slideID isFavorite:self.isFavorite];
-    //[self.slide enterEditState];
     self.labelNavSlideTitle.text = self.slide.title;
 }
 
@@ -209,16 +207,12 @@
  *  @param gesture UIGestureRecognizer
  */
 - (IBAction)actionDismissReViewController:(UIButton *)sender {
-    if(self.slide.isFavorite) {
-        self.slide.pages = [NSMutableArray arrayWithArray:_dataList];
-        [self.slide save];
-    } else {
-        if(![self.slide.pages isEqualToArray:_dataList]) {
-            NSMutableDictionary *dictSwp = [NSMutableDictionary dictionaryWithDictionary:self.slide.dictSwp];
-            dictSwp[SLIDE_DESC_ORDER] = _dataList;
-            [FileUtils writeJSON:dictSwp Into:[self.slide dictSwpPath]];
-        }
+    NSMutableDictionary *slideDictSwp = [NSMutableDictionary dictionaryWithDictionary:[self.slide dictSwp]];
+    if(![slideDictSwp[SLIDE_DESC_ORDER] isEqualToArray:_dataList]) {
+        slideDictSwp[SLIDE_DESC_ORDER] = _dataList;
+        [self writeJSON:slideDictSwp Into:[self.slide dictSwpPath]];
     }
+
     [self performSelector:@selector(dismissReViewController)];
 }
 
@@ -368,6 +362,7 @@
     tapGesture.numberOfTapsRequired = 2;
     tapGesture.numberOfTouchesRequired = 1;
     tapGesture.delegate = self;
+    tapGesture.view.tag = index;
     [viewSlidePage.btnMask setTag:index];
     [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
 
@@ -381,30 +376,26 @@
 /**
  *  非编辑状态下，双击直接进入演示该页面
  *  编辑状态下，会有selectButton在最外层，不会触发此处双击事件
+ *  双击后，跳转至播放页面，传递页面名称，而非序号。
+ *  写回前，_dataList一直在变，但[self.slide dictSwp][SLIDE_DESC_ORDER]未变,[tapRecognizer.view tag]存放的序号与后者一致
  *
  *  @param gestureRecognizer gestureRecognizer
  */
 - (IBAction)actionJumpToDisplay:(UITapGestureRecognizer*)tapRecognizer {
     NSInteger pageIndex = [tapRecognizer.view tag];
-    NSString *pName = [_dataList objectAtIndex:pageIndex];
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSMutableDictionary *slideDictSwp = [NSMutableDictionary dictionaryWithDictionary:[self.slide dictSwp]];
+    
+    NSString *pName                 = slideDictSwp[SLIDE_DESC_ORDER][pageIndex];
+    NSString *configPath            = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     configDict[SLIDE_DISPLAY_JUMPTO] = pName;
     [FileUtils writeJSON:configDict Into:configPath];
     
-    if(self.slide.isFavorite) {
-        if(![self.slide.pages isEqualToArray:_dataList]) {
-            self.slide.pages = [NSMutableArray arrayWithArray:_dataList];
-            [self.slide save];
-        }
-    } else {
-        if(![self.slide.pages isEqualToArray:_dataList]) {
-            NSMutableDictionary *dictSwp = [NSMutableDictionary dictionaryWithDictionary:self.slide.dictSwp];
-            dictSwp[SLIDE_DESC_ORDER] = _dataList;
-            [FileUtils writeJSON:dictSwp Into:[self.slide dictSwpPath]];
-        }
+    if(![slideDictSwp[SLIDE_DESC_ORDER] isEqualToArray:_dataList]) {
+        slideDictSwp[SLIDE_DESC_ORDER] = _dataList;
+        [self writeJSON:slideDictSwp Into:[self.slide dictSwpPath]];
     }
-    
+
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -518,7 +509,7 @@
         self.btnNavSaveTo.enabled = ([_selectedList count] > 0);
     }
     
-    self.btnNavRestore.enabled = ![_dataList isEqualToArray:self.slide.pages];
+    self.btnNavRestore.enabled = ![_dataList isEqualToArray:[self.slide dictSwp][SLIDE_DESC_ORDER]];
 }
 
 @end
