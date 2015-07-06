@@ -57,7 +57,7 @@
     [super viewDidLoad];
     
     // 初始化配置数据库
-    self.database = [DatabaseUtils setUP];
+    self.database = [[DatabaseUtils alloc] init];
 
     self.title = @"离线搜索";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]

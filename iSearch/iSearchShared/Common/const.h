@@ -194,6 +194,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define OFFLINE_COLUMN_ZIPURL    @"zip_url"
 #define OFFLINE_COLUMN_ZIPSIZE   @"zip_size"
 
+#define DB_COLUMN_CREATED      @"created_at"
+#define DB_COLUMN_UPDATED      @"updated_at"
+
 
 // 内容重组
 #define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
@@ -245,4 +248,12 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define VERSION_LATEST                @"latest_version"
 #define VERSION_CHANGELOG             @"change_log"
 #define VERSION_INSERTURL             @"insert_url"
+
+// actionLog
+#define ACTIONLOG_TABLE_NAME          @"action_log"
+#define ACTIONLOG_COLUMN_FUNNAME      @"function_name"
+#define ACTIONLOG_COLUMN_ACTNAME      @"action_name"
+#define ACTIONLOG_COLUMN_ACTRET       @"action_return"
+#define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
+#define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
 #endif

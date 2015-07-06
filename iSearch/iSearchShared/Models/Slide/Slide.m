@@ -209,7 +209,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
     NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
     
-   return [[Slide alloc]initSlide:dict isFavorite:isFavorite];
+   return [[Slide alloc] initSlide:dict isFavorite:isFavorite];
 }
 + (Slide *)findByTitleInFavorited:(NSString *)title {
     Slide *slide;

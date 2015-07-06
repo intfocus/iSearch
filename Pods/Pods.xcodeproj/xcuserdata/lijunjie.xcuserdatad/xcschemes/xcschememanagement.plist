@@ -19,6 +19,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-FMDB.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-JTCalendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -54,6 +59,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-sqlite3.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -62,57 +72,67 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>07484EF65F2FBF9BF5F0776B</key>
+		<key>003D2132700A920E50A39866</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>076B68B93D7D7EA114B5E370</key>
+		<key>18FA6F753AB659CC4B18D96F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5054236E393F07CB9EB4F588</key>
+		<key>1BC3E535A9ADE902D7A7069E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>509A6B6FD8BA6A7B70E7F5F1</key>
+		<key>25F08F2A3CEA1127B2AA6B9D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5572C820129253CD2CDD6834</key>
+		<key>53C4ED27ADB3F314116E9164</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>584B7BBEFB857E74C2FD3D1B</key>
+		<key>59B07CE5D584081B5C7FC470</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6240589300167391CB5ABEC1</key>
+		<key>6D2518B82A2EE3776C981B57</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7ABED63838D621E4A7E51ACA</key>
+		<key>C327181E9F6D63D39F2FFAAE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>95500A810516EAF85BCC6DFA</key>
+		<key>D9BFCD059C5E6354B094376F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9E8F5DE387BB78F84E97FB91</key>
+		<key>DF068D54040F521EA4BA15F7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9FADFD42E3AD4E149EEE6241</key>
+		<key>DF5D54E6DCB6C9548F026A9B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E027FD4FF3784F4C4A76D040</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E6391E57E024C9112BD7AE51</key>
 		<dict>
 			<key>primary</key>
 			<true/>

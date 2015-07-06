@@ -8,17 +8,19 @@
 
 #import "DatabaseUtils.h"
 #import "const.h"
+#import "FMDB.h"
 #import "FileUtils.h"
 
 @implementation DatabaseUtils
 
 #define myNSLog
 
-- (id) init {
+- (DatabaseUtils *)init {
     if (self = [super init]) {
-        self.databaseFilePath = [FileUtils getPathName:DATABASE_DIRNAME
-                                              FileName:DATABASE_FILEAME];
-        //NSLog(@"%@", self.databaseFilePath);
+        _databaseFilePath = [FileUtils getPathName:DATABASE_DIRNAME FileName:DATABASE_FILEAME];
+
+        [self executeSQL:[self createTableOffline]];
+        [self executeSQL:[self createTableActionLog]];
     }
     return self;
 }
@@ -26,11 +28,9 @@
 /**
  *  数据库初始化时，集中配置在这里
  */
-+ (DatabaseUtils *) setUP {
-    DatabaseUtils *databaseUtils = [[DatabaseUtils alloc] init];
-    
-    NSString *createTableOfflineSQL= [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ ( \
-            id integer PRIMARY KEY AUTOINCREMENT, \
+- (NSString *) createTableOffline {
+    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (                      \
+            id integer PRIMARY KEY AUTOINCREMENT,                                            \
             %@ varchar(100) NOT NULL,                                                        \
             %@ varchar(500) NOT NULL,                                                        \
             %@ varchar(500) NOT NULL,                                                        \
@@ -41,11 +41,11 @@
             %@ varchar(100) NULL,                                                            \
             %@ varchar(100) NULL,                                                            \
             %@ varchar(100) NULL DEFAULT '0',                                                \
-            create_time datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')), \
-            modify_time datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))  \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),          \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))           \
             );                                                                               \
-        CREATE INDEX IF NOT EXISTS idx_type ON %@(%@); \
-        CREATE INDEX IF NOT EXISTS idx_create_time ON %@(create_time);",
+        CREATE INDEX IF NOT EXISTS idx_type ON %@(%@);                                       \
+        CREATE INDEX IF NOT EXISTS idx_create_time ON %@(%@);",
         OFFLINE_TABLE_NAME,
         OFFLINE_COLUMN_FILEID,
         OFFLINE_COLUMN_NAME,
@@ -57,13 +57,35 @@
         OFFLINE_COLUMN_CATEGORYNAME,
         OFFLINE_COLUMN_ZIPURL,
         OFFLINE_COLUMN_ZIPSIZE,
+            DB_COLUMN_CREATED,
+            DB_COLUMN_UPDATED,
         OFFLINE_TABLE_NAME,OFFLINE_COLUMN_TYPE,
-        OFFLINE_TABLE_NAME];
-    [databaseUtils executeSQL: createTableOfflineSQL];
-    
-    return databaseUtils;
+        OFFLINE_TABLE_NAME,DB_COLUMN_CREATED];
 }
-
+- (NSString *) createTableActionLog {
+    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (                      \
+            id integer PRIMARY KEY AUTOINCREMENT,                                            \
+            %@ varchar(300) NOT NULL,                                                        \
+            %@ varchar(300) NOT NULL,                                                        \
+            %@ varchar(300) NOT NULL,                                                        \
+            %@ varchar(300) NOT NULL,                                                        \
+            %@ boolean NOT NULL default false,                                               \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),          \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))           \
+            );                                                                               \
+            CREATE INDEX IF NOT EXISTS idx_funname ON %@(%@);                                \
+            CREATE INDEX IF NOT EXISTS idx_create_time ON %@(%@);",
+            ACTIONLOG_TABLE_NAME,
+            ACTIONLOG_COLUMN_FUNNAME,
+            ACTIONLOG_COLUMN_ACTNAME,
+            ACTIONLOG_COLUMN_ACTRET,
+            ACTIONLOG_COLUMN_ACTOBJ,
+            ACTIONLOG_COLUMN_ISSYNC,
+            DB_COLUMN_CREATED,
+            DB_COLUMN_UPDATED,
+            ACTIONLOG_TABLE_NAME,ACTIONLOG_COLUMN_FUNNAME,
+            OFFLINE_TABLE_NAME, DB_COLUMN_CREATED];
+}
 /**
  *  需要的取值方式未定义或过于复杂时，直接执行SQL语句
  *  若是SELECT则返回搜索到的行ID
@@ -73,42 +95,25 @@
  *
  *  @return 返回搜索到数据行的ID,执行失败返回该代码行
  */
-- (NSInteger) executeSQL: (NSString *) sql {
-    sqlite3 *database;
-    //NSLog(@"executeSQL: %@", sql);
-    int result = sqlite3_open([self.databaseFilePath UTF8String], &database);
-    if (result != SQLITE_OK) {
-        NSLog(@"DatabaseUtils#executeSQL open database failed - line number: %i.", __LINE__);
-        return -__LINE__;
+- (NSInteger)executeSQL:(NSString *)sql {
+    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    if ([db open]) {
+        BOOL isExecuteSuccessfully = [db executeStatements:sql];
+        if(!isExecuteSuccessfully) {
+            NSLog(@"Executed faile with SQL below:\n%@", sql);
+        }
+        [db close];
     }
- 
-    char *errorMsg;
-    if (sqlite3_exec(database, [sql UTF8String], NULL, NULL, &errorMsg) != SQLITE_OK) {
-        sqlite3_close(database);
-        NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@  error: %s", sql, errorMsg]);
-        return -__LINE__;
-    } else {
-        NSLog(@"%@", @"DatabaseUtils#executeSQL successfully!");
+    else {
+        NSLog(@"Cannot open DB at the path: %@", self.databaseFilePath);
     }
-
-    ////////////////////////////////
-    // Get the ID just execute
-    ////////////////////////////////
-    NSInteger lastRowId = [[NSNumber numberWithLongLong: sqlite3_last_insert_rowid(database)] integerValue];
-    if (lastRowId > 0) return lastRowId;
-    
     return -__LINE__;
 } // end of executeSQL()
 
 - (NSMutableArray*) searchFilesWithKeywords: (NSArray *) keywords {
-    sqlite3 *database;
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
-    
-    int result = sqlite3_open([self.databaseFilePath UTF8String], &database);
-    if (result != SQLITE_OK) {
-        NSLog(@"DatabaseUtils#selectWithResult open database failed - line number: %i.", __LINE__);
-    }
-    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, create_time, modify_time from %@ ",
+
+    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@ from %@ ",
                      OFFLINE_COLUMN_FILEID,
                      OFFLINE_COLUMN_NAME,
                      OFFLINE_COLUMN_TITLE,
@@ -119,11 +124,12 @@
                      OFFLINE_COLUMN_CATEGORYNAME,
                      OFFLINE_COLUMN_ZIPURL,
                      OFFLINE_COLUMN_ZIPSIZE,
+                     DB_COLUMN_CREATED,
+                     DB_COLUMN_UPDATED,
                      OFFLINE_TABLE_NAME];
     NSString *keyword;
     NSMutableArray *likes = [[NSMutableArray alloc] init];
     for(keyword in keywords) {
-        //[likes addObject:[NSString stringWithFormat:@" name like '%%%@%%' or desc like '%%%@%%' ", keyword, keyword]];
         [likes addObject:[NSString stringWithFormat:@" or %@ like '%%%@%%' or %@ like '%%%@%%' ", CONTENT_FIELD_NAME, keyword, CONTENT_FIELD_DESC, keyword]];
     }
     // 关键字不为空，SQL语句添加where过滤
@@ -134,25 +140,27 @@
     }
     
     char *errorMsg;
-    sqlite3_stmt *statement;
     int _id;
     NSString *_one, *_two, *_three, *_four, *_five, *_six, *_seven, *_eight, *_nine, *_ten;
-    NSString *_create_time, *_modify_time;
-    if (sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, nil) == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            _id          = sqlite3_column_int(statement, 0);
-            _one         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 1)encoding:NSUTF8StringEncoding];
-            _two         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 2)encoding:NSUTF8StringEncoding];
-            _three       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 3)encoding:NSUTF8StringEncoding];
-            _four        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 4)encoding:NSUTF8StringEncoding];
-            _five        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 5)encoding:NSUTF8StringEncoding];
-            _six         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 6)encoding:NSUTF8StringEncoding];
-            _seven       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 7)encoding:NSUTF8StringEncoding];
-            _eight       = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 8)encoding:NSUTF8StringEncoding];
-            _nine        = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 9)encoding:NSUTF8StringEncoding];
-            _ten         = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 10)encoding:NSUTF8StringEncoding];
-            _create_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 11)encoding:NSUTF8StringEncoding];
-            _modify_time = [[NSString alloc] initWithCString:(char *)sqlite3_column_text(statement, 12)encoding:NSUTF8StringEncoding];
+    NSString *_created_at, *_updated_at;
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    if ([db open]) {
+        FMResultSet *s = [db executeQuery:sql];
+        while([s next]) {
+            _id          = [s intForColumnIndex:0];
+            _one         = [s stringForColumnIndex:1];
+            _two         = [s stringForColumnIndex:2];
+            _three       = [s stringForColumnIndex:3];
+            _four        = [s stringForColumnIndex:4];
+            _five        = [s stringForColumnIndex:5];
+            _six         = [s stringForColumnIndex:6];
+            _seven       = [s stringForColumnIndex:7];
+            _eight       = [s stringForColumnIndex:8];
+            _nine        = [s stringForColumnIndex:9];
+            _ten         = [s stringForColumnIndex:10];
+            _created_at = [s stringForColumnIndex:11];
+            _updated_at = [s stringForColumnIndex:12];
             
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -168,13 +176,12 @@
             [mutableDictionary setObject:_nine forKey:OFFLINE_COLUMN_ZIPURL];
             [mutableDictionary setObject:_ten forKey:OFFLINE_COLUMN_ZIPSIZE];
 
-            [mutableDictionary setObject:_create_time forKey:@"create_time"];
-            [mutableDictionary setObject:_modify_time forKey:@"modify_time"];
+            [mutableDictionary setObject:_created_at forKey:DB_COLUMN_CREATED];
+            [mutableDictionary setObject:_updated_at forKey:DB_COLUMN_UPDATED];
             
             [mutableArray addObject: mutableDictionary];
         }
-        sqlite3_finalize(statement);
-        sqlite3_close(database);
+        [db close];
     } else {
         NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@  error: %s", sql, errorMsg]);
     }
@@ -188,5 +195,65 @@
     [self executeSQL: sql];
 }
 
+- (void) insertActionLog:(NSString *)FunName
+                 ActName:(NSString *)ActName
+                  ActObj:(NSString *)ActObj
+                  ActRet:(NSString *)ActRet {
+    NSString *insertSQL = [NSString stringWithFormat:@"insert into %@(%@, %@, %@, %@) values('%@', '%@', '%@', '%@');",
+                           ACTIONLOG_TABLE_NAME,
+                           ACTIONLOG_COLUMN_FUNNAME,
+                           ACTIONLOG_COLUMN_ACTNAME,
+                           ACTIONLOG_COLUMN_ACTOBJ,
+                           ACTIONLOG_COLUMN_ACTRET,
+                           FunName,
+                           ActName,
+                           ActObj,
+                           ActRet];
+    [self executeSQL:insertSQL];
+}
+
+- (NSMutableArray *)actionLogs {
+    NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
+    
+    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@, %@, %@ from %@ where %@ = 'display' order by %@  desc limit 15;",
+                     ACTIONLOG_COLUMN_ACTOBJ,
+                     ACTIONLOG_COLUMN_ACTNAME,
+                     ACTIONLOG_COLUMN_ACTRET,
+                     DB_COLUMN_CREATED,
+                     DB_COLUMN_UPDATED,
+                     ACTIONLOG_TABLE_NAME,
+                     ACTIONLOG_COLUMN_ACTNAME,
+                     DB_COLUMN_CREATED];
+    NSString *_one, *_two, *_three;
+    NSString *_created_at, *_updated_at;
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    if ([db open]) {
+        FMResultSet *s = [db executeQuery:sql];
+        while([s next]) {
+            _one         = [s stringForColumnIndex:0];
+            _two         = [s stringForColumnIndex:1];
+            _three       = [s stringForColumnIndex:2];
+            _created_at = [s stringForColumnIndex:3];
+            _updated_at = [s stringForColumnIndex:4];
+            
+            
+            NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
+            [mutableDictionary setObject:_one forKey:ACTIONLOG_COLUMN_ACTOBJ];
+            [mutableDictionary setObject:_two forKey:ACTIONLOG_COLUMN_ACTNAME];
+            [mutableDictionary setObject:_three forKey:ACTIONLOG_COLUMN_ACTRET];
+            
+            [mutableDictionary setObject:_created_at forKey:DB_COLUMN_CREATED];
+            [mutableDictionary setObject:_updated_at forKey:DB_COLUMN_UPDATED];
+            
+            [mutableArray addObject: mutableDictionary];
+        }
+        [db close];
+    } else {
+        NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
+    }
+    
+    return mutableArray;
+}
 @end
 

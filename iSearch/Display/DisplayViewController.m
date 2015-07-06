@@ -22,6 +22,7 @@
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
+#import "ActionLog.h"
 #import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"
 #import "UIViewController+CWPopup.h"
@@ -626,6 +627,9 @@
         jumpToPageIndex = 0;
     }
     self.currentPageIndex = [NSNumber numberWithInteger:jumpToPageIndex];
+    
+    ActionLog *actionLog = [[ActionLog alloc] init];
+    [actionLog recordSlide:self.slide];
 }
 
 

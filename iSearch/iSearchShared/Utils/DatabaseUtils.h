@@ -10,7 +10,6 @@
 #define AudioNote_Database_Utils_h
 
 #import <Foundation/Foundation.h>
-#import <sqlite3.h>
 
 
 
@@ -18,11 +17,14 @@
 
 @property NSString        *databaseFilePath;
 
-+ (DatabaseUtils *) setUP;
 - (NSInteger) executeSQL: (NSString *) sql;
 - (void) deleteWithId: (NSString *) id;
 - (NSMutableArray*) searchFilesWithKeywords: (NSArray *) keywords;
-
+- (void) insertActionLog:(NSString *)FunName
+                 ActName:(NSString *)ActName
+                  ActObj:(NSString *)ActObj
+                  ActRet:(NSString *)ActRet;
+- (NSMutableArray *)actionLogs;
 @end
 
 #endif
