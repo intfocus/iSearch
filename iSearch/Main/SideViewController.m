@@ -68,7 +68,7 @@
     
     // warning 此处位置调整时，需要修改
     NSArray *array=@[@"首页",@"收藏",@"通知",@"设置"];//,@"下载",@"登出"];//
-    NSArray *images = @[@"iconIndex",@"iconCollection",@"iconNotification",@"iconDownload",@"iconSetup"];//,@"iconSignOut"];//
+    NSArray *images = @[@"iconIndex",@"iconCollection",@"iconNotification",@"iconSetup"];//,@"iconDownload"];//
 
     //[array objectAtIndex:10];
 

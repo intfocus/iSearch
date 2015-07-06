@@ -11,6 +11,7 @@
 #import "MainViewController.h"
 #import "SettingViewController.h"
 #import "SettingMainView.h"
+#import "Version.h"
 
 
 @interface SettingAppInfo()<UITableViewDelegate, UITableViewDataSource>
@@ -36,13 +37,13 @@
     self.navigationItem.leftBarButtonItem = navBtnBackToMain;
     self.navigationItem.title = @"应用信息";
     
-    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
+    Version *version = [[Version alloc] init];
     
-    [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
-    [self.dataList addObject:@[@"应用版本", localVersionInfo[@"CFBundleShortVersionString"]]];
-    [self.dataList addObject:@[@"当前语言", localVersionInfo[@"CFBundleDevelopmentRegion"]]];
-    [self.dataList addObject:@[@"支持最低版本",localVersionInfo[@"MinimumOSVersion"]]];
-    [self.dataList addObject:@[@"当前版本",  [localVersionInfo[@"DTSDKName"] stringByReplacingOccurrencesOfString:localVersionInfo[@"DTPlatformName"] withString:@""]]];
+    [self.dataList addObject:@[@"应用名称", version.appName]];
+    [self.dataList addObject:@[@"应用版本", version.current]];
+    [self.dataList addObject:@[@"当前语言", version.lang]];
+    [self.dataList addObject:@[@"支持最低版本",version.suport]];
+    [self.dataList addObject:@[@"当前版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""]]];
 }
 
 - (IBAction)actionBackToMain:(id)sender {

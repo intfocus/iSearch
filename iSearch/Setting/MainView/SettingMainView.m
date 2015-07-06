@@ -14,6 +14,7 @@
 #import "SettingViewController.h"
 #import "SettingUserInfo.h"
 #import "SettingAppInfo.h"
+#import "ViewUpgrade.h"
 
 typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingAppInfoIndex  = 0,
@@ -61,7 +62,7 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     
     [self.dataList addObject:@[@"应用名称", localVersionInfo[@"CFBundleExecutable"]]];
     [self.dataList addObject:@[@"用户名称", self.user.name]];
-    [self.dataList addObject:@[@"软件更新", @""]];
+    [self.dataList addObject:@[@"版本更新", @""]];
     [self.dataList addObject:@[@"常规设置", @""]];
 }
 
@@ -115,9 +116,11 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
         }
             break;
         case SettingUpgradeIndex:{
-            SettingAppInfo *viewController = [[SettingAppInfo alloc] init];
+            ViewUpgrade *viewController = [[ViewUpgrade alloc] init];
             viewController.settingViewController = self.settingViewController;
             viewController.mainViewController = self.mainViewController;
+            viewController.delegate = (id)self.settingViewController;
+
             self.settingViewController.containerViewController = viewController;
         }
             break;

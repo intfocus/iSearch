@@ -28,9 +28,10 @@
 
 #import "LoginViewController.h"
 
-#import "User.h"
 #import "const.h"
 #import "message.h"
+#import "User.h"
+#import "Version.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
 #import "ApiUtils.h"
@@ -103,18 +104,23 @@
     self.btnSubmit.enabled = NO;
     [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
     
-    if(!self.viewUpgrade) {
-        self.viewUpgrade = [[ViewUpgrade alloc] init];
-    }
-    self.viewUpgrade.delegate = self;
-    [self.viewUpgrade checkAppVersionUpgrade:^{
-        [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
-            NSLog(@"popup view presented viewUpgrade");
-        }];
-    } FailBlock:^{
+    Version *version = [[Version alloc] init];
+    [version checkUpdate:^{
+        if([version isUpgrade]) {
+            if(!self.viewUpgrade) {
+                self.viewUpgrade = [[ViewUpgrade alloc] init];
+            }
+            self.viewUpgrade.delegate = self;
+            [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
+                NSLog(@"popup view viewUpgrade");
+                [self.viewUpgrade refreshControls:YES];
+            }];
+        }
+    } FailBloc:^{
         self.btnSubmit.enabled = YES;
-        [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
+        [self.btnSubmit setTitle:@"登陆" forState:UIControlStateNormal];
     }];
+    
 }
 
 #pragma mark - ViewUpgradeProtocol

@@ -9,6 +9,8 @@
 #ifndef iSearch_ViewUpgrade_h
 #define iSearch_ViewUpgrade_h
 #import <UIKit/UIKit.h>
+@class MainViewController;
+@class SettingViewController;
 
 @protocol ViewUpgradeProtocol <NSObject>
 - (void)dismissViewUpgrade;
@@ -16,11 +18,12 @@
 
 @interface ViewUpgrade:UIViewController
 
+@property (nonatomic,nonatomic) MainViewController *mainViewController;
+@property (nonatomic,nonatomic) SettingViewController *settingViewController;
 
 @property (nonatomic, weak) id <ViewUpgradeProtocol> delegate;
 
-- (void)checkAppVersionUpgrade:(void(^)())successBloc
-                     FailBlock:(void(^)())failBlock;
+- (void)refreshControls:(BOOL)btnEnabled;
 @end
 
 #endif

@@ -41,7 +41,7 @@
     [self.dataList addObject:@[@"名称", user.name]];
     [self.dataList addObject:@[@"邮箱", user.email]];
     [self.dataList addObject:@[@"员工编号", user.employeeID]];
-    [self.dataList addObject:@[@"所属部门", user.deptID]];
+    //[self.dataList addObject:@[@"所属部门", user.deptID]];
     [self.dataList addObject:@[@"上次登录时间", user.loginLast]];
 }
 

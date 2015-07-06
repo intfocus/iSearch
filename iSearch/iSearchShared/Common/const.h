@@ -71,21 +71,22 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 };
 
 // Global
-#define DEBUG                  1
-#define PARAM_LANG             @"lang" // 传递给服务器的语言key
-#define APP_LANG               @"zh-CN" // 应用系统的语言
-#define BASE_URL               @"http://tsa-china.takeda.com.cn" //
-#define CONFIG_DIRNAME         @"Configs" // 所有配置档放置在些文件夹下
-#define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
-#define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件
-#define NEW_TAG_FORMAT         @"yyMMddHHMMSS" // 创建新标签后新文件名称格式
-#define LOCAL_OR_SERVER_LOCAL  @"local" // 获取服务器信息或本地缓存
-#define LOCAL_OR_SERVER_SREVER @"server"// 获取服务器信息或本地缓存
-#define DATABASE_DIRNAME       @"Database" // 数据库文件存放的文件夹名称
-#define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
-#define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
-#define THUMBNAIL_DIRNAME      @"Thumbails" // 分类缩略图
-#define CACHE_DIRNAME          @"Caches"
+#define DEBUG                   1
+#define PARAM_LANG              @"lang" // 传递给服务器的语言key
+#define APP_LANG                @"zh-CN" // 应用系统的语言
+#define BASE_URL                @"http://tsa-china.takeda.com.cn" //
+#define CONFIG_DIRNAME          @"Configs" // 所有配置档放置在些文件夹下
+#define DATE_FORMAT             @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
+#define DATE_SIMPLE_FORMAT      @"yyyy/MM/dd" // 公告通知api使用及日历控件
+#define NEW_TAG_FORMAT          @"yyMMddHHMMSS" // 创建新标签后新文件名称格式
+#define LOCAL_OR_SERVER_LOCAL   @"local" // 获取服务器信息或本地缓存
+#define LOCAL_OR_SERVER_SREVER  @"server"// 获取服务器信息或本地缓存
+#define DATABASE_DIRNAME        @"Database" // 数据库文件存放的文件夹名称
+#define DATABASE_FILEAME        @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
+#define CONTENT_ROOT_ID         @"1" // 获取目录分类的入口
+#define THUMBNAIL_DIRNAME       @"Thumbails" // 分类缩略图
+#define CACHE_DIRNAME           @"Caches"
+#define UPGRADE_CONFIG_FILENAME @"upgrade.json"
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"

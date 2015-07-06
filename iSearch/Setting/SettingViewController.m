@@ -10,8 +10,9 @@
 #import "SettingViewController.h"
 #import "MainViewController.h"
 #import "SettingMainView.h"
+#import "ViewUpgrade.h"
 
-@interface SettingViewController()
+@interface SettingViewController()<ViewUpgradeProtocol>
 @property (nonatomic,weak) IBOutlet UIView *containerView;
 @end
 
@@ -57,4 +58,12 @@
     
     mainView.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     mainView.view.frame            = self.containerView.bounds;
-}@end
+}
+#pragma mark - ViewUpgradeProtocol
+- (void)dismissViewUpgrade {
+    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
+    viewController.settingViewController = self;
+    viewController.mainViewController    = self.masterViewController;
+    self.containerViewController         = viewController;
+}
+@end

@@ -10,57 +10,66 @@
 #import "ViewUpgrade.h"
 #import "AFNetworking.h"
 #import "const.h"
+#import "Version.h"
+#import "SettingViewController.h"
+#import "SettingMainView.h"
+#import "MBProgressHUD.h"
+#import "HttpUtils.h"
 
 @interface ViewUpgrade()
+@property (strong, nonatomic) IBOutlet UILabel *labelTitle;
 @property (strong, nonatomic) IBOutlet UILabel *labelCurrentVersion;
 @property (strong, nonatomic) IBOutlet UILabel *labelLatestVersion;
 @property (strong, nonatomic) IBOutlet UITextView *textViewChangLog;
 @property (strong, nonatomic) IBOutlet UIButton *btnSkip;
 @property (strong, nonatomic) IBOutlet UIButton *btnUpgrade;
 @property (strong, nonatomic) NSString *insertUrl;
+@property (strong, nonatomic) Version *version;
 @end
 
 @implementation ViewUpgrade
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if(self.navigationItem) {
+        UIBarButtonItem *navBtnBackToMain = [[UIBarButtonItem alloc] initWithTitle:@"返回"
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(actionBackToMain:)];
+        self.navigationItem.leftBarButtonItem = navBtnBackToMain;
+        self.navigationItem.title = @"版本更新";
+    }
 
 }
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.version = [[Version alloc] init];
+
+    [self refreshControls:NO];
 }
 
-#pragma mark - core method
-- (void)checkAppVersionUpgrade:(void(^)())successBloc
-                     FailBlock:(void(^)())failBlock {
-    NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-    NSString *currVersion = [localVersionInfo objectForKey:@"CFBundleShortVersionString"];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
-    NSString *versionInfoUrl = [NSString stringWithFormat:@"http://fir.im/api/v2/app/version/%@",FIRIM_APP_ID];
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"token": FIRIM_USER_TOKEN};
-    [manager GET:versionInfoUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *latestVersion = responseObject[FIRIM_VERSION];
+    // only occured when load within settingViewController
+    if(self.settingViewController && [HttpUtils isNetworkAvailable]) {
+        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:hud];
+        hud.labelText = @"检测中...";
         
-        if(![latestVersion isEqualToString:currVersion] && ![latestVersion containsString:currVersion]) {
-            NSString *installUrl = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", responseObject[FIRIM_INSTALL_URL]];
-            NSString *changeLog = responseObject[FIRIM_CHANGE_LOG];
-            self.labelCurrentVersion.text = currVersion;
-            self.labelLatestVersion.text  = latestVersion;
-            self.textViewChangLog.text    = changeLog;
-            self.insertUrl                = installUrl;
-            
-            successBloc();
-        } else {
-            NSLog(@"lastestVersion: %@, current version: %@", latestVersion, currVersion);
-            
-            failBlock();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        
-        failBlock();
-    }];
+        [hud showAnimated:YES whileExecutingBlock:^{
+            [self.version checkUpdate:^{
+                if([self.version isUpgrade]) {
+                    [self refreshControls:YES];
+                }
+            } FailBloc:^{
+            }];
+        } completionBlock:^{
+        }];
+    }
 }
 
 #pragma mark - controls action
@@ -81,4 +90,39 @@
     [[UIApplication sharedApplication] openURL:downloadURL];
 }
 
+- (IBAction)actionBackToMain:(id)sender {
+    SettingMainView *view = [[SettingMainView alloc] init];
+    view.mainViewController = self.mainViewController;
+    view.settingViewController = self.settingViewController;
+    self.settingViewController.containerViewController = view;
+}
+
+#pragma mark - private methods
+
+- (void)refreshControls:(BOOL)btnEnabled {
+    [self.version reload];
+    self.labelTitle.text = ([self.version isUpgrade] ? @"有新版本，更新吧" : @"已经最新版本");
+    self.labelCurrentVersion.text = [NSString stringWithFormat:@"%@: %@", @"当前版本", self.version.current];
+    self.labelLatestVersion.text  = [NSString stringWithFormat:@"%@: %@", @"最新版本", self.version.latest];
+    self.textViewChangLog.text    = self.version.changeLog;
+    self.insertUrl                = self.version.insertURL;
+    [self enabledBtn:self.btnSkip Enabeld:btnEnabled];
+    [self enabledBtn:self.btnUpgrade Enabeld:btnEnabled];
+}
+
+- (void)enabledBtn:(UIButton *)sender
+            Enabeld:(BOOL)enabled {
+    if(enabled == sender.enabled) return;
+    
+    sender.enabled = enabled;
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
+    NSRange strRange = {0,[str length]};
+    if(enabled) {
+        [str removeAttribute:NSStrikethroughStyleAttributeName range:strRange];
+        
+    } else {
+        [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+    }
+    [sender setAttributedTitle:str forState:UIControlStateNormal];
+}
 @end

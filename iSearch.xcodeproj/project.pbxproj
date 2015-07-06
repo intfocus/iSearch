@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C31A5A26A50B79A54B9722 /* libPods.a */; };
+		C4042D001B4A481700F0E826 /* Version.m in Sources */ = {isa = PBXBuildFile; fileRef = C4042CFF1B4A481700F0E826 /* Version.m */; };
 		C419AF791B46399E007FE00C /* SlideInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C419AF781B46399E007FE00C /* SlideInfoView.xib */; };
 		C419AF841B468681007FE00C /* ViewUpgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = C419AF821B468681007FE00C /* ViewUpgrade.m */; };
 		C419AF851B468681007FE00C /* ViewUpgrade.xib in Resources */ = {isa = PBXBuildFile; fileRef = C419AF831B468681007FE00C /* ViewUpgrade.xib */; };
@@ -124,6 +125,8 @@
 		3CB226BD2DC5BFC7B479B425 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		75C31A5A26A50B79A54B9722 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4042CFE1B4A481700F0E826 /* Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
+		C4042CFF1B4A481700F0E826 /* Version.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Version.m; sourceTree = "<group>"; };
 		C419AF781B46399E007FE00C /* SlideInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SlideInfoView.xib; sourceTree = "<group>"; };
 		C419AF811B468681007FE00C /* ViewUpgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewUpgrade.h; sourceTree = "<group>"; };
 		C419AF821B468681007FE00C /* ViewUpgrade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewUpgrade.m; sourceTree = "<group>"; };
@@ -326,6 +329,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C4042CFD1B4A481700F0E826 /* Version */ = {
+			isa = PBXGroup;
+			children = (
+				C4042CFE1B4A481700F0E826 /* Version.h */,
+				C4042CFF1B4A481700F0E826 /* Version.m */,
+			);
+			path = Version;
+			sourceTree = "<group>";
+		};
 		C419AF801B468681007FE00C /* Upgrade */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,6 +451,7 @@
 		C4357C191B37F22100854524 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C4042CFD1B4A481700F0E826 /* Version */,
 				C44EF6601B3E91D6006AB765 /* BaseModel */,
 				C4357C231B391B5600854524 /* User */,
 				C4357C261B391B5600854524 /* Slide */,
@@ -1008,6 +1021,7 @@
 			files = (
 				C4A618F01B2C7AEC00D0E91B /* NewsListTabView.m in Sources */,
 				C4BED08C1B2FFEE2000147A2 /* ViewUtils.m in Sources */,
+				C4042D001B4A481700F0E826 /* Version.m in Sources */,
 				C483230B1B49490D00E7251D /* SettingMainView.m in Sources */,
 				C42EC8841B28908B000F84EF /* NotificationViewController.m in Sources */,
 				C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */,
