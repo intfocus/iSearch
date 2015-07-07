@@ -177,7 +177,18 @@
     [self.switchLaser setOn:NO];
     
     [self checkLastNextPageBtnState];
-    [self loadHtml];
+    if([self.dataList count] > 0) {
+        [self loadHtml];
+    } else {
+        [self.webView loadHTMLString:@" \
+         <html>                         \
+           <body>                       \
+             <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+             文档内容为空.                \
+             </div>                     \
+           </body>                      \
+         </html>" baseURL:nil];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

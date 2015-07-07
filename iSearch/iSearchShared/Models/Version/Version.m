@@ -51,12 +51,12 @@
         NSString *error;
         NSPropertyListFormat format;
         NSDictionary* plist = [NSPropertyListSerialization propertyListFromData:plistData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
-        _latest = plist[@"items"][0][@"metadata"][@"version"];
+        _latest = plist[@"items"][0][@"metadata"][@"bundle-version"];
         
         if([self isUpgrade]) {
-            _insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", plist[@"items"][0][@"assets"][0][@"url"]];
-            _changeLog = plist[@"items"][0][@"metadata"][@"changelog"];
-
+            _insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", VERSION_URL];
+            NSString *changLog = plist[@"items"][0][@"metadata"][@"changelog"];
+            _changeLog = changLog ? _changeLog : @"未设置";
             [self updateTimestamp];
             [self save];
             

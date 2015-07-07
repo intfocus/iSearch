@@ -102,21 +102,21 @@
         [self.slide save];
     }
     
-    // tell DisplayViewController somthing it need.
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-    NSNumber *displayFrom = [NSNumber numberWithInt:(DisplayFromSlide)];
-    [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
-    [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
-    [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
-    [FileUtils writeJSON:configDict Into:configPath];
-    
     if([self.slide.pages count] > 0) {
+        // tell DisplayViewController somthing it need.
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+        NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+        NSNumber *displayFrom = [NSNumber numberWithInt:(DisplayFromSlide)];
+        [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+        [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
+        [FileUtils writeJSON:configDict Into:configPath];
+        
         [self.slide enterDisplayOrScanState];
         [self.masterViewController presentViewDisplayViewController];
     } else {
-        [self showPopupView:@"it is empty"];
+        [self showPopupView:@"文档为空,无法演示"];
     }
 }
 

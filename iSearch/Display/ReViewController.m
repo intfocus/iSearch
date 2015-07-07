@@ -140,7 +140,6 @@
     }
     _dataList = [self.slide dictSwp][SLIDE_DESC_ORDER];
 
-
     [self checkDescSwpContent];
     [_gmGridView reloadData];
 }
@@ -222,7 +221,7 @@
         self.mainAddNewTagView = [[MainAddNewTagView alloc] init];
         self.mainAddNewTagView.masterViewController = self;
     }
-    self.mainAddNewTagView.closeMainViewAfterDone = YES;
+    self.mainAddNewTagView.closeMainViewAfterDone = NO;
     self.mainAddNewTagView.fromViewControllerName = @"ReViewController";
     [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
         NSLog(@"mainAddNewTagView popup view presented");

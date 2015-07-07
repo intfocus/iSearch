@@ -303,5 +303,57 @@
     
     return mutableArray;
 }
+
+- (NSMutableArray *)unSyncActions {
+    NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
+    
+    NSString *sql = [NSString stringWithFormat:@"select id, %@, %@, %@, %@ from %@ \
+                     where %@ = '%@' and %@ = 0 ;",
+                     ACTIONLOG_COLUMN_FUNNAME,
+                     ACTIONLOG_COLUMN_ACTOBJ,
+                     ACTIONLOG_COLUMN_ACTNAME,
+                     ACTIONLOG_COLUMN_ACTRET,
+                     ACTIONLOG_TABLE_NAME,
+                     ACTIONLOG_COLUMN_UID,
+                     self.userID,
+                     ACTIONLOG_COLUMN_ISSYNC];
+    int ID;
+    NSString *funName, *actObj, *actName, *actRet;
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    if ([db open]) {
+        FMResultSet *s = [db executeQuery:sql];
+        while([s next]) {
+            ID      = [s intForColumnIndex:0];
+            funName = [s stringForColumnIndex:1];
+            actObj  = [s stringForColumnIndex:2];
+            actName = [s stringForColumnIndex:3];
+            actRet  = [s stringForColumnIndex:4];
+            
+            NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
+            [mutableDictionary setObject:[NSNumber numberWithInt:ID] forKey:@"id"];
+            [mutableDictionary setObject:funName forKey:ACTIONLOG_COLUMN_FUNNAME];
+            [mutableDictionary setObject:actObj forKey:ACTIONLOG_COLUMN_ACTOBJ];
+            [mutableDictionary setObject:actName forKey:ACTIONLOG_COLUMN_ACTNAME];
+            [mutableDictionary setObject:actRet forKey:ACTIONLOG_COLUMN_ACTRET];
+        }
+        [db close];
+    } else {
+        NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
+    }
+    
+    return mutableArray;
+}
+
+- (void)updateSyncedActions:(NSMutableArray *)IDS {
+    NSString *updateSQL = [NSString stringWithFormat:@"update %@ set %@ = 1 where %@ = '%@' and %@ = 0 and id in (%@)",
+                           ACTIONLOG_TABLE_NAME,
+                           ACTIONLOG_COLUMN_ISSYNC,
+                           ACTIONLOG_COLUMN_UID,
+                           self.userID,
+                           ACTIONLOG_COLUMN_ISSYNC,
+                           [IDS componentsJoinedByString:@","]];
+    [self executeSQL:updateSQL];
+}
 @end
 
