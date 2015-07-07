@@ -215,6 +215,10 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 - (NSString *)dictSwpPath {
     return [self.path stringByAppendingPathComponent:SLIDE_CONFIG_SWP_FILENAME];
 }
+- (void)removeDictSwp {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:[self dictSwpPath] error:NULL];
+}
 - (NSMutableDictionary *)dictSwp {
     return [FileUtils readConfigFile:[self dictSwpPath]];
 }

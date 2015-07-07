@@ -61,11 +61,10 @@
     
     NSString *sizeInfo, *editTime;
     if(self.isFavorite) {
-        sizeInfo = [NSString stringWithFormat:@"%@: %@",
-                    @"文件体积", [FileUtils humanFileSize:self.slide.folderSize]];
+        sizeInfo = [NSString stringWithFormat:@"%@: %@", @"文件体积", [FileUtils humanFileSize:self.slide.folderSize]];
         editTime = [NSString stringWithFormat:@"%@: %@", @"收藏时间", self.slide.localCreatedDate];
     } else {
-        sizeInfo = [NSString stringWithFormat:@"%@: %@", @"压缩包", [FileUtils humanFileSize:self.slide.folderSize]];
+        sizeInfo = [NSString stringWithFormat:@"%@: %@", @"压缩包", [FileUtils humanFileSize:self.slide.zipSize]];
         editTime = [NSString stringWithFormat:@"%@: %@", @"上架时间", self.slide.createdDate];
     }
     

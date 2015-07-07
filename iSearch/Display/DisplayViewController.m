@@ -462,16 +462,15 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *pageID = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
-        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
-        [config setObject:pageID forKey:SCAN_SLIDE_PAGEID];
-        NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
+        NSString *currentPageName = ([self.dataList count] > [self.currentPageIndex integerValue]) ? self.dataList[[self.currentPageIndex integerValue]] : @"empty slide's pages";
+        config[SCAN_SLIDE_ID]     = self.slideID;
+        config[SCAN_SLIDE_PAGEID] = currentPageName;
+        config[SCAN_SLIDE_FROM]   = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
         [FileUtils writeJSON:config Into:pathName];
         
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-        configDict[SLIDE_DISPLAY_JUMPTO] = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
+        configDict[SLIDE_DISPLAY_JUMPTO] = currentPageName;
         [FileUtils writeJSON:configDict Into:configPath];
         
         // 界面跳转至文档页面编辑界面
@@ -538,8 +537,6 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0: {
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
             [self dismissDisplayViewController];
         }
             break;
@@ -671,6 +668,7 @@
 -(void)dismissDisplayViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
     
+    [self.slide removeDictSwp];
     [self.masterViewController dismissViewDisplayViewController];
 }
 - (void) dismissPopupAddToTag {

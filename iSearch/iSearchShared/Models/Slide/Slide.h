@@ -81,6 +81,7 @@
 
 - (void)enterDisplayOrScanState;
 - (NSString *)dictSwpPath;
+- (void)removeDictSwp;
 - (NSMutableDictionary *)dictSwp;
 
 @end
