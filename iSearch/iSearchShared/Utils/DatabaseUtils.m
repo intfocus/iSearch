@@ -10,6 +10,7 @@
 #import "const.h"
 #import "FMDB.h"
 #import "FileUtils.h"
+#import "User.h"
 
 @implementation DatabaseUtils
 
@@ -17,6 +18,7 @@
 
 - (DatabaseUtils *)init {
     if (self = [super init]) {
+        _userID = [User userID];
         _databaseFilePath = [FileUtils getPathName:DATABASE_DIRNAME FileName:DATABASE_FILEAME];
 
         [self executeSQL:[self createTableOffline]];
@@ -69,6 +71,8 @@
             %@ varchar(300) NOT NULL,                                                        \
             %@ varchar(300) NOT NULL,                                                        \
             %@ varchar(300) NOT NULL,                                                        \
+            %@ varchar(300) NOT NULL,                                                        \
+            %@ boolean NOT NULL default false,                                               \
             %@ boolean NOT NULL default false,                                               \
             %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),          \
             %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))           \
@@ -76,11 +80,13 @@
             CREATE INDEX IF NOT EXISTS idx_funname ON %@(%@);                                \
             CREATE INDEX IF NOT EXISTS idx_create_time ON %@(%@);",
             ACTIONLOG_TABLE_NAME,
+            ACTIONLOG_COLUMN_UID,
             ACTIONLOG_COLUMN_FUNNAME,
             ACTIONLOG_COLUMN_ACTNAME,
             ACTIONLOG_COLUMN_ACTRET,
             ACTIONLOG_COLUMN_ACTOBJ,
             ACTIONLOG_COLUMN_ISSYNC,
+            ACTIONLOG_COLUMN_DELETED,
             DB_COLUMN_CREATED,
             DB_COLUMN_UPDATED,
             ACTIONLOG_TABLE_NAME,ACTIONLOG_COLUMN_FUNNAME,
@@ -159,8 +165,8 @@
             _eight       = [s stringForColumnIndex:8];
             _nine        = [s stringForColumnIndex:9];
             _ten         = [s stringForColumnIndex:10];
-            _created_at = [s stringForColumnIndex:11];
-            _updated_at = [s stringForColumnIndex:12];
+            _created_at  = [s stringForColumnIndex:11];
+            _updated_at  = [s stringForColumnIndex:12];
             
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
@@ -175,7 +181,6 @@
             [mutableDictionary setObject:_eight forKey:OFFLINE_COLUMN_CATEGORYNAME];
             [mutableDictionary setObject:_nine forKey:OFFLINE_COLUMN_ZIPURL];
             [mutableDictionary setObject:_ten forKey:OFFLINE_COLUMN_ZIPSIZE];
-
             [mutableDictionary setObject:_created_at forKey:DB_COLUMN_CREATED];
             [mutableDictionary setObject:_updated_at forKey:DB_COLUMN_UPDATED];
             
@@ -199,12 +204,15 @@
                  ActName:(NSString *)ActName
                   ActObj:(NSString *)ActObj
                   ActRet:(NSString *)ActRet {
-    NSString *insertSQL = [NSString stringWithFormat:@"insert into %@(%@, %@, %@, %@) values('%@', '%@', '%@', '%@');",
+    NSString *insertSQL = [NSString stringWithFormat:@"insert into %@(%@, %@, %@, %@, %@)   \
+                                                       values('%@', '%@', '%@', '%@', '%@');",
                            ACTIONLOG_TABLE_NAME,
+                           ACTIONLOG_COLUMN_UID,
                            ACTIONLOG_COLUMN_FUNNAME,
                            ACTIONLOG_COLUMN_ACTNAME,
                            ACTIONLOG_COLUMN_ACTOBJ,
                            ACTIONLOG_COLUMN_ACTRET,
+                           self.userID,
                            FunName,
                            ActName,
                            ActObj,
@@ -215,17 +223,16 @@
 - (NSMutableArray *)actionLogs {
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     
-    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@, %@, %@ from %@ where %@ = 'display' order by %@  desc limit 15;",
+    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@ from %@ where %@ = 'display' and %@ = '%@' order by %@  desc limit 15;",
                      ACTIONLOG_COLUMN_ACTOBJ,
                      ACTIONLOG_COLUMN_ACTNAME,
                      ACTIONLOG_COLUMN_ACTRET,
-                     DB_COLUMN_CREATED,
-                     DB_COLUMN_UPDATED,
                      ACTIONLOG_TABLE_NAME,
                      ACTIONLOG_COLUMN_ACTNAME,
+                     ACTIONLOG_COLUMN_UID,
+                     self.userID,
                      DB_COLUMN_CREATED];
     NSString *_one, *_two, *_three;
-    NSString *_created_at, *_updated_at;
     
     FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
     if ([db open]) {
@@ -234,17 +241,12 @@
             _one         = [s stringForColumnIndex:0];
             _two         = [s stringForColumnIndex:1];
             _three       = [s stringForColumnIndex:2];
-            _created_at = [s stringForColumnIndex:3];
-            _updated_at = [s stringForColumnIndex:4];
             
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
             [mutableDictionary setObject:_one forKey:ACTIONLOG_COLUMN_ACTOBJ];
             [mutableDictionary setObject:_two forKey:ACTIONLOG_COLUMN_ACTNAME];
             [mutableDictionary setObject:_three forKey:ACTIONLOG_COLUMN_ACTRET];
-            
-            [mutableDictionary setObject:_created_at forKey:DB_COLUMN_CREATED];
-            [mutableDictionary setObject:_updated_at forKey:DB_COLUMN_UPDATED];
             
             [mutableArray addObject: mutableDictionary];
         }

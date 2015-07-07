@@ -204,21 +204,6 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 - (void)clearRemovedPages {
     // TODO clearRemovePages
 }
-+ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
-    NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
-    NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
-    NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
-    
-   return [[Slide alloc] initSlide:dict isFavorite:isFavorite];
-}
-+ (Slide *)findByTitleInFavorited:(NSString *)title {
-    Slide *slide;
-    for(slide in [FileUtils favoriteSlideList1]) {
-        if([slide.title isEqualToString:title]) { break; }
-    }
-    
-    return slide;
-}
 
 - (BOOL)isValid {
     NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];
@@ -237,8 +222,24 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return [FileUtils writeJSON:[self refreshFields] Into:[self dictSwpPath]];
 }
 
-#pragma mark - private methods
+#pragma mark - class methods
++ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
+    NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
+    NSString *dictPath = [FileUtils slideDescPath:slideID Dir:dirName Klass:SLIDE_DICT_FILENAME];
+    NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];
+    
+    return [[Slide alloc] initSlide:dict isFavorite:isFavorite];
+}
 
++ (Slide *)findByTitleInFavorited:(NSString *)title {
+    Slide *slide;
+    for(slide in [FileUtils favoriteSlideList1]) {
+        if([slide.title isEqualToString:title]) { break; }
+    }
+    
+    return slide;
+}
+#pragma mark - private methods
 - (NSMutableDictionary *) refreshFields {
     // slide's desc field
     _dict[SLIDE_DESC_ID]              = self.ID;

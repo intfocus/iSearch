@@ -55,10 +55,12 @@
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 
-// instance methods
-- (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
+// class methods
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
 + (Slide *)findByTitleInFavorited:(NSString *)title;
+
+// instance methods
+- (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
 
 - (void)save;
 - (void)toCached;

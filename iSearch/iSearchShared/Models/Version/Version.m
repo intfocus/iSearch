@@ -14,6 +14,7 @@
 #import "DateUtils.h"
 #import "AFNetworking.h"
 #import "ExtendNSLogFunctionality.h"
+#define VERSION_URL @"https://tems.takeda.com.cn/iSearch/iSearch.plist"
 
 @implementation Version
 
@@ -40,12 +41,11 @@
 }
 
 - (void)checkUpdate:(void(^)())successBlock FailBloc:(void(^)())failBlock {
-    NSString *versionInfoUrl = @"http://demo.solife.us/isearch";
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-    [manager GET:versionInfoUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+    [manager GET:VERSION_URL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *responseStr = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSData* plistData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
         NSString *error;
@@ -72,7 +72,7 @@
 }
 
 - (BOOL)isUpgrade {
-    return ![self.latest isEqualToString:self.current] && ![self.latest containsString:self.current];
+    return self.latest && ![self.latest isEqualToString:self.current] && ![self.latest containsString:self.current];
 }
 
 - (void)reload {

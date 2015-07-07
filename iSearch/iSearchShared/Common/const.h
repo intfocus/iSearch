@@ -251,9 +251,11 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // actionLog
 #define ACTIONLOG_TABLE_NAME          @"action_log"
+#define ACTIONLOG_COLUMN_UID          @"user_id"
 #define ACTIONLOG_COLUMN_FUNNAME      @"function_name"
 #define ACTIONLOG_COLUMN_ACTNAME      @"action_name"
 #define ACTIONLOG_COLUMN_ACTRET       @"action_return"
 #define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
 #define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
+#define ACTIONLOG_COLUMN_DELETED      @"is_deleted"
 #endif

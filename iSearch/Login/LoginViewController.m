@@ -31,6 +31,7 @@
 #import "const.h"
 #import "message.h"
 #import "User.h"
+#import "Slide.h"
 #import "Version.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
@@ -348,14 +349,15 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController {
-    for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图"],
-                            @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", SLIDE_DIRNAME,@"使用手册1"],
-                            @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", SLIDE_DIRNAME,@"使用手册2"]]) {
+    for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
+                            @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],
+                            @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", FAVORITE_DIRNAME,@"使用手册2", @"999155"]]) {
         
         self.labelPropmt.text = [NSString stringWithFormat:@"下载<%@>...", array[2]];
-        [self downloadCategoryThumbnail:array[0] dir:array[1]];
+        [self downloadCategoryThumbnail:array[0] dir:array[1] SlideID:array[3]];
          [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     }
+
     
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
@@ -363,16 +365,33 @@
 }
 
 
-- (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName {
+- (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName SlideID:(NSString *)slideID {
+    NSString *dirPath = [FileUtils getPathName:dirName];
     NSString *zipName = [downloadUrl lastPathComponent];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    if([FileUtils checkFileExist:zipPath isDir:NO]) { return; }
+    if([FileUtils checkFileExist:zipPath isDir:NO]) return;
     
     NSURL *url = [NSURL URLWithString:downloadUrl];
     NSData *zipData = [NSData dataWithContentsOfURL:url];
-    NSString *thumbnailPath = [FileUtils getPathName:dirName];
     [zipData writeToFile:zipPath atomically:YES];
-    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:thumbnailPath];
+    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:dirPath];
     NSLog(@"解压%@  %@", zipPath, state ? @"成功" : @"失败");
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    [fileManager removeItemAtPath:zipPath error:NULL];
+    
+    if(slideID && [slideID length] > 0) {
+        NSString *dictPath = [FileUtils slideDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        dict = [FileUtils readConfigFile:dictPath];
+        dict[CONTENT_FIELD_ID]      = slideID;
+        dict[CONTENT_FIELD_TYPE]    = @"10000";
+        dict[CONTENT_FIELD_DESC]    = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_TITLE]   = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_NAME]    = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
+        Slide *slide = [[Slide alloc] initSlide:dict isFavorite:YES];
+        [slide save];
+    }
 }
 @end

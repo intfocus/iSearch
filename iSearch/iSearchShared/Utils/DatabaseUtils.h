@@ -15,11 +15,13 @@
 
 @interface DatabaseUtils : NSObject
 
-@property NSString        *databaseFilePath;
+@property NSString *databaseFilePath;
+@property NSString *userID;
 
-- (NSInteger) executeSQL: (NSString *) sql;
-- (void) deleteWithId: (NSString *) id;
-- (NSMutableArray*) searchFilesWithKeywords: (NSArray *) keywords;
+// instance methods
+- (NSInteger)executeSQL:(NSString *)sql;
+- (void) deleteWithId:(NSString *)ID;
+- (NSMutableArray*)searchFilesWithKeywords:(NSArray *)keywords;
 - (void) insertActionLog:(NSString *)FunName
                  ActName:(NSString *)ActName
                   ActObj:(NSString *)ActObj
