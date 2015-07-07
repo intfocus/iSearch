@@ -518,7 +518,7 @@
  */
 - (IBAction)actionDismissDisplayViewController:(id)sender {
     if(self.slide.isFavorite) {
-        [self performSelector:@selector(dismissDisplayViewController)];
+        [self dismissDisplayViewController];
     } else {
         if(![self.dataList isEqualToArray:self.slide.pages]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否保存？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
@@ -668,6 +668,10 @@
 -(void)dismissDisplayViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
     
+    if(self.slide.isFavorite) {
+        self.slide.pages = [self.slide dictSwp][SLIDE_DESC_ORDER];
+        [self.slide save];
+    }
     [self.slide removeDictSwp];
     [self.masterViewController dismissViewDisplayViewController];
 }

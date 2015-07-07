@@ -193,8 +193,6 @@
     self.labelNavSlideTitle.text = self.slide.title;
 }
 
-
-
 //////////////////////////////////////////////////////////////
 #pragma mark - controls action
 //////////////////////////////////////////////////////////////
@@ -231,13 +229,13 @@
 - (IBAction)actionRemovePages:(UIButton *)sender {
     if(!self.selectState) return;
     
-    for(NSString *pName in _selectedList) {
-        [_dataList removeObject:pName];
-    }
+    for(NSString *pName in _selectedList) { [_dataList removeObject:pName]; }
     [_selectedList removeAllObjects];
     [_gmGridView reloadData];
     
-    [self performSelector:@selector(actionEdit:) withObject:self.btnNavEdit];
+    
+    [self actionEdit:self.btnNavEdit];
+    [self actionEdit:self.btnNavEdit];
 }
 
 - (IBAction)actionRefresh:(id)sender {
@@ -245,25 +243,21 @@
 }
 
 - (IBAction)actionRestore:(UIButton *)sender {
+    if(self.selectState) { [self actionEdit:self.btnNavEdit]; }
+    
     _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
     [_gmGridView reloadData];
+    
+    
+    [self actionEdit:self.btnNavEdit];
+    [self actionEdit:self.btnNavEdit];
 }
 
 - (IBAction)actionEdit:(UIButton *)sender {
-    if(!self.selectState) {
-        self.selectState = true;
-        _gmGridView.selectState = self.selectState;
-        
-        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconNavCancel"] forState:UIControlStateNormal];
-    } else {
-        self.selectState = false;
-        _gmGridView.selectState = self.selectState;
-        
-        //[self.barItemEdit setTitle: BTN_EDIT];
-        // 在有选择多个页面情况下，[保存][移除]是激活的，
-        // 但直接[取消]编辑状态时, 就需要手工禁用
-        [self.btnNavEdit setImage:[UIImage imageNamed:@"iconNavEdit2"] forState:UIControlStateNormal];
-    }
+    [self.btnNavEdit setImage:[UIImage imageNamed:(self.selectState ? @"iconNavEdit2" : @"iconNavCancel")] forState:UIControlStateNormal];
+
+    self.selectState = !self.selectState;
+    _gmGridView.selectState = self.selectState;
     [self checkBtnNavState];
 }
 
@@ -333,11 +327,11 @@
     GMGridViewCell *cell = [gridView dequeueReusableCell];
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
+        cell.selectingButtonIcon   = [UIImage imageNamed:@"coverSlideSelecting"];
+        cell.selectingButtonOffset = CGPointMake(0, 0);
+        cell.selectedButtonIcon    = [UIImage imageNamed:@"coverSlideSelected"];
+        cell.selectedButtonOffset  = CGPointMake(0, 0);
     }
-    cell.selectingButtonIcon   = [UIImage imageNamed:@"coverSlideSelecting"];
-    cell.selectingButtonOffset = CGPointMake(0, 0);
-    cell.selectedButtonIcon    = [UIImage imageNamed:@"coverSlideSelected"];
-    cell.selectedButtonOffset  = CGPointMake(0, 0);
     
     ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
     NSString *currentPageName = [_dataList objectAtIndex:index];
@@ -365,12 +359,11 @@
     [viewSlidePage.btnMask setTag:index];
     [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
 
-    [cell setContentView: viewSlidePage];
+    [cell setContentView:viewSlidePage];
+    if(self.selectState) { [cell setSelected:NO]; }
     
     return cell;
 }
-
-
 
 /**
  *  非编辑状态下，双击直接进入演示该页面
@@ -417,13 +410,14 @@
     
     GMGridViewCell *cell = [gridView cellForItemAtIndex:index];
     ViewSlidePage *viewSlidePage = (ViewSlidePage *)cell.contentView;
-    NSLog(@"click %@", viewSlidePage.slidePageName);
 
     // 未记录该cell的状态，只能过判断_select是否包含i
-    if([_selectedList containsObject:viewSlidePage.slidePageName])
+    if([_selectedList containsObject:viewSlidePage.slidePageName]) {
         [_selectedList removeObject:viewSlidePage.slidePageName];
-    else
+    } else {
         [_selectedList addObject:viewSlidePage.slidePageName];
+    }
+    NSLog(@"click %@, [%@]", viewSlidePage.slidePageName, [_selectedList componentsJoinedByString:@","]);
     
     // 至少选择一个页面，[保存]/[移除]按钮处于激活状态
     [self checkBtnNavState];
