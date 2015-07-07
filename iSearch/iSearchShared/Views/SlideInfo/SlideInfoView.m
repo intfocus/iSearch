@@ -75,20 +75,6 @@
     [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopupSlideInfo) forControlEvents:UIControlEventTouchUpInside];
 }
 
-#pragma mark - assistant methods
-
-- (void)showPopupView:(NSString*)text {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText =text;
-    hud.margin = 10.f;
-    hud.removeFromSuperViewOnHide = YES;
-    
-    [hud hide:YES afterDelay:1.5];
-}
-
 #pragma mark - setter rewrite
 - (void)setDict:(NSMutableDictionary *)dict {
     self.slide = [[Slide alloc]initSlide:dict isFavorite:self.isFavorite];
@@ -178,5 +164,17 @@
     }
     
 }
+#pragma mark - assistant methods
 
+- (void)showPopupView:(NSString*)text {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText =text;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1];
+}
 @end
