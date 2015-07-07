@@ -262,20 +262,14 @@
 - (NSMutableArray *)actionLogs {
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     
-    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@ from %@ \
-                                                 where %@ = '%@' and %@ = '%@' and %@ = 0 \
-                                                 order by %@  desc limit 15;",
-                     ACTIONLOG_COLUMN_ACTOBJ,
-                     ACTIONLOG_COLUMN_ACTNAME,
-                     ACTIONLOG_COLUMN_ACTRET,
-                     ACTIONLOG_TABLE_NAME,
-                     ACTIONLOG_COLUMN_ACTNAME,
-                     ACTION_DISPLAY,
-                     ACTIONLOG_COLUMN_UID,
-                     self.userID,
-                     ACTIONLOG_COLUMN_DELETED,
-                     DB_COLUMN_CREATED];
-    NSString *slideID, *actionName, *dirName;
+    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@, max(%@) from %@ \
+                                                 where %@ = '%@' and %@ = '%@' and %@ = 0    \
+                                                 group by %@, %@, %@                         \
+                                                 limit 15;",
+                     ACTIONLOG_COLUMN_ACTOBJ, ACTIONLOG_COLUMN_ACTNAME, ACTIONLOG_COLUMN_ACTRET, DB_COLUMN_CREATED, ACTIONLOG_TABLE_NAME,
+                     ACTIONLOG_COLUMN_ACTNAME, ACTION_DISPLAY, ACTIONLOG_COLUMN_UID, self.userID, ACTIONLOG_COLUMN_DELETED,
+                     ACTIONLOG_COLUMN_ACTOBJ, ACTIONLOG_COLUMN_ACTNAME, ACTIONLOG_COLUMN_ACTRET];
+    NSString *slideID, *actionName, *dirName, *createdAt;
     
     FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
     if ([db open]) {
@@ -284,11 +278,13 @@
             slideID    = [s stringForColumnIndex:0];
             actionName = [s stringForColumnIndex:1];
             dirName    = [s stringForColumnIndex:2];
-            
+            createdAt  = [s stringForColumnIndex:3];
+
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
             [mutableDictionary setObject:slideID forKey:ACTIONLOG_COLUMN_ACTOBJ];
             [mutableDictionary setObject:actionName forKey:ACTIONLOG_COLUMN_ACTNAME];
             [mutableDictionary setObject:dirName forKey:ACTIONLOG_COLUMN_ACTRET];
+            [mutableDictionary setObject:createdAt forKey:DB_COLUMN_CREATED];
             
             if([FileUtils checkSlideExist:slideID Dir:dirName Force:NO]) {
                 [mutableArray addObject: mutableDictionary];
@@ -299,6 +295,11 @@
         [db close];
     } else {
         NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
+    }
+    
+    if([mutableArray count] > 0) {
+        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:DB_COLUMN_CREATED ascending:NO];
+        mutableArray = [NSMutableArray arrayWithArray:[mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]]];
     }
     
     return mutableArray;
