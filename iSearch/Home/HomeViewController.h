@@ -14,6 +14,8 @@
  */
 @interface HomeViewController : RightSideViewController
 @property (strong, nonatomic) NSMutableDictionary *dict;
+
+- (void)refreshView;
 @end
 
 #endif

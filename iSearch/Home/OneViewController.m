@@ -41,8 +41,8 @@
     [self configGMGridView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     [_dataList removeAllObjects];
     for(Slide *slide in [FileUtils favoriteSlideList1]) {
@@ -52,6 +52,7 @@
         _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
     }
     [_gridView reloadData];
+    NSLog(@"viewDidAppear.");
 }
 
 - (void)viewDidLayoutSubviews{

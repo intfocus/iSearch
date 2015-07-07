@@ -28,7 +28,13 @@
 
 // instance methods
 - (NSMutableArray *)records;
-- (void)recordSlide:(Slide*)slide;
+/**
+ *  操作记录
+ *
+ *  @param slide  action object
+ *  @param action action name
+ */
+- (void)recordSlide:(Slide*)slide Action:(NSString *)action;
 @end
 
 #endif

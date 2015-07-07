@@ -26,6 +26,11 @@
 //    return self;
 //}
 
+/**
+ *  记录列表
+ *
+ *  @return <#return value description#>
+ */
 - (NSMutableArray *)records {
     if(!self.databaseUtils) {
         self.databaseUtils = [[DatabaseUtils alloc] init];
@@ -33,12 +38,18 @@
     return [self.databaseUtils actionLogs];
 }
 
-- (void)recordSlide:(Slide*)slide {
+/**
+ *  操作记录
+ *
+ *  @param slide  action object
+ *  @param action action name
+ */
+- (void)recordSlide:(Slide*)slide Action:(NSString *)action {
     if(!self.databaseUtils) {
         self.databaseUtils = [[DatabaseUtils alloc] init];
     }
-    [self.databaseUtils insertActionLog:[NSString stringWithFormat:@"display slide#%@ %@", slide.ID, slide.dirName]
-                                ActName:@"display"
+    [self.databaseUtils insertActionLog:[NSString stringWithFormat:@"%@ slide#%@ in %@", action,slide.ID, slide.dirName]
+                                ActName:action
                                  ActObj:slide.ID
                                  ActRet:slide.dirName];
 }

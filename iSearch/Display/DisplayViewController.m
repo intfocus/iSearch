@@ -629,7 +629,7 @@
     self.currentPageIndex = [NSNumber numberWithInteger:jumpToPageIndex];
     
     ActionLog *actionLog = [[ActionLog alloc] init];
-    [actionLog recordSlide:self.slide];
+    [actionLog recordSlide:self.slide Action:ACTION_DISPLAY];
 }
 
 

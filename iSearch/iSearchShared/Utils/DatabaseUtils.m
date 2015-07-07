@@ -31,22 +31,22 @@
  *  数据库初始化时，集中配置在这里
  */
 - (NSString *) createTableOffline {
-    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (                      \
-            id integer PRIMARY KEY AUTOINCREMENT,                                            \
-            %@ varchar(100) NOT NULL,                                                        \
-            %@ varchar(500) NOT NULL,                                                        \
-            %@ varchar(500) NOT NULL,                                                        \
-            %@ varchar(100) NOT NULL,                                                        \
-            %@ varchar(1000) NULL,                                                           \
-            %@ varchar(100) NULL,                                                            \
-            %@ varchar(100) NULL,                                                            \
-            %@ varchar(100) NULL,                                                            \
-            %@ varchar(100) NULL,                                                            \
-            %@ varchar(100) NULL DEFAULT '0',                                                \
-            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),          \
-            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))           \
-            );                                                                               \
-        CREATE INDEX IF NOT EXISTS idx_type ON %@(%@);                                       \
+    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (             \
+            id integer PRIMARY KEY AUTOINCREMENT,                                   \
+            %@ varchar(100) NOT NULL,                                               \
+            %@ varchar(500) NOT NULL,                                               \
+            %@ varchar(500) NOT NULL,                                               \
+            %@ varchar(100) NOT NULL,                                               \
+            %@ varchar(1000) NULL,                                                  \
+            %@ varchar(100) NULL,                                                   \
+            %@ varchar(100) NULL,                                                   \
+            %@ varchar(100) NULL,                                                   \
+            %@ varchar(100) NULL,                                                   \
+            %@ varchar(100) NULL DEFAULT '0',                                       \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')), \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))  \
+            );                                                                      \
+        CREATE INDEX IF NOT EXISTS idx_type ON %@(%@);                              \
         CREATE INDEX IF NOT EXISTS idx_create_time ON %@(%@);",
         OFFLINE_TABLE_NAME,
         OFFLINE_COLUMN_FILEID,
@@ -65,19 +65,19 @@
         OFFLINE_TABLE_NAME,DB_COLUMN_CREATED];
 }
 - (NSString *) createTableActionLog {
-    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (                      \
-            id integer PRIMARY KEY AUTOINCREMENT,                                            \
-            %@ varchar(300) NOT NULL,                                                        \
-            %@ varchar(300) NOT NULL,                                                        \
-            %@ varchar(300) NOT NULL,                                                        \
-            %@ varchar(300) NOT NULL,                                                        \
-            %@ varchar(300) NOT NULL,                                                        \
-            %@ boolean NOT NULL default false,                                               \
-            %@ boolean NOT NULL default false,                                               \
-            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),          \
-            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))           \
-            );                                                                               \
-            CREATE INDEX IF NOT EXISTS idx_funname ON %@(%@);                                \
+    return [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (              \
+            id integer PRIMARY KEY AUTOINCREMENT,                                    \
+            %@ varchar(300) NOT NULL,                                                \
+            %@ varchar(300) NOT NULL,                                                \
+            %@ varchar(300) NOT NULL,                                                \
+            %@ varchar(300) NOT NULL,                                                \
+            %@ varchar(300) NOT NULL,                                                \
+            %@ boolean NOT NULL default 0,                                           \
+            %@ boolean NOT NULL default 0,                                           \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),  \
+            %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime'))   \
+            );                                                                       \
+            CREATE INDEX IF NOT EXISTS idx_funname ON %@(%@);                        \
             CREATE INDEX IF NOT EXISTS idx_create_time ON %@(%@);",
             ACTIONLOG_TABLE_NAME,
             ACTIONLOG_COLUMN_UID,
@@ -199,11 +199,21 @@
     NSString *sql = [NSString stringWithFormat:@"delete from %@ where id = %@;", OFFLINE_TABLE_NAME, id];
     [self executeSQL: sql];
 }
-
+/**
+ *  update #deleted when remove slide
+ *
+ *  @param FunName <#FunName description#>
+ *  @param ActObj  slideID
+ *  @param ActName Display/Download/Remove
+ *  @param ActRet  Favorite or Slide
+ */
 - (void) insertActionLog:(NSString *)FunName
                  ActName:(NSString *)ActName
                   ActObj:(NSString *)ActObj
                   ActRet:(NSString *)ActRet {
+    if([ActName isEqualToString:ACTION_REMOVE]) {
+        [self updateDeletedAction:FunName ActName:ActName ActObj:ActObj ActRet:ActRet];
+    }
     NSString *insertSQL = [NSString stringWithFormat:@"insert into %@(%@, %@, %@, %@, %@)   \
                                                        values('%@', '%@', '%@', '%@', '%@');",
                            ACTIONLOG_TABLE_NAME,
@@ -220,35 +230,71 @@
     [self executeSQL:insertSQL];
 }
 
+/**
+ *  update #deleted when remove slide
+ *
+ *  @param FunName <#FunName description#>
+ *  @param ActObj  slideID
+ *  @param ActName Display/Download/Remove
+ *  @param ActRet  Favorite or Slide
+ */
+- (void)updateDeletedAction:(NSString *)FunName
+                    ActName:(NSString *)ActName
+                     ActObj:(NSString *)ActObj
+                     ActRet:(NSString *)ActRet {
+    
+    NSString *sql = [NSString stringWithFormat:@"update %@ set %@ = 1 \
+                     where %@ = '%@' and %@ = '%@' and %@ = 0 and %@ = '%@' and %@ = '%@';",
+                     ACTIONLOG_TABLE_NAME,
+                     ACTIONLOG_COLUMN_DELETED,
+                     ACTIONLOG_COLUMN_ACTNAME,
+                     ACTION_DISPLAY,
+                     ACTIONLOG_COLUMN_UID,
+                     self.userID,
+                     ACTIONLOG_COLUMN_DELETED,
+                     ACTIONLOG_COLUMN_ACTOBJ,
+                     ActObj,
+                     ACTIONLOG_COLUMN_ACTRET,
+                     ActRet];
+    
+    [self executeSQL:sql];
+}
 - (NSMutableArray *)actionLogs {
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     
-    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@ from %@ where %@ = 'display' and %@ = '%@' order by %@  desc limit 15;",
+    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, %@ from %@ \
+                                                 where %@ = '%@' and %@ = '%@' and %@ = 0 \
+                                                 order by %@  desc limit 15;",
                      ACTIONLOG_COLUMN_ACTOBJ,
                      ACTIONLOG_COLUMN_ACTNAME,
                      ACTIONLOG_COLUMN_ACTRET,
                      ACTIONLOG_TABLE_NAME,
                      ACTIONLOG_COLUMN_ACTNAME,
+                     ACTION_DISPLAY,
                      ACTIONLOG_COLUMN_UID,
                      self.userID,
+                     ACTIONLOG_COLUMN_DELETED,
                      DB_COLUMN_CREATED];
-    NSString *_one, *_two, *_three;
+    NSString *slideID, *actionName, *dirName;
     
     FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
     if ([db open]) {
         FMResultSet *s = [db executeQuery:sql];
         while([s next]) {
-            _one         = [s stringForColumnIndex:0];
-            _two         = [s stringForColumnIndex:1];
-            _three       = [s stringForColumnIndex:2];
-            
+            slideID    = [s stringForColumnIndex:0];
+            actionName = [s stringForColumnIndex:1];
+            dirName    = [s stringForColumnIndex:2];
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
-            [mutableDictionary setObject:_one forKey:ACTIONLOG_COLUMN_ACTOBJ];
-            [mutableDictionary setObject:_two forKey:ACTIONLOG_COLUMN_ACTNAME];
-            [mutableDictionary setObject:_three forKey:ACTIONLOG_COLUMN_ACTRET];
+            [mutableDictionary setObject:slideID forKey:ACTIONLOG_COLUMN_ACTOBJ];
+            [mutableDictionary setObject:actionName forKey:ACTIONLOG_COLUMN_ACTNAME];
+            [mutableDictionary setObject:dirName forKey:ACTIONLOG_COLUMN_ACTRET];
             
-            [mutableArray addObject: mutableDictionary];
+            if([FileUtils checkSlideExist:slideID Dir:dirName Force:NO]) {
+                [mutableArray addObject: mutableDictionary];
+            } else {
+                NSLog(@"bug# should update deleted=1");
+            }
         }
         [db close];
     } else {

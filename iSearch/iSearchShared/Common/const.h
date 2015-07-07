@@ -258,4 +258,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
 #define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
 #define ACTIONLOG_COLUMN_DELETED      @"is_deleted"
+
+#define ACTION_DOWNLOAD          @"download"
+#define ACTION_REMOVE            @"remove"
+#define ACTION_DISPLAY           @"display"
+#define ACTION_ADD_TO_FAVORITE   @"add_to_favorite"
 #endif

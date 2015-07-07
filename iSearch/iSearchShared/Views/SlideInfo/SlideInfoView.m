@@ -14,6 +14,7 @@
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 #import "Slide.h"
+#import "ActionLog.h"
 #import "MBProgressHUD.h"
 #import "SCLAlertView.h"
 
@@ -132,8 +133,10 @@
     
             if(isSuccessfully) {
                 [self showPopupView:@"移除成功"];
+                ActionLog *actionLog = [[ActionLog alloc] init];
+                [actionLog recordSlide:self.slide Action:ACTION_REMOVE];
             }
-            [self.masterViewController performSelector:@selector(refreshRightViewController)];
+            [self.masterViewController refreshRightViewController];
             [self.masterViewController dismissPopupSlideInfo];
         }];
         
@@ -168,6 +171,8 @@
     } else if(self.slide.isDownloaded) {
         BOOL isSuccessfully = [self.slide addToFavorite];
         [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
+        ActionLog *actionLog = [[ActionLog alloc] init];
+        [actionLog recordSlide:self.slide Action:ACTION_ADD_TO_FAVORITE];
     } else {
         [self showPopupView:@"未曾下载,何言收藏！"];
     }
