@@ -19,11 +19,11 @@
 				<key>bundle-identifier</key>
 				<string>com.intfocus.iSearch</string>
 				<key>version</key>
-				<string>0.0.3</string>
+				<string>0.0.5</string>
 				<key>bundle-version</key>
-				<string>1.0</string>
+				<string>5</string>
 				<key>changelog</key>
-				<string>hello world</string>
+				<string>版本更新测试</string>
 				<key>kind</key>
 				<string>software</string>
 				<key>subtitle</key>

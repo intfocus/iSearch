@@ -147,7 +147,7 @@
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
-    
+//    
 //    self.cookieValue = @"E99658602";
 //    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
 //    return;

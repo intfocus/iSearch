@@ -52,7 +52,7 @@
         NSString *error;
         NSPropertyListFormat format;
         NSDictionary* plist = [NSPropertyListSerialization propertyListFromData:plistData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
-        _latest = plist[@"items"][0][@"metadata"][@"bundle-version"];
+        _latest = plist[@"items"][0][@"metadata"][@"version"];
         
         if([self isUpgrade]) {
             _insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", VERSION_URL];
@@ -73,7 +73,7 @@
 }
 
 - (BOOL)isUpgrade {
-    return self.latest && ![self.latest isEqualToString:self.current] && ![self.latest containsString:self.current];
+    return self.latest && ![self.latest isEqualToString:self.current];
 }
 
 - (void)reload {

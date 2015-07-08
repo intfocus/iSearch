@@ -81,7 +81,7 @@
 
 #pragma mark - control action
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
-    if(self.slide.isDownloading) {
+    if([self.slide isDownloading]) {
         [self showPopupView:@"下载中,请稍等."];
     } else if(self.slide.isDownloaded) {
         [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];

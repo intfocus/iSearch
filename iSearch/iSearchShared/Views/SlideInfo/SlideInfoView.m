@@ -105,8 +105,10 @@
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
-    if(self.slide.isDownloading) {
+    if([self.slide isDownloading]) {
         [self.slide downloaded];
+        [self.masterViewController refreshRightViewController];
+        [self showPopupView:@"已移除，请重新下载"];
     } else if(self.slide.isDownloaded) {
         SCLAlertView *alert = [[SCLAlertView alloc] init];
         
@@ -153,7 +155,7 @@
 - (IBAction)actionAddToFavorite:(UIButton *)sender {
     if([self.slide isInFavorited]) {
         [self showPopupView:@"已在收藏"];
-    } else if(self.slide.isDownloaded) {
+    } else if([self.slide isDownloaded]) {
         BOOL isSuccessfully = [self.slide addToFavorite];
         [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
         ActionLog *actionLog = [[ActionLog alloc] init];
