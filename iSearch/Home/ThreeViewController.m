@@ -34,7 +34,7 @@
     /**
      * 实例变量初始化
      */
-    _dataList = [[NSMutableArray alloc] init];
+    _dataList  = [[NSMutableArray alloc] init];
     _actionLog = [[ActionLog alloc] init];
     [self configGMGridView];
 }
@@ -108,7 +108,6 @@
     BOOL isFavorite = [currentDict[ACTIONLOG_COLUMN_ACTRET] isEqualToString:FAVORITE_DIRNAME];
     Slide *slide = [Slide findById:slideID isFavorite:isFavorite];
     
-    viewSlide.labelTitle.text = slide.title;
     viewSlide.isFavorite = isFavorite;
     viewSlide.dict = [slide refreshFields];
     viewSlide.masterViewController = [[self masterViewController] masterViewController];

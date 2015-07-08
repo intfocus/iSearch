@@ -36,6 +36,7 @@
 @property (nonatomic, strong) NSMutableDictionary *dict;
 
 // local fields
+@property (nonatomic, strong) NSString *dbVersion;
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 

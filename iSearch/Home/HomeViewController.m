@@ -40,32 +40,34 @@
     containerView.layer.masksToBounds = NO;
     UIBarButtonItem *leftTitleBI = [[UIBarButtonItem alloc] initWithCustomView:containerView];
     self.navigationItem.leftBarButtonItem = leftTitleBI;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     
     if(!self.oneViewController) {
         OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
         one.masterViewController   = self;
         self.oneViewController     = one;
+    } else {
+        [self.oneViewController viewDidAppear:YES];
     }
     
     if(!self.twoViewController) {
         TwoViewController *two     = [[TwoViewController alloc] initWithNibName:nil bundle:nil];
         two.masterViewController   = self;
         self.twoViewController     = two;
+    } else {
+        [self.twoViewController viewDidAppear:YES];
     }
     
     if(!self.threeViewController) {
         ThreeViewController *three = [[ThreeViewController alloc] initWithNibName:nil bundle:nil];
         three.masterViewController   = self;
         self.threeViewController   = three;
+    } else {
+        [self.threeViewController viewDidAppear:YES];
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    [self.oneViewController viewDidAppear:YES];
-    [self.twoViewController viewDidAppear:YES];
-    [self.threeViewController viewDidAppear:YES];
 }
 
 - (void)didReceiveMemoryWarning {

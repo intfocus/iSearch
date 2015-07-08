@@ -11,6 +11,7 @@
 #import "FMDB.h"
 #import "FileUtils.h"
 #import "User.h"
+#import "ExtendNSLogFunctionality.h"
 
 @implementation DatabaseUtils
 
@@ -19,7 +20,10 @@
 - (DatabaseUtils *)init {
     if (self = [super init]) {
         _userID = [User userID];
-        _databaseFilePath = [FileUtils getPathName:DATABASE_DIRNAME FileName:DATABASE_FILEAME];
+        NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
+        _dbVersion = (NSString *)psd(localVersionInfo[@"Database Version"], @"NotSet");
+        _dbName = [NSString stringWithFormat:@"%@-%@.db", DATABASE_FILEAME, self.dbVersion];
+        _dbPath = [FileUtils getPathName:DATABASE_DIRNAME FileName:self.dbName];
 
         [self executeSQL:[self createTableOffline]];
         [self executeSQL:[self createTableActionLog]];
@@ -102,7 +106,7 @@
  *  @return 返回搜索到数据行的ID,执行失败返回该代码行
  */
 - (NSInteger)executeSQL:(NSString *)sql {
-    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     if ([db open]) {
         BOOL isExecuteSuccessfully = [db executeStatements:sql];
         if(!isExecuteSuccessfully) {
@@ -111,7 +115,7 @@
         [db close];
     }
     else {
-        NSLog(@"Cannot open DB at the path: %@", self.databaseFilePath);
+        NSLog(@"Cannot open DB at the path: %@", self.dbPath);
     }
     return -__LINE__;
 } // end of executeSQL()
@@ -150,7 +154,7 @@
     NSString *_one, *_two, *_three, *_four, *_five, *_six, *_seven, *_eight, *_nine, *_ten;
     NSString *_created_at, *_updated_at;
     
-    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     if ([db open]) {
         FMResultSet *s = [db executeQuery:sql];
         while([s next]) {
@@ -244,18 +248,11 @@
                      ActRet:(NSString *)ActRet {
     
     NSString *sql = [NSString stringWithFormat:@"update %@ set %@ = 1 \
-                     where %@ = '%@' and %@ = '%@' and %@ = 0 and %@ = '%@' and %@ = '%@';",
-                     ACTIONLOG_TABLE_NAME,
-                     ACTIONLOG_COLUMN_DELETED,
-                     ACTIONLOG_COLUMN_ACTNAME,
-                     ACTION_DISPLAY,
-                     ACTIONLOG_COLUMN_UID,
-                     self.userID,
-                     ACTIONLOG_COLUMN_DELETED,
-                     ACTIONLOG_COLUMN_ACTOBJ,
-                     ActObj,
-                     ACTIONLOG_COLUMN_ACTRET,
-                     ActRet];
+                     where %@ = '%@' and %@ = '%@' and %@ = 0 and     \
+                     %@ = '%@' and %@ = '%@';",
+                     ACTIONLOG_TABLE_NAME, ACTIONLOG_COLUMN_DELETED,
+                     ACTIONLOG_COLUMN_ACTNAME, ACTION_DISPLAY, ACTIONLOG_COLUMN_UID, self.userID, ACTIONLOG_COLUMN_DELETED,
+                     ACTIONLOG_COLUMN_ACTOBJ, ActObj, ACTIONLOG_COLUMN_ACTRET, ActRet];
     
     [self executeSQL:sql];
 }
@@ -271,7 +268,7 @@
                      ACTIONLOG_COLUMN_ACTOBJ, ACTIONLOG_COLUMN_ACTNAME, ACTIONLOG_COLUMN_ACTRET];
     NSString *slideID, *actionName, *dirName, *createdAt;
     
-    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     if ([db open]) {
         FMResultSet *s = [db executeQuery:sql];
         while([s next]) {
@@ -321,7 +318,7 @@
     int ID;
     NSString *funName, *actObj, *actName, *actRet;
     
-    FMDatabase *db = [FMDatabase databaseWithPath:self.databaseFilePath];
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
     if ([db open]) {
         FMResultSet *s = [db executeQuery:sql];
         while([s next]) {

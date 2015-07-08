@@ -21,13 +21,14 @@
 - (Version *)init {
     if(self = [super init]) {
         NSDictionary *localVersionInfo =[[NSBundle mainBundle] infoDictionary];
-        _current  = localVersionInfo[@"CFBundleShortVersionString"];
-        _appName  = localVersionInfo[@"CFBundleExecutable"];
-        _lang     = localVersionInfo[@"CFBundleDevelopmentRegion"];
-        _suport   = localVersionInfo[@"MinimumOSVersion"];
-        _sdkName  = localVersionInfo[@"DTSDKName"];
-        _platform = localVersionInfo[@"DTPlatformName"];
-    
+        _current   = localVersionInfo[@"CFBundleShortVersionString"];
+        _appName   = localVersionInfo[@"CFBundleExecutable"];
+        _lang      = localVersionInfo[@"CFBundleDevelopmentRegion"];
+        _suport    = localVersionInfo[@"MinimumOSVersion"];
+        _sdkName   = localVersionInfo[@"DTSDKName"];
+        _platform  = localVersionInfo[@"DTPlatformName"];
+        _dbVersion = (NSString *)psd(localVersionInfo[@"Database Version"], @"NotSet");
+        
         [self reload];
         [self updateTimestamp];
     }

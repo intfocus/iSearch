@@ -21,7 +21,11 @@
 #import "MainViewController.h"
 
 @interface ViewSlide()
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
+@property (weak, nonatomic) IBOutlet UIButton *btnSlideInfo; // 展示文档信息,弹出框
+@property (weak, nonatomic) IBOutlet UIButton *btnDownloadOrDisplay;
+@property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail;
 
 // http download variables begin
 @property (strong, nonatomic) NSString   *downloadURL;
@@ -47,9 +51,9 @@
     self.slideID = self.slide.ID;
     self.dirName = self.slide.dirName;
     self.labelTitle.text = self.slide.title;
-    _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
+    self.labelTitle.textAlignment = ([self.slide.title length] > 10 ? NSTextAlignmentLeft : NSTextAlignmentCenter);
     
-    if(self.slideID == nil) {
+    if(!self.slideID) {
         NSLog(@"self.slideID is necessary! %@", self.slide.to_s);
         abort();
     }
@@ -59,7 +63,13 @@
     [self bringSubviewToFront:self.btnDownloadOrDisplay];
 
     self.progressView.hidden = ![self.slide isDownloading];
-
+        _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
+}
+- (void)setIsFavorite:(BOOL)isFavorite {
+    _isFavorite = isFavorite;
+    
+    UIImage *image = [UIImage imageNamed:(isFavorite ? @"infoFavorite" : @"infoSlide")];
+    [self.btnSlideInfo setImage:image forState:UIControlStateNormal];
 }
 
 - (IBAction)setMasterViewController:(MainViewController *)masterViewController {
@@ -68,8 +78,6 @@
     [self.btnSlideInfo addTarget:self action:@selector(actionDisplaySlideInfo:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnDownloadOrDisplay addTarget:self action:@selector(actionDownloadOrDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
 }
-
-
 
 #pragma mark - control action
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {

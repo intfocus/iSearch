@@ -15,8 +15,10 @@
 
 @interface DatabaseUtils : NSObject
 
-@property NSString *databaseFilePath;
 @property NSString *userID;
+@property NSString *dbVersion;
+@property NSString *dbName;
+@property NSString *dbPath;
 
 // instance methods
 - (NSInteger)executeSQL:(NSString *)sql;

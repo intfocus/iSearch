@@ -306,8 +306,6 @@
         [cell setContentView: viewCategory];
     } else {
         ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-        viewSlide.labelTitle.text = currentDict[CONTENT_FIELD_TITLE];
-        
         viewSlide.isFavorite = NO;
         viewSlide.dict = currentDict;
         viewSlide.masterViewController = [self masterViewController];
