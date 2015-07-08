@@ -240,10 +240,21 @@
     }
     if(isHTML) {
         filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
-        NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-        NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSURL *baseURL = [NSURL fileURLWithPath:basePath];
-        [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
+        NSString *htmlString;
+        if([FileUtils checkFileExist:filePath isDir:NO]) {
+            htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+            [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
+        } else {
+            htmlString = @" \
+            <html>                         \
+              <body>                       \
+                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+                  该页面为空.                \
+                </div>                     \
+              </body>                      \
+            </html>";
+        }
+        NSURL *baseURL = [NSURL fileURLWithPath:[FileUtils getBasePath]];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];
@@ -262,7 +273,7 @@
     hud.margin = 10.f;
     hud.removeFromSuperViewOnHide = YES;
     
-    [hud hide:YES afterDelay:1.5];
+    [hud hide:YES afterDelay:1];
 }
 
 /**
@@ -417,6 +428,8 @@
         NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
+    } else {
+        [self showPopupView:@"最后一页"];
     }
     [self checkLastNextPageBtnState];
 }
@@ -435,6 +448,8 @@
         NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
+    } else {
+        [self showPopupView:@"第一页了"];
     }
     [self checkLastNextPageBtnState];
 }

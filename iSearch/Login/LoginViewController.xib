@@ -111,34 +111,116 @@
                         <constraint firstAttribute="bottom" secondItem="MlP-EZ-hZK" secondAttribute="bottom" constant="69" id="via-3i-12i"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本次登录有效期12小时，为避免网络不佳，请您在拜访前预先登录" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyz-cH-AOw">
-                    <rect key="frame" x="20" y="571" width="560" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="HyD-AG-Oco"/>
-                        <constraint firstAttribute="width" constant="560" id="xYt-gT-grj"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" allowsEditingTextAttributes="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mgX-sr-Nd3">
+                    <rect key="frame" x="0.0" y="530" width="600" height="37"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <attributedString key="attributedText">
+                        <fragment content="使用中有任何问题请致电 ">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="12" name="STHeitiSC-Light"/>
+                                <real key="NSKern" value="0.0"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" minimumLineHeight="18" defaultTabInterval="36">
+                                    <tabStops/>
+                                </paragraphStyle>
+                                <color key="NSStrokeColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <real key="NSStrokeWidth" value="0.0"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content=" ">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="12" name=".HelveticaNeueDeskInterface-Regular"/>
+                                <real key="NSKern" value="0.0"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" minimumLineHeight="18" defaultTabInterval="36">
+                                    <tabStops/>
+                                </paragraphStyle>
+                                <color key="NSStrokeColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <real key="NSStrokeWidth" value="0.0"/>
+                                <integer key="NSUnderline" value="1"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="4008822731 ">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="19" name="SimHei"/>
+                                <real key="NSKern" value="0.0"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" minimumLineHeight="18" defaultTabInterval="36">
+                                    <tabStops/>
+                                </paragraphStyle>
+                                <color key="NSStrokeColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <real key="NSStrokeWidth" value="0.0"/>
+                                <integer key="NSUnderline" value="1"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="工作日 ">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="12" name="STHeitiSC-Light"/>
+                                <real key="NSKern" value="0.0"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" minimumLineHeight="18" defaultTabInterval="36">
+                                    <tabStops/>
+                                </paragraphStyle>
+                                <color key="NSStrokeColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <real key="NSStrokeWidth" value="0.0"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="9:00-18:00">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="18" name="SimHei"/>
+                                <real key="NSKern" value="0.0"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" minimumLineHeight="18" defaultTabInterval="36">
+                                    <tabStops/>
+                                </paragraphStyle>
+                                <color key="NSStrokeColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <real key="NSStrokeWidth" value="0.0"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" usesAttributedText="YES" allowsEditingTextAttributes="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HLZ-RQ-Pck">
+                    <rect key="frame" x="0.0" y="555" width="600" height="37"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <attributedString key="attributedText">
+                        <fragment content="本次登录有效期24小时，为避免网络不佳，请您在拜访前预先登录">
+                            <attributes>
+                                <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="12" name="STHeitiSC-Light"/>
+                                <real key="NSKern" value="0.0"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="leftToRight" minimumLineHeight="18" defaultTabInterval="36">
+                                    <tabStops/>
+                                </paragraphStyle>
+                                <color key="NSStrokeColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="deviceRGB"/>
+                                <real key="NSStrokeWidth" value="0.0"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
             </subviews>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="pyz-cH-AOw" secondAttribute="centerX" id="0q4-Yl-ar8"/>
-                <constraint firstAttribute="bottom" secondItem="pyz-cH-AOw" secondAttribute="bottom" constant="8" id="5WL-Br-yU5"/>
+                <constraint firstItem="HLZ-RQ-Pck" firstAttribute="top" secondItem="mgX-sr-Nd3" secondAttribute="bottom" constant="10" id="3Hy-8Z-arR"/>
                 <constraint firstAttribute="centerX" secondItem="rrt-ZS-qms" secondAttribute="centerX" id="5tZ-4C-TKd"/>
                 <constraint firstAttribute="bottom" secondItem="pjR-tn-azA" secondAttribute="bottom" id="6ya-Ah-m2T"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Byf-LC-hrq"/>
+                <constraint firstAttribute="centerX" secondItem="mgX-sr-Nd3" secondAttribute="centerX" id="Cj5-OJ-Zic"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="leading" secondItem="Bdw-Aj-1SF" secondAttribute="trailing" constant="-66" id="IlG-RT-YDT"/>
                 <constraint firstItem="KY7-T3-Gjb" firstAttribute="top" secondItem="Bdw-Aj-1SF" secondAttribute="bottom" id="Jgi-h5-Jln"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="K6O-gG-klW"/>
                 <constraint firstItem="Bdw-Aj-1SF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="NsK-Df-bjo"/>
                 <constraint firstAttribute="centerY" secondItem="O2n-uM-dVG" secondAttribute="centerY" id="QbM-xC-SU2"/>
+                <constraint firstAttribute="centerX" secondItem="HLZ-RQ-Pck" secondAttribute="centerX" id="XIh-tG-LF3"/>
                 <constraint firstAttribute="centerX" secondItem="KY7-T3-Gjb" secondAttribute="centerX" id="YVu-G8-NwV"/>
                 <constraint firstItem="rrt-ZS-qms" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="biO-Jo-5sa"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="width" secondItem="KY7-T3-Gjb" secondAttribute="width" id="ccm-86-yiS"/>
+                <constraint firstAttribute="bottom" secondItem="HLZ-RQ-Pck" secondAttribute="bottom" constant="15" id="jlv-Zl-bwq"/>
                 <constraint firstItem="pjR-tn-azA" firstAttribute="height" secondItem="KY7-T3-Gjb" secondAttribute="height" constant="-44" id="nh5-2A-muH"/>
                 <constraint firstAttribute="centerX" secondItem="O2n-uM-dVG" secondAttribute="centerX" id="pWU-Xg-ADl"/>
+                <constraint firstItem="pjR-tn-azA" firstAttribute="width" secondItem="HLZ-RQ-Pck" secondAttribute="width" id="vgK-Lx-9Xb"/>
                 <constraint firstAttribute="trailing" secondItem="pjR-tn-azA" secondAttribute="trailing" id="wyG-O6-Rg2"/>
+                <constraint firstItem="mgX-sr-Nd3" firstAttribute="width" secondItem="pjR-tn-azA" secondAttribute="width" id="zBD-8d-Cl7"/>
             </constraints>
             <point key="canvasLocation" x="164" y="-13"/>
         </view>

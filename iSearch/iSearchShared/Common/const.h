@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 登陆相关
 #define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
 #define LOGIN_CONFIG_FILENAME  @"login.json" // 用户验证成功后，信息写入该配置档
-#define LOGIN_KEEP_HOURS       12 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
+#define LOGIN_KEEP_HOURS       24 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define LOGIN_LAST_DEFAULT     @"1970/01/01 00:00:00" // 用户登陆前的默认登陆成功时间
 // API参数
@@ -132,13 +132,13 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define USER_LOGIN_LAST        @"LoginLastTime"
 
 // 目录相关(_FILE与获取文件相关，默认获取分类)
-#define CONTENT_URL_PATH        @"/uat/api/Categories_Api.php" // 请求目录的url路径
-#define CONTENT_FILE_URL_PATH   @"/uat/api/Files_Api.php" // 请求目录的url路径
+#define CONTENT_URL_PATH          @"/uat/api/Categories_Api.php" // 请求目录的url路径
+#define CONTENT_FILE_URL_PATH     @"/uat/api/Files_Api.php" // 请求目录的url路径
 #define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
-#define CONTENT_DIRNAME         @"Contents" // [目录]成功取得后，写入本地缓存文件夹
-#define DOWNLOAD_DIRNAME        @"Downloads"// [目录]中[文件]压缩包下载文件夹
-#define SLIDE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
-#define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
+#define CONTENT_DIRNAME           @"Contents" // [目录]成功取得后，写入本地缓存文件夹
+#define DOWNLOAD_DIRNAME          @"Downloads"// [目录]中[文件]压缩包下载文件夹
+#define SLIDE_DIRNAME             @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
+#define CONTENT_CONFIG_FILENAME   @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplaySlideID" // 目录中文件已经下载，点击[演示]时通过该key传值
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
