@@ -192,7 +192,7 @@
     int col = (int) (relativeLocation.x / (self.itemSize.width + self.itemSpacing)); 
     int row = (int) (relativeLocation.y / (self.itemSize.height + self.itemSpacing));
     
-    int position = col + row * self.numberOfItemsPerRow;
+    int position = col + row * (int)self.numberOfItemsPerRow;
     
     if (position >= [self itemCount] || position < 0) 
     {
@@ -200,16 +200,17 @@
     }
     else
     {
-        CGPoint itemOrigin = [self originForItemAtPosition:position];
-        CGRect itemFrame = CGRectMake(itemOrigin.x, 
-                                      itemOrigin.y, 
-                                      self.itemSize.width, 
-                                      self.itemSize.height);
+#warning todo
+//        CGPoint itemOrigin = [self originForItemAtPosition:position];
+//        CGRect itemFrame = CGRectMake(itemOrigin.x, 
+//                                      itemOrigin.y, 
+//                                      self.itemSize.width, 
+//                                      self.itemSize.height);
         
-        if (!CGRectContainsPoint(itemFrame, location)) 
-        {
-            position = GMGV_INVALID_POSITION;
-        }
+//        if (!CGRectContainsPoint(itemFrame, location)) 
+//        {
+//            position = GMGV_INVALID_POSITION;
+//        }
     }
     
     return position;

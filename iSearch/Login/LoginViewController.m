@@ -27,24 +27,34 @@
 //  2. 修改login.plist只存在于一种情况: 有网络环境下，HttpPost服务器登陆成功时
 
 #import "LoginViewController.h"
+
+#import "const.h"
+#import "message.h"
 #import "User.h"
-#import "common.h"
+#import "Slide.h"
+#import "Version.h"
+#import "HttpUtils.h"
 #import "ViewUtils.h"
+#import "ApiUtils.h"
+#import "DateUtils.h"
+#import "FileUtils.h"
+#import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
+
 #import "SSZipArchive.h"
+#import "SCLAlertView.h"
+#import "AFNetworking.h"
+#import "UIViewController+CWPopup.h"
+#import "ViewUpgrade.h"
 
-@interface LoginViewController ()
-// function controls
+@interface LoginViewController () <ViewUpgradeProtocol>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
-//@property (retain, nonatomic) IBOutlet M13Checkbox *rememberPwd;
-
-// Demo of how to add other UI elements on top of splash view
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
-
-// login outside web
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
 @property (weak, nonatomic) IBOutlet UIButton *btnNavBack;
 @property (weak, nonatomic) IBOutlet UILabel *labelLoginTitle;
+@property (weak, nonatomic) IBOutlet UILabel *labelPropmt;
+@property (nonatomic, nonatomic) ViewUpgrade *viewUpgrade;
 
 @property (strong, nonatomic)  NSString *cookieValue;
 @property (strong, nonatomic)  NSTimer *timerReadCookie;
@@ -61,7 +71,12 @@
      *  实例变量初始化
      */
     self.user = [[User alloc] init];
+    self.labelPropmt.text = @"";
     [self hideOutsideLoginControl:YES];
+    
+    // CWPopup 事件
+    self.useBlurForPopup = YES;
+    
     /**
      控件事件
     */
@@ -69,8 +84,12 @@
     [self.btnSubmit addTarget:self action:@selector(actionSubmit:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if([HttpUtils isNetworkAvailable]) {
+        [self checkAppVersionUpgrade];
+    }
 }
 
 #pragma mark memory management
@@ -79,7 +98,43 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - check version upgrade
 
+- (void)checkAppVersionUpgrade {
+    
+    self.btnSubmit.enabled = NO;
+    [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
+    
+    Version *version = [[Version alloc] init];
+    [version checkUpdate:^{
+        if([version isUpgrade]) {
+            if(!self.viewUpgrade) {
+                self.viewUpgrade = [[ViewUpgrade alloc] init];
+            }
+            self.viewUpgrade.delegate = self;
+            [self presentPopupViewController:self.viewUpgrade animated:YES completion:^(void) {
+                NSLog(@"popup view viewUpgrade");
+                [self.viewUpgrade refreshControls:YES];
+            }];
+        }
+    } FailBloc:^{
+        self.btnSubmit.enabled = YES;
+        [self.btnSubmit setTitle:@"登陆" forState:UIControlStateNormal];
+    }];
+    
+}
+
+#pragma mark - ViewUpgradeProtocol
+- (void)dismissViewUpgrade {
+    if(self.viewUpgrade) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            _viewUpgrade = nil;
+            NSLog(@"dismiss viewUpgrade.");
+        }];
+    }
+    self.btnSubmit.enabled = YES;
+    [self.btnSubmit setTitle:@"登录" forState:UIControlStateNormal];
+}
 #pragma mark - control action selector
 
 - (IBAction)actionOutsideLoginClose:(id)sender {
@@ -91,8 +146,10 @@
 }
 
 - (IBAction)actionSubmit:(id)sender {
-//    self.cookieValue = @"E00736";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+    self.labelPropmt.text = @"";
+//    
+//    self.cookieValue = @"E99658602";
+//    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
 //    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
@@ -143,7 +200,7 @@
             [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
         } else {
             self.cookieValue = cookieValue;
-            [self performSelector:@selector(actionOutsideLoginSuccessfully:) withObject:self];
+            [self actionOutsideLoginSuccessfully];
         }
         [self.timerReadCookie invalidate];
         [self actionClearCookies];
@@ -174,46 +231,49 @@
     }
 }
 
-- (IBAction)actionOutsideLoginSuccessfully:(id)sender {
+- (void)actionOutsideLoginSuccessfully {
+    NSError *error;
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
+    
+    self.labelPropmt.text = @"获取用户信息...";
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
 
-        NSString *urlPath = [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, self.cookieValue];
-        NSString *response = [HttpUtils httpGet:urlPath];
-        NSError *error;
-        NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
-                                                                            options:NSJSONReadingMutableContainers
-                                                                              error:&error];
-        NSErrorPrint(error, @"login response convert into json");
-        
-        // 服务器交互成功
-        if(!error) {
-            NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
-            if([responseResult length] == 0) {
-                self.user.loginUserName    = self.cookieValue;
-                self.user.loginPassword    = self.cookieValue;
-                self.user.loginRememberPWD = YES;
-                self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
-                
-                // 服务器信息
-                self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
-                self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
-                self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
-                self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
-                self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
-                
-                // write into local config
-                [self.user save];
-                [self.user writeInToPersonal];
-                
-                // 跳至主界面
-                [self enterMainViewController];
-                return;
-            } else {
-                [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", responseResult]];
-            }
+    NSString *response = [HttpUtils httpGet:[ApiUtils loginUrl:self.cookieValue]];
+    NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
+                                                                        options:NSJSONReadingMutableContainers
+                                                                          error:&error];
+
+    NSErrorPrint(error, @"login response convert into json");
+    
+    // 服务器交互成功
+    if(!error) {
+        NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
+        if([responseResult length] == 0) {
+            self.user.loginUserName    = self.cookieValue;
+            self.user.loginPassword    = self.cookieValue;
+            self.user.loginRememberPWD = YES;
+            self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
+            
+            // 服务器信息
+            self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
+            self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
+            self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
+            self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
+            self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
+            
+            // write into local config
+            [self.user save];
+            [self.user writeInToPersonal];
+            
+            // 跳至主界面
+            [self enterMainViewController];
+            return;
         } else {
-            [loginErrors addObject:[NSString stringWithFormat:@"服务器响应解析失败:%@", response]];
+            [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", responseResult]];
         }
+    } else {
+        [loginErrors addObject:[NSString stringWithFormat:@"服务器响应解析失败:%@", response]];
+    }
 
     if([loginErrors count])
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
@@ -288,32 +348,50 @@
 
 #pragma mark - assistant methods
 
--(void)enterMainViewController{
-    [self downloadCategoryThumbnail:@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip" dir:THUMBNAIL_DIRNAME];
-    [self downloadCategoryThumbnail:@"http://tsa-china.takeda.com.cn/uat/public/999154.zip" dir:SLIDE_DIRNAME];
-    [self downloadCategoryThumbnail:@"http://tsa-china.takeda.com.cn/uat/public/999155.zip" dir:SLIDE_DIRNAME];
+-(void)enterMainViewController {
+    for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
+                            @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],
+                            @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", FAVORITE_DIRNAME,@"使用手册2", @"999155"]]) {
+        
+        self.labelPropmt.text = [NSString stringWithFormat:@"下载<%@>...", array[2]];
+        [self downloadCategoryThumbnail:array[0] dir:array[1] SlideID:array[3]];
+         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    }
 
     
-    // UIViewController *mainView = [[NSClassFromString(@"MainViewController") alloc] initWithNibName:@"MainViewController" bundle:nil];
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
     window.rootViewController = mainView;
 }
 
-- (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName {
+
+- (void)downloadCategoryThumbnail:(NSString *)downloadUrl dir:(NSString *)dirName SlideID:(NSString *)slideID {
+    NSString *dirPath = [FileUtils getPathName:dirName];
     NSString *zipName = [downloadUrl lastPathComponent];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    if([FileUtils checkFileExist:zipPath isDir:NO]) {
-        return;
-    }
+    if([FileUtils checkFileExist:zipPath isDir:NO]) return;
+    
     NSURL *url = [NSURL URLWithString:downloadUrl];
     NSData *zipData = [NSData dataWithContentsOfURL:url];
-    NSString *thumbnailPath = [FileUtils getPathName:dirName];
     [zipData writeToFile:zipPath atomically:YES];
-    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:thumbnailPath];
+    BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:dirPath];
     NSLog(@"解压%@  %@", zipPath, state ? @"成功" : @"失败");
+//    NSFileManager *fileManager = [NSFileManager defaultManager];
+//    [fileManager removeItemAtPath:zipPath error:NULL];
+    
+    if(slideID && [slideID length] > 0) {
+        NSString *dictPath = [FileUtils slideDescPath:slideID Dir:FAVORITE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        dict = [FileUtils readConfigFile:dictPath];
+        dict[CONTENT_FIELD_ID]      = slideID;
+        dict[CONTENT_FIELD_TYPE]    = @"10000";
+        dict[CONTENT_FIELD_DESC]    = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_TITLE]   = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_NAME]    = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
+        Slide *slide = [[Slide alloc] initSlide:dict isFavorite:YES];
+        [slide save];
+    }
 }
-
-
-
 @end

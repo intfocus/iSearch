@@ -216,6 +216,24 @@
 + (void)copyFilePage:(NSString *)pName
            FromSlide:(Slide *)fromSlide
              ToSlide:(Slide *)toSlide;
+
+/**
+ *  计算指定文件路径的文件大小
+ *
+ *  @param filePath 文件绝对路径
+ *
+ *  @return 文件体积
+ */
++ (NSString *)fileSize:(NSString *)filePath;
+/**
+ *  计算指定文件夹路径的文件体积
+ *
+ *  @param folderPath 文件夹路径
+ *
+ *  @return 文件夹体积
+ */
++ (NSString *)folderSize:(NSString *)folderPath;
+
 @end
 
 

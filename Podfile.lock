@@ -1,31 +1,67 @@
 PODS:
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
   - CWPopup (1.2.6)
   - DLRadioButton (1.1.1)
+  - FMDB/common (2.5)
+  - FMDB/standalone (2.5):
+    - FMDB/common
+    - FMDB/standalone/default (= 2.5)
+  - FMDB/standalone/default (2.5):
+    - FMDB/common
+    - sqlite3
   - JTCalendar (1.2.3)
+  - MBProgressHUD (0.9.1)
   - MMMaterialDesignSpinner (0.2.0)
   - Reachability (3.2)
   - SCLAlertView-Objective-C (0.7.3)
-  - SKSplashView (0.1.0)
+  - sqlite3 (3.8.10.2):
+    - sqlite3/common (= 3.8.10.2)
+  - sqlite3/common (3.8.10.2)
   - SSZipArchive (0.3.2)
 
 DEPENDENCIES:
+  - AFNetworking (~> 2.5.4)
   - CWPopup (~> 1.2.4)
   - DLRadioButton (~> 1.1.1)
+  - FMDB/standalone
   - JTCalendar (~> 1.2.3)
+  - MBProgressHUD (~> 0.9.1)
   - MMMaterialDesignSpinner (~> 0.2.0)
   - Reachability (~> 3.2)
   - SCLAlertView-Objective-C
-  - SKSplashView (~> 0.1.0)
   - SSZipArchive (~> 0.3.2)
 
 SPEC CHECKSUMS:
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   CWPopup: 3f8b0704a9914813d90372d66525d31f24b27d49
   DLRadioButton: 1aad82f913b621432d51f8d5f4139265c39d202d
+  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   JTCalendar: 246ea3e338fb97624846ec77cdcde448242c4d5c
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MMMaterialDesignSpinner: 8f1a50270b789c76ec500957e518fc3e05e55b9d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SCLAlertView-Objective-C: 4bf9a07c8a8d1840e5174e643e16bc032239914d
-  SKSplashView: 8cdb1bfccb5857cb141751d01b03cf132b110168
+  sqlite3: 5e6797834b321b0926250b89315b8516ce1c58f6
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
 
 COCOAPODS: 0.37.2

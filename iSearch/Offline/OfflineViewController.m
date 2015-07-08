@@ -34,12 +34,11 @@
 #import "User.h"
 #import "Slide.h"
 #import "const.h"
-#import "PopupView.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "ContentUtils.h"
 #import "DatabaseUtils.h"
-
+#import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"
 #import "OfflineCell.h"
 #import "DisplayViewController.h"
@@ -47,7 +46,6 @@
 @interface OfflineViewController () <UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, nonatomic) DatabaseUtils  *database;
 @property (strong, nonatomic) NSMutableArray *dataList;
-@property (nonatomic, nonatomic) PopupView      *popupView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UITextField *searchTextField;
 
@@ -59,7 +57,7 @@
     [super viewDidLoad];
     
     // 初始化配置数据库
-    self.database = [DatabaseUtils setUP];
+    self.database = [[DatabaseUtils alloc] init];
 
     self.title = @"离线搜索";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -78,13 +76,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SearchValueChanged:) name:UITextFieldTextDidChangeNotification object:nil];
     [self.searchTextField setTag:TextFieldSearchDB];
     [self.searchTextField addTarget:self action:@selector(SearchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    
-    
-    // 信息提示
-    self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
-    
-    self.popupView.ParentView = self.view;
-    [self showPopupView: [NSString stringWithFormat:@"缓存: %lu行", (unsigned long)self.dataList.count]];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -199,9 +190,16 @@
     }
 }
 
-- (void) showPopupView: (NSString*) text {
-    [self.popupView setText: text];
-    [self.view addSubview:self.popupView];
+- (void)showPopupView: (NSString*) text {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText =text;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1];
 }
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>

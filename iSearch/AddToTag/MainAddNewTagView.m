@@ -39,8 +39,6 @@
         TagListView *view         = [[TagListView alloc] initWithNibName:nil bundle:nil];
         view.masterViewController = self;
         self.mainViewController   = view;
-    } else {
-        [self.mainViewController performSelector:@selector(viewDidAppear:)];
     }
 }
 

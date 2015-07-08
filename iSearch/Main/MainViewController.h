@@ -8,7 +8,6 @@
 
 #ifndef iSearch_MainViewController_h
 #define iSearch_MainViewController_h
-#import "PopupView.h"
 
 /**
  *  iSearch主界面, 框架为左右结构.
@@ -63,21 +62,21 @@ static inline void BlockTask(dispatch_block_t block){
         window=[array firstObject];
     });
 
-    NSBlockOperation *b2=[NSBlockOperation blockOperationWithBlock:^{
-        PopupView *p=[[PopupView alloc] initWithFrame:window.bounds];
-        NSBlockOperation *m1=[NSBlockOperation blockOperationWithBlock:^{
-            [window addSubview:p];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        }];
-        [[NSOperationQueue mainQueue] addOperation:m1];
-        block();
-        NSBlockOperation *m2=[NSBlockOperation blockOperationWithBlock:^{
-            [p removeFromSuperview];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            //update ui;
-        }];
-        [[NSOperationQueue mainQueue] addOperation:m2];
-    }];
-    [queue addOperation:b2];
+//    NSBlockOperation *b2=[NSBlockOperation blockOperationWithBlock:^{
+//        PopupView *p=[[PopupView alloc] initWithFrame:window.bounds];
+//        NSBlockOperation *m1=[NSBlockOperation blockOperationWithBlock:^{
+//            [window addSubview:p];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//        }];
+//        [[NSOperationQueue mainQueue] addOperation:m1];
+//        block();
+//        NSBlockOperation *m2=[NSBlockOperation blockOperationWithBlock:^{
+//            [p removeFromSuperview];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//            //update ui;
+//        }];
+//        [[NSOperationQueue mainQueue] addOperation:m2];
+//    }];
+//    [queue addOperation:b2];
 }
 

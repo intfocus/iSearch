@@ -15,14 +15,17 @@
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
-#import "PopupView.h"
+#import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "MainViewController.h"
 
 @interface ViewSlide()
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-@property (nonatomic, nonatomic) PopupView *popupView;
+@property (weak, nonatomic) IBOutlet UIButton *btnSlideInfo; // 展示文档信息,弹出框
+@property (weak, nonatomic) IBOutlet UIButton *btnDownloadOrDisplay;
+@property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail;
 
 // http download variables begin
 @property (strong, nonatomic) NSString   *downloadURL;
@@ -48,9 +51,9 @@
     self.slideID = self.slide.ID;
     self.dirName = self.slide.dirName;
     self.labelTitle.text = self.slide.title;
-    _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
+    self.labelTitle.textAlignment = ([self.slide.title length] > 10 ? NSTextAlignmentLeft : NSTextAlignmentCenter);
     
-    if(self.slideID == nil) {
+    if(!self.slideID) {
         NSLog(@"self.slideID is necessary! %@", self.slide.to_s);
         abort();
     }
@@ -58,6 +61,15 @@
     [self loadThumbnail];
     [self updateBtnDownloadOrDisplayIcon];
     [self bringSubviewToFront:self.btnDownloadOrDisplay];
+
+    self.progressView.hidden = ![self.slide isDownloading];
+        _dict = [NSMutableDictionary dictionaryWithDictionary:dict];
+}
+- (void)setIsFavorite:(BOOL)isFavorite {
+    _isFavorite = isFavorite;
+    
+    UIImage *image = [UIImage imageNamed:(isFavorite ? @"infoFavorite" : @"infoSlide")];
+    [self.btnSlideInfo setImage:image forState:UIControlStateNormal];
 }
 
 - (IBAction)setMasterViewController:(MainViewController *)masterViewController {
@@ -67,11 +79,9 @@
     [self.btnDownloadOrDisplay addTarget:self action:@selector(actionDownloadOrDisplaySlide:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-
-
 #pragma mark - control action
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
-    if(self.slide.isDownloading) {
+    if([self.slide isDownloading]) {
         [self showPopupView:@"下载中,请稍等."];
     } else if(self.slide.isDownloaded) {
         [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
@@ -80,7 +90,7 @@
             self.isDownloadRequestValid = YES;
             [self downloadZip:[ApiUtils downloadSlideURL:self.slideID]];
         } else {
-            [self showPopupView:@"无网络，\n不下载"];
+            [self showPopupView:@"无网络，不下载"];
         }
     }
     [self updateBtnDownloadOrDisplayIcon];
@@ -100,35 +110,35 @@
         [self.slide save];
     }
     
-    // tell DisplayViewController somthing it need.
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
-    NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
-    NSNumber *displayFrom = [NSNumber numberWithInt:(DisplayFromSlide)];
-    [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
-    [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
-    [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
-    [FileUtils writeJSON:configDict Into:configPath];
-    
     if([self.slide.pages count] > 0) {
-        [self.slide enterEditState];
+        // tell DisplayViewController somthing it need.
+        NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+        NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
+        NSNumber *displayType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+        NSNumber *displayFrom = [NSNumber numberWithInt:(DisplayFromSlide)];
+        [configDict setObject:self.slideID forKey:CONTENT_KEY_DISPLAYID];
+        [configDict setObject:displayType forKey:SLIDE_DISPLAY_TYPE];
+        [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
+        [FileUtils writeJSON:configDict Into:configPath];
+        
+        [self.slide enterDisplayOrScanState];
         [self.masterViewController presentViewDisplayViewController];
     } else {
-        [self showPopupView:@"it is empty"];
+        [self showPopupView:@"文档为空,无法演示"];
     }
 }
 
 #pragma mark - assistant methods
-- (void)showPopupView:(NSString*) text {
-    if(self.popupView == nil) {
-        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.masterViewController.view.frame.size.width/4, self.masterViewController.view.frame.size.height/4, self.masterViewController.view.frame.size.width/2, self.masterViewController.view.frame.size.height/2)];
-        
-        self.popupView.ParentView = self.masterViewController.view;
-    }
+- (void)showPopupView:(NSString*)text {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self animated:YES];
     
-    [self.popupView setText: text];
-    // [self.popupView removeFromSuperview];
-    [self.masterViewController.view addSubview:self.popupView];
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText =text;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1];
 }
 
 
@@ -161,19 +171,19 @@
  */
 - (void)loadThumbnail {
     self.webViewThumbnail.hidden = NO;
-    NSString *thumbnailName = [NSString stringWithFormat:@"%@.png", self.slideID];
-    NSString *slidePath = [FileUtils getPathName:self.dirName FileName:self.slideID];
-    NSString *thumbanilPath = [slidePath stringByAppendingPathComponent:thumbnailName];
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *thumbnailPath;
     
-    NSString *htmlContent, *basePath = slidePath;
-    NSURL *baseURL;
-    if(![FileUtils checkFileExist:thumbanilPath isDir:NO]) {
-        thumbnailName = @"thumbnailSlideDefault.png";
-        basePath =  [[NSBundle mainBundle] bundlePath];
+    if(self.slide.pages && [self.slide.pages count] > 0) {
+        thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:self.slide.pages[0] Dir:self.dirName];
     }
-    baseURL = [NSURL fileURLWithPath:basePath];
-    htmlContent = [NSString stringWithFormat:@"<html><body><img src='%@'></body></html>", thumbnailName];
-    [self.webViewThumbnail loadHTMLString:htmlContent baseURL:baseURL];
+    if(!thumbnailPath || [[thumbnailPath stringByDeletingLastPathComponent] isEqualToString:bundlePath]) {
+        thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailSlideDefault.png"];
+    }
+    //NSLog(@"%@", thumbnailPath);
+    NSString * html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
+    NSURL *baseURL = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
+    [self.webViewThumbnail loadHTMLString:html baseURL:baseURL];
 }
 
 
@@ -298,11 +308,10 @@
  */
 - (void) reloadSlideDesc {
     NSMutableDictionary *descDict = [FileUtils readConfigFile:self.slide.descPath];
-    if(descDict[SLIDE_DESC_ORDER] != nil) {
-        self.slide.pages = descDict[SLIDE_DESC_ORDER];
-        NSMutableDictionary *pageFromSlides = [[NSMutableDictionary alloc] init];
-        [pageFromSlides setObject:self.slide.title forKey:self.slide.ID];
-        self.slide.slides = pageFromSlides;
+    if(descDict[SLIDE_DESC_ORDER]) {
+        self.slide.pages    = descDict[SLIDE_DESC_ORDER];
+        self.slide.slides   = [[NSMutableDictionary alloc] initWithObjectsAndKeys:self.slide.title, self.slide.ID, nil];
+        self.slide.folderSize = [FileUtils folderSize:self.slide.path];
         [self.slide save];
     } else {
         NSLog(@"Bug Slide#order is nil, %@", self.slide.dictPath);

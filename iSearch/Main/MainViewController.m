@@ -16,19 +16,17 @@
 
 #import "FileUtils.h"
 #import "ContentUtils.h"
-#import "PopupView.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
 #import "DisplayViewController.h"
-//#import "ReViewController.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
-@property(nonatomic,strong)IBOutlet UIView *leftView;
-@property(nonatomic,strong)IBOutlet UIView *rightView;
+@property(nonatomic,strong) IBOutlet UIView *leftView;
+@property(nonatomic,strong) IBOutlet UIView *rightView;
 
 @property(nonatomic,strong) UIViewController *rightViewController;
 
@@ -57,9 +55,6 @@
     // CWPopup 事件
     self.useBlurForPopup = YES;
     
-//    BlockTask(^{
-//        //sleep(1);
-//    });
     SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
     left.masterViewController = self;
     self.leftViewController   = left;
@@ -71,13 +66,15 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self refreshRightViewController];
 }
 
 - (void)refreshRightViewController {
     // presentViewController调出的视图覆盖全屏时，关闭时，会触发此处
-    [self.rightViewController performSelector:@selector(viewDidAppear:) withObject:self.rightViewController];
+    if([self.rightViewController isKindOfClass:[UINavigationController class]]) {
+        [[[self.rightViewController childViewControllers] firstObject] viewDidAppear:YES];
+    } else {
+        [self.rightViewController viewDidAppear:YES];
+    }
 }
 ///////////////////////////////////////////////////////////
 /// 屏幕方向设置
@@ -166,9 +163,8 @@
     [_rightViewController removeFromParentViewController];
     [_rightViewController.view removeFromSuperview];
 
-    if (!right) {
-        return;
-    }
+    if (!right) { return; }
+    
     
     RightSideViewController *r=(id)right;
     r.masterViewController=self;
@@ -179,7 +175,6 @@
         nav.toolbar.translucent=NO;
         right=nav;
     }
-
     _rightViewController=right;
     [self addChildViewController:right];
     [self.rightView addSubview:right.view];
