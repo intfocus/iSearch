@@ -101,7 +101,6 @@
 #pragma mark - check version upgrade
 
 - (void)checkAppVersionUpgrade {
-    
     self.btnSubmit.enabled = NO;
     [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
     
@@ -147,10 +146,10 @@
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
-//    
-//    self.cookieValue = @"E99658602";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
-//    return;
+    
+    self.cookieValue = @"E99658602";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
