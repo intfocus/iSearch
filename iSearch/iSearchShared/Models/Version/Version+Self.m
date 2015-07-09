@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "Version+Self.h"
 #import "AFNetworking.h"
-#import "AFNetworking.h"
 
 #define VERSION_URL @"https://tems.takeda.com.cn/iSearch/iSearch.plist"
 
@@ -45,6 +44,4 @@
         failBlock();
     }];
 }
-
-
 @end

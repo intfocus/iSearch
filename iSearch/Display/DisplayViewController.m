@@ -229,18 +229,18 @@
         self.currentPageIndex = [NSNumber numberWithInteger:0];
         NSLog(@"Bug: DisplayViewController set Jumpto %@", self.currentPageIndex);
     }
-    NSString *htmlName = [self.dataList objectAtIndex: [self.currentPageIndex intValue]];
+    NSString *pageName = [self.dataList objectAtIndex: [self.currentPageIndex intValue]];
     
     NSString *filePath;
     BOOL isHTML = YES;
     for(NSString *format in @[@"pdf", @"mp4", @"gif"]) {
-        filePath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, htmlName, htmlName, format];
+        filePath = [NSString stringWithFormat:@"%@/%@/%@.%@", self.slide.path, pageName, pageName, format];
         if([FileUtils checkFileExist:filePath isDir:NO]) {
             isHTML = NO; break;
         }
     }
     if(isHTML) {
-        filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
+        filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, pageName, PAGE_HTML_FORMAT];
         NSString *htmlString;
         if([FileUtils checkFileExist:filePath isDir:NO]) {
             htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
@@ -255,7 +255,7 @@
               </body>                      \
             </html>";
         }
-        NSURL *baseURL = [NSURL fileURLWithPath:[FileUtils getBasePath]];
+        NSURL *baseURL = [NSURL fileURLWithPath:self.slide.path];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];

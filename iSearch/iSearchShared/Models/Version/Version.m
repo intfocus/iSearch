@@ -50,6 +50,7 @@
     _insertURL = configDict[VERSION_INSERTURL];
     _changeLog = configDict[VERSION_CHANGELOG];
 }
+
 - (void)save {
     NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:UPGRADE_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];

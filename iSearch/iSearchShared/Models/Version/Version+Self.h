@@ -10,6 +10,9 @@
 #define iSearch_Version_Self_h
 #import "Version.h"
 
+/**
+ *  版本更新，使用自己的服务器托管
+ */
 @interface Version (Self)
 
 - (void)checkUpdate:(void(^)())successBlock FailBloc:(void(^)())failBlock;

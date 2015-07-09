@@ -17,8 +17,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    RegisterUserNotification();
-    NSSetUncaughtExceptionHandler(&UncaughtExceptionHandlerInstance);
+    @try {
+        RegisterUserNotification();
+        NSSetUncaughtExceptionHandler(&UncaughtExceptionHandlerInstance);
+    }
+    @catch (NSException *exception) {}
+    @finally {}
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.

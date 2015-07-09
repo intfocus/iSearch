@@ -47,7 +47,6 @@
 
 - (void)setDict:(NSMutableDictionary *)dict {
     self.slide = [[Slide alloc] initSlide:dict isFavorite:self.isFavorite];
-        
     self.slideID = self.slide.ID;
     self.dirName = self.slide.dirName;
     self.labelTitle.text = self.slide.title;
@@ -230,8 +229,8 @@
  *   "Transfer-Encoding" = Identity;
  *   "X-Powered-By" = "PHP/5.6.8, ASP.NET";
  *
- *  @param connection <#connection description#>
- *  @param response   <#response description#>
+ *  @param connection connection
+ *  @param response response
  */
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     NSHTTPURLResponse* http = (NSHTTPURLResponse*)response;
@@ -284,7 +283,7 @@
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:self.slide.path];
     NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slide.ID, state ? @"成功" : @"失败"]);
     // make sure not nest
-    if(!self.slide.isDownloaded) {
+    if(![self.slide isDownloaded]) {
         NSString *slidePath = [self.slide.path stringByAppendingPathComponent:self.slide.ID];
         if([FileUtils checkFileExist:slidePath isDir:YES]) {
             NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", self.slide.path];

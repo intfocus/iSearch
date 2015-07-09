@@ -184,7 +184,6 @@
     // nav behaviour stack
     [self assignCategoryInfo:self.deptID];
 
-    
     //  1. 读取本地缓存，优先加载界面
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
     [_gridView reloadData];

@@ -27,6 +27,7 @@
 + (NSURL *)downloadSlideURL:(NSString *)slideID {
     NSString *urlString = [NSString stringWithFormat:@"%@%@?%@=%@",
             BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, slideID];
+    NSLog(@"%@", urlString);
     return [NSURL URLWithString:urlString];
 }
 + (NSMutableDictionary *)notifications {
