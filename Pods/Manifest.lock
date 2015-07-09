@@ -22,28 +22,23 @@ PODS:
     - AFNetworking/NSURLSession
   - CWPopup (1.2.6)
   - DLRadioButton (1.1.1)
+  - FMDB (2.5):
+    - FMDB/standard (= 2.5)
   - FMDB/common (2.5)
-  - FMDB/standalone (2.5):
+  - FMDB/standard (2.5):
     - FMDB/common
-    - FMDB/standalone/default (= 2.5)
-  - FMDB/standalone/default (2.5):
-    - FMDB/common
-    - sqlite3
   - JTCalendar (1.2.3)
   - MBProgressHUD (0.9.1)
   - MMMaterialDesignSpinner (0.2.0)
   - Reachability (3.2)
   - SCLAlertView-Objective-C (0.7.3)
-  - sqlite3 (3.8.10.2):
-    - sqlite3/common (= 3.8.10.2)
-  - sqlite3/common (3.8.10.2)
   - SSZipArchive (0.3.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
   - CWPopup (~> 1.2.4)
   - DLRadioButton (~> 1.1.1)
-  - FMDB/standalone
+  - FMDB
   - JTCalendar (~> 1.2.3)
   - MBProgressHUD (~> 0.9.1)
   - MMMaterialDesignSpinner (~> 0.2.0)
@@ -61,7 +56,6 @@ SPEC CHECKSUMS:
   MMMaterialDesignSpinner: 8f1a50270b789c76ec500957e518fc3e05e55b9d
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SCLAlertView-Objective-C: 4bf9a07c8a8d1840e5174e643e16bc032239914d
-  sqlite3: 5e6797834b321b0926250b89315b8516ce1c58f6
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
 
 COCOAPODS: 0.37.2

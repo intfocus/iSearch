@@ -29,6 +29,7 @@
 		C449235A1B2AF72900E3BB65 /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44923581B2AF72900E3BB65 /* ContentViewController.m */; };
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
 		C44E50771B4E256500A17ED8 /* FileUtils+Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E50761B4E256500A17ED8 /* FileUtils+Slide.m */; };
+		C44E507B1B4E42A300A17ED8 /* Version+Self.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E507A1B4E42A300A17ED8 /* Version+Self.m */; };
 		C44EF65F1B3E4BE3006AB765 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */; };
 		C44EF6621B3E9205006AB765 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C44EF6611B3E9205006AB765 /* BaseModel.m */; };
 		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
@@ -157,6 +158,8 @@
 		C44923591B2AF72900E3BB65 /* ContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContentViewController.xib; sourceTree = "<group>"; };
 		C44E50761B4E256500A17ED8 /* FileUtils+Slide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FileUtils+Slide.m"; sourceTree = "<group>"; };
 		C44E50781B4E257200A17ED8 /* FileUtils+Slide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileUtils+Slide.h"; sourceTree = "<group>"; };
+		C44E50791B4E429200A17ED8 /* Version+Self.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Version+Self.h"; sourceTree = "<group>"; };
+		C44E507A1B4E42A300A17ED8 /* Version+Self.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Version+Self.m"; sourceTree = "<group>"; };
 		C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C44EF6611B3E9205006AB765 /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
 		C44EF6631B3E920D006AB765 /* BaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
@@ -330,6 +333,8 @@
 			children = (
 				C4042CFE1B4A481700F0E826 /* Version.h */,
 				C4042CFF1B4A481700F0E826 /* Version.m */,
+				C44E50791B4E429200A17ED8 /* Version+Self.h */,
+				C44E507A1B4E42A300A17ED8 /* Version+Self.m */,
 			);
 			path = Version;
 			sourceTree = "<group>";
@@ -1047,6 +1052,7 @@
 				C4BED0891B2FFEE2000147A2 /* HttpUtils.m in Sources */,
 				C46497371B2D825D005E3903 /* OneViewController.m in Sources */,
 				C4A618F91B2C7B1200D0E91B /* MainViewController.m in Sources */,
+				C44E507B1B4E42A300A17ED8 /* Version+Self.m in Sources */,
 				C4357C2C1B391B5600854524 /* Slide.m in Sources */,
 				C464973E1B2D88CC005E3903 /* ThreeViewController.m in Sources */,
 				C4D253D41B326B780033F697 /* FavoriteViewController.m in Sources */,

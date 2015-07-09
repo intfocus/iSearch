@@ -33,6 +33,7 @@
 #import "User.h"
 #import "Slide.h"
 #import "Version.h"
+#import "Version+Self.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
 #import "ApiUtils.h"

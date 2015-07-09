@@ -43,7 +43,8 @@
 
 // instance methods
 - (BOOL)isUpgrade;
-- (void)checkUpdate:(void(^)())successBlock FailBloc:(void(^)())failBlock;
 - (void)reload;
+- (void)updateTimestamp;
+- (void)save;
 @end
 #endif

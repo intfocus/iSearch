@@ -12,9 +12,7 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
-#import "AFNetworking.h"
 #import "ExtendNSLogFunctionality.h"
-#define VERSION_URL @"https://tems.takeda.com.cn/iSearch/iSearch.plist"
 
 @implementation Version
 
@@ -39,37 +37,6 @@
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
     if(!self.localCreatedDate) { _localCreatedDate = timestamp; }
     _localUpdatedDate = timestamp;
-}
-
-- (void)checkUpdate:(void(^)())successBlock FailBloc:(void(^)())failBlock {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-    [manager GET:VERSION_URL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *responseStr = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSData* plistData = [responseStr dataUsingEncoding:NSUTF8StringEncoding];
-        NSString *error;
-        NSPropertyListFormat format;
-        NSDictionary* plist = [NSPropertyListSerialization propertyListFromData:plistData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
-        _latest = plist[@"items"][0][@"metadata"][@"version"];
-        
-        if([self isUpgrade]) {
-            _insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", VERSION_URL];
-            NSString *changLog = plist[@"items"][0][@"metadata"][@"changelog"];
-            _changeLog = changLog ? _changeLog : @"未设置";
-            [self updateTimestamp];
-            [self save];
-            
-            successBlock();
-        } else {
-            NSLog(@"lastestVersion: %@, current version: %@", self.latest, self.current);
-            failBlock();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        failBlock();
-    }];
 }
 
 - (BOOL)isUpgrade {

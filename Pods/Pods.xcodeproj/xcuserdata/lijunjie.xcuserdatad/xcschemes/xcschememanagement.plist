@@ -59,11 +59,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-sqlite3.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -72,67 +67,62 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>003D2132700A920E50A39866</key>
+		<key>04F15241C2AB9882EF0386F1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>18FA6F753AB659CC4B18D96F</key>
+		<key>0821262EE89460F24848D671</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1BC3E535A9ADE902D7A7069E</key>
+		<key>20CA2FB550C9A6E46E25591D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>25F08F2A3CEA1127B2AA6B9D</key>
+		<key>23F575FF246E3FADF3CFA570</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>53C4ED27ADB3F314116E9164</key>
+		<key>248286EFB61A26646DDD0A77</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>59B07CE5D584081B5C7FC470</key>
+		<key>4334673AC5FA5DDD70346073</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6D2518B82A2EE3776C981B57</key>
+		<key>608E362E293BF448FAC9F127</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C327181E9F6D63D39F2FFAAE</key>
+		<key>7B3EEC228C43E9796748B18D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D9BFCD059C5E6354B094376F</key>
+		<key>91CA2CB73779C31D7DB4D65B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF068D54040F521EA4BA15F7</key>
+		<key>A025B8A97A1370270111097B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF5D54E6DCB6C9548F026A9B</key>
+		<key>CAD1EBE381080FD522BDFFDF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E027FD4FF3784F4C4A76D040</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E6391E57E024C9112BD7AE51</key>
+		<key>FCCA5893ED43D1F68AD21C68</key>
 		<dict>
 			<key>primary</key>
 			<true/>
