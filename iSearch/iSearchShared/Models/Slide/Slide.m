@@ -11,6 +11,7 @@
 
 #import "const.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "DateUtils.h"
 #import "ContentUtils.h"
 #import "ExtendNSLogFunctionality.h"

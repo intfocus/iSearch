@@ -14,6 +14,7 @@
 #import "const.h"
 #import "ViewSlide.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "ContentUtils.h"
 #import "Slide.h"
 

@@ -22,6 +22,7 @@
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "ActionLog.h"
 #import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"

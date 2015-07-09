@@ -11,6 +11,7 @@
 #import "DLRadioButton.h"
 #import "ExtendNSLogFunctionality.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "Slide.h"
 
 #import "MBProgressHUD.h"

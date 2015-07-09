@@ -52,6 +52,7 @@
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "ViewUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
