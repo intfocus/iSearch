@@ -96,7 +96,8 @@
 // 自定义cell高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *dict = [self.tableItems objectAtIndex:indexPath.row];
-    NSString *message = dict[NOTIFICATION_FIELD_MSG];
+    NSString *message = dict[NOTIFICATION_FIELD_TITLE
+                             ];
     CGSize size = [ViewUtils sizeForTableViewCell:message Width:240 FontSize:12];
     return size.height + 10.0f;
 }
