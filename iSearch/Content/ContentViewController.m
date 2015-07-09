@@ -157,11 +157,11 @@
     [self refreshContent];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-     [self configSpinner];
-}
+//- (void)viewDidLayoutSubviews {
+//    [super viewDidLayoutSubviews];
+//    
+//     [self configSpinner];
+//}
 
 - (void)viewDidUnload {
     [super viewDidUnload];

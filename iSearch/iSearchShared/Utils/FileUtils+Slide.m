@@ -27,9 +27,8 @@
     NSString *favoritesPath = [FileUtils getPathName:FAVORITE_DIRNAME];
     NSArray *slides = [fileManager contentsOfDirectoryAtPath:favoritesPath error:&error];
     
-    NSString *slideID;
     Slide *slide;
-    for(slideID in slides) {
+    for(NSString *slideID in slides) {
         slide = [Slide findById:slideID isFavorite:YES];
         if([slide isInFavorited]) { [slideList addObject:slide]; }
     }

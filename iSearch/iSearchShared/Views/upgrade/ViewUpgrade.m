@@ -10,7 +10,6 @@
 #import "ViewUpgrade.h"
 #import "AFNetworking.h"
 #import "const.h"
-#import "Version.h"
 #import "Version+Self.h"
 #import "SettingViewController.h"
 #import "SettingMainView.h"

@@ -14,6 +14,7 @@
 + (NSString *)loginUrl:(NSString *)cookieValue;
 + (NSURL *)downloadSlideURL:(NSString *)slideID;
 + (NSMutableDictionary *)notifications;
++ (NSString *)postActionLog:(NSMutableDictionary *) params;
 @end
 
 #endif

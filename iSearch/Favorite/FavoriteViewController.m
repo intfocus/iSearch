@@ -78,15 +78,14 @@
     gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gridView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:gridView];
-    _gridView = gridView;
-    
-    _gridView.style = GMGridViewStyleSwap;
-    _gridView.itemSpacing = 10;
-    _gridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-    _gridView.centerGrid = YES;
-    _gridView.dataSource = self;
+    _gridView                 = gridView;
+    _gridView.style           = GMGridViewStyleSwap;
+    _gridView.itemSpacing     = 10;
+    _gridView.minEdgeInsets   = UIEdgeInsetsMake(5, 5, 5, 5);
+    _gridView.centerGrid      = YES;
+    _gridView.dataSource      = self;
     _gridView.backgroundColor = [UIColor clearColor];
-    _gridView.mainSuperView = self.view;
+    _gridView.mainSuperView   = self.view;
 }
 
 //////////////////////////////////////////////////////////////

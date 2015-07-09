@@ -14,6 +14,7 @@
 #import "FileUtils.h"
 #import "DateUtils.h"
 #import "HttpUtils.h"
+#import "AFNetworking.h"
 #import "ExtendNSLogFunctionality.h"
 
 @interface ApiUtils()
@@ -69,5 +70,26 @@
         NSLog(@"<# HttpGET and cache all failed!>");
     }
     return notificationDatas;
+}
+
++ (NSString *)postActionLog:(NSMutableDictionary *) params {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSString *url = [ApiUtils apiUrl:ACTION_LOGGER_URL_PATH];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    
+    return @"";
+}
+
++ (NSString *)apiUrl:(NSString *)path {
+    NSString *url;
+    if([path hasPrefix:@"/"])
+        url = [NSString stringWithFormat:@"%@%@", BASE_URL, path];
+    else
+        url = [BASE_URL stringByAppendingFormat:@"%@", path];
+    return url;
 }
 @end

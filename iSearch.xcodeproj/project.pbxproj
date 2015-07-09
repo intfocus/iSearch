@@ -30,6 +30,7 @@
 		C449235B1B2AF72900E3BB65 /* ContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44923591B2AF72900E3BB65 /* ContentViewController.xib */; };
 		C44E50771B4E256500A17ED8 /* FileUtils+Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E50761B4E256500A17ED8 /* FileUtils+Slide.m */; };
 		C44E507B1B4E42A300A17ED8 /* Version+Self.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E507A1B4E42A300A17ED8 /* Version+Self.m */; };
+		C44E507D1B4E6AA100A17ED8 /* DatabaseUtils+ActionLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C44E507C1B4E6AA100A17ED8 /* DatabaseUtils+ActionLog.m */; };
 		C44EF65F1B3E4BE3006AB765 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */; };
 		C44EF6621B3E9205006AB765 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C44EF6611B3E9205006AB765 /* BaseModel.m */; };
 		C46497301B2D6772005E3903 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464972F1B2D6772005E3903 /* HomeViewController.m */; };
@@ -160,6 +161,8 @@
 		C44E50781B4E257200A17ED8 /* FileUtils+Slide.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FileUtils+Slide.h"; sourceTree = "<group>"; };
 		C44E50791B4E429200A17ED8 /* Version+Self.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Version+Self.h"; sourceTree = "<group>"; };
 		C44E507A1B4E42A300A17ED8 /* Version+Self.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Version+Self.m"; sourceTree = "<group>"; };
+		C44E507C1B4E6AA100A17ED8 /* DatabaseUtils+ActionLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DatabaseUtils+ActionLog.m"; sourceTree = "<group>"; };
+		C44E507E1B4E6AB400A17ED8 /* DatabaseUtils+ActionLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DatabaseUtils+ActionLog.h"; sourceTree = "<group>"; };
 		C44EF65E1B3E4BE3006AB765 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		C44EF6611B3E9205006AB765 /* BaseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModel.m; sourceTree = "<group>"; };
 		C44EF6631B3E920D006AB765 /* BaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
@@ -685,6 +688,8 @@
 			children = (
 				C4BED0601B2FFEE2000147A2 /* DatabaseUtils.h */,
 				C4BED0611B2FFEE2000147A2 /* DatabaseUtils.m */,
+				C44E507E1B4E6AB400A17ED8 /* DatabaseUtils+ActionLog.h */,
+				C44E507C1B4E6AA100A17ED8 /* DatabaseUtils+ActionLog.m */,
 				C4BED0621B2FFEE2000147A2 /* DateUtils.h */,
 				C4BED0631B2FFEE2000147A2 /* DateUtils.m */,
 				C4BED0641B2FFEE2000147A2 /* ExtendNSLogFunctionality.h */,
@@ -1023,6 +1028,7 @@
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4BED0861B2FFEE2000147A2 /* DateUtils.m in Sources */,
 				C48323151B49715D00E7251D /* SettingAppInfo.m in Sources */,
+				C44E507D1B4E6AA100A17ED8 /* DatabaseUtils+ActionLog.m in Sources */,
 				C419AF841B468681007FE00C /* ViewUpgrade.m in Sources */,
 				C4BED0791B2FFEE2000147A2 /* GMGridView.m in Sources */,
 				C4357C2B1B391B5600854524 /* User.m in Sources */,

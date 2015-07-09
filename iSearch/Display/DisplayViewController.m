@@ -211,15 +211,15 @@
     self.paintView = nil;
 }
 #pragma mark - webview 
-//开始加载数据
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSLog(@"start.");
-}
-
-//数据加载完
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSLog(@"finish.");
-}
+////开始加载数据
+//- (void)webViewDidStartLoad:(UIWebView *)webView {
+//    NSLog(@"start.");
+//}
+//
+////数据加载完
+//- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    NSLog(@"finish.");
+//}
 
 /**
  *  控件事件

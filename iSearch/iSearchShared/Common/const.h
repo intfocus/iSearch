@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define UPGRADE_CONFIG_FILENAME @"upgrade.json"
 
 // ActionLogger
-#define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
+#define ACTION_LOGGER_URL_PATH @"/uat/api/logjson.php"
 
 #define SIZE_GRID_VIEW_CELL_WIDTH     120 // GridView Cell‘s width
 #define SIZE_GRID_VIEW_CELL_HEIGHT    80 // GridView Cell‘s width
@@ -258,6 +258,14 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
 #define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
 #define ACTIONLOG_COLUMN_DELETED      @"is_deleted"
+
+#define ACTIONLOG_FIELD_UID           @"UserId"
+#define ACTIONLOG_FIELD_FUNNAME       @"FunctionName"
+#define ACTIONLOG_FIELD_ACTNAME       @"ActionName"
+#define ACTIONLOG_FIELD_ACTTIME       @"ActionTime"
+#define ACTIONLOG_FIELD_ACTRET        @"ActionReturn"
+#define ACTIONLOG_FIELD_ACTOBJ        @"ActionObject"
+
 
 #define ACTION_DOWNLOAD          @"download"
 #define ACTION_REMOVE            @"remove"
