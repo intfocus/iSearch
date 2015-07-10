@@ -44,13 +44,16 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
+    /**
+     * 实例变量初始化
+     */
     if(!self.oneViewController) {
         OneViewController *one     = [[OneViewController alloc] initWithNibName:nil bundle:nil];
         one.masterViewController   = self;
         self.oneViewController     = one;
     } else {
-        [self.oneViewController viewDidAppear:YES];
+        [self.oneViewController performSelector:@selector(viewDidAppear:) withObject:self.oneViewController];
     }
     
     if(!self.twoViewController) {
@@ -58,7 +61,7 @@
         two.masterViewController   = self;
         self.twoViewController     = two;
     } else {
-        [self.twoViewController viewDidAppear:YES];
+        [self.twoViewController performSelector:@selector(viewDidAppear:) withObject:self.twoViewController];
     }
     
     if(!self.threeViewController) {
@@ -66,7 +69,7 @@
         three.masterViewController   = self;
         self.threeViewController   = three;
     } else {
-        [self.threeViewController viewDidAppear:YES];
+        [self.threeViewController performSelector:@selector(viewDidAppear:) withObject:self.threeViewController];
     }
 }
 

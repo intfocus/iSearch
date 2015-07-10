@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "003D2132700A920E50A39866"
+               BlueprintIdentifier = "AA544C092240E50E5364341A"
                BuildableName = "libPods-MMMaterialDesignSpinner.a"
                BlueprintName = "Pods-MMMaterialDesignSpinner"
                ReferencedContainer = "container:Pods.xcodeproj">

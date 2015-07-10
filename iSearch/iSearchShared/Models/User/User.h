@@ -30,9 +30,6 @@
 @property (nonatomic, strong) NSMutableDictionary *configDict;
 @property (nonatomic, strong) NSString *personalPath;
 
-// class methods
-+ (NSString *)userID;
-
 // instance methods
 - (void)save;
 - (void)writeInToPersonal;

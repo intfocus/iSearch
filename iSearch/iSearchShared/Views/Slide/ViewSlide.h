@@ -15,9 +15,16 @@
 @class Slide;
 
 @interface ViewSlide : UIView
-@property (nonatomic, nonatomic) BOOL isFavorite;
-@property (strong, nonatomic) NSMutableDictionary *dict;
 @property (nonatomic, nonatomic) MainViewController *masterViewController;
+@property (strong, nonatomic) NSMutableDictionary *dict;
+@property (nonatomic, nonatomic) BOOL isFavorite;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *labelTitle;
+@property (weak, nonatomic) IBOutlet UIButton *btnSlideInfo; // 展示文档信息,弹出框
+@property (weak, nonatomic) IBOutlet UIButton *btnDownloadOrDisplay;
+@property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail;
+
 
 // simple operation
 @property (strong, nonatomic) NSString *slideID;

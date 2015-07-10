@@ -22,8 +22,6 @@
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
-#import "ActionLog.h"
-#import "MBProgressHUD.h"
 #import "ExtendNSLogFunctionality.h"
 #import "UIViewController+CWPopup.h"
 
@@ -46,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnLastPage;  // 上一页
 @property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
 @property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
+@property (nonatomic, nonatomic) PopupView    *popupView;
 
 @property (nonatomic, strong) NSNumber *currentPageIndex;
 @property (nonatomic, nonatomic) BOOL  isFavorite;// 收藏文件、正常下载文件
@@ -168,6 +167,11 @@
     self.useBlurForPopup = YES;
     
     [self loadSlideInfo];
+    if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+        _dataList = [NSMutableArray arrayWithArray:[self.slide dictSwp][SLIDE_DESC_ORDER]];
+    } else {
+        _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -177,18 +181,7 @@
     [self.switchLaser setOn:NO];
     
     [self checkLastNextPageBtnState];
-    if([self.dataList count] > 0) {
-        [self loadHtml];
-    } else {
-        [self.webView loadHTMLString:@" \
-         <html>                         \
-           <body>                       \
-             <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-             文档内容为空.                \
-             </div>                     \
-           </body>                      \
-         </html>" baseURL:nil];
-    }
+    [self loadHtml];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -204,19 +197,24 @@
 }
 
 - (void)dealloc {
-    self.slide     = nil;
-    self.webView   = nil;
-    self.dataList  = nil;
+    self.slide = nil;
+    self.webView = nil;
+    self.dataList = nil;
     self.paintView = nil;
+    self.popupView = nil;
 }
 #pragma mark - webview 
 //开始加载数据
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+//    [activityIndicator startAnimating];
     NSLog(@"start.");
 }
 
 //数据加载完
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    [activityIndicator stopAnimating];
+//    UIView *view = (UIView *)[self.view viewWithTag:103];
+    //    [view removeFromSuperview];
     NSLog(@"finish.");
 }
 
@@ -240,40 +238,28 @@
     }
     if(isHTML) {
         filePath = [NSString stringWithFormat:@"%@/%@.%@", self.slide.path, htmlName, PAGE_HTML_FORMAT];
-        NSString *htmlString;
-        if([FileUtils checkFileExist:filePath isDir:NO]) {
-            htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-            [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
-        } else {
-            htmlString = @" \
-            <html>                         \
-              <body>                       \
-                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-                  该页面为空.                \
-                </div>                     \
-              </body>                      \
-            </html>";
-        }
-        NSURL *baseURL = [NSURL fileURLWithPath:[FileUtils getBasePath]];
+        NSString *htmlString = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+        NSString *basePath =[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSURL *baseURL = [NSURL fileURLWithPath:basePath];
+        [htmlString stringByReplacingOccurrencesOfString:@"</head>" withString:self.forbidCss];
         [self.webView loadHTMLString:htmlString baseURL:baseURL];
     } else {
         NSURL *targetURL = [NSURL fileURLWithPath:filePath];
-        // NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
+//        NSLog(@"isHTML:%@, %@", (isHTML ? @"true" : @"false"), filePath);
         NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
         [self.webView loadRequest:request];
     }
 }
 
 - (void) showPopupView: (NSString*) text {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.view;
+    }
     
-    // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText =text;
-    hud.margin = 10.f;
-    hud.removeFromSuperViewOnHide = YES;
-    
-    [hud hide:YES afterDelay:1];
+    [self.popupView setText: text];
+    [self.view addSubview:self.popupView];
 }
 
 /**
@@ -428,8 +414,6 @@
         NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
-    } else {
-        [self showPopupView:@"最后一页"];
     }
     [self checkLastNextPageBtnState];
 }
@@ -448,8 +432,6 @@
         NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
         self.currentPageIndex = [NSNumber numberWithInteger:index];
         [self loadHtml];
-    } else {
-        [self showPopupView:@"第一页了"];
     }
     [self checkLastNextPageBtnState];
 }
@@ -477,15 +459,16 @@
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
-        NSString *currentPageName = ([self.dataList count] > [self.currentPageIndex integerValue]) ? self.dataList[[self.currentPageIndex integerValue]] : @"empty slide's pages";
-        config[SCAN_SLIDE_ID]     = self.slideID;
-        config[SCAN_SLIDE_PAGEID] = currentPageName;
-        config[SCAN_SLIDE_FROM]   = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+        NSString *pageID = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
+        [config setObject:self.slideID forKey:SCAN_SLIDE_ID];
+        [config setObject:pageID forKey:SCAN_SLIDE_PAGEID];
+        NSNumber *slideType = [NSNumber numberWithInt:(self.isFavorite ? SlideTypeFavorite : SlideTypeSlide)];
+        [config setObject:slideType forKey:SCAN_SLIDE_FROM];
         [FileUtils writeJSON:config Into:pathName];
         
         NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
         NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-        configDict[SLIDE_DISPLAY_JUMPTO] = currentPageName;
+        configDict[SLIDE_DISPLAY_JUMPTO] = [self.dataList objectAtIndex:[self.currentPageIndex integerValue]];
         [FileUtils writeJSON:configDict Into:configPath];
         
         // 界面跳转至文档页面编辑界面
@@ -493,18 +476,7 @@
             self.reViewController = [[ReViewController alloc] init];
             self.reViewController.masterViewController = self;
         }
-        
-        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:hud];
-        hud.labelText = @"加载中...";
-        
-        [hud showAnimated:YES whileExecutingBlock:^{
-            [self presentViewController:self.reViewController animated:NO completion:^{
-                [hud removeFromSuperview];
-            }];
-        } completionBlock:^{
-        }];
-        
+        [self presentViewController:self.reViewController animated:NO completion:nil];
     }
 }
 
@@ -533,26 +505,30 @@
  */
 - (IBAction)actionDismissDisplayViewController:(id)sender {
     if(self.slide.isFavorite) {
-        [self dismissDisplayViewController];
+        [self performSelector:@selector(dismissDisplayViewController)];
     } else {
         if(![self.dataList isEqualToArray:self.slide.pages]) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否保存？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"文档页面有调整，是否存在？" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"保存",nil];
             [alert show];
-        } else {
-            [self dismissDisplayViewController];
         }
     }
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     configDict[SLIDE_DISPLAY_JUMPTO] = [NSNumber numberWithInteger:0];
     [FileUtils writeJSON:configDict Into:configPath];
+    
+    [self dismissDisplayViewController];
 }
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0: {
-            [self dismissDisplayViewController];
+            if([FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
+                NSFileManager *fileManager = [NSFileManager defaultManager];
+                [fileManager removeItemAtPath:[self.slide dictSwpPath] error:NULL];
+            }
+            [self.masterViewController dismissViewDisplayViewController];
         }
             break;
         case 1: {
@@ -603,10 +579,6 @@
     }
     [sender setAttributedTitle:str forState:UIControlStateNormal];
 }
-
-/**
- *  core method
- */
 - (void) loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
@@ -638,21 +610,12 @@
         NSLog(@"Bug: Slide#Pages is nil or pageNum not match");
     }
     
-    if(![FileUtils checkFileExist:[self.slide dictSwpPath] isDir:NO]) {
-        [self.slide enterDisplayOrScanState];
-    }
-    _dataList = [self.slide dictSwp][SLIDE_DESC_ORDER];
-    
-    // 浏览页面调整页面顺序，播放实时更新
     NSString *jumpToPageName = configDict[SLIDE_DISPLAY_JUMPTO];
-    NSInteger jumpToPageIndex = [self.dataList indexOfObject:jumpToPageName];
+    NSInteger jumpToPageIndex = [self.slide.pages indexOfObject:jumpToPageName];
     if(jumpToPageIndex && (jumpToPageIndex < 0 || jumpToPageIndex > [self.slide.pages count] -1)) {
-        jumpToPageIndex = 0;
+            jumpToPageIndex = 0;
     }
     self.currentPageIndex = [NSNumber numberWithInteger:jumpToPageIndex];
-    
-    ActionLog *actionLog = [[ActionLog alloc] init];
-    [actionLog recordSlide:self.slide Action:ACTION_DISPLAY];
 }
 
 
@@ -683,11 +646,6 @@
 -(void)dismissDisplayViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
     
-    if(self.slide.isFavorite) {
-        self.slide.pages = [self.slide dictSwp][SLIDE_DESC_ORDER];
-        [self.slide save];
-    }
-    [self.slide removeDictSwp];
     [self.masterViewController dismissViewDisplayViewController];
 }
 - (void) dismissPopupAddToTag {

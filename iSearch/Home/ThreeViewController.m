@@ -17,14 +17,13 @@
 #import "ViewSlide.h"
 #import "FileUtils.h"
 #import "Slide.h"
-#import "ActionLog.h"
 
 @interface ThreeViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gmGridView;
     UIImageView          *changeBigImageView;
     NSMutableArray       *_dataList;
 }
-@property (strong, nonatomic) ActionLog *actionLog;
+
 @end
 
 @implementation ThreeViewController
@@ -34,8 +33,8 @@
     /**
      * 实例变量初始化
      */
-    _dataList  = [[NSMutableArray alloc] init];
-    _actionLog = [[ActionLog alloc] init];
+    _dataList = [[NSMutableArray alloc] init];
+    
     [self configGMGridView];
 }
 
@@ -43,8 +42,25 @@
     [super viewDidAppear:animated];
     
     [_dataList removeAllObjects];
-
-    _dataList = [self.actionLog records];
+    Slide *slide;
+    NSString *dictPath;
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    for(NSString *slideID in @[@"999154", @"999155"]) {
+        dictPath = [FileUtils slideDescPath:slideID Dir:SLIDE_DIRNAME Klass:SLIDE_CONFIG_FILENAME];
+        if(![FileUtils checkFileExist:dictPath isDir:NO]) continue;
+        
+        dict = [FileUtils readConfigFile:dictPath];
+        dict[CONTENT_FIELD_ID] = slideID;
+        dict[CONTENT_FIELD_TYPE] = @"10000";
+        dict[CONTENT_FIELD_DESC] = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_TITLE] = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_NAME] = dict[SLIDE_DESC_NAME];
+        dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
+        slide = [[Slide alloc] initSlide:dict isFavorite:NO];
+        [slide save];
+        
+        [_dataList addObject:[slide refreshFields]];
+    }
     [_gmGridView reloadData];
 }
 
@@ -101,15 +117,12 @@
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
     }
-    ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-    
     NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-    NSString *slideID = currentDict[ACTIONLOG_COLUMN_ACTOBJ];
-    BOOL isFavorite = [currentDict[ACTIONLOG_COLUMN_ACTRET] isEqualToString:FAVORITE_DIRNAME];
-    Slide *slide = [Slide findById:slideID isFavorite:isFavorite];
+    ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+    viewSlide.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
     
-    viewSlide.isFavorite = isFavorite;
-    viewSlide.dict = [slide refreshFields];
+    viewSlide.isFavorite = NO;
+    viewSlide.dict = currentDict;
     viewSlide.masterViewController = [[self masterViewController] masterViewController];
 
     [cell setContentView: viewSlide];

@@ -9,61 +9,40 @@
 #import <Foundation/Foundation.h>
 #import "SettingViewController.h"
 #import "MainViewController.h"
-#import "SettingMainView.h"
-#import "ViewUpgrade.h"
 
-@interface SettingViewController()<ViewUpgradeProtocol>
-@property (nonatomic,weak) IBOutlet UIView *containerView;
+@interface SettingViewController()
+@property (nonatomic, nonatomic) IBOutlet UINavigationItem *navigationPanel;
+@property (nonatomic, nonatomic) IBOutlet UIButton *btnLogout;
+
 @end
 
 @implementation SettingViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     /**
      *  控件事件
      */
-
-    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
-    viewController.settingViewController = self;
-    viewController.mainViewController    = self.masterViewController;
-    self.containerViewController         = viewController;
+    UIBarButtonItem *navBtnClose = [[UIBarButtonItem alloc] initWithTitle:@"关闭"
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:self
+                                                                   action:@selector(actionBtnClose:)];
+    self.navigationPanel.rightBarButtonItem = navBtnClose;
+    self.navigationPanel.title = @"设置";
+    
+    [self.btnLogout addTarget:self action:@selector(actionLogout:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    if(!self.containerView) {
-        SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
-        viewController.settingViewController = self;
-        viewController.mainViewController    = self.masterViewController;
-        self.containerViewController         = viewController;
-    }
+#pragma mark - controls action
+- (IBAction)actionBtnClose:(UIBarButtonItem *)sender {
+    MainViewController *mainViewController = [self masterViewController];
+    [mainViewController dimmissPopupSettingViewController];
 }
 
-- (void)setContainerViewController:(UIViewController *)mainView{
-    [_containerViewController removeFromParentViewController];
-    [_containerViewController.view removeFromSuperview];
+- (IBAction)actionLogout:(id)sender {
     
-    if (!mainView) return;
-    
-    UINavigationController *nav   = [[UINavigationController alloc] initWithRootViewController:mainView];
-    nav.navigationBar.translucent = NO;
-    nav.toolbar.translucent       = NO;
-    mainView                      = nav;
-    
-    _containerViewController=mainView;
-    [self addChildViewController:mainView];
-    [self.containerView addSubview:mainView.view];
-    
-    mainView.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    mainView.view.frame            = self.containerView.bounds;
-}
-#pragma mark - ViewUpgradeProtocol
-- (void)dismissViewUpgrade {
-    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
-    viewController.settingViewController = self;
-    viewController.mainViewController    = self.masterViewController;
-    self.containerViewController         = viewController;
+    MainViewController *mainViewController = [self masterViewController];
+    [mainViewController backToLoginViewController];
 }
 @end

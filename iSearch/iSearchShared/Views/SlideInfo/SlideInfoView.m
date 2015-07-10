@@ -14,13 +14,12 @@
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 #import "Slide.h"
-#import "ActionLog.h"
-#import "MBProgressHUD.h"
-#import "SCLAlertView.h"
+#import "PopupView.h"
 
 @interface SlideInfoView()
+@property (nonatomic, nonatomic) PopupView *popupView;
 @property (strong, nonatomic) IBOutlet UILabel *labelTitle;
-@property (strong, nonatomic) IBOutlet UITextView *textViewDesc;
+@property (strong, nonatomic) IBOutlet UILabel *labelDesc;
 @property (strong, nonatomic) IBOutlet UILabel *labelEditTime;
 @property (strong, nonatomic) IBOutlet UILabel *labelPageNum;
 @property (strong, nonatomic) IBOutlet UILabel *labelZipSize;
@@ -52,26 +51,35 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    self.labelTitle.text    = self.slide.title;
-    self.labelCategory.text = [NSString stringWithFormat:@"%@: %@", @"分类", self.slide.categoryName];
-    self.labelPageNum.text  = [NSString stringWithFormat:@"%@: %@", @"页数", self.slide.pageNum];
-    self.labelTypeName.text = [NSString stringWithFormat:@"%@: %@", @"属性", self.slide.typeName];
-    self.textViewDesc.text  = self.slide.desc;
     
-    NSString *sizeInfo, *editTime;
-    if(self.isFavorite) {
-        sizeInfo = [NSString stringWithFormat:@"%@: %@", @"文件体积", [FileUtils humanFileSize:self.slide.folderSize]];
-        editTime = [NSString stringWithFormat:@"%@: %@", @"收藏时间", self.slide.localCreatedDate];
-    } else {
-        sizeInfo = [NSString stringWithFormat:@"%@: %@", @"压缩包", [FileUtils humanFileSize:self.slide.zipSize]];
-        editTime = [NSString stringWithFormat:@"%@: %@", @"上架时间", self.slide.createdDate];
+    self.labelTitle.text = self.slide.title;
+    self.labelDesc.text  = self.slide.desc;
+    self.labelTypeName.text = self.slide.typeName;
+    [self.labelDesc sizeToFit];
+    if (self.labelDesc.frame.size.height > 67) {
+        self.labelDesc.frame = CGRectMake(self.labelDesc.frame.origin.x, self.labelDesc.frame.origin.y, self.labelDesc.frame.size.width, 67);
     }
-    
-    self.labelEditTime.text = editTime;
-    self.labelZipSize.text  = sizeInfo;
+    self.labelEditTime.text = self.slide.createdDate;
+    self.labelPageNum.text  = self.slide.pageNum;
+    self.labelZipSize.text  = [FileUtils humanFileSize:self.slide.zipSize];
+    self.labelCategory.text = self.slide.categoryName;
     
     [self.hideButton addTarget:self.masterViewController action:@selector(dismissPopupSlideInfo) forControlEvents:UIControlEventTouchUpInside];
+}
+
+
+
+#pragma mark - assistant methods
+
+- (void)showPopupView:(NSString*) text {
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.view.frame.size.width/4, self.view.frame.size.height/4, self.view.frame.size.width/2, self.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.view;
+    }
+    
+    [self.popupView setText: text];
+    [self.view addSubview:self.popupView];
 }
 
 #pragma mark - setter rewrite
@@ -97,7 +105,7 @@
         [configDict writeToFile:configPath atomically:YES];
         
         [self.masterViewController dismissPopupSlideInfo];
-        [self.slide enterDisplayOrScanState];
+        [self.slide enterEditState];
         [self.masterViewController presentViewDisplayViewController];
     } else {
         [self showPopupView:@"请君下载"];
@@ -105,32 +113,22 @@
 }
 
 - (IBAction)actionRemoveSlide:(UIButton *)sender {
-    if([self.slide isDownloading]) {
+    if(self.slide.isDownloading) {
         [self.slide downloaded];
-        [self.masterViewController refreshRightViewController];
-        [self showPopupView:@"已移除，请重新下载"];
-    } else if(self.slide.isDownloaded) {
-        SCLAlertView *alert = [[SCLAlertView alloc] init];
+    }else if(self.slide.isDownloaded) {
+        NSString *filePath = [FileUtils getPathName:self.dirName FileName:self.slide.ID];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSError *error;
+        [fileManager removeItemAtPath:filePath error:&error];
+        BOOL isSuccessfully = NSErrorPrint(error, @"remove file#%@", filePath);
         
-        [alert addButton:@"确认" actionBlock:^(void) {
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            NSError *error;
-            [fileManager removeItemAtPath:self.slide.path error:&error];
-            BOOL isSuccessfully = NSErrorPrint(error, @"remove slide#%@", self.slide.path);
-    
-            if(isSuccessfully) {
-                [self showPopupView:@"移除成功"];
-                ActionLog *actionLog = [[ActionLog alloc] init];
-                [actionLog recordSlide:self.slide Action:ACTION_REMOVE];
-            }
-            [self.masterViewController refreshRightViewController];
-            [self.masterViewController dismissPopupSlideInfo];
-        }];
-        
-        [alert showError:self.masterViewController title:@"确认删除" subTitle:self.slide.title closeButtonTitle:@"取消" duration:0.0f];
-
+        if(isSuccessfully) {
+            [self showPopupView:@"移除成功"];
+        }
+        [self.masterViewController performSelector:@selector(refreshRightViewController)];
+        [self.masterViewController dismissPopupSlideInfo];
     } else {
-        [self showPopupView:@"未曾下载,何言移除！"];
+        [self showPopupView:@"未曾下载，\n何言移除！"];
     }
 }
 
@@ -155,27 +153,13 @@
 - (IBAction)actionAddToFavorite:(UIButton *)sender {
     if([self.slide isInFavorited]) {
         [self showPopupView:@"已在收藏"];
-    } else if([self.slide isDownloaded]) {
+    } else if(self.slide.isDownloaded) {
         BOOL isSuccessfully = [self.slide addToFavorite];
         [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
-        ActionLog *actionLog = [[ActionLog alloc] init];
-        [actionLog recordSlide:self.slide Action:ACTION_ADD_TO_FAVORITE];
     } else {
-        [self showPopupView:@"未曾下载,何言收藏！"];
+        [self showPopupView:@"未曾下载，\n何言收藏！"];
     }
     
 }
-#pragma mark - assistant methods
 
-- (void)showPopupView:(NSString*)text {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText =text;
-    hud.margin = 10.f;
-    hud.removeFromSuperViewOnHide = YES;
-    
-    [hud hide:YES afterDelay:1];
-}
 @end

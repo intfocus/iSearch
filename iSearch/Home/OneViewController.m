@@ -52,7 +52,6 @@
         _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
     }
     [_gridView reloadData];
-    NSLog(@"viewDidAppear.");
 }
 
 - (void)viewDidLayoutSubviews{

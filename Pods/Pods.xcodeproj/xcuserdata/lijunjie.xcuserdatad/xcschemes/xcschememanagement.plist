@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-AFNetworking.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-CWPopup.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -19,17 +14,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-FMDB.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-JTCalendar.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -54,12 +39,12 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-SSZipArchive.xcscheme</key>
+		<key>Pods-SKSplashView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-sqlite3.xcscheme</key>
+		<key>Pods-SSZipArchive.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -72,67 +57,52 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>003D2132700A920E50A39866</key>
+		<key>3CB3A887E1B6518F02D74D69</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>18FA6F753AB659CC4B18D96F</key>
+		<key>3F45B0DF7579FB090481B0AA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1BC3E535A9ADE902D7A7069E</key>
+		<key>43510A6156C737D6BE37316C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>25F08F2A3CEA1127B2AA6B9D</key>
+		<key>5EB4867BEFF10F58A26E21DF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>53C4ED27ADB3F314116E9164</key>
+		<key>60F6448C895BADFE532E628B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>59B07CE5D584081B5C7FC470</key>
+		<key>716A6DEC03DAE0BE38DED0CA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6D2518B82A2EE3776C981B57</key>
+		<key>81D4D8BE05D71C561E4B2BD1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C327181E9F6D63D39F2FFAAE</key>
+		<key>AA544C092240E50E5364341A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D9BFCD059C5E6354B094376F</key>
+		<key>DE37B0D5C5FB15357821315C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF068D54040F521EA4BA15F7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DF5D54E6DCB6C9548F026A9B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E027FD4FF3784F4C4A76D040</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E6391E57E024C9112BD7AE51</key>
+		<key>E4C0A06A3AF702B421EC2B47</key>
 		<dict>
 			<key>primary</key>
 			<true/>

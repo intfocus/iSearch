@@ -32,7 +32,7 @@
 #import "GMGridViewLayoutStrategies.h"
 #import "UIGestureRecognizer+GMGridViewAdditions.h"
 
-static const NSInteger kTagOffset = 500;
+static const NSInteger kTagOffset = 50;
 static const CGFloat kDefaultAnimationDuration = 0.3;
 static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction;
 
@@ -369,7 +369,6 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 
 - (void)receivedMemoryWarningNotification:(NSNotification *)notification
 {
-    NSLog(@"receive memeory warning.");
     [self cleanupUnseenItems];
     [_reusableCells removeAllObjects];
 }
@@ -563,10 +562,22 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 //////////////////////////////////////////////////////////////
 #pragma mark Sorting gestures & logic
 //////////////////////////////////////////////////////////////
-#warning todo
+
 - (void)longPressGestureUpdated:(UILongPressGestureRecognizer *)longPressGesture
 {
-
+    if (self.enableEditOnLongPress && !self.editing && !self.selectState) {
+//        CGPoint locationTouch = [longPressGesture locationInView:self];
+//        NSInteger position = [self.layoutStrategy itemPositionFromLocation:locationTouch];
+//        
+//        if (position != GMGV_INVALID_POSITION)
+//        {
+//            if (!self.editing) {
+//                self.editing = YES;
+//            }
+//        }
+        return;
+    }
+    
     switch (longPressGesture.state) 
     {
         case UIGestureRecognizerStateBegan:
@@ -577,10 +588,10 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
                 
                 NSInteger position = [self.layoutStrategy itemPositionFromLocation:location];
                 
-                //if (position != GMGV_INVALID_POSITION)
-                //{
+                if (position != GMGV_INVALID_POSITION) 
+                {
                     [self sortingMoveDidStartAtPoint:location];
-                //}
+                }
             }
             
             break;
@@ -793,10 +804,10 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 
 - (void)sortingMoveDidContinueToPoint:(CGPoint)point
 {
-    int position = (int)[self.layoutStrategy itemPositionFromLocation:point];
+    int position = [self.layoutStrategy itemPositionFromLocation:point];
     int tag = position + kTagOffset;
     
-    if (position != GMGV_INVALID_POSITION && position != _sortFuturePosition && position < _numberTotalItems)
+    if (position != GMGV_INVALID_POSITION && position != _sortFuturePosition && position < _numberTotalItems) 
     {
         BOOL positionTaken = NO;
         
@@ -828,13 +839,10 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
                     }
                     else
                     {
-                        NSLog(@"==============");
                         for (UIView *v in [self itemSubviews])
                         {
-                            if ((v.tag == tag || (v.tag > tag && v.tag <= _sortFuturePosition + kTagOffset)) && v != _sortMovingItem) {
-                                
-                                NSLog(@" %ld => %ld & %ld", _sortMovingItem.tag, _sortFuturePosition, (long)v.tag);
-                                
+                            if ((v.tag == tag || (v.tag > tag && v.tag <= _sortFuturePosition + kTagOffset)) && v != _sortMovingItem) 
+                            {
                                 v.tag = v.tag + 1;
                                 [self sendSubviewToBack:v];
                             }
@@ -1309,7 +1317,7 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
     CGSize contentSize = [self.layoutStrategy contentSize];
     
     _minPossibleContentOffset = CGPointMake(0, 0);
-    _maxPossibleContentOffset = CGPointMake(contentSize.width - self.bounds.size.width + self.contentInset.right,
+    _maxPossibleContentOffset = CGPointMake(contentSize.width - self.bounds.size.width + self.contentInset.right, 
                                             contentSize.height - self.bounds.size.height + self.contentInset.bottom);
     
     BOOL shouldUpdateScrollviewContentSize = !CGSizeEqualToSize(self.contentSize, contentSize);
@@ -1413,45 +1421,30 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 #pragma mark loading/destroying items & reusing cells
 //////////////////////////////////////////////////////////////
 
-#warning todo
 - (void)loadRequiredItems
 {
     NSRange rangeOfPositions = [self.layoutStrategy rangeOfPositionsInBoundsFromOffset: self.contentOffset];
     NSRange loadedPositionsRange = NSMakeRange(self.firstPositionLoaded, self.lastPositionLoaded - self.firstPositionLoaded);
-    
+
     // calculate new position range
     self.firstPositionLoaded = self.firstPositionLoaded == GMGV_INVALID_POSITION ? rangeOfPositions.location : MIN(self.firstPositionLoaded, (NSInteger)rangeOfPositions.location);
     self.lastPositionLoaded  = self.lastPositionLoaded == GMGV_INVALID_POSITION ? NSMaxRange(rangeOfPositions) : MAX(self.lastPositionLoaded, (NSInteger)(rangeOfPositions.length + rangeOfPositions.location));
     
     // remove now invisible items
-    [self setSubviewsCacheAsInvalid];
-    //[self cleanupUnseenItems];
+#warning comment by junjie.li
+//    [self setSubviewsCacheAsInvalid];
+//    [self cleanupUnseenItems];
     
     // add new cells
     BOOL forceLoad = self.firstPositionLoaded == GMGV_INVALID_POSITION || self.lastPositionLoaded == GMGV_INVALID_POSITION;
     NSInteger positionToLoad;
-    for (NSUInteger i = 0; i < _numberTotalItems; i++)
+    for (NSUInteger i = 0; i < rangeOfPositions.length; i++) 
     {
-        //positionToLoad = i + rangeOfPositions.location;
-        positionToLoad = i;
+        positionToLoad = i + rangeOfPositions.location;
         
-        if ((forceLoad || !NSLocationInRange(positionToLoad, loadedPositionsRange)) && positionToLoad < _numberTotalItems)
+        if ((forceLoad || !NSLocationInRange(positionToLoad, loadedPositionsRange)) && positionToLoad < _numberTotalItems) 
         {
-
-//    NSRange loadedPositionsRange = NSMakeRange(self.firstPositionLoaded, self.lastPositionLoaded - self.firstPositionLoaded);
-//    
-//    // calculate new position range
-//    self.firstPositionLoaded = YES;
-//    self.lastPositionLoaded  = YES;
-//    
-//    NSInteger positionToLoad;
-//    for (NSUInteger i = 0; i < _numberTotalItems; i++)
-//    {
-//        positionToLoad = i;
-//
-//        if ((!NSLocationInRange(positionToLoad, loadedPositionsRange)) && positionToLoad < _numberTotalItems)
-//        {
-            if (![self cellForItemAtIndex:positionToLoad])
+            if (![self cellForItemAtIndex:positionToLoad]) 
             {
                 GMGridViewCell *cell = [self newItemSubViewForPosition:positionToLoad];
                 [self addSubview:cell];

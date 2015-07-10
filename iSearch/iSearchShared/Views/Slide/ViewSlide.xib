@@ -32,28 +32,28 @@
                         <progressView hidden="YES" opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="reD-tf-vna">
                             <rect key="frame" x="0.0" y="75" width="184" height="2"/>
                         </progressView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT" userLabel="SlideInfo">
-                            <rect key="frame" x="5" y="25" width="50" height="50"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sbb-9z-gdT" userLabel="SlideInfo">
+                            <rect key="frame" x="8" y="18" width="50" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="ef7-tG-0qW"/>
                                 <constraint firstAttribute="width" constant="50" id="yQU-Na-i65"/>
                             </constraints>
-                            <state key="normal" image="infoSlide"/>
+                            <state key="normal" backgroundImage="iconi"/>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="文件名称" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ULh-Fg-i9c">
-                            <rect key="frame" x="56" y="0.0" width="128" height="85"/>
+                            <rect key="frame" x="66" y="0.0" width="118" height="85"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailingMargin" secondItem="reD-tf-vna" secondAttribute="trailing" id="8Al-Cy-rIz"/>
-                        <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="VgM-Az-8j2" secondAttribute="leading" constant="5" id="AlS-dj-1HH"/>
+                        <constraint firstItem="sbb-9z-gdT" firstAttribute="leading" secondItem="VgM-Az-8j2" secondAttribute="leading" constant="8" id="AlS-dj-1HH"/>
                         <constraint firstAttribute="trailing" secondItem="ULh-Fg-i9c" secondAttribute="trailing" id="O4w-cJ-JwJ"/>
-                        <constraint firstAttribute="centerY" secondItem="sbb-9z-gdT" secondAttribute="centerY" constant="-7.5" id="On8-oc-5tq"/>
-                        <constraint firstItem="ULh-Fg-i9c" firstAttribute="leading" secondItem="sbb-9z-gdT" secondAttribute="trailing" constant="1" id="WK4-hP-MaY"/>
+                        <constraint firstAttribute="centerY" secondItem="sbb-9z-gdT" secondAttribute="centerY" id="On8-oc-5tq"/>
+                        <constraint firstItem="ULh-Fg-i9c" firstAttribute="leading" secondItem="sbb-9z-gdT" secondAttribute="trailing" constant="8" symbolic="YES" id="WK4-hP-MaY"/>
                         <constraint firstAttribute="bottom" secondItem="reD-tf-vna" secondAttribute="bottom" constant="8" id="Wdl-1U-Pgv"/>
                         <constraint firstAttribute="centerY" secondItem="ULh-Fg-i9c" secondAttribute="centerY" id="fls-PT-Ke5"/>
                         <constraint firstAttribute="height" secondItem="ULh-Fg-i9c" secondAttribute="height" id="vQg-NC-ZCj"/>
@@ -86,6 +86,6 @@
     </objects>
     <resources>
         <image name="coverSlideToDisplay" width="184" height="102"/>
-        <image name="infoSlide" width="50" height="50"/>
+        <image name="iconi" width="40" height="40"/>
     </resources>
 </document>

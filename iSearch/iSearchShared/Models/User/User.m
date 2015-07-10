@@ -71,12 +71,4 @@
     _personalPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
     [FileUtils writeJSON:self.configDict Into:self.personalPath];
 }
-
-#pragma mark - class methods
-+ (NSString *)userID {
-    NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
-    
-    return configDict[USER_ID];
-}
 @end

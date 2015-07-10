@@ -13,7 +13,6 @@
 #import "FileUtils.h"
 #import "Slide.h"
 
-#import "MBProgressHUD.h"
 #import "MainAddNewTagView.h"
 #import "AddNewTagView.h"
 #import "ReViewController.h"
@@ -25,6 +24,7 @@
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemCancel; // 取消
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemSubmit; // 完成
 @property (nonatomic) NSArray *arrayTagName;
+
 @end
 
 @implementation TagListView
@@ -110,37 +110,25 @@
  */
 - (IBAction)actionSave:(UIBarButtonItem *)sender {
     NSString *slideTitle = [(DLRadioButton *)self.arrayTagName[0] selectedButton].titleLabel.text;
-    if(!slideTitle || [slideTitle length] == 0) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        
-        // Configure for text only and offset down
-        hud.mode = MBProgressHUDModeText;
-        hud.labelText = @"请选择或新建标签";
-        hud.margin = 10.f;
-        hud.removeFromSuperViewOnHide = YES;
-        
-        [hud hide:YES afterDelay:1];
-    } else {
-        Slide *slide = [Slide findByTitleInFavorited:slideTitle];
-        
-        MainAddNewTagView *masterView1 = [self masterViewController];
-        if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
-            ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
-            [masterView2 actionSavePagesAndMoveFiles:slide];
-            if(masterView1.closeMainViewAfterDone) {
-                [masterView2 dismissReViewController];
-            } else {
-                [masterView2 dismissPopupAddToTag];
-            }
+    Slide *slide = [Slide findByTitleInFavorited:slideTitle];
+    
+    MainAddNewTagView *masterView1 = [self masterViewController];
+    if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
+        ReViewController *masterView2  = (ReViewController*)[masterView1 masterViewController];
+        [masterView2 actionSavePagesAndMoveFiles:slide];
+        if(masterView1.closeMainViewAfterDone) {
+            [masterView2 dismissReViewController];
+        } else {
+            [masterView2 dismissPopupAddToTag];
         }
-        if([masterView1.fromViewControllerName isEqualToString:@"DisplayViewController"]) {
-            DisplayViewController *masterView2 = (DisplayViewController *)[masterView1 masterViewController];
-            [masterView2 actionSavePagesAndMoveFiles:slide];
-            if(masterView1.closeMainViewAfterDone) {
-                [masterView2 dismissDisplayViewController];
-            } else {
-                [masterView2 dismissPopupAddToTag];
-            }
+    }
+    if([masterView1.fromViewControllerName isEqualToString:@"DisplayViewController"]) {
+        DisplayViewController *masterView2  = (DisplayViewController *)[masterView1 masterViewController];
+        [masterView2 actionSavePagesAndMoveFiles:slide];
+        if(masterView1.closeMainViewAfterDone) {
+            [masterView2 dismissDisplayViewController];
+        } else {
+            [masterView2 dismissPopupAddToTag];
         }
     }
 }

@@ -44,6 +44,5 @@
 
 /// Override to release custom data before cell is reused.
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)selected;
 
 @end

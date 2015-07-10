@@ -14,8 +14,9 @@ typedef NS_ENUM(NSInteger, EntryButtonTag){
     EntryButtonHomePage     = 0,
     EntryButtonFavorite     = 1,
     EntryButtonNotification = 2,
-    EntryButtonSetting      = 3,
-    EntryButtonDownload     = 4
+    EntryButtonDownload     = 3,
+    EntryButtonSetting      = 4,
+    EntryButtonLogout       = 5
 };
 
 // HomePage GridViewTag
@@ -71,22 +72,21 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 };
 
 // Global
-#define DEBUG                   1
-#define PARAM_LANG              @"lang" // 传递给服务器的语言key
-#define APP_LANG                @"zh-CN" // 应用系统的语言
-#define BASE_URL                @"http://tsa-china.takeda.com.cn" //
-#define CONFIG_DIRNAME          @"Configs" // 所有配置档放置在些文件夹下
-#define DATE_FORMAT             @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
-#define DATE_SIMPLE_FORMAT      @"yyyy/MM/dd" // 公告通知api使用及日历控件
-#define NEW_TAG_FORMAT          @"yyMMddHHMMSS" // 创建新标签后新文件名称格式
-#define LOCAL_OR_SERVER_LOCAL   @"local" // 获取服务器信息或本地缓存
-#define LOCAL_OR_SERVER_SREVER  @"server"// 获取服务器信息或本地缓存
-#define DATABASE_DIRNAME        @"Database" // 数据库文件存放的文件夹名称
-#define DATABASE_FILEAME        @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
-#define CONTENT_ROOT_ID         @"1" // 获取目录分类的入口
-#define THUMBNAIL_DIRNAME       @"Thumbails" // 分类缩略图
-#define CACHE_DIRNAME           @"Caches"
-#define UPGRADE_CONFIG_FILENAME @"upgrade.json"
+#define DEBUG                  1
+#define PARAM_LANG             @"lang" // 传递给服务器的语言key
+#define APP_LANG               @"zh-CN" // 应用系统的语言
+#define BASE_URL               @"http://tsa-china.takeda.com.cn" //
+#define CONFIG_DIRNAME         @"Configs" // 所有配置档放置在些文件夹下
+#define DATE_FORMAT            @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
+#define DATE_SIMPLE_FORMAT     @"yyyy/MM/dd" // 公告通知api使用及日历控件
+#define NEW_TAG_FORMAT         @"yyMMddHHMMSS" // 创建新标签后新文件名称格式
+#define LOCAL_OR_SERVER_LOCAL  @"local" // 获取服务器信息或本地缓存
+#define LOCAL_OR_SERVER_SREVER @"server"// 获取服务器信息或本地缓存
+#define DATABASE_DIRNAME       @"Database" // 数据库文件存放的文件夹名称
+#define DATABASE_FILEAME       @"iSearch.sqlite3" // 数据库实体存放的文件名称（后缀.sqlite3）
+#define CONTENT_ROOT_ID        @"1" // 获取目录分类的入口
+#define THUMBNAIL_DIRNAME      @"Thumbails" // 分类缩略图
+#define CACHE_DIRNAME          @"Caches"
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/phptest/api/logjson.php"
@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 登陆相关
 #define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
 #define LOGIN_CONFIG_FILENAME  @"login.json" // 用户验证成功后，信息写入该配置档
-#define LOGIN_KEEP_HOURS       24 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
+#define LOGIN_KEEP_HOURS       12 // 用户在线登陆成功后，可LOGIN_KEEP_HOURS小时内[离线登陆]
 #define LOGIN_DATE_FORMAT      @"yyyy/MM/dd HH:mm:SS" // 用户验证时，用到时间字符串时的存储格式
 #define LOGIN_LAST_DEFAULT     @"1970/01/01 00:00:00" // 用户登陆前的默认登陆成功时间
 // API参数
@@ -132,13 +132,13 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define USER_LOGIN_LAST        @"LoginLastTime"
 
 // 目录相关(_FILE与获取文件相关，默认获取分类)
-#define CONTENT_URL_PATH          @"/uat/api/Categories_Api.php" // 请求目录的url路径
-#define CONTENT_FILE_URL_PATH     @"/uat/api/Files_Api.php" // 请求目录的url路径
+#define CONTENT_URL_PATH        @"/uat/api/Categories_Api.php" // 请求目录的url路径
+#define CONTENT_FILE_URL_PATH   @"/uat/api/Files_Api.php" // 请求目录的url路径
 #define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
-#define CONTENT_DIRNAME           @"Contents" // [目录]成功取得后，写入本地缓存文件夹
-#define DOWNLOAD_DIRNAME          @"Downloads"// [目录]中[文件]压缩包下载文件夹
-#define SLIDE_DIRNAME             @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
-#define CONTENT_CONFIG_FILENAME   @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
+#define CONTENT_DIRNAME         @"Contents" // [目录]成功取得后，写入本地缓存文件夹
+#define DOWNLOAD_DIRNAME        @"Downloads"// [目录]中[文件]压缩包下载文件夹
+#define SLIDE_DIRNAME            @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
+#define CONTENT_CONFIG_FILENAME @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
 // 目录Config中key
 #define CONTENT_KEY_DISPLAYID   @"DisplaySlideID" // 目录中文件已经下载，点击[演示]时通过该key传值
 #define CONTENT_KEY_NAVSTACK    @"NavStack" // 用户点击目录行为记录 - 栈 NSMuataleArray
@@ -194,9 +194,6 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define OFFLINE_COLUMN_ZIPURL    @"zip_url"
 #define OFFLINE_COLUMN_ZIPSIZE   @"zip_size"
 
-#define DB_COLUMN_CREATED      @"created_at"
-#define DB_COLUMN_UPDATED      @"updated_at"
-
 
 // 内容重组
 #define EDITPAGES_CONFIG_FILENAME  @"edit_pages.json" // 进入编辑界面
@@ -216,12 +213,10 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DESC_LOCAL_CREATEAT   @"local_created_at" // 本地更新时间
 #define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
 #define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
-#define SLIDE_DESC_FOLDERSIZE       @"slide_folder_size"  // 下载解压后文件大小
-#define SLIDE_DESC_THUMBNAIL        @"thumbnail_path"  // slidePath/thumbnailPath
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
-#define PAGE_HTML_FORMAT            @"html"
-#define PAGE_IMAGE_FORMAT           @"gif"
-#define PAGE_FROM_SLIDES            @"PageFromSlides"
+#define PAGE_HTML_FORMAT           @"html"
+#define PAGE_IMAGE_FORMAT          @"gif"
+#define PAGE_FROM_SLIDES           @"PageFromSlides"
 
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
@@ -244,23 +239,5 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define NOTIFICATION_FIELD_CREATEDATE @"EditTime" // 创建日期
 #define NOTIFICATION_FIELD_OCCURDATE  @"OccurTime"// 发生日期（公告为空)
 
-// app版本控件
-#define VERSION_LATEST                @"latest_version"
-#define VERSION_CHANGELOG             @"change_log"
-#define VERSION_INSERTURL             @"insert_url"
 
-// actionLog
-#define ACTIONLOG_TABLE_NAME          @"action_log"
-#define ACTIONLOG_COLUMN_UID          @"user_id"
-#define ACTIONLOG_COLUMN_FUNNAME      @"function_name"
-#define ACTIONLOG_COLUMN_ACTNAME      @"action_name"
-#define ACTIONLOG_COLUMN_ACTRET       @"action_return"
-#define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
-#define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
-#define ACTIONLOG_COLUMN_DELETED      @"is_deleted"
-
-#define ACTION_DOWNLOAD          @"download"
-#define ACTION_REMOVE            @"remove"
-#define ACTION_DISPLAY           @"display"
-#define ACTION_ADD_TO_FAVORITE   @"add_to_favorite"
 #endif

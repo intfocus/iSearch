@@ -6,48 +6,6 @@
 // project.
 
 
-// AFNetworking
-#define COCOAPODS_POD_AVAILABLE_AFNetworking
-#define COCOAPODS_VERSION_MAJOR_AFNetworking 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking 4
-
-// AFNetworking/NSURLConnection
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLConnection
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLConnection 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLConnection 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLConnection 4
-
-// AFNetworking/NSURLSession
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_NSURLSession
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_NSURLSession 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_NSURLSession 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_NSURLSession 4
-
-// AFNetworking/Reachability
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_Reachability
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_Reachability 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Reachability 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_Reachability 4
-
-// AFNetworking/Security
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_Security
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_Security 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Security 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_Security 4
-
-// AFNetworking/Serialization
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_Serialization
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_Serialization 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_Serialization 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_Serialization 4
-
-// AFNetworking/UIKit
-#define COCOAPODS_POD_AVAILABLE_AFNetworking_UIKit
-#define COCOAPODS_VERSION_MAJOR_AFNetworking_UIKit 2
-#define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 5
-#define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 4
-
 // CWPopup
 #define COCOAPODS_POD_AVAILABLE_CWPopup
 #define COCOAPODS_VERSION_MAJOR_CWPopup 1
@@ -60,35 +18,11 @@
 #define COCOAPODS_VERSION_MINOR_DLRadioButton 1
 #define COCOAPODS_VERSION_PATCH_DLRadioButton 1
 
-// FMDB/common
-#define COCOAPODS_POD_AVAILABLE_FMDB_common
-#define COCOAPODS_VERSION_MAJOR_FMDB_common 2
-#define COCOAPODS_VERSION_MINOR_FMDB_common 5
-#define COCOAPODS_VERSION_PATCH_FMDB_common 0
-
-// FMDB/standalone
-#define COCOAPODS_POD_AVAILABLE_FMDB_standalone
-#define COCOAPODS_VERSION_MAJOR_FMDB_standalone 2
-#define COCOAPODS_VERSION_MINOR_FMDB_standalone 5
-#define COCOAPODS_VERSION_PATCH_FMDB_standalone 0
-
-// FMDB/standalone/default
-#define COCOAPODS_POD_AVAILABLE_FMDB_standalone_default
-#define COCOAPODS_VERSION_MAJOR_FMDB_standalone_default 2
-#define COCOAPODS_VERSION_MINOR_FMDB_standalone_default 5
-#define COCOAPODS_VERSION_PATCH_FMDB_standalone_default 0
-
 // JTCalendar
 #define COCOAPODS_POD_AVAILABLE_JTCalendar
 #define COCOAPODS_VERSION_MAJOR_JTCalendar 1
 #define COCOAPODS_VERSION_MINOR_JTCalendar 2
 #define COCOAPODS_VERSION_PATCH_JTCalendar 3
-
-// MBProgressHUD
-#define COCOAPODS_POD_AVAILABLE_MBProgressHUD
-#define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
-#define COCOAPODS_VERSION_MINOR_MBProgressHUD 9
-#define COCOAPODS_VERSION_PATCH_MBProgressHUD 1
 
 // MMMaterialDesignSpinner
 #define COCOAPODS_POD_AVAILABLE_MMMaterialDesignSpinner
@@ -108,21 +42,15 @@
 #define COCOAPODS_VERSION_MINOR_SCLAlertView_Objective_C 7
 #define COCOAPODS_VERSION_PATCH_SCLAlertView_Objective_C 3
 
+// SKSplashView
+#define COCOAPODS_POD_AVAILABLE_SKSplashView
+#define COCOAPODS_VERSION_MAJOR_SKSplashView 0
+#define COCOAPODS_VERSION_MINOR_SKSplashView 1
+#define COCOAPODS_VERSION_PATCH_SKSplashView 0
+
 // SSZipArchive
 #define COCOAPODS_POD_AVAILABLE_SSZipArchive
 #define COCOAPODS_VERSION_MAJOR_SSZipArchive 0
 #define COCOAPODS_VERSION_MINOR_SSZipArchive 3
 #define COCOAPODS_VERSION_PATCH_SSZipArchive 2
-
-// sqlite3
-#define COCOAPODS_POD_AVAILABLE_sqlite3
-#define COCOAPODS_VERSION_MAJOR_sqlite3 3
-#define COCOAPODS_VERSION_MINOR_sqlite3 8
-#define COCOAPODS_VERSION_PATCH_sqlite3 10
-
-// sqlite3/common
-#define COCOAPODS_POD_AVAILABLE_sqlite3_common
-#define COCOAPODS_VERSION_MAJOR_sqlite3_common 3
-#define COCOAPODS_VERSION_MINOR_sqlite3_common 8
-#define COCOAPODS_VERSION_PATCH_sqlite3_common 10
 

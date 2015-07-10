@@ -21,9 +21,6 @@
 @end
 @implementation ApiUtils
 
-+ (NSString *)loginUrl:(NSString *)cookieValue {
-   return [NSString stringWithFormat:@"%@?%@=%@&%@=%@", LOGIN_URL_PATH, PARAM_LANG, APP_LANG, LOGIN_PARAM_UID, cookieValue];
-}
 + (NSURL *)downloadSlideURL:(NSString *)slideID {
     NSString *urlString = [NSString stringWithFormat:@"%@%@?%@=%@",
             BASE_URL, CONTENT_DOWNLOAD_URL_PATH, CONTENT_PARAM_FILE_DWONLOADID, slideID];
@@ -69,4 +66,5 @@
     }
     return notificationDatas;
 }
+
 @end

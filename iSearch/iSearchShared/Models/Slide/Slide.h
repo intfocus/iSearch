@@ -32,7 +32,6 @@
 @property (nonatomic, strong) NSString *categoryName;
 @property (nonatomic, strong) NSString *pageNum;
 @property (nonatomic, strong) NSString *zipSize;
-@property (nonatomic, strong) NSString *folderSize;
 @property (nonatomic, strong) NSString *zipUrl;
 @property (nonatomic, strong) NSString *createdDate;
 @property (nonatomic, strong) NSMutableArray *pages;
@@ -55,12 +54,10 @@
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 
-// class methods
-+ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
-+ (Slide *)findByTitleInFavorited:(NSString *)title;
-
 // instance methods
 - (Slide *)initSlide:(NSMutableDictionary *)dict isFavorite:(BOOL)isFavorite;
++ (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite;
++ (Slide *)findByTitleInFavorited:(NSString *)title;
 
 - (void)save;
 - (void)toCached;
@@ -79,9 +76,8 @@
 - (BOOL)isInFavorited:(BOOL)isForce;
 - (BOOL)isInFavorited;
 
-- (void)enterDisplayOrScanState;
+- (void)enterEditState;
 - (NSString *)dictSwpPath;
-- (void)removeDictSwp;
 - (NSMutableDictionary *)dictSwp;
 
 @end

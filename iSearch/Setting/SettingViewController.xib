@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingViewController">
             <connections>
-                <outlet property="containerView" destination="rAg-Vh-MgR" id="dIa-gU-VGt"/>
+                <outlet property="btnLogout" destination="pOl-48-sIE" id="UTK-eo-Pbt"/>
+                <outlet property="navigationPanel" destination="8LS-ua-IBE" id="5Yp-QP-rjQ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="uCg-7I-pie"/>
             </connections>
         </placeholder>
@@ -16,12 +17,34 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="500"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rAg-Vh-MgR">
-                    <rect key="frame" x="0.0" y="0.0" width="400" height="500"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pOl-48-sIE">
+                    <rect key="frame" x="44" y="448" width="312" height="44"/>
+                    <color key="backgroundColor" red="1" green="0.023279552038969475" blue="0.0025204763826884857" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="ljT-mu-LaL"/>
+                        <constraint firstAttribute="width" constant="312" id="z1N-gV-kRh"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                    <state key="normal" title="退出登陆">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ji9-g7-jky">
+                    <rect key="frame" x="0.0" y="0.0" width="400" height="44"/>
+                    <items>
+                        <navigationItem title="Title" id="8LS-ua-IBE"/>
+                    </items>
+                </navigationBar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailingMargin" secondItem="Ji9-g7-jky" secondAttribute="trailing" id="WnL-HF-hai"/>
+                <constraint firstItem="Ji9-g7-jky" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="Xk1-Mh-AGY"/>
+                <constraint firstItem="Ji9-g7-jky" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="diu-9y-nVU"/>
+                <constraint firstAttribute="centerX" secondItem="pOl-48-sIE" secondAttribute="centerX" id="yX6-S8-Ugp"/>
+                <constraint firstAttribute="bottom" secondItem="pOl-48-sIE" secondAttribute="bottom" constant="8" id="yhD-Jt-3ep"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>

@@ -12,8 +12,7 @@
 #import "const.h"
 #import "FileUtils.h"
 #import "SSZipArchive.h"
-
-#import "MBProgressHUD.h"
+#import "PopupView.h"
 #import "ExtendNSLogFunctionality.h"
 #import "DisplayViewController.h"
 #import "OfflineViewController.h"
@@ -21,6 +20,7 @@
 #define OFFLINE_DOWNLOAD_URL @"OFFLINE_DOWNLOAD_URL"
 
 @interface OfflineCell()
+@property (nonatomic, nonatomic) PopupView *popupView;
 @property (nonatomic, nonatomic) DisplayViewController *displayViewController;
 @property (nonatomic, nonatomic) Slide *slide;
 @end
@@ -73,7 +73,7 @@
     [configDict setObject:displayFrom forKey:SLIDE_DISPLAY_FROM];
     [FileUtils writeJSON:configDict Into:configPath];
     
-    #warning todo masterViewController call DisplayViewController
+#warning todo masterViewController call DisplayViewController
 }
 /**
  *  释放DisplayViewController内存
@@ -85,15 +85,13 @@
 
 #pragma mark - assistant methods
 - (void) showPopupView: (NSString*) text {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.offlineViewController.view animated:YES];
-    
-    // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText =text;
-    hud.margin = 10.f;
-    hud.removeFromSuperViewOnHide = YES;
-    
-    [hud hide:YES afterDelay:1];
+    if(self.popupView == nil) {
+        self.popupView = [[PopupView alloc]initWithFrame:CGRectMake(self.offlineViewController.view.frame.size.width/4, self.offlineViewController.view.frame.size.height/4, self.offlineViewController.view.frame.size.width/2, self.offlineViewController.view.frame.size.height/2)];
+        
+        self.popupView.ParentView = self.offlineViewController.view;
+    }
+    [self.popupView setText: text];
+    [self.offlineViewController.view addSubview:self.popupView];
 }
 
 /**
