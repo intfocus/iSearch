@@ -54,9 +54,14 @@
     if([unSyncRecords count] == 0) { return; }
     
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSString *actionLogUrl = [ApiUtils apiUrl:ACTION_LOGGER_URL_PATH];
+    NSDictionary *response = [[NSDictionary alloc] init];
     NSMutableArray *IDS = [[NSMutableArray alloc] init];
+    NSString *ID;
     for(dict in unSyncRecords) {
-        
+        ID = dict[@"id"];
+        [dict removeObjectForKey:@"id"];
+        response = [ApiUtils POST:actionLogUrl Param:dict];
     }
     [self.databaseUtils updateSyncedRecords:IDS];
 }

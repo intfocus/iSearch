@@ -12,4 +12,4 @@ hash = { UserId: "1",
 puts hash
 
 response = RestClient.post url, hash.to_json
-puts response.inspect
+puts response.headers

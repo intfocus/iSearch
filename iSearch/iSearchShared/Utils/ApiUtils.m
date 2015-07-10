@@ -31,6 +31,7 @@
     NSLog(@"%@", urlString);
     return [NSURL URLWithString:urlString];
 }
+
 + (NSMutableDictionary *)notifications {
     NSMutableDictionary *notificationDatas = [[NSMutableDictionary alloc] init];
     // 服务器获取成功则写入cache,否则读取cache
@@ -91,5 +92,49 @@
     else
         url = [BASE_URL stringByAppendingFormat:@"%@", path];
     return url;
+}
+
++ (NSDictionary *) GET {
+    __block NSDictionary* response = nil;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    [manager GET: @"http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=150&pid=1"
+                                          parameters: [NSDictionary dictionary]
+                                             success:^(AFHTTPRequestOperation* operation, id responseObject){
+                                                 response = responseObject;
+                                                 NSLog(@"response (block): %@", response);
+                                                 dispatch_semaphore_signal(semaphore);
+                                             }
+                                             failure:^(AFHTTPRequestOperation* operation, NSError* error){
+                                                 NSLog(@"Error: %@", error);
+                                                 dispatch_semaphore_signal(semaphore);
+                                             }];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    NSLog(@"response: %@", response);
+    return response;
+}
+
++ (NSDictionary *) POST:(NSString *)url Param:(NSMutableDictionary *)parameters {
+    __block NSDictionary* response = nil;
+    __block NSError* error = nil;
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    manager.completionQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    [manager POST: url
+      parameters: [NSDictionary dictionaryWithDictionary:parameters]
+         success:^(AFHTTPRequestOperation* operation, id responseObject){
+             response = responseObject;
+             NSLog(@"response (block): %@", response);
+             dispatch_semaphore_signal(semaphore);
+         }
+         failure:^(AFHTTPRequestOperation* operation, NSError* responseError){
+             error = responseError;
+             NSLog(@"Error: %@", responseError);
+             dispatch_semaphore_signal(semaphore);
+         }];
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    NSLog(@"response: %@", response);
+    return response;
 }
 @end

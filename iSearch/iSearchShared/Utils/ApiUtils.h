@@ -15,6 +15,10 @@
 + (NSURL *)downloadSlideURL:(NSString *)slideID;
 + (NSMutableDictionary *)notifications;
 + (NSString *)postActionLog:(NSMutableDictionary *) params;
+
++ (void) get;
++ (NSString *)apiUrl:(NSString *)path;
++ (NSDictionary *) POST:(NSString *)url Param:(NSMutableDictionary *)parameters;
 @end
 
 #endif

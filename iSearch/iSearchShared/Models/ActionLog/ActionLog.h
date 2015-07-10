@@ -16,7 +16,7 @@
  */
 @interface ActionLog : BaseModel
 
-// firm.im attributes
+// attributes
 @property (nonatomic, strong) NSString *FunName;
 @property (nonatomic, strong) NSString *ActName;
 @property (nonatomic, strong) NSString *ActRet;
@@ -35,6 +35,7 @@
  *  @param action action name
  */
 - (void)recordSlide:(Slide*)slide Action:(NSString *)action;
+- (void)syncRecords;
 @end
 
 #endif
