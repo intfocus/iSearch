@@ -500,12 +500,13 @@
         hud.labelText = @"加载中...";
         
         [hud showAnimated:YES whileExecutingBlock:^{
-            [self presentViewController:self.reViewController animated:NO completion:^{
-                [hud removeFromSuperview];
-            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:self.reViewController animated:NO completion:^{
+                    [hud removeFromSuperview];
+                }];
+            });
         } completionBlock:^{
         }];
-        
     }
 }
 
