@@ -12,7 +12,6 @@
 #define iContent_FileUtils_h
 
 #import <UIKit/UIKit.h>
-@class Slide;
 
 /**
  *  处理File相关的代码块合集
@@ -150,31 +149,6 @@
  */
 + (NSString *)humanFileSize:(NSString *)fileSize;
 
-/**
- *  收藏文件列表（FAVORITE_DIRNAME）
- *
- *  @return @{FILE_DESC_KEY: }
- */
-+ (NSMutableArray *) favoriteSlideList1;
-
-/** 创建新标签
- *
- * step1: 判断该标签名称是否存在
- *      创建FileID, 格式: r150501010101
- *      初始化重组内容文件的配置档
- *  step2.1 若不存在,则创建
- *  @param tagName 输入的新标签名称
- *
- *  结论: 调用过本函数，FILE_DIRNAME/FileID/desc.json 必须存在
- *       后继操作: 拷贝页面文件及文件夹
- *
- *  @param tagName   标签名称
- *  @param tagDesc   标签描述
- *  @param timestamp 时间戳 （创建新FileID时使用)
- */
-+ (Slide *)findOrCreateTag:(NSString *)tagName
-                      Desc:(NSString *)tagDesc
-                 Timestamp:(NSString *)timestamp;
 
 /**
  *  NSMutableDictionary写入本地文件
@@ -185,14 +159,6 @@
 + (void) writeJSON:(NSMutableDictionary *)data
               Into:(NSString *) slidePath;
 
-/**
- *  根据文件名称在收藏夹中查找文件描述档
- *
- *  @param fileName 文件名称
- *
- *  @return descJSOn
- */
-+ (NSMutableDictionary *) getDescFromFavoriteWithName:(NSString *)fileName;
 
 /**
  *  获取文档的缩略图，即文档中的pdf/gif文件; 文件名为PageID, 后缀应该小写
@@ -213,9 +179,7 @@
 + (NSString *)slideDownloaded:(NSString *)slideID;
 + (BOOL)isSlideDownloading:(NSString *)slideID;
 
-+ (void)copyFilePage:(NSString *)pName
-           FromSlide:(Slide *)fromSlide
-             ToSlide:(Slide *)toSlide;
+
 
 /**
  *  计算指定文件路径的文件大小

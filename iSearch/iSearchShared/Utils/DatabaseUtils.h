@@ -8,10 +8,7 @@
 
 #ifndef AudioNote_Database_Utils_h
 #define AudioNote_Database_Utils_h
-
 #import <Foundation/Foundation.h>
-
-
 
 @interface DatabaseUtils : NSObject
 
@@ -24,11 +21,7 @@
 - (NSInteger)executeSQL:(NSString *)sql;
 - (void) deleteWithId:(NSString *)ID;
 - (NSMutableArray*)searchFilesWithKeywords:(NSArray *)keywords;
-- (void) insertActionLog:(NSString *)FunName
-                 ActName:(NSString *)ActName
-                  ActObj:(NSString *)ActObj
-                  ActRet:(NSString *)ActRet;
-- (NSMutableArray *)actionLogs;
+
 @end
 
 #endif

@@ -15,7 +15,6 @@
  *    2. 对比当前app版本
  *    3. 不一致则提示更新
  *
- *
  */
 @interface Version : BaseModel
 
@@ -43,7 +42,8 @@
 
 // instance methods
 - (BOOL)isUpgrade;
-- (void)checkUpdate:(void(^)())successBlock FailBloc:(void(^)())failBlock;
 - (void)reload;
+- (void)updateTimestamp;
+- (void)save;
 @end
 #endif

@@ -11,7 +11,7 @@
 #import "Slide.h"
 #import "message.h"
 
-#import "ApiUtils.h"
+#import "Url+Param.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
@@ -47,7 +47,6 @@
 
 - (void)setDict:(NSMutableDictionary *)dict {
     self.slide = [[Slide alloc] initSlide:dict isFavorite:self.isFavorite];
-        
     self.slideID = self.slide.ID;
     self.dirName = self.slide.dirName;
     self.labelTitle.text = self.slide.title;
@@ -88,7 +87,9 @@
     } else {
         if([HttpUtils isNetworkAvailable]) {
             self.isDownloadRequestValid = YES;
-            [self downloadZip:[ApiUtils downloadSlideURL:self.slideID]];
+            NSString *urlString = [Url slideDownload:self.slideID];
+            NSURL *url = [NSURL URLWithString:urlString];
+            [self downloadZip:url];
         } else {
             [self showPopupView:@"无网络，不下载"];
         }
@@ -230,8 +231,8 @@
  *   "Transfer-Encoding" = Identity;
  *   "X-Powered-By" = "PHP/5.6.8, ASP.NET";
  *
- *  @param connection <#connection description#>
- *  @param response   <#response description#>
+ *  @param connection connection
+ *  @param response response
  */
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     NSHTTPURLResponse* http = (NSHTTPURLResponse*)response;
@@ -284,7 +285,7 @@
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:self.slide.path];
     NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slide.ID, state ? @"成功" : @"失败"]);
     // make sure not nest
-    if(!self.slide.isDownloaded) {
+    if(![self.slide isDownloaded]) {
         NSString *slidePath = [self.slide.path stringByAppendingPathComponent:self.slide.ID];
         if([FileUtils checkFileExist:slidePath isDir:YES]) {
             NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", self.slide.path];

@@ -32,12 +32,12 @@
 #import "message.h"
 #import "User.h"
 #import "Slide.h"
-#import "Version.h"
+#import "Version+Self.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
-#import "ApiUtils.h"
 #import "DateUtils.h"
 #import "FileUtils.h"
+#import "ApiHelper.h"
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 
@@ -87,9 +87,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if([HttpUtils isNetworkAvailable]) {
-        [self checkAppVersionUpgrade];
-    }
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management
@@ -101,7 +101,6 @@
 #pragma mark - check version upgrade
 
 - (void)checkAppVersionUpgrade {
-    
     self.btnSubmit.enabled = NO;
     [self.btnSubmit setTitle:@"检测版本..." forState:UIControlStateNormal];
     
@@ -147,10 +146,10 @@
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
-//    
-//    self.cookieValue = @"E99658602";
-//    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
-//    return;
+    
+    self.cookieValue = @"nm6586tst";//@"E99658602";
+    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
+    return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
@@ -232,47 +231,36 @@
 }
 
 - (void)actionOutsideLoginSuccessfully {
-    NSError *error;
     NSMutableArray *loginErrors = [[NSMutableArray alloc] init];
     
     self.labelPropmt.text = @"获取用户信息...";
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
 
-    NSString *response = [HttpUtils httpGet:[ApiUtils loginUrl:self.cookieValue]];
-    NSMutableDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&error];
-
-    NSErrorPrint(error, @"login response convert into json");
-    
+    NSMutableDictionary *responseDict = [ApiHelper login:self.cookieValue];
     // 服务器交互成功
-    if(!error) {
-        NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
-        if([responseResult length] == 0) {
-            self.user.loginUserName    = self.cookieValue;
-            self.user.loginPassword    = self.cookieValue;
-            self.user.loginRememberPWD = YES;
-            self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
-            
-            // 服务器信息
-            self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
-            self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
-            self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
-            self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
-            self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
-            
-            // write into local config
-            [self.user save];
-            [self.user writeInToPersonal];
-            
-            // 跳至主界面
-            [self enterMainViewController];
-            return;
-        } else {
-            [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", responseResult]];
-        }
+    NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
+    if(responseResult && [responseResult length] == 0) {
+        self.user.loginUserName    = self.cookieValue;
+        self.user.loginPassword    = self.cookieValue;
+        self.user.loginRememberPWD = YES;
+        self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
+        
+        // 服务器信息
+        self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
+        self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
+        self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
+        self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
+        self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
+        
+        // write into local config
+        [self.user save];
+        [self.user writeInToPersonal];
+        
+        // 跳至主界面
+        [self enterMainViewController];
+        return;
     } else {
-        [loginErrors addObject:[NSString stringWithFormat:@"服务器响应解析失败:%@", response]];
+        [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
     }
 
     if([loginErrors count])

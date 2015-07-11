@@ -11,9 +11,6 @@
 #ifndef iLogin_HttpUtils_h
 #define iLogin_HttpUtils_h
 
-
-
-
 @interface HttpUtils : NSObject
 
 + (NSString *) httpGet: (NSString *) path;

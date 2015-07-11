@@ -13,11 +13,11 @@
 
 #import "User.h"
 #import "const.h"
+#import "DataHelper.h"
 #import "HttpUtils.h"
 #import "FileUtils.h"
 #import "ViewSlide.h"
 #import "ViewCategory.h"
-#import "ContentUtils.h"
 
 #import "HomeViewController.h"
 #import "MainViewController.h"
@@ -77,7 +77,7 @@
 
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [ContentUtils loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:type Key:CONTENT_FIELD_ID Order:YES];
+    NSArray *array = [DataHelper loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:type Key:CONTENT_FIELD_ID Order:YES];
     _dataList = [array objectAtIndex:0];
 }
 
@@ -129,7 +129,7 @@
     
     
     [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
-    viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
+    viewCategory.btnImageCover.tag = index;
     [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [cell setContentView: viewCategory];
@@ -145,15 +145,14 @@
  *  @param sender UIButton
  */
 - (IBAction)actionCategoryClick:(UIButton *)sender {
-    NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    NSInteger index = [sender tag];
+    NSMutableDictionary *currentDict = _dataList[index];
     
     // 点击分类导航行为记录
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSLog(@"%@", configPath);
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    [mutableArray addObject:categoryID];
-    [configDict setObject:mutableArray forKey:CONTENT_KEY_NAVSTACK];
+    configDict[CONTENT_KEY_NAVSTACK] = [NSMutableArray arrayWithArray:@[currentDict]];
     [FileUtils writeJSON:configDict Into:configPath];
     
     // enter ContentViewController

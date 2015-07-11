@@ -14,7 +14,7 @@
 #import "MainEntryButton.h"
 
 #import "const.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ViewUtils.h"
 
 @interface NewsListTabView () <UITableViewDataSource,UITableViewDelegate>
@@ -35,7 +35,7 @@
     UINib *nib=[UINib nibWithNibName:NSStringFromClass([NewsListCell class]) bundle:nil];
     [self.listView registerNib:nib forCellReuseIdentifier:@"news"];
     
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
     self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
     self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
     [self onTabClick:self.tabView];
@@ -96,7 +96,8 @@
 // 自定义cell高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *dict = [self.tableItems objectAtIndex:indexPath.row];
-    NSString *message = dict[NOTIFICATION_FIELD_MSG];
+    NSString *message = dict[NOTIFICATION_FIELD_TITLE
+                             ];
     CGSize size = [ViewUtils sizeForTableViewCell:message Width:240 FontSize:12];
     return size.height + 10.0f;
 }

@@ -10,8 +10,8 @@
 #import "FavoriteViewController.h"
 #import "GMGridView.h"
 #import "ViewSlide.h"
-#import "FileUtils.h"
-#import "ContentUtils.h"
+#import "FileUtils+Slide.h"
+#import "DataHelper.h"
 #import "const.h"
 #import "Slide.h"
 
@@ -56,7 +56,7 @@
         [_dataList addObject:[slide refreshFields]];
     }
     if([_dataList count] > 0) {
-        _dataList = [ContentUtils sortArray:_dataList Key:CONTENT_FIELD_TITLE Ascending:NO];
+        _dataList = [DataHelper sortArray:_dataList Key:CONTENT_FIELD_TITLE Ascending:NO];
     }
     [_gridView reloadData];
     
@@ -78,15 +78,14 @@
     gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     gridView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:gridView];
-    _gridView = gridView;
-    
-    _gridView.style = GMGridViewStyleSwap;
-    _gridView.itemSpacing = 10;
-    _gridView.minEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-    _gridView.centerGrid = YES;
-    _gridView.dataSource = self;
+    _gridView                 = gridView;
+    _gridView.style           = GMGridViewStyleSwap;
+    _gridView.itemSpacing     = 10;
+    _gridView.minEdgeInsets   = UIEdgeInsetsMake(5, 5, 5, 5);
+    _gridView.centerGrid      = YES;
+    _gridView.dataSource      = self;
     _gridView.backgroundColor = [UIColor clearColor];
-    _gridView.mainSuperView = self.view;
+    _gridView.mainSuperView   = self.view;
 }
 
 //////////////////////////////////////////////////////////////
@@ -108,14 +107,14 @@
     
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
-        NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-        
-        ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
-        viewSlide.isFavorite = YES;
-        viewSlide.dict = currentDict;
-        viewSlide.masterViewController = [self masterViewController];
-        [cell setContentView:viewSlide];
     }
+    NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
+    
+    ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
+    viewSlide.isFavorite = YES;
+    viewSlide.dict = currentDict;
+    viewSlide.masterViewController = [self masterViewController];
+    [cell setContentView:viewSlide];
     
     return cell;
 }

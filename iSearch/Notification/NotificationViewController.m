@@ -50,7 +50,7 @@
 #import "DateUtils.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ExtendNslogfunctionality.h"
 #import "MainViewController.h"
 
@@ -66,6 +66,8 @@
 @property (strong, nonatomic) NSMutableArray *dataListOne;   // 通告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwo;   // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
+@property (strong, nonatomic) NSNumber *widthOne;
+@property (strong, nonatomic) NSNumber *widthTwo;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
 @end
@@ -86,6 +88,8 @@
     self.dataListOne     = [[NSMutableArray alloc] init];
     self.dataListTwo     = [[NSMutableArray alloc] init];
     self.dataListTwoDate = [[NSMutableArray alloc] init];
+    self.widthOne = [[NSNumber alloc] init];
+    self.widthTwo = [[NSNumber alloc] init];
     // 服务器取数据
     [self dealWithData];
     // 通知列表
@@ -135,6 +139,13 @@
     [super viewDidAppear:animated];
     
     [self.calendar reloadData]; // Must be call in viewDidAppear
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    self.widthTwo = [NSNumber numberWithFloat:self.viewCalendar.bounds.size.width];
+    self.widthOne = [NSNumber numberWithFloat:(self.view.bounds.size.width-self.viewCalendar.bounds.size.width)];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -237,7 +248,7 @@
 #pragma mark - Utils
 
 - (void)dealWithData {
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
 
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
@@ -402,15 +413,17 @@
  */
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
-    NSInteger width = self.viewCalendar.bounds.size.width;
+    CGFloat width;
     switch([tableView tag]) {
-        case NotificationTableViewONE:
+        case NotificationTableViewONE: {
             currentDict = [self.dataListOne objectAtIndex:indexPath.row];
-            width = self.view.bounds.size.width - width;
+            width = [self.widthOne floatValue]-5.0f;
+        }
             break;
-        case NotificationTableViewTWO:
-        //case NotificationTableViewTHREE:
+        case NotificationTableViewTWO: {
             currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
+            width = [self.widthTwo floatValue]-5.0f;
+        }
             break;
 
         default:

@@ -73,10 +73,26 @@
 }
 
 #pragma mark - class methods
+
+/**
+ *  快捷获取用户ID
+ *
+ *  @return 用户ID
+ */
 + (NSString *)userID {
+    return [self configData][USER_ID];
+}
+/**
+ *  快捷获取部门ID
+ *
+ *  @return 部门ID
+ */
++ (NSString *)deptID {
+    return [self configData][USER_DEPTID];
+}
+
++ (NSMutableDictionary *)configData {
     NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *configDict =[FileUtils readConfigFile:configPath];
-    
-    return configDict[USER_ID];
+    return [FileUtils readConfigFile:configPath];
 }
 @end

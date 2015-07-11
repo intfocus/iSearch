@@ -10,6 +10,7 @@
 #import "AddNewTagView.h"
 #import "const.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "DateUtils.h"
 
 #import "MainAddNewTagView.h"

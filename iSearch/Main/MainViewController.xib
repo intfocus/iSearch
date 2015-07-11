@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7706"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
@@ -17,16 +17,28 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xck-ws-1hK">
-                    <rect key="frame" x="0.0" y="0.0" width="200" height="600"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xck-ws-1hK">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="SLn-bR-zdY"/>
+                    </constraints>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hq5-K7-V6e">
-                    <rect key="frame" x="200" y="0.0" width="400" height="600"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hq5-K7-V6e">
+                    <rect key="frame" x="240" y="0.0" width="360" height="600"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="hq5-K7-V6e" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Bdy-Rj-RqC"/>
+                <constraint firstAttribute="trailing" secondItem="hq5-K7-V6e" secondAttribute="trailing" id="JxH-iE-AaM"/>
+                <constraint firstAttribute="bottom" secondItem="Xck-ws-1hK" secondAttribute="bottom" id="K80-rS-Qip"/>
+                <constraint firstItem="hq5-K7-V6e" firstAttribute="leading" secondItem="Xck-ws-1hK" secondAttribute="trailing" id="QeC-aM-wpK"/>
+                <constraint firstItem="Xck-ws-1hK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Uwy-w9-uhX"/>
+                <constraint firstAttribute="bottom" secondItem="hq5-K7-V6e" secondAttribute="bottom" id="ajz-ez-mXB"/>
+                <constraint firstItem="Xck-ws-1hK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eEn-4n-7Pd"/>
+            </constraints>
             <point key="canvasLocation" x="347" y="353"/>
         </view>
     </objects>

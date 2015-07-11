@@ -9,15 +9,14 @@
 #ifndef iLogin_message_h
 #define iLogin_message_h
 
-
 // login error
-#define LOGIN_ERROR_USER_EMPTY     @"用户名不可以空"
-#define LOGIN_ERROR_PWD_EMPTY      @"登陆密码不可以空"
-#define LOGIN_ERROR_LAST_TIMEOUT   @"距离上次在线登陆时过久，请重新登陆。\n上次登陆:"
-#define LOGIN_ERROR_USER_NOT_MATCH @"本次登陆用户与上次不同"
-#define LOGIN_ERROR_PWD_NOT_MATCH @"本次登陆密码错误"
-#define LOGIN_ERROR_LAST_GT_CURRENT @"上次登陆日期大于当前日期"
-#define LOGIN_ERROR_EXPIRED_OUT_N_HOURS @"距离上次登陆时间超出12小时"
+#define LOGIN_ERROR_USER_EMPTY          @"用户名不可以空"
+#define LOGIN_ERROR_PWD_EMPTY           @"登陆密码不可以空"
+#define LOGIN_ERROR_LAST_TIMEOUT        @"距离上次在线登陆时过久，请重新登陆。\n上次登陆:"
+#define LOGIN_ERROR_USER_NOT_MATCH      @"本次登陆用户与上次不同"
+#define LOGIN_ERROR_PWD_NOT_MATCH       @"本次登陆密码错误"
+#define LOGIN_ERROR_LAST_GT_CURRENT     @"上次登陆日期大于当前日期"
+#define LOGIN_ERROR_EXPIRED_OUT_N_HOURS @"距离上次登陆时间超出24小时"
 
 // ERROR
 #define ERROR_NO_NETWORK @"无网络环境"

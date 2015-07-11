@@ -14,7 +14,8 @@
 #import "const.h"
 #import "ViewSlide.h"
 #import "FileUtils.h"
-#import "ContentUtils.h"
+#import "DataHelper.h"
+#import "FileUtils+Slide.h"
 #import "Slide.h"
 
 #import "MainViewController.h"
@@ -49,7 +50,7 @@
         [_dataList addObject:[slide refreshFields]];
     }
     if([_dataList count] > 0) {
-        _dataList = [ContentUtils sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
+        _dataList = [DataHelper sortArray:_dataList Key:SLIDE_DESC_LOCAL_UPDATEAT Ascending:NO];
     }
     [_gridView reloadData];
     NSLog(@"viewDidAppear.");

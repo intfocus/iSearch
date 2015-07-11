@@ -10,6 +10,7 @@
 #import "ContentUtils.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
+#import "ApiHelper.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "Slide.h"
@@ -26,11 +27,11 @@
  *  获取目录;
  *  分类在前，文档在后；各自默认按名称升序排序；
  *
- *  @param deptID        <#deptID description#>
- *  @param categoryID    <#categoryID description#>
- *  @param localOrServer <#localOrServer description#>
+ *  @param deptID        部门ID
+ *  @param categoryID    分类ID
+ *  @param localOrServer local or sever
  *
- *  @return <#return value description#>
+ *  @return 数据列表
  */
 + (NSArray*)loadContentData:(NSString *)deptID
                  CategoryID:(NSString *)categoryID
@@ -52,26 +53,30 @@
     if(!categoryList) { categoryList = [[NSMutableArray alloc] init]; }
     if(!slideList) { slideList = [[NSMutableArray alloc] init]; }
     
-    NSInteger i = 0;
-    NSString *sID = [[NSString alloc] init];
-    NSNumber *nID = [[NSNumber alloc] init];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSString *sID             = [[NSString alloc] init];
+    NSNumber *nID             = [[NSNumber alloc] init];
     // order
+    NSInteger i = 0;
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     if([categoryList count] > 0) {
-        for(dict in categoryList) {
-            sID = dict[CONTENT_FIELD_ID];
-            nID = [NSNumber numberWithInteger:[sID intValue]];
-            [dict setObject:nID forKey:CONTENT_SORT_KEY];
-            if(!dict[CONTENT_FIELD_TYPE])
-                [dict setObject:CONTENT_CATEGORY forKey:CONTENT_FIELD_TYPE];
+        for(i = 0; i < [categoryList count]; i++) {
+            dict = [NSMutableDictionary dictionaryWithDictionary:categoryList[i]];
+            sID  = dict[CONTENT_FIELD_ID];
+            nID  = [NSNumber numberWithInteger:[sID intValue]];
+            dict[CONTENT_SORT_KEY]   = nID;
+            // warning: 服务器返回的分类列表数据中，未设置type
+            dict[CONTENT_FIELD_TYPE] = CONTENT_CATEGORY;
+            categoryList[i]          = dict;
         }
         categoryList = [ContentUtils sortArray:categoryList Key:CONTENT_SORT_KEY Ascending:isAsceding];
     }
     if([slideList count] > 0) {
-        for(i = 0; i < [categoryList count]; i++) {
-            sID = categoryList[i][CONTENT_FIELD_ID];
-            nID = [NSNumber numberWithInteger:[sID intValue]];
-            [categoryList[i] setObject:nID forKey:CONTENT_SORT_KEY];
+        for(i = 0; i < [slideList count]; i++) {
+            dict = [NSMutableDictionary dictionaryWithDictionary:slideList[i]];
+            sID  = dict[CONTENT_FIELD_ID];
+            nID  = [NSNumber numberWithInteger:[sID intValue]];
+            dict[CONTENT_SORT_KEY]   = nID;
+            slideList[i]             = dict;
         }
         slideList = [ContentUtils sortArray:slideList Key:CONTENT_SORT_KEY Ascending:isAsceding];
     }
@@ -84,42 +89,36 @@
                                   CategoryID:(NSString *)categoryID {
     NSError *error;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    NSString *urlPath = [[NSString alloc] init];
-    NSString *response = [[NSString alloc] init];
     
     // 无网络直接返回空值
     if(![HttpUtils isNetworkAvailable]) {
         return mutableArray;
     }
     
+    NSMutableDictionary *responseJSON = [[NSMutableDictionary alloc] init];
     if([type isEqualToString:CONTENT_CATEGORY]) {
-        urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_PARENTID, categoryID];
+        responseJSON = [ApiHelper categories:categoryID DeptID:deptID];
     } else if([type isEqualToString:CONTENT_SLIDE]) {
-        urlPath = [NSString stringWithFormat:@"%@?lang=%@&%@=%@&%@=%@", CONTENT_FILE_URL_PATH, APP_LANG, CONTENT_PARAM_DEPTID, deptID, CONTENT_PARAM_FILE_CATEGORYID, categoryID];
+        responseJSON = [ApiHelper slides:categoryID DeptID:deptID];
     }
-    
-    response = [HttpUtils httpGet: urlPath];
-    NSMutableDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:[response dataUsingEncoding:NSUTF8StringEncoding]
-                                                                        options:NSJSONReadingMutableContainers
-                                                                          error:&error];
+
     NSErrorPrint(error, @"string convert into json");
     if(responseJSON[CONTENT_FIELD_DATA]) {
-        mutableArray = responseJSON[CONTENT_FIELD_DATA];
+        mutableArray = [NSMutableArray arrayWithArray:responseJSON[CONTENT_FIELD_DATA]];
     }
     
-    // update local slide cache info
+    // update local slide when downloaded
     if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         Slide *slide;
-        for(dict in mutableArray) {
+        for(NSMutableDictionary *dict in mutableArray) {
             slide = [[Slide alloc]initSlide:dict isFavorite:NO];
-            [slide toCached];
+            //[slide toCached];
             if([slide isDownloaded:NO]) { [slide save]; }
         }
     }
     
-    // 解析成功、获取数据不为空时，写入本地缓存
-    if(!error && [mutableArray count] > 0) {
+    // 获取数据不为空时，写入本地缓存
+    if([mutableArray count] > 0) {
         NSString *cacheName = [ContentUtils contentCacheName:type ID:categoryID];
         NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
         [FileUtils writeJSON:responseJSON Into:cachePath];

@@ -11,7 +11,8 @@
 
 #import "const.h"
 #import "Slide.h"
-#import "DatabaseUtils.h"
+#import "DataHelper.h"
+#import "DatabaseUtils+ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 
 @interface ActionLog()
@@ -19,12 +20,12 @@
 @end
 
 @implementation ActionLog
-//- (ActionLog *)init {
-//    if(self = [self init]) {
-//        self.databaseUtils = [[DatabaseUtils alloc] init];
-//    }
-//    return self;
-//}
+- (ActionLog *)init {
+    if(self = [super init]) {
+        _databaseUtils = [[DatabaseUtils alloc] init];
+    }
+    return self;
+}
 
 /**
  *  记录列表
@@ -32,9 +33,6 @@
  *  @return <#return value description#>
  */
 - (NSMutableArray *)records {
-    if(!self.databaseUtils) {
-        self.databaseUtils = [[DatabaseUtils alloc] init];
-    }
     return [self.databaseUtils actionLogs];
 }
 
@@ -45,13 +43,26 @@
  *  @param action action name
  */
 - (void)recordSlide:(Slide*)slide Action:(NSString *)action {
-    if(!self.databaseUtils) {
-        self.databaseUtils = [[DatabaseUtils alloc] init];
-    }
     [self.databaseUtils insertActionLog:[NSString stringWithFormat:@"%@ slide#%@ in %@", action,slide.ID, slide.dirName]
                                 ActName:action
                                  ActObj:slide.ID
                                  ActRet:slide.dirName];
 }
 
+- (void)syncRecords {
+    NSMutableArray *unSyncRecords = [self.databaseUtils unSyncRecords];
+    if([unSyncRecords count] == 0) { return; }
+//    
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+//    NSString *actionLogUrl = [ApiUtils apiUrl:ACTION_LOGGER_URL_PATH];
+//    NSDictionary *response = [[NSDictionary alloc] init];
+//    NSMutableArray *IDS = [[NSMutableArray alloc] init];
+//    NSString *ID;
+//    for(dict in unSyncRecords) {
+//        ID = dict[@"id"];
+//        [dict removeObjectForKey:@"id"];
+//        response = [ApiUtils POST:actionLogUrl Param:dict];
+//    }
+//    [self.databaseUtils updateSyncedRecords:IDS];
+}
 @end

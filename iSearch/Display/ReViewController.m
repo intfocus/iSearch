@@ -52,6 +52,7 @@
 #import "Slide.h"
 #import "message.h"
 #import "FileUtils.h"
+#import "FileUtils+Slide.h"
 #import "ViewUtils.h"
 #import "ExtendNSLogFunctionality.h"
 
@@ -332,10 +333,12 @@
         cell.selectedButtonIcon    = [UIImage imageNamed:@"coverSlideSelected"];
         cell.selectedButtonOffset  = CGPointMake(0, 0);
     }
+        
+    NSArray *viewSlidePages = [[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:nil options:nil];
     
-    ViewSlidePage *viewSlidePage = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlidePage" owner:self options:nil] objectAtIndex: 0];
+    ViewSlidePage *viewSlidePage = [viewSlidePages firstObject];
     NSString *currentPageName = [_dataList objectAtIndex:index];
-
+    
     
     if([currentPageName isEqualToString: self.pageName]) {
         [viewSlidePage hightLight];
@@ -358,9 +361,11 @@
     tapGesture.view.tag = index;
     [viewSlidePage.btnMask setTag:index];
     [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
-
+    
     [cell setContentView:viewSlidePage];
     if(self.selectState) { [cell setSelected:NO]; }
+    
+    
     
     return cell;
 }
