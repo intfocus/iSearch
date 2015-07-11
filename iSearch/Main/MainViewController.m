@@ -15,7 +15,6 @@
 #import "SettingViewController.h"
 
 #import "FileUtils.h"
-#import "ContentUtils.h"
 #import "const.h"
 #import "ExtendNSLogFunctionality.h"
 

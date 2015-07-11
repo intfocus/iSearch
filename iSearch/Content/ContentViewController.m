@@ -62,7 +62,6 @@
 #import "MainViewController.h"
 
 #import "User.h"
-#import "ContentUtils.h"
 #import "DataHelper.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
@@ -377,18 +376,18 @@
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
         case FilterAll:{
-            self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
-            self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            self.dataListOne = [DataHelper sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            self.dataListTwo = [DataHelper sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
             NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
             _dataList = [NSMutableArray arrayWithArray:array];
         }
             break;
         case FilterCategory: {
-            _dataList = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            _dataList = [DataHelper sortArray:self.dataListOne Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
         }
             break;
         case FilterSlide: {
-            _dataList = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
+            _dataList = [DataHelper sortArray:self.dataListTwo Key:CONTENT_FIELD_CREATEDATE Ascending:isAscending];
         }
             break;
         default:
@@ -409,18 +408,18 @@
     BOOL isAscending = ([sender tag] == SortByAscending);
     switch ([self.filterType intValue]) {
         case FilterAll:{
-            self.dataListOne = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
-            self.dataListTwo = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            self.dataListOne = [DataHelper sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            self.dataListTwo = [DataHelper sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
             NSArray *array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
             _dataList = [NSMutableArray arrayWithArray:array];
         }
             break;
         case FilterCategory: {
-            _dataList = [ContentUtils sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            _dataList = [DataHelper sortArray:self.dataListOne Key:CONTENT_FIELD_NAME Ascending:isAscending];
         }
             break;
         case FilterSlide: {
-            _dataList = [ContentUtils sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
+            _dataList = [DataHelper sortArray:self.dataListTwo Key:CONTENT_FIELD_NAME Ascending:isAscending];
         }
             break;
         default:

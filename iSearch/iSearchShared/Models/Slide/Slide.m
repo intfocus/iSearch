@@ -13,7 +13,7 @@
 #import "FileUtils.h"
 #import "FileUtils+Slide.h"
 #import "DateUtils.h"
-#import "ContentUtils.h"
+#import "CacheHelper.h"
 #import "ExtendNSLogFunctionality.h"
 
 typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
@@ -179,7 +179,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 #pragma mark - around write cache
 
 - (NSString *)cacheName {
-    return [ContentUtils contentCacheName:self.type ID:self.ID];
+    return [CacheHelper contentCacheName:self.type ID:self.ID];
 }
 - (NSString *)cachePath {
     return [FileUtils getPathName:CACHE_DIRNAME FileName:[self cacheName]];

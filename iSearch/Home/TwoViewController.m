@@ -13,11 +13,11 @@
 
 #import "User.h"
 #import "const.h"
+#import "DataHelper.h"
 #import "HttpUtils.h"
 #import "FileUtils.h"
 #import "ViewSlide.h"
 #import "ViewCategory.h"
-#import "ContentUtils.h"
 
 #import "HomeViewController.h"
 #import "MainViewController.h"
@@ -77,7 +77,7 @@
 
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [ContentUtils loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:type Key:CONTENT_FIELD_ID Order:YES];
+    NSArray *array = [DataHelper loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:type Key:CONTENT_FIELD_ID Order:YES];
     _dataList = [array objectAtIndex:0];
 }
 

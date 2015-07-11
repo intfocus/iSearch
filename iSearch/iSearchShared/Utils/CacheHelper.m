@@ -50,7 +50,7 @@
  *
  *  @return 缓存数据
  */
-+ (NSMutableArray *) readContents:(NSString *)type ID:(NSString *)ID {
++ (NSMutableArray *)readContents:(NSString *)type ID:(NSString *)ID {
     NSString *cacheName = [self contentCacheName:type ID:ID];
     NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
     

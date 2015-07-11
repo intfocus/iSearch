@@ -11,7 +11,7 @@
 #import "GMGridView.h"
 #import "ViewSlide.h"
 #import "FileUtils+Slide.h"
-#import "ContentUtils.h"
+#import "DataHelper.h"
 #import "const.h"
 #import "Slide.h"
 
@@ -56,7 +56,7 @@
         [_dataList addObject:[slide refreshFields]];
     }
     if([_dataList count] > 0) {
-        _dataList = [ContentUtils sortArray:_dataList Key:CONTENT_FIELD_TITLE Ascending:NO];
+        _dataList = [DataHelper sortArray:_dataList Key:CONTENT_FIELD_TITLE Ascending:NO];
     }
     [_gridView reloadData];
     

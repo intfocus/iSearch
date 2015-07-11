@@ -45,7 +45,6 @@
 		C464973F1B2D88CC005E3903 /* ThreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464973A1B2D88CC005E3903 /* ThreeViewController.xib */; };
 		C46497401B2D88CC005E3903 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C464973C1B2D88CC005E3903 /* TwoViewController.m */; };
 		C46497411B2D88CC005E3903 /* TwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464973D1B2D88CC005E3903 /* TwoViewController.xib */; };
-		C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497451B2D8BFB005E3903 /* ContentUtis.m */; };
 		C464974A1B2D9737005E3903 /* OfflineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C46497491B2D9737005E3903 /* OfflineCell.m */; };
 		C464974C1B2D9740005E3903 /* OfflineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C464974B1B2D973F005E3903 /* OfflineCell.xib */; };
 		C483230B1B49490D00E7251D /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C48323071B49490D00E7251D /* SettingMainView.m */; };
@@ -189,8 +188,6 @@
 		C464973B1B2D88CC005E3903 /* TwoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwoViewController.h; sourceTree = "<group>"; };
 		C464973C1B2D88CC005E3903 /* TwoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwoViewController.m; sourceTree = "<group>"; };
 		C464973D1B2D88CC005E3903 /* TwoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwoViewController.xib; sourceTree = "<group>"; };
-		C46497451B2D8BFB005E3903 /* ContentUtis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentUtis.m; sourceTree = "<group>"; };
-		C46497471B2D8C03005E3903 /* ContentUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ContentUtils.h; sourceTree = "<group>"; };
 		C46497481B2D972E005E3903 /* OfflineCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OfflineCell.h; sourceTree = "<group>"; };
 		C46497491B2D9737005E3903 /* OfflineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineCell.m; sourceTree = "<group>"; };
 		C464974B1B2D973F005E3903 /* OfflineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineCell.xib; sourceTree = "<group>"; };
@@ -547,8 +544,6 @@
 				C44923571B2AF72900E3BB65 /* ContentViewController.h */,
 				C44923581B2AF72900E3BB65 /* ContentViewController.m */,
 				C44923591B2AF72900E3BB65 /* ContentViewController.xib */,
-				C46497471B2D8C03005E3903 /* ContentUtils.h */,
-				C46497451B2D8BFB005E3903 /* ContentUtis.m */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -1045,7 +1040,6 @@
 				C495D8741B341EE700C98FB4 /* DisplayViewController.m in Sources */,
 				C483230E1B4963C100E7251D /* SettingUserInfo.m in Sources */,
 				C4A618EC1B2C7AEC00D0E91B /* UserHeadView.m in Sources */,
-				C46497461B2D8BFB005E3903 /* ContentUtis.m in Sources */,
 				C44E50771B4E256500A17ED8 /* FileUtils+Slide.m in Sources */,
 				C4BED0851B2FFEE2000147A2 /* DatabaseUtils.m in Sources */,
 				C42EC8821B28908B000F84EF /* NotificationCell.m in Sources */,
