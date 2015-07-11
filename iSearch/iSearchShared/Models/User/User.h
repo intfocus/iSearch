@@ -30,11 +30,22 @@
 @property (nonatomic, strong) NSMutableDictionary *configDict;
 @property (nonatomic, strong) NSString *personalPath;
 
-// class methods
-+ (NSString *)userID;
-
 // instance methods
 - (void)save;
 - (void)writeInToPersonal;
+
+// class methods
+/**
+ *  快捷获取用户ID
+ *
+ *  @return 用户ID
+ */
++ (NSString *)userID;
+/**
+ *  快捷获取部门ID
+ *
+ *  @return 部门ID
+ */
++ (NSString *)deptID;
 @end
 #endif

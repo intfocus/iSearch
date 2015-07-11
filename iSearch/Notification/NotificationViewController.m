@@ -50,7 +50,7 @@
 #import "DateUtils.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ExtendNslogfunctionality.h"
 #import "MainViewController.h"
 
@@ -248,7 +248,7 @@
 #pragma mark - Utils
 
 - (void)dealWithData {
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
 
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];

@@ -11,7 +11,7 @@
 #import "Slide.h"
 #import "message.h"
 
-#import "ApiUtils.h"
+#import "Url+Param.h"
 #import "FileUtils.h"
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
@@ -87,7 +87,9 @@
     } else {
         if([HttpUtils isNetworkAvailable]) {
             self.isDownloadRequestValid = YES;
-            [self downloadZip:[ApiUtils downloadSlideURL:self.slideID]];
+            NSString *urlString = [Url slideDownload:self.slideID];
+            NSURL *url = [NSURL URLWithString:urlString];
+            [self downloadZip:url];
         } else {
             [self showPopupView:@"无网络，不下载"];
         }

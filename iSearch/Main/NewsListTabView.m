@@ -14,7 +14,7 @@
 #import "MainEntryButton.h"
 
 #import "const.h"
-#import "ApiUtils.h"
+#import "DataHelper.h"
 #import "ViewUtils.h"
 
 @interface NewsListTabView () <UITableViewDataSource,UITableViewDelegate>
@@ -35,7 +35,7 @@
     UINib *nib=[UINib nibWithNibName:NSStringFromClass([NewsListCell class]) bundle:nil];
     [self.listView registerNib:nib forCellReuseIdentifier:@"news"];
     
-    NSMutableDictionary *notificationDatas = [ApiUtils notifications];
+    NSMutableDictionary *notificationDatas = [DataHelper notifications];
     self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
     self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
     [self onTabClick:self.tabView];

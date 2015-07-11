@@ -26,27 +26,6 @@
 }
 
 #pragma mark - class methods
-+ (NSString *)login {
-    return [[Url alloc] init].login;
-}
-+ (NSString *)slides {
-    return [[Url alloc] init].slides;
-}
-+ (NSString *)categories {
-    return [[Url alloc] init].categories;
-}
-+ (NSString *)slideDownload {
-    return [[Url alloc] init].slideDownload;
-}
-+ (NSString *)slideList {
-    return [[Url alloc] init].slideList;
-}
-+ (NSString *)notifications {
-    return [[Url alloc] init].notifications;
-}
-+ (NSString *)action {
-    return [[Url alloc] init].action;
-}
 
 #pragma mark - asisstant methods
 - (NSString *)concate:(NSString *)path {

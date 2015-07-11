@@ -61,7 +61,9 @@
 #import "HomeViewController.h"
 #import "MainViewController.h"
 
+#import "User.h"
 #import "ContentUtils.h"
+#import "DataHelper.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
 #import "ExtendNSLogFunctionality.h"
@@ -83,7 +85,6 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
 @property (strong, nonatomic) NSString  *deptID;
-@property (strong, nonatomic) NSString  *categoryID; // 与categoryDict并不冲突，以此值来取它对应的信息
 @property (strong, nonatomic) NSMutableDictionary *categoryDict; // 依赖于categoryID
 @property (strong, nonatomic) NSMutableArray *dataListOne; // 分类
 @property (strong, nonatomic) NSMutableArray *dataListTwo; // 文档
@@ -118,18 +119,19 @@
     /**
      *  实例变量初始化
      */
-    _dataList = [[NSMutableArray alloc] init];
+    _dataList           = [[NSMutableArray alloc] init];
     self.navActionStack = [[NSMutableArray alloc] init];
+    self.categoryDict   = [[NSMutableDictionary alloc] init];
+    
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
-    self.navActionStack = [configDict objectForKey:CONTENT_KEY_NAVSTACK];
-    
-    self.categoryDict = [[NSMutableDictionary alloc] init];
-    self.filterType  = [NSNumber numberWithInteger:FilterAll];
+    self.navActionStack = configDict[CONTENT_KEY_NAVSTACK];
+    self.categoryDict   = [self.navActionStack lastObject];
+
+    self.deptID     = [User deptID];
+    self.filterType = [NSNumber numberWithInteger:FilterAll];
     
     [self navFilterFont];
-    // deptID
-    [self assignUserInfo];
     /**
      *  导航栏控件
      */
@@ -181,8 +183,6 @@
 #pragma mark - assistant methods
 - (void) refreshContent {
     [self loading];
-    // nav behaviour stack
-    [self assignCategoryInfo:self.deptID];
 
     //  1. 读取本地缓存，优先加载界面
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
@@ -197,6 +197,7 @@
     });
     self.navBtnBack.enabled = YES;
     [self performSelector:@selector(loaded) withObject:self afterDelay:0.3f];
+    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
 }
 
 #pragma mark - spinner loading
@@ -253,12 +254,16 @@
 }
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [ContentUtils loadContentData:self.deptID CategoryID:self.categoryID Type:type Key:CONTENT_FIELD_ID Order:YES];
+    NSArray *array = [DataHelper loadContentData:self.deptID
+                                      CategoryID:self.categoryDict[CONTENT_FIELD_ID]
+                                            Type:type
+                                             Key:CONTENT_FIELD_ID
+                                           Order:YES];
     NSMutableArray *arrayOne = [array objectAtIndex:0];
     NSMutableArray *arrayTwo = [array objectAtIndex:1];
     
-    self.dataListOne = arrayOne;
-    self.dataListTwo = arrayTwo;
+    self.dataListOne = [NSMutableArray arrayWithArray:arrayOne];
+    self.dataListTwo = [NSMutableArray arrayWithArray:arrayTwo];
     
     array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
@@ -314,36 +319,6 @@
     }
     return cell;
 }
-#pragma mark - control action
-/**
- *  读取配置档，获取用户信息
- */
-- (void)assignUserInfo {
-    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:LOGIN_CONFIG_FILENAME];
-    NSMutableDictionary *userDict =[FileUtils readConfigFile:configPath];
-    self.deptID = userDict[USER_DEPTID];
-}
-/**
- *  取得当前目录视图下的分类ID
- *  关键: CONTENT_CONFIG_FILENAME[CONTENT_KEY_NAVSTACK] - 栈 NSMutableArray
- *  栈中最后一个对象即当前目录的分类ID
- *
- *  强制使用deptID作为参数，以避免先使用后赋值。
- *
- */
-- (void)assignCategoryInfo:(NSString *)deptID {
-    self.categoryID = [self.navActionStack lastObject];
-    
-    NSString *parentID = CONTENT_ROOT_ID;
-    if([self.navActionStack count] >= 2) {
-        // 倒数第二个为父ID
-        NSInteger index = [self.navActionStack count] - 2;
-        parentID = [self.navActionStack objectAtIndex:index];
-    }
-    self.categoryDict = [ContentUtils readCategoryInfo:self.categoryID ParentID:parentID DepthID:deptID];
-    // current category name
-    self.navLabel.text = self.categoryDict[CONTENT_FIELD_NAME];
-}
 
 #pragma mark - controls action
 /**
@@ -357,7 +332,12 @@
 - (IBAction)actionCategoryClick:(UIButton *)sender {
     self.navBtnBack.enabled = NO;
     NSString *categoryID = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
-    [self.navActionStack addObject:categoryID];
+    NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", CONTENT_FIELD_ID, categoryID];
+    NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
+    self.categoryDict = [[self.dataListOne filteredArrayUsingPredicate:filter] lastObject];
+    
+    [self.navActionStack addObject:self.categoryDict];
+    
     [self refreshContent];
 }
 
@@ -379,6 +359,7 @@
         [mainViewController setRightViewController:homeViewController withNav:YES];
     } else {
         [self.navActionStack removeLastObject];
+        self.categoryDict = [self.navActionStack lastObject];
         [self refreshContent];
     }
 }

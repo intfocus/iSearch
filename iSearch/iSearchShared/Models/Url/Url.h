@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 /**
- *  api链接统一在些管理
+ *  api链接统一管理
  */
 @interface Url : NSObject
 
@@ -25,13 +25,4 @@
 @property (nonatomic, strong) NSString *action;
 // 批量下载
 @property (nonatomic, strong) NSString *slideList;
-
-// class methods
-+ (NSString *)login;
-+ (NSString *)slides;
-+ (NSString *)categories;
-+ (NSString *)slideDownload;
-+ (NSString *)slideList;
-+ (NSString *)notifications;
-+ (NSString *)action;
 @end
