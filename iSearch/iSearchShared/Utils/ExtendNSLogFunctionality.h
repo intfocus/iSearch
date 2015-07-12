@@ -37,4 +37,11 @@ BOOL ExtendNSLogPrintError(const char *file, int lineNumber, const char *functio
 void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult);
 NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue);
 BOOL isNil(NSObject *propertyValue);
+
+#pragma mark - Url+Param.h
+
+#define UrlParamSparater @"$=$"
+#define CheckParams(format,args...) ExtendCheckParams(__FILE__,__LINE__,__PRETTY_FUNCTION__, format, args);
+NSString* GenFormat(NSInteger num);
+BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 #endif

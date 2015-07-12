@@ -236,31 +236,36 @@
     self.labelPropmt.text = @"获取用户信息...";
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
 
-    NSMutableDictionary *responseDict = [ApiHelper login:self.cookieValue];
-    // 服务器交互成功
-    NSString *responseResult = [responseDict objectForKey:LOGIN_FIELD_RESULT];
-    if(responseResult && [responseResult length] == 0) {
-        self.user.loginUserName    = self.cookieValue;
-        self.user.loginPassword    = self.cookieValue;
-        self.user.loginRememberPWD = YES;
-        self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
-        
-        // 服务器信息
-        self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
-        self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
-        self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
-        self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
-        self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
-        
-        // write into local config
-        [self.user save];
-        [self.user writeInToPersonal];
-        
-        // 跳至主界面
-        [self enterMainViewController];
-        return;
+    NSDictionary *response = [ApiHelper login:self.cookieValue];
+    if(response[HTTP_ERRORS]) {
+        [loginErrors addObjectsFromArray:response[HTTP_ERRORS]];
     } else {
-        [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
+        NSMutableDictionary *responseDict = [NSMutableDictionary dictionaryWithDictionary:response[HTTP_RESPONSE]];
+        // 服务器交互成功
+        NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
+        if(responseResult && [responseResult length] == 0) {
+            self.user.loginUserName    = self.cookieValue;
+            self.user.loginPassword    = self.cookieValue;
+            self.user.loginRememberPWD = YES;
+            self.user.loginLast        = [DateUtils dateToStr:[NSDate date] Format:LOGIN_DATE_FORMAT];
+            
+            // 服务器信息
+            self.user.ID         = [responseDict objectForKey:LOGIN_FIELD_ID];
+            self.user.name       = [responseDict objectForKey:LOGIN_FIELD_NAME];
+            self.user.email      = [responseDict objectForKey:LOGIN_FIELD_EMAIL];
+            self.user.deptID     = [responseDict objectForKey:LOGIN_FIELD_DEPTID];
+            self.user.employeeID = [responseDict objectForKey:LOGIN_FIELD_EMPLOYEEID];
+            
+            // write into local config
+            [self.user save];
+            [self.user writeInToPersonal];
+            
+            // 跳至主界面
+            [self enterMainViewController];
+            return;
+        } else {
+            [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
+        }
     }
 
     if([loginErrors count])

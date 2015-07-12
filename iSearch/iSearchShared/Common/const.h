@@ -87,6 +87,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define THUMBNAIL_DIRNAME       @"Thumbails" // 分类缩略图
 #define CACHE_DIRNAME           @"Caches"
 #define UPGRADE_CONFIG_FILENAME @"upgrade.json"
+#define HTTP_ERRORS             @"http_errors"
+#define HTTP_RESPONSE           @"http_response"
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/uat/api/logjson.php"

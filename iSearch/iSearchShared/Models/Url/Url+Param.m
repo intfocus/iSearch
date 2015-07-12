@@ -8,6 +8,7 @@
 
 #import "Url+Param.h"
 #import "const.h"
+#import "ExtendNSLogFunctionality.h"
 
 @implementation Url (Param)
 
@@ -21,9 +22,14 @@
  *  @return urlString
  */
 + (NSString *)login:(NSString *)UID {
+    BOOL isParamsValid = CheckParams(GenFormat(1), UID);
+    if(!isParamsValid) {
+        UID = (NSString *)psd(UID, @"null");
+    }
+                              
     NSString *urlString  = [[Url alloc] init].login;
     NSDictionary *params = @{LOGIN_PARAM_UID: UID};
-    
+
     return [Url UrlConcate:urlString Param:params];
 }
 /**
@@ -32,6 +38,12 @@
  *  @return urlString
  */
 + (NSString *)slides:(NSString *)categoryID DeptID:(NSString *)deptID {
+    BOOL isParamsValid = CheckParams(GenFormat(2), categoryID, deptID);
+    if(!isParamsValid) {
+        categoryID = (NSString *)psd(categoryID, @"null");
+        deptID     = (NSString *)psd(deptID, @"null");
+    }
+    
     NSString *urlString  = [[Url alloc] init].slides;
     NSDictionary *params = @{CONTENT_PARAM_DEPTID: deptID, CONTENT_PARAM_FILE_CATEGORYID:categoryID};
     
@@ -43,6 +55,12 @@
  *  @return urlString
  */
 + (NSString *)categories:(NSString *)categoryID DeptID:(NSString *)deptID {
+    BOOL isParamsValid = CheckParams(GenFormat(2), categoryID, deptID);
+    if(!isParamsValid) {
+        categoryID = (NSString *)psd(categoryID, @"null");
+        deptID     = (NSString *)psd(deptID, @"null");
+    }
+    
     NSString *urlString  = [[Url alloc] init].categories;
     NSDictionary *params = @{CONTENT_PARAM_DEPTID: deptID, CONTENT_PARAM_PARENTID:categoryID};
     
@@ -54,6 +72,11 @@
  *  @return urlString
  */
 + (NSString *)slideDownload:(NSString *)slideID {
+    BOOL isParamsValid = CheckParams(GenFormat(1), slideID);
+    if(!isParamsValid) {
+        slideID = (NSString *)psd(slideID, @"null");
+    }
+    
     NSString *urlString  = [[Url alloc] init].slideDownload;
     NSDictionary *params = @{CONTENT_PARAM_FILE_DWONLOADID: slideID};
     
@@ -66,6 +89,11 @@
  *  @return urlString
  */
 + (NSString *)slideList:(NSString *)deptID {
+    BOOL isParamsValid = CheckParams(GenFormat(1), deptID);
+    if(!isParamsValid) {
+        deptID = (NSString *)psd(deptID, @"null");
+    }
+    
     NSString *urlString  = [[Url alloc] init].slideList;
     NSDictionary *params = @{OFFLINE_PARAM_DEPTID: deptID};
     
@@ -77,6 +105,12 @@
  *  @return urlString
  */
 + (NSString *)notifications:(NSString *)currentDate DeptID:(NSString *)depthID {
+    BOOL isParamsValid = CheckParams(GenFormat(2), currentDate, depthID);
+    if(!isParamsValid) {
+        currentDate = (NSString *)psd(currentDate, @"null");
+        depthID     = (NSString *)psd(depthID, @"null");
+    }
+    
     NSString *urlString  = [[Url alloc] init].notifications;
     NSDictionary *params = @{NOTIFICATION_PARAM_DEPTID: depthID, NOTIFICATION_PARAM_DATESTR:currentDate};
     
@@ -92,10 +126,11 @@
     return urlString;
 }
 
+
 + (NSString *)_parameters:(NSDictionary *)params {
     // additional params
     NSMutableDictionary *baseParams = [[NSMutableDictionary alloc] init];
-    baseParams[PARAM_LANG] = APP_LANG;
+    [baseParams addEntriesFromDictionary:@{PARAM_LANG: APP_LANG}];
     [baseParams addEntriesFromDictionary:params];
     
     NSString *value;
