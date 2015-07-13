@@ -52,6 +52,12 @@
                           Key:(NSString *)key
                     Ascending:(BOOL)asceding;
 
+/**
+ *  同步用户行为操作
+ *
+ *  @param unSyncRecords 未同步数据
+ */
++ (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords;
 @end
 
 #endif

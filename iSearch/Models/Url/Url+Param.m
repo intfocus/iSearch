@@ -148,7 +148,7 @@
  *
  *  @return urlString
  */
-+ (NSString *)action {
-    return [[Url alloc] init].action;
++ (NSString *)actionLog {
+    return [[Url alloc] init].actionLog;
 }
 @end

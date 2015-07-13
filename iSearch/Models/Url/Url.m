@@ -20,7 +20,7 @@
         _slideDownload = [self concate:CONTENT_DOWNLOAD_URL_PATH];
         _slideList     = [self concate:OFFLINE_URL_PATH];
         _notifications = [self concate:NOTIFICATION_URL_PATH];
-        _action        = [self concate:ACTION_LOGGER_URL_PATH];
+        _actionLog     = [self concate:ACTION_LOGGER_URL_PATH];
     }
     return self;
 }
@@ -29,7 +29,8 @@
 
 #pragma mark - asisstant methods
 - (NSString *)concate:(NSString *)path {
-    NSString *splitStr = ([path hasPrefix:@"/"] ? @"" : @"/");
-    return [NSString stringWithFormat:@"%@%@%@", BASE_URL, splitStr, path];
+    NSString *splitStr  = ([path hasPrefix:@"/"] ? @"" : @"/");
+    NSString *urlString = [NSString stringWithFormat:@"%@%@%@", BASE_URL, splitStr, path];
+    return  [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 @end

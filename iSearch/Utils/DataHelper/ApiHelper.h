@@ -42,4 +42,13 @@
  *  @return 数据列表
  */
 + (HttpResponse *)notifications:(NSString *)currentDate DeptID:(NSString *)depthID;
+
+/**
+ *  用户操作记录
+ *
+ *  @param params ActionLog.toParams
+ *
+ *  @return 服务器响应信息
+ */
++ (HttpResponse *)actionLog:(NSString *)params;
 @end

@@ -22,7 +22,7 @@
 // 通知公告
 @property (nonatomic, strong) NSString *notifications;
 // 行为记录
-@property (nonatomic, strong) NSString *action;
+@property (nonatomic, strong) NSString *actionLog;
 // 批量下载
 @property (nonatomic, strong) NSString *slideList;
 @end

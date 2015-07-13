@@ -56,4 +56,11 @@
  *  @return urlString
  */
 + (NSString *)notifications:(NSString *)currentDate DeptID:(NSString *)depthID;
+
+/**
+ *  行为记录
+ *
+ *  @return urlString
+ */
++ (NSString *)actionLog;
 @end

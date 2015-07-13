@@ -166,8 +166,36 @@
     return [NSMutableArray arrayWithArray:array];
 }
 
+/**
+ *  同步用户行为操作
+ *
+ *  @param unSyncRecords 未同步数据
+ */
++ (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords {
+    NSMutableArray *IDS = [[NSMutableArray alloc] init];
+    if([unSyncRecords count] == 0) { return IDS; }
 
-//
+    NSString *ID, *params;
+    HttpResponse *httpResponse;
+    for(NSMutableDictionary *dict in unSyncRecords) {
+        ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
+        params = [DataHelper dictToParams:dict];
+        httpResponse = [ApiHelper actionLog:params];
+        
+        [IDS addObject:ID];
+    }
+    
+    return IDS;
+}
+
+#pragma mark - assistant methods
++ (NSString *)dictToParams:(NSMutableDictionary *)dict {
+    NSMutableArray *paramArray = [[NSMutableArray alloc] init];
+    for(NSString *key in dict) {
+        [paramArray addObject:[NSString stringWithFormat:@"%@=%@", key, dict[key]]];
+    }
+    return [paramArray componentsJoinedByString:@"&"];
+}
 //+ (NSString *)postActionLog:(NSMutableDictionary *) params {
 //    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 //    NSString *url = [ApiUtils apiUrl:ACTION_LOGGER_URL_PATH];
@@ -179,5 +207,5 @@
 //    
 //    return @"";
 //}
-//
+
 @end

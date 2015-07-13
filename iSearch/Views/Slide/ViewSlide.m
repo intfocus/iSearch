@@ -52,11 +52,6 @@
     self.labelTitle.text = self.slide.title;
     self.labelTitle.textAlignment = ([self.slide.title length] > 10 ? NSTextAlignmentLeft : NSTextAlignmentCenter);
     
-    if(!self.slideID) {
-        NSLog(@"self.slideID is necessary! %@", self.slide.to_s);
-        abort();
-    }
-    
     [self loadThumbnail];
     [self updateBtnDownloadOrDisplayIcon];
     [self bringSubviewToFront:self.btnDownloadOrDisplay];
@@ -173,9 +168,9 @@
 - (void)loadThumbnail {
     self.webViewThumbnail.hidden = NO;
 
-    NSLog(@"%@", [[NSBundle mainBundle] bundlePath]);
-    NSLog(@"%@", self.slide.dictPath);
-    NSLog(@"%@", self.slide.thumbailPath);
+//    NSLog(@"%@", [[NSBundle mainBundle] bundlePath]);
+//    NSLog(@"%@", self.slide.dictPath);
+//    NSLog(@"%@", self.slide.thumbailPath);
     NSString * html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [self.slide.thumbailPath lastPathComponent]];
     NSURL *baseURL = [NSURL fileURLWithPath:[self.slide.thumbailPath stringByDeletingLastPathComponent]];
     [self.webViewThumbnail loadHTMLString:html baseURL:baseURL];

@@ -70,12 +70,12 @@ BOOL ExtendNSLogPrintError(const char *file, int lineNumber, const char *functio
  * ActionObject  操作对象（具体到文件）
  */
 void actionLogPost(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionName, NSString *actionResult) {
-    NSString *userID = @"1";
-    NSString *actionTime = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
-    NSString *data = [NSString stringWithFormat:@"UserId=%@&FunctionName=%s#%d&ActionName=%@&ActionTime=%@&ActionReturn=%@&ActionObject=%s",
-                      userID, functionName, lineNumber, actionName, actionTime, actionResult, sourceFile];
-    
-    [HttpUtils httpPost:ACTION_LOGGER_URL_PATH Data:data];
+//    NSString *userID = @"1";
+//    NSString *actionTime = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];
+//    NSString *data = [NSString stringWithFormat:@"UserId=%@&FunctionName=%s#%d&ActionName=%@&ActionTime=%@&ActionReturn=%@&ActionObject=%s",
+//                      userID, functionName, lineNumber, actionName, actionTime, actionResult, sourceFile];
+//    
+//    [HttpUtils httpPost:ACTION_LOGGER_URL_PATH Data:data];
 }
 
 BOOL isNil(NSObject *propertyValue) {

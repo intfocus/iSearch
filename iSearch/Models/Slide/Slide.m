@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _folderSize = (NSString *)psd(dict[SLIDE_DESC_FOLDERSIZE], @"");
     
     if(dict[SLIDE_DESC_ORDER]) { _pages = dict[SLIDE_DESC_ORDER]; }
-    // ID/DirName is necessary
+    // ID&DirName is necessary
     [self assignLocalFields:[NSMutableDictionary dictionaryWithDictionary:dict]];
     
     return self;
@@ -210,8 +210,9 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 }
 
 - (BOOL)isValid {
-    NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];
-    return (!self.ID || !self.pages || (!self.pages && [pageNum isEqualToString:self.pageNum]));
+//    NSString *pageNum = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:[self.pages count]]];
+//     || (self.pages && [pageNum isEqualToString:self.pageNum])
+    return (!self.ID || !self.pages || !self.type);
 }
 
 #pragma mark - edit slide pages

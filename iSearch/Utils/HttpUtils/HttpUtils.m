@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "sys/utsname.h"
 #import "HttpUtils.h"
 #import "const.h"
+#import "HttpResponse.h"
 #import <UIKit/UIKit.h>
-#import "sys/utsname.h"
-////https://github.com/tonymillion/Reachability
 #import "Reachability.h"
 #import "ExtendNSLogFunctionality.h"
 
@@ -22,59 +21,66 @@
 
 @implementation HttpUtils
 
+
 /**
  *  Http#Get功能代码封装
  *
- *  @param path URL Path部分，http://server.com已定义,若要传参直接拼写在Path上
+ *  服务器响应处理:
+ *  dict{HTTP_ERRORS, HTTP_RESPONSE, HTTP_RESONSE_DATA}
+ *  HTTP_ERRORS: 与服务器交互中出现错误，此值不空时，不需再使用其他值
+ *  HTTP_RESPONSE: 服务器响应的内容
+ *  HTTP_RESPOSNE_DATA: 服务器响应内容转化为NSDictionary
  *
- *  @return Http#Get 响应的字符串内容
+ *  @return Http#Get HttpResponse
  */
-+ (NSString *) httpGet: (NSString *) path {
-    NSString *urlStr = [[NSString alloc] init];
-    if([path hasPrefix:@"/"])
-        urlStr = [NSString stringWithFormat:@"%@%@", BASE_URL, path];
-    else
-        urlStr = [BASE_URL stringByAppendingFormat:@"%@", path];
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"%@", urlStr);
-    NSURL *url            = [NSURL URLWithString:urlStr];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
++ (HttpResponse *)httpGet:(NSString *)urlString {
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
+    NSLog(@"%@", urlString);
+    NSURL *url            = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
     NSError *error;
-    NSData *received      = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:&error];
-    NSErrorPrint(error, @"Http#get %@", urlStr);
-    NSString *response    = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
-    return response;
-    
+    NSURLResponse *response;
+    httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    httpResponse.response = response;
+    BOOL isOK   = NSErrorPrint(error, @"Http#get %@", urlString);
+    if(!isOK) {
+        [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
+    }
+
+    return httpResponse;
 }
 /**
  *  Http#Post功能代码封装
  *
- *  @param path URL Path部分，http://server.com已定义
- *  @param _data 参数，格式param1=value1&param2=value2
+ *  @param urlString URL
+ *  @param Params    参数，格式param1=value1&param2=value2
  *
  *  @return Http#Post 响应的字符串内容
  */
-+ (NSString *) httpPost: (NSString *) path Data: (NSString *) _data {
-    NSString *str         = [BASE_URL stringByAppendingFormat:@"%@", path];
-    str = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url            = [NSURL URLWithString:str];
-    _data = [_data stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSLog(@"POST URL: %@\n Data: %@", str, _data);
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
++ (HttpResponse *)httpPost:(NSString *)urlString Params:(NSString *)params {
+    urlString = @"http://localhost:3000/demo/isearch";
+    urlString  = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSURL *url = [NSURL URLWithString:urlString];
+    params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
     [request setHTTPMethod:@"POST"];
-    NSData *data = [_data dataUsingEncoding:NSUTF8StringEncoding];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    NSData *data = [params dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
-    NSData *received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *response = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
     
-    if(response) {
-        NSLog(@"POST Response: %@", response);
-    } else {
-        response = @"No input file specified.";
+    NSError *error;
+    NSURLResponse *response;
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
+    httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    httpResponse.response = response;
+    BOOL isOK   = NSErrorPrint(error, @"Http#post %@", urlString);
+    if(!isOK) {
+        [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
     }
-    return response;
-}
 
+
+    return httpResponse;
+}
 
 /**
  *  检测当前app网络环境
