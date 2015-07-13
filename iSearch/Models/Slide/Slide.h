@@ -67,7 +67,8 @@
 - (void)toCached;
 - (void)assignLocalFields:(NSMutableDictionary *)dict;
 - (void)updateTimestamp;
-- (NSMutableDictionary *) refreshFields;
+- (NSMutableDictionary *)refreshFields;
+- (void)refreshThumbnailPath;
 
 - (NSString *)toDownloaded;
 - (BOOL)isDownloaded;

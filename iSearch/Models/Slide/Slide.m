@@ -107,7 +107,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     
     // local fields
     //if(!self.thumbailPath) {
-        _thumbailPath = [self refreshThumbnailPath];
+        [self refreshThumbnailPath];
     //}
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
     _localCreatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_CREATEAT],timestamp);
@@ -290,16 +290,14 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return fSize;
 }
 
-- (NSString *)refreshThumbnailPath {
+- (void)refreshThumbnailPath {
     NSString *pageID = [self.pages count] > 0 ? self.pages[0] : @"null";
-    NSString *thumbailPath = [FileUtils slideThumbnail:self.ID PageID:pageID Dir:self.dirName];
+    _thumbailPath = [FileUtils slideThumbnail:self.ID PageID:pageID Dir:self.dirName];
     //[thumbailPath stringByReplacingOccurrencesOfString:[FileUtils getBasePath] withString:@""];
     
 //    NSMutableDictionary *tmpDict = [FileUtils readConfigFile:self.dictPath];
 //    [tmpDict setObject:thumbailPath forKey:SLIDE_DESC_THUMBNAIL];
 //    [FileUtils writeJSON:tmpDict Into:self.dictPath];
-    
-    return thumbailPath;
 }
 
 @end

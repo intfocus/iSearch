@@ -299,10 +299,13 @@
 - (void) reloadSlideDesc {
     NSMutableDictionary *descDict = [FileUtils readConfigFile:self.slide.descPath];
     if(descDict[SLIDE_DESC_ORDER]) {
-        self.slide.pages    = descDict[SLIDE_DESC_ORDER];
-        self.slide.slides   = [[NSMutableDictionary alloc] initWithObjectsAndKeys:self.slide.title, self.slide.ID, nil];
+        self.slide.pages      = descDict[SLIDE_DESC_ORDER];
+        self.slide.slides     = [[NSMutableDictionary alloc] initWithObjectsAndKeys:self.slide.title, self.slide.ID, nil];
         self.slide.folderSize = [FileUtils folderSize:self.slide.path];
+        [self.slide refreshThumbnailPath];
         [self.slide save];
+        
+        [self loadThumbnail];
     } else {
         NSLog(@"Bug Slide#order is nil, %@", self.slide.dictPath);
     }
