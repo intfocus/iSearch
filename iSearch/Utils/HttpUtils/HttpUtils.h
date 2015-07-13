@@ -31,9 +31,9 @@
  *  @param urlString URL
  *  @param Params    参数，格式param1=value1&param2=value2
  *
- *  @return Http#Post 响应的字符串内容
+ *  @return Http#Post 响应内容
  */
-+ (NSString *)httpPost:(NSString *)urlString Params:(NSString *)params;
++ (HttpResponse *)httpPost:(NSString *)urlString Params:(NSString *)params;
 
 /**
  *  检测当前app网络环境

@@ -14,9 +14,10 @@
 #import "RightSideViewController.h"
 #import "SettingViewController.h"
 
-#import "FileUtils.h"
 #import "const.h"
+#import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
+#import <TWRDownloadManager/TWRDownloadManager.h>
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
@@ -106,9 +107,9 @@
 - (IBAction)changeView:(id)sender {
     UIControl *entry=sender;
 
-    SideViewController *side=(id)self.leftViewController;
+    SideViewController *side = (id)self.leftViewController;
     #warning viewController的配置集中到sideViewController里
-    UIViewController *controller=[side viewControllerForTag:[entry tag]];
+    UIViewController *controller = [side viewControllerForTag:[entry tag]];
     [self setRightViewController:controller withNav:YES];
     self.btnEntrySelectedTag = [NSNumber numberWithInteger:[entry tag]];
     
@@ -333,21 +334,16 @@
     }
 }
 
-#pragma mark - present view ReViewController
-//- (void)presentViewReViewController {
-//    if(!self.reViewController) {
-//        self.reViewController = [[ReViewController alloc] init];
-//        self.reViewController.masterViewController = self;
-//    }
-//    [self presentViewController:self.reViewController animated:NO completion:nil];
-//}
-//- (void)dismissViewReViewController {
-//    if(self.reViewController) {
-//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
-//            _reViewController = nil;
-//            NSLog(@"dismiss ReViewController.");
-//        }];
-//    }
-//}
+#pragma mark - Slide Download Manager
+- (void)downloadManager {
+    [[TWRDownloadManager sharedManager] downloadFileForURL:@"" progressBlock:^(CGFloat progress) {
+
+    } remainingTime:^(NSUInteger seconds) {
+
+    } completionBlock:^(BOOL completed) {
+        NSLog(@"Download completed!");
+
+    } enableBackgroundMode:YES];
+}
 
 @end

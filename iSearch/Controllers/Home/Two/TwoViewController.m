@@ -11,7 +11,6 @@
 #import "GMGridView.h"
 #import "GMGridViewLayoutStrategies.h"
 
-#import "User.h"
 #import "const.h"
 #import "DataHelper.h"
 #import "HttpUtils.h"
@@ -27,7 +26,6 @@
     __gm_weak GMGridView *_gridView;
     NSMutableArray       *_dataList;
 }
-@property (strong, nonatomic) User  *user;
 @end
 
 @implementation TwoViewController
@@ -37,7 +35,6 @@
     /**
      *  实例变量初始化
      */
-    self.user = [[User alloc] init];
     _dataList = [[NSMutableArray alloc] init];
     [self configGMGridView];
 }
@@ -78,7 +75,6 @@
 
 - (void)loadContentData:(NSString *)type {
     NSArray *array = [DataHelper loadContentData:self.masterViewController.view
-                                          DeptID:self.user.deptID
                                       CategoryID:CONTENT_ROOT_ID
                                             Type:type
                                              Key:CONTENT_FIELD_ID

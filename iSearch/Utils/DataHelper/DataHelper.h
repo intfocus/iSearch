@@ -32,7 +32,6 @@
  *  @return 数据列表
  */
 + (NSArray*)loadContentData:(UIView *)view
-                     DeptID:(NSString *)deptID
                  CategoryID:(NSString *)categoryID
                        Type:(NSString *)localOrServer
                         Key:(NSString *)sortKey
@@ -58,6 +57,8 @@
  *  @param unSyncRecords 未同步数据
  */
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords;
+
++ (void)traverseVisitContent:(NSString *)categoryID;
 @end
 
 #endif

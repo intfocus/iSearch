@@ -57,11 +57,11 @@
  *  @return 数据列表
  */
 + (NSArray*)loadContentData:(UIView *)view
-                     DeptID:(NSString *)deptID
                  CategoryID:(NSString *)categoryID
                        Type:(NSString *)localOrServer
                         Key:(NSString *)sortKey
                       Order:(BOOL)isAsceding {
+    NSString *deptID             = [User deptID];
     NSMutableArray *categoryList = [[NSMutableArray alloc] init];
     NSMutableArray *slideList    = [[NSMutableArray alloc] init];
 
@@ -208,4 +208,25 @@
 //    return @"";
 //}
 
+#pragma mark - funny methods
++ (void)traverseVisitContent:(NSString *)categoryID {
+    HttpResponse *httpResponse;
+    
+    httpResponse = [ApiHelper slides:categoryID DeptID:[User deptID]];
+    [CacheHelper writeContents:httpResponse.data Type:CONTENT_SLIDE ID:categoryID];
+    
+    httpResponse = [ApiHelper categories:categoryID DeptID:[User deptID]];
+    [CacheHelper writeContents:httpResponse.data Type:CONTENT_CATEGORY ID:categoryID];
+    
+    NSMutableDictionary *responseJSON = httpResponse.data;
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+    if(responseJSON[CONTENT_FIELD_DATA]) {
+        mutableArray = [NSMutableArray arrayWithArray:responseJSON[CONTENT_FIELD_DATA]];
+        for(NSMutableDictionary *dict in mutableArray) {
+            [DataHelper traverseVisitContent:dict[CONTENT_FIELD_ID]];
+        }
+    }
+    
+    
+}
 @end

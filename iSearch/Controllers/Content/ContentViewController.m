@@ -61,7 +61,6 @@
 #import "HomeViewController.h"
 #import "MainViewController.h"
 
-#import "User.h"
 #import "DataHelper.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
@@ -83,10 +82,10 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView; // 目录结构图
-@property (strong, nonatomic) NSString  *deptID;
 @property (strong, nonatomic) NSMutableDictionary *categoryDict; // 依赖于categoryID
 @property (strong, nonatomic) NSMutableArray *dataListOne; // 分类
 @property (strong, nonatomic) NSMutableArray *dataListTwo; // 文档
+@property (strong, nonatomic) NSMutableDictionary *slideList; // 控件各个ViewSlide
 
 // 顶部控件
 @property (weak, nonatomic) IBOutlet UIButton *navBtnBack; // 返回
@@ -119,6 +118,7 @@
      *  实例变量初始化
      */
     _dataList           = [[NSMutableArray alloc] init];
+    _slideList          = [[NSMutableDictionary alloc] init];
     self.navActionStack = [[NSMutableArray alloc] init];
     self.categoryDict   = [[NSMutableDictionary alloc] init];
     
@@ -127,7 +127,6 @@
     self.navActionStack = configDict[CONTENT_KEY_NAVSTACK];
     self.categoryDict   = [self.navActionStack lastObject];
 
-    self.deptID     = [User deptID];
     self.filterType = [NSNumber numberWithInteger:FilterAll];
     
     [self navFilterFont];
@@ -155,6 +154,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [DataHelper traverseVisitContent:CONTENT_ROOT_ID];
     [self refreshContent];
 }
 
@@ -254,7 +254,6 @@
 
 - (void)loadContentData:(NSString *)type {
     NSArray *array = [DataHelper loadContentData:self.view
-                                          DeptID:self.deptID
                                       CategoryID:self.categoryDict[CONTENT_FIELD_ID]
                                             Type:type
                                              Key:CONTENT_FIELD_ID
@@ -290,7 +289,7 @@
     }
     // 根据服务器返回的JSON数据显示文件夹或文档。
     NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-    NSString *contentType = [currentDict objectForKey:CONTENT_FIELD_TYPE];
+    NSString *contentType = currentDict[CONTENT_FIELD_TYPE];
     
     /**
      *  目录: 0; 文档: 1; 直文档: 2; 视频: 4
@@ -311,8 +310,7 @@
         viewSlide.isFavorite = NO;
         viewSlide.dict = currentDict;
         viewSlide.masterViewController = [self masterViewController];
-        
-        //NSLog(@"slide - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_TITLE]);
+    
         [cell setContentView: viewSlide];
     }
     return cell;
