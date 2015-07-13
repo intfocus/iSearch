@@ -50,6 +50,7 @@
 
 // local fields
 @property (nonatomic, nonatomic) BOOL isDisplay;
+@property (nonatomic, strong) NSString *thumbailPath;
 @property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, strong) NSString *typeName;
 @property (nonatomic, strong) NSString *localCreatedDate;

@@ -7,6 +7,7 @@
 //
 
 #import "ViewUtils.h"
+#import "MBProgressHUD.h"
 
 @implementation ViewUtils
 
@@ -44,6 +45,23 @@
     return newImage;
 }
 
+/**
+ *  弹出框架显示临时性文字
+ *
+ *  @param view controller.view
+ *  @param text 提示文字
+ */
++ (void)showPopupView:(UIView *)view Info:(NSString*)text {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
+    
+    // Configure for text only and offset down
+    hud.mode                      = MBProgressHUDModeText;
+    hud.labelText                 = text;
+    hud.margin                    = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1];
+}
 /**
  *  tableViewCell根据内容自定义高度
  *

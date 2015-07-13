@@ -77,7 +77,12 @@
 
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [DataHelper loadContentData:self.user.deptID CategoryID:CONTENT_ROOT_ID Type:type Key:CONTENT_FIELD_ID Order:YES];
+    NSArray *array = [DataHelper loadContentData:self.masterViewController.view
+                                          DeptID:self.user.deptID
+                                      CategoryID:CONTENT_ROOT_ID
+                                            Type:type
+                                             Key:CONTENT_FIELD_ID
+                                           Order:YES];
     _dataList = [array objectAtIndex:0];
 }
 

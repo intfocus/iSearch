@@ -89,6 +89,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define UPGRADE_CONFIG_FILENAME @"upgrade.json"
 #define HTTP_ERRORS             @"http_errors"
 #define HTTP_RESPONSE           @"http_response"
+#define HTTP_RESPONSE_DATA      @"http_response_json"
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/uat/api/logjson.php"
@@ -219,7 +220,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SLIDE_DESC_LOCAL_UPDATEAT   @"local_updated_at" // 本地更新时间
 #define SLIDE_DESC_ISDISPLAY        @"display_or_not"  // 下载后是否演示过
 #define SLIDE_DESC_FOLDERSIZE       @"slide_folder_size"  // 下载解压后文件大小
-#define SLIDE_DESC_THUMBNAIL        @"thumbnail_path"  // slidePath/thumbnailPath
+#define SLIDE_DESC_THUMBNAIL        @"slide_thumbnail_path"  // 文档缩略图
 // FILE_DIRNAME/fileId/{fileId_pageId.html,desc.json, fileId_pageId/fileId_pageId{.pdf, .gif}}
 #define PAGE_HTML_FORMAT            @"html"
 #define PAGE_IMAGE_FORMAT           @"gif"

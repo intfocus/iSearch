@@ -32,6 +32,7 @@
 #import "message.h"
 #import "User.h"
 #import "Slide.h"
+#import "HttpResponse.h"
 #import "Version+Self.h"
 #import "HttpUtils.h"
 #import "ViewUtils.h"
@@ -148,16 +149,16 @@
     self.labelPropmt.text = @"";
     
     self.cookieValue = @"nm6586tst";//@"E99658602";
-    [self performSelector:@selector(actionOutsideLoginSuccessfully) withObject:self];
+    [self actionOutsideLoginSuccessfully];
     return;
     
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         [self actionClearCookies];
-        [self performSelector:@selector(actionOutsideLogin:) withObject:self];
+        [self actionOutsideLogin];
     } else {
-        [self performSelector:@selector(actionLoginWithoutNetwork:) withObject:self];
+        [self actionLoginWithoutNetwork];
     }
     
 }
@@ -165,23 +166,23 @@
 #pragma mark - assistant methods
 
 #pragma mark - within network
-- (IBAction)actionOutsideLogin:(id)sender {
-    [self performSelector:@selector(actionOutsideLoginRefresh:) withObject:self];
+- (void)actionOutsideLogin {
+    [self actionOutsideLoginRefresh];
     [self hideOutsideLoginControl:NO];
     if(!self.timerReadCookie || ![self.timerReadCookie isValid]) {
-        self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer:) userInfo:nil repeats:YES];
+        self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer) userInfo:nil repeats:YES];
     }
     self.timerCount = 0;
     [self.timerReadCookie fire];
 }
 
-- (IBAction)actionOutsideLoginRefresh:(id)sender {
+- (void)actionOutsideLoginRefresh {
     NSString *urlString = @"https://tsa-china.takeda.com.cn/uat/saml/sp/index.php?sso";
     NSURL *url = [NSURL URLWithString:urlString];
     [self.webViewLogin loadRequest:[NSURLRequest requestWithURL:url]];
 }
 
-- (IBAction)actionReadCookieTimer:(id)sender {
+- (void)actionReadCookieTimer {
     NSString *cookieName = @"samlNameId", *cookieValue = @"";
     
     NSHTTPCookie *cookie;
@@ -236,11 +237,11 @@
     self.labelPropmt.text = @"获取用户信息...";
     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
 
-    NSDictionary *response = [ApiHelper login:self.cookieValue];
-    if(response[HTTP_ERRORS]) {
-        [loginErrors addObjectsFromArray:response[HTTP_ERRORS]];
+    HttpResponse *httpResponse = [ApiHelper login:self.cookieValue];
+    if(![httpResponse isValid]) {
+        [loginErrors addObjectsFromArray:httpResponse.errors];
     } else {
-        NSMutableDictionary *responseDict = [NSMutableDictionary dictionaryWithDictionary:response[HTTP_RESPONSE]];
+        NSMutableDictionary *responseDict = httpResponse.data;
         // 服务器交互成功
         NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
         if(responseResult && [responseResult length] == 0) {
@@ -280,7 +281,7 @@
  *     D.1 current > last 且 current - last < N 小时 => 点击此按钮进入主页，
  *     D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
  */
-- (IBAction)actionLoginWithoutNetwork:(id)sender {
+- (void)actionLoginWithoutNetwork {
     NSMutableArray *errors = [self checkEnableLoginWithoutNetwork:self.user];
     
     if(![errors count]) {
@@ -350,7 +351,6 @@
         [self downloadCategoryThumbnail:array[0] dir:array[1] SlideID:array[3]];
          [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     }
-
     
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;

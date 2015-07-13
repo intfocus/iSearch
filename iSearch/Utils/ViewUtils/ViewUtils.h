@@ -61,9 +61,17 @@
  *
  *  @return CGSize
  */
-+ (CGSize) sizeForTableViewCell:(NSString *)text
-                          Width:(NSInteger)width
-                       FontSize:(NSInteger)fontSize;
++ (CGSize)sizeForTableViewCell:(NSString *)text
+                         Width:(NSInteger)width
+                      FontSize:(NSInteger)fontSize;
+
+/**
+ *  弹出框架显示临时性文字
+ *
+ *  @param view controller.view
+ *  @param text 提示文字
+ */
++ (void)showPopupView:(UIView *)view Info:(NSString*)text;
 @end
 
 #endif

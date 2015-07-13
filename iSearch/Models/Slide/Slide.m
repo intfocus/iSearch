@@ -27,23 +27,23 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 //@synthesize categoryID,categoryName,typeName;
 
 - (Slide *)init {
-    self = [super init];
-    
-    // some fields necessary
-    _dict         = [[NSMutableDictionary alloc] init];
-    _type         = CONTENT_SLIDE;
-    _name         = @"未设置";
-    _desc         = @"未设置";
-    _title        = @"未设置";
-    _createdDate  = @"";
-    _pageNum      = @"0";
-    _createdDate  = @"";
-    _zipSize      = @"0";
-    _categoryID   = @"";
-    _categoryName = @"";
-    _pages        = [[NSMutableArray alloc] init];
-    _slides       = [[NSMutableDictionary alloc] init];
-    
+    if(self = [super init]) {
+        // some fields necessary
+        _dict         = [[NSMutableDictionary alloc] init];
+        _type         = CONTENT_SLIDE;
+        _name         = @"未设置";
+        _desc         = @"未设置";
+        _title        = @"未设置";
+        _createdDate  = @"";
+        _pageNum      = @"0";
+        _createdDate  = @"";
+        _zipSize      = @"0";
+        _categoryID   = @"";
+        _categoryName = @"";
+        _pages        = [[NSMutableArray alloc] init];
+        _slides       = [[NSMutableDictionary alloc] init];
+        _thumbailPath = [FileUtils slideThumbnail:@"null" PageID:@"null" Dir:SLIDE_DIRNAME];
+    }
     return self;
 }
 /**
@@ -71,13 +71,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _zipSize      = (NSString *)psd(dict[CONTENT_FIELD_ZIPSIZE], @"0");
     _categoryID   = (NSString *)psd(dict[CONTENT_FIELD_CATEGORYID], @"");
     _categoryName = (NSString *)psd(dict[CONTENT_FIELD_CATEGORYNAME], @"");
+    _thumbailPath = dict[SLIDE_DESC_THUMBNAIL];
     
     _slides     = dict[PAGE_FROM_SLIDES] ? dict[PAGE_FROM_SLIDES] : [[NSMutableArray alloc] init];
     _folderSize = (NSString *)psd(dict[SLIDE_DESC_FOLDERSIZE], @"");
     
-    if(dict[SLIDE_DESC_ORDER]) {
-        _pages = dict[SLIDE_DESC_ORDER];
-    }
+    if(dict[SLIDE_DESC_ORDER]) { _pages = dict[SLIDE_DESC_ORDER]; }
     // ID/DirName is necessary
     [self assignLocalFields:[NSMutableDictionary dictionaryWithDictionary:dict]];
     
@@ -99,6 +98,7 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
         if(!self.pages) {
             _pages = (NSMutableArray *)psd(_descDict1[SLIDE_DESC_ORDER], [[NSMutableArray alloc] init]);
         }
+
         _isDisplay  = (dict[SLIDE_DESC_ISDISPLAY] && [dict[SLIDE_DESC_ISDISPLAY] isEqualToString:@"1"]);
 
         _slides     = dict[PAGE_FROM_SLIDES] ? dict[PAGE_FROM_SLIDES] : [[NSMutableArray alloc] init];
@@ -106,6 +106,9 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     }
     
     // local fields
+    //if(!self.thumbailPath) {
+        _thumbailPath = [self refreshThumbnailPath];
+    //}
     NSString *timestamp = [DateUtils dateToStr:[NSDate date] Format:DATE_FORMAT];;
     _localCreatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_CREATEAT],timestamp);
     _localUpdatedDate = (NSString *)psd(dict[SLIDE_DESC_LOCAL_UPDATEAT],timestamp);
@@ -271,10 +274,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     _dict[SLIDE_DESC_ISDISPLAY]       = (self.isDisplay ? @"1" : @"0");
     _dict[PAGE_FROM_SLIDES]           = (self.slides ? self.slides : [[NSMutableDictionary alloc] init]);
     _dict[SLIDE_DESC_FOLDERSIZE]      = self.folderSize;
+    _dict[SLIDE_DESC_THUMBNAIL]       = [self.thumbailPath stringByReplacingOccurrencesOfString:[FileUtils getBasePath] withString:@""];
     
     return self.dict;
 }
 
+#pragma mark - refresh local fields
 - (NSString *)reCaculateSlideFolderSize {
     NSString *fSize = [FileUtils folderSize:self.path];
     NSMutableDictionary *tmpDict = [FileUtils readConfigFile:self.dictPath];
@@ -283,4 +288,17 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     
     return fSize;
 }
+
+- (NSString *)refreshThumbnailPath {
+    NSString *pageID = [self.pages count] > 0 ? self.pages[0] : @"null";
+    NSString *thumbailPath = [FileUtils slideThumbnail:self.ID PageID:pageID Dir:self.dirName];
+    //[thumbailPath stringByReplacingOccurrencesOfString:[FileUtils getBasePath] withString:@""];
+    
+//    NSMutableDictionary *tmpDict = [FileUtils readConfigFile:self.dictPath];
+//    [tmpDict setObject:thumbailPath forKey:SLIDE_DESC_THUMBNAIL];
+//    [FileUtils writeJSON:tmpDict Into:self.dictPath];
+    
+    return thumbailPath;
+}
+
 @end

@@ -8,6 +8,7 @@
 
 #import "ApiHelper.h"
 #import "Url+Param.h"
+#import "HttpResponse.h"
 #import "ExtendNSLogFunctionality.h"
 
 @implementation ApiHelper
@@ -18,9 +19,9 @@
  *
  *  @return 用户信息
  */
-+ (NSMutableDictionary *)login:(NSString *)UID {
++ (HttpResponse *)login:(NSString *)UID {
     NSString *urlString = [Url login:UID];
-    return [self helper:urlString];
+    return [self httpGet:urlString];
 }
 
 /**
@@ -28,18 +29,18 @@
  *
  *  @return 文档列表
  */
-+ (NSMutableDictionary *)slides:(NSString *)categoryID DeptID:(NSString *)deptID {
++ (HttpResponse *)slides:(NSString *)categoryID DeptID:(NSString *)deptID {
     NSString *urlString = [Url slides:categoryID DeptID:deptID];
-    return [self helper:urlString];
+    return [self httpGet:urlString];
 }
 /**
  *  目录同步,获取某分类下的分类列表
  *
  *  @return 分类列表
  */
-+ (NSMutableDictionary *)categories:(NSString *)categoryID DeptID:(NSString *)deptID {
++ (HttpResponse *)categories:(NSString *)categoryID DeptID:(NSString *)deptID {
     NSString *urlString = [Url categories:categoryID DeptID:deptID];
-    return [self helper:urlString];
+    return [self httpGet:urlString];
 }
 
 /**
@@ -47,44 +48,33 @@
  *
  *  @return 数据列表
  */
-+ (NSMutableDictionary *)notifications:(NSString *)currentDate DeptID:(NSString *)depthID {
++ (HttpResponse *)notifications:(NSString *)currentDate DeptID:(NSString *)depthID {
     NSString *urlString = [Url notifications:currentDate DeptID:depthID];
-    return [self helper:urlString];
+    return [self httpGet:urlString];
 }
 
 #pragma mark - asisstant methods
-+ (NSMutableDictionary *)helper:(NSString *)urlString {
-    NSDictionary *response = [ApiHelper httpGet:urlString];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    if(response[HTTP_RESPONSE]) {
-        NSError *error;
-        dict = [NSJSONSerialization JSONObjectWithData:response[HTTP_RESPONSE]
-                                               options:NSJSONReadingAllowFragments
-                                                 error:&error];
-        BOOL isSuccessfully = NSErrorPrint(error, @"NSData convert to NSDictionary - %@", urlString);
-        if(!isSuccessfully) {
-            dict[HTTP_ERRORS] = @[(NSString *)psd([error localizedDescription],@"服务器数据转化JSON失败")]; }
-    } else {
-        dict[HTTP_ERRORS] = response[HTTP_ERRORS];
-    }
-    return dict;
-}
 /**
  *  Http#Get功能代码封装
  *
- *  @param path URL Path部分，http://server.com已定义,若要传参直接拼写在Path上
+ *  服务器响应处理:
+ *  dict{HTTP_ERRORS, HTTP_RESPONSE, HTTP_RESONSE_DATA}
+ *  HTTP_ERRORS: 与服务器交互中出现错误，此值不空时，不需再使用其他值
+ *  HTTP_RESPONSE: 服务器响应的内容
+ *  HTTP_RESPOSNE_DATA: 服务器响应内容转化为NSDictionary
  *
- *  @return Http#Get NSData
+ *  @return Http#Get HttpResponse
  */
-+ (NSDictionary *)httpGet:(NSString *)urlString {
++ (HttpResponse *)httpGet:(NSString *)urlString {
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
     urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"%@", urlString);
     NSURL *url            = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:3];
     NSError *error;
     NSURLResponse *response;
-    NSData *received      = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    BOOL isSuccessfully = NSErrorPrint(error, @"Http#get %@", urlString);
+    httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    BOOL isSuccessfully   = NSErrorPrint(error, @"Http#get %@", urlString);
     
     if (isSuccessfully && DEBUG) {
         NSString *mimeType = [response.MIMEType lowercaseString];
@@ -96,12 +86,16 @@
             NSLog(@"%@ encodingName not utf-8 but %@", urlString, encodingName);
         }
     }
-    NSDictionary *dict;
-    if(isSuccessfully && received)
-        dict = @{HTTP_RESPONSE:received};
+    if(isSuccessfully && httpResponse.received)
+        httpResponse.data = [NSJSONSerialization JSONObjectWithData:httpResponse.received options:NSJSONReadingAllowFragments error:&error];
+        isSuccessfully = NSErrorPrint(error, @"NSData convert to NSDictionary - %@", urlString);
+        if(!isSuccessfully) {
+             [httpResponse.errors addObject:(NSString *)psd([error localizedDescription],@"服务器数据转化JSON失败")];
+        }
+    
     else
-        dict = @{HTTP_ERRORS:@[(NSString *)psd([error localizedDescription], @"http get未知错误")]};
-    return dict;
+        [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
+    return httpResponse;
 }
 /**
  *  Http#Post功能代码封装

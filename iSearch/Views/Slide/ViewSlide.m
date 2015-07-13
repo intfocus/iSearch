@@ -172,18 +172,12 @@
  */
 - (void)loadThumbnail {
     self.webViewThumbnail.hidden = NO;
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString *thumbnailPath;
-    
-    if(self.slide.pages && [self.slide.pages count] > 0) {
-        thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:self.slide.pages[0] Dir:self.dirName];
-    }
-    if(!thumbnailPath || [[thumbnailPath stringByDeletingLastPathComponent] isEqualToString:bundlePath]) {
-        thumbnailPath = [bundlePath stringByAppendingPathComponent:@"thumbnailSlideDefault.png"];
-    }
-    //NSLog(@"%@", thumbnailPath);
-    NSString * html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
-    NSURL *baseURL = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
+
+    NSLog(@"%@", [[NSBundle mainBundle] bundlePath]);
+    NSLog(@"%@", self.slide.dictPath);
+    NSLog(@"%@", self.slide.thumbailPath);
+    NSString * html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [self.slide.thumbailPath lastPathComponent]];
+    NSURL *baseURL = [NSURL fileURLWithPath:[self.slide.thumbailPath stringByDeletingLastPathComponent]];
     [self.webViewThumbnail loadHTMLString:html baseURL:baseURL];
 }
 

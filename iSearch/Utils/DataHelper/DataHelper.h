@@ -8,6 +8,7 @@
 
 #ifndef iSearch_DataHelper_h
 #define iSearch_DataHelper_h
+#import <UIKit/UIKit.h>
 
 /**
  *  处理数据: ApiHelper + CacheHelper
@@ -30,7 +31,8 @@
  *
  *  @return 数据列表
  */
-+ (NSArray*)loadContentData:(NSString *)deptID
++ (NSArray*)loadContentData:(UIView *)view
+                     DeptID:(NSString *)deptID
                  CategoryID:(NSString *)categoryID
                        Type:(NSString *)localOrServer
                         Key:(NSString *)sortKey

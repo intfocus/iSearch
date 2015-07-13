@@ -291,7 +291,7 @@
  *  @param filePath 目标文件
  */
 + (void) writeJSON:(NSMutableDictionary *)data
-              Into:(NSString *) slidePath {
+              Into:(NSString *)slidePath {
     NSError *error;
     if ([NSJSONSerialization isValidJSONObject:data]) {
         // NSMutableDictionary convert to JSON Data

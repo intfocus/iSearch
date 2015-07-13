@@ -253,8 +253,9 @@
 }
 
 - (void)loadContentData:(NSString *)type {
-    NSArray *array = [DataHelper loadContentData:self.deptID
-                                      CategoryID:self.categoryDict[@"asdfasdf"]
+    NSArray *array = [DataHelper loadContentData:self.view
+                                          DeptID:self.deptID
+                                      CategoryID:self.categoryDict[CONTENT_FIELD_ID]
                                             Type:type
                                              Key:CONTENT_FIELD_ID
                                            Order:YES];

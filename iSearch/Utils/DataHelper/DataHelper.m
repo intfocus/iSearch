@@ -11,9 +11,11 @@
 
 #import "User.h"
 #import "Slide.h"
+#import "HttpResponse.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
 #import "HttpUtils.h"
+#import "ViewUtils.h"
 #import "ApiHelper.h"
 #import "CacheHelper.h"
 #import "ExtendNSLogFunctionality.h"
@@ -29,7 +31,6 @@
  *  @return 通知公告数据列表
  */
 + (NSMutableDictionary *)notifications {
-    NSMutableDictionary *notificationDatas = [[NSMutableDictionary alloc] init];
     
     //无网络，读缓存
     if(![HttpUtils isNetworkAvailable]) {
@@ -38,11 +39,11 @@
     
     // 从服务器端获取[公告通知]
     NSString *currentDate = [DateUtils dateToStr:[NSDate date] Format:DATE_SIMPLE_FORMAT];
-    notificationDatas = [ApiHelper notifications:currentDate DeptID:[User deptID]];
+    HttpResponse *httpResponse = [ApiHelper notifications:currentDate DeptID:[User deptID]];
     
-    [CacheHelper writeNotifications:notificationDatas];
+    if([httpResponse isValid]) { [CacheHelper writeNotifications:httpResponse.data]; }
     
-    return notificationDatas;
+    return httpResponse.data;
 }
 
 /**
@@ -55,7 +56,8 @@
  *
  *  @return 数据列表
  */
-+ (NSArray*)loadContentData:(NSString *)deptID
++ (NSArray*)loadContentData:(UIView *)view
+                     DeptID:(NSString *)deptID
                  CategoryID:(NSString *)categoryID
                        Type:(NSString *)localOrServer
                         Key:(NSString *)sortKey
@@ -67,8 +69,8 @@
         categoryList = [CacheHelper readContents:CONTENT_CATEGORY ID:categoryID];
         slideList    = [CacheHelper readContents:CONTENT_SLIDE ID:categoryID];
     } else if([localOrServer isEqualToString:LOCAL_OR_SERVER_SREVER]) {
-        categoryList = [self loadContentDataFromServer:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID];
-        slideList    = [self loadContentDataFromServer:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID];
+        categoryList = [self loadContentDataFromServer:CONTENT_CATEGORY DeptID:deptID CategoryID:categoryID View:view];
+        slideList    = [self loadContentDataFromServer:CONTENT_SLIDE DeptID:deptID CategoryID:categoryID View:view];
     }
     // mark sure array not nil
     if(!categoryList) { categoryList = [[NSMutableArray alloc] init]; }
@@ -107,36 +109,40 @@
 
 + (NSMutableArray*)loadContentDataFromServer:(NSString *)type
                                       DeptID:(NSString *)deptID
-                                  CategoryID:(NSString *)categoryID {
+                                  CategoryID:(NSString *)categoryID
+                                        View:(UIView *)view {
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     
     // 无网络直接返回空值
-    if(![HttpUtils isNetworkAvailable]) {
-        return mutableArray;
-    }
-    
-    NSMutableDictionary *responseJSON = [[NSMutableDictionary alloc] init];
+    if(![HttpUtils isNetworkAvailable]) { return mutableArray; }
+
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
     if([type isEqualToString:CONTENT_CATEGORY]) {
-        responseJSON = [ApiHelper categories:categoryID DeptID:deptID];
+        httpResponse = [ApiHelper categories:categoryID DeptID:deptID];
     } else if([type isEqualToString:CONTENT_SLIDE]) {
-        responseJSON = [ApiHelper slides:categoryID DeptID:deptID];
+        httpResponse = [ApiHelper slides:categoryID DeptID:deptID];
     }
-    
-    if(responseJSON[CONTENT_FIELD_DATA]) {
-        mutableArray = [NSMutableArray arrayWithArray:responseJSON[CONTENT_FIELD_DATA]];
-    }
-    
-    // update local slide when downloaded
-    if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
-        Slide *slide;
-        for(NSMutableDictionary *dict in mutableArray) {
-            slide = [[Slide alloc]initSlide:dict isFavorite:NO];
-            //[slide toCached];
-            if([slide isDownloaded:NO]) { [slide save]; }
+    if(![httpResponse isValid]) {
+        [ViewUtils showPopupView:view Info:[httpResponse.errors componentsJoinedByString:@"\n"]];
+    } else {
+        NSMutableDictionary *responseJSON = httpResponse.data;
+        
+        if(responseJSON[CONTENT_FIELD_DATA]) {
+            mutableArray = [NSMutableArray arrayWithArray:responseJSON[CONTENT_FIELD_DATA]];
         }
+        
+        // update local slide when downloaded
+        if([type isEqualToString:CONTENT_SLIDE] && [mutableArray count] > 0) {
+            Slide *slide;
+            for(NSMutableDictionary *dict in mutableArray) {
+                slide = [[Slide alloc]initSlide:dict isFavorite:NO];
+                //[slide toCached];
+                if([slide isDownloaded:NO]) { [slide save]; }
+            }
+        }
+        // local cache
+        [CacheHelper writeContents:responseJSON Type:type ID:categoryID];
     }
-    // local cache
-    [CacheHelper writeContents:responseJSON Type:type ID:categoryID];
 
     return mutableArray;
 }
