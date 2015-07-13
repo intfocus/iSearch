@@ -21,9 +21,17 @@
 #import "ExtendNSLogFunctionality.h"
 
 @interface DataHelper()
+@property (nonatomic, strong) NSMutableArray *visitData;
 
 @end
 @implementation DataHelper
+
+- (DataHelper *)init {
+    if(self = [super init]) {
+        _visitData = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
 
 /**
  *  获取通知公告数据
@@ -209,24 +217,51 @@
 //}
 
 #pragma mark - funny methods
-+ (void)traverseVisitContent:(NSString *)categoryID {
+- (void)traverseVisitContent:(NSString *)categoryID Depth:(NSInteger)depth {
     HttpResponse *httpResponse;
+    NSDate *date = [NSDate date];
+    NSInteger categoryCount = 0, slideCount = 0;
     
     httpResponse = [ApiHelper slides:categoryID DeptID:[User deptID]];
     [CacheHelper writeContents:httpResponse.data Type:CONTENT_SLIDE ID:categoryID];
+    slideCount = [httpResponse.data[CONTENT_FIELD_DATA] count];
     
     httpResponse = [ApiHelper categories:categoryID DeptID:[User deptID]];
     [CacheHelper writeContents:httpResponse.data Type:CONTENT_CATEGORY ID:categoryID];
+    categoryCount = [httpResponse.data[CONTENT_FIELD_DATA] count];
+    
+    NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:date];
+    NSLog(@"depth:%i, categoryID:%@, slides: %i, categories: %i, duration: %i(ms)", depth, categoryID, slideCount, categoryCount, (int)(interval*1000));
+    [self.visitData addObject:@[[NSNumber numberWithInteger:depth], categoryID, [NSNumber numberWithInteger:slideCount], [NSNumber numberWithInteger:categoryCount], [NSNumber numberWithDouble:interval]]];
     
     NSMutableDictionary *responseJSON = httpResponse.data;
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     if(responseJSON[CONTENT_FIELD_DATA]) {
         mutableArray = [NSMutableArray arrayWithArray:responseJSON[CONTENT_FIELD_DATA]];
         for(NSMutableDictionary *dict in mutableArray) {
-            [DataHelper traverseVisitContent:dict[CONTENT_FIELD_ID]];
+            [self traverseVisitContent:dict[CONTENT_FIELD_ID] Depth:depth+1];
         }
     }
-    
-    
+}
+
+- (void)traverseVisitReport {
+    NSInteger maxDepth=0, maxSlides=0, maxCategories=0, slideCount=0, categoryCount=0;
+    double duration = 0.0;
+    for(NSArray *array in self.visitData) {
+        if([array[0] intValue] > maxDepth)      maxDepth      = [array[0] intValue];
+        if([array[2] intValue] > maxSlides)     maxSlides     = [array[2] intValue];
+        if([array[3] intValue] > maxCategories) maxCategories = [array[3] intValue];
+        
+        
+        slideCount    += [array[2] intValue];
+        categoryCount += [array[3] intValue];
+        duration      += [array[4] doubleValue];
+    }
+    User *user = [[User alloc] init];
+    NSLog(@"name: %@, deptID:%@, employeeID: %@", user.name, user.deptID, user.employeeID);
+    NSLog(@"maxDepth: %i, maxSlides: %i, maxCategories: %i", maxDepth, maxSlides, maxCategories);
+    NSLog(@"slideCount: %i, categoryCount: %i", slideCount, categoryCount);
+    NSLog(@"averageVisit: %i (max)", (int)(duration/categoryCount*1000));
+    NSLog(@"self:%i, caculate: %i, isValid: %i", [self.visitData count], categoryCount, [self.visitData count] == categoryCount);
 }
 @end

@@ -154,7 +154,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [DataHelper traverseVisitContent:CONTENT_ROOT_ID];
+    DataHelper *dataHelper = [[DataHelper alloc] init];
+    [dataHelper traverseVisitContent:CONTENT_ROOT_ID Depth:1];
+    [dataHelper traverseVisitReport];
+    
     [self refreshContent];
 }
 

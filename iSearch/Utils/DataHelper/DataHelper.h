@@ -58,7 +58,8 @@
  */
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords;
 
-+ (void)traverseVisitContent:(NSString *)categoryID;
+- (void)traverseVisitContent:(NSString *)categoryID Depth:(NSInteger)depth;
+- (void)traverseVisitReport;
 @end
 
 #endif
