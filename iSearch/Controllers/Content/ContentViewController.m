@@ -259,11 +259,9 @@
                                             Type:type
                                              Key:CONTENT_FIELD_ID
                                            Order:YES];
-    NSMutableArray *arrayOne = [array objectAtIndex:0];
-    NSMutableArray *arrayTwo = [array objectAtIndex:1];
     
-    self.dataListOne = [NSMutableArray arrayWithArray:arrayOne];
-    self.dataListTwo = [NSMutableArray arrayWithArray:arrayTwo];
+    self.dataListOne = [NSMutableArray arrayWithArray:[array objectAtIndex:0]];
+    self.dataListTwo = [NSMutableArray arrayWithArray:[array objectAtIndex:1]];
     
     array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
