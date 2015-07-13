@@ -77,8 +77,8 @@
 - (IBAction)actionDownloadOrDisplaySlide:(UIButton *)sender {
     if([self.slide isDownloading]) {
         [self showPopupView:@"下载中,请稍等."];
-    } else if(self.slide.isDownloaded) {
-        [self performSelector:@selector(actionDisplaySlide:) withObject:self afterDelay:0.0f];
+    } else if([self.slide isDownloaded]) {
+        [self actionDisplaySlide];
     } else {
         if([HttpUtils isNetworkAvailable]) {
             self.isDownloadRequestValid = YES;
@@ -99,7 +99,7 @@
 }
 
 
-- (IBAction)actionDisplaySlide:(UIButton *)sender {
+- (void)actionDisplaySlide{
     //  this slide display or not;
     if(!self.slide.isDisplay) {
         self.slide.isDisplay = YES;
@@ -147,13 +147,13 @@
  */
 - (void) updateBtnDownloadOrDisplayIcon {
     UIImage *image = [UIImage imageNamed:@"coverSlideToDownload"];
-    if(self.slide.isDownloaded) {
+    if([self.slide isDownloaded]) {
         if(self.slide.isDisplay) {
             image = [UIImage imageNamed:@"coverSlideToDisplay"];
         } else {
             image = [UIImage imageNamed:@"coverSlideUnDisplay"];
         }
-    } else if(self.slide.isDownloading) {
+    } else if([self.slide isDownloading]) {
         image = [UIImage imageNamed:@"coverSlideDownloading"];
     }
     [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];

@@ -58,7 +58,6 @@
  *  @return Http#Post 响应的字符串内容
  */
 + (HttpResponse *)httpPost:(NSString *)urlString Params:(NSString *)params {
-    urlString = @"http://localhost:3000/demo/isearch";
     urlString  = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlString];
     params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];

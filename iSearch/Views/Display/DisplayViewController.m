@@ -655,7 +655,6 @@
     
     ActionLog *actionLog = [[ActionLog alloc] init];
     [actionLog recordSlide:self.slide Action:ACTION_DISPLAY];
-    [actionLog syncRecords];
 }
 
 
