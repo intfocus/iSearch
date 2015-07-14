@@ -5,12 +5,11 @@
 //  Created by lijunjie on 15/7/10.
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
-
-#import <Foundation/Foundation.h>
+#import "BaseModel.h"
 /**
  *  api链接统一管理
  */
-@interface Url : NSObject
+@interface Url : BaseModel
 
 @property (nonatomic, strong) NSString *base;
 // 登录

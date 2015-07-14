@@ -10,6 +10,8 @@
 		5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C31A5A26A50B79A54B9722 /* libPods.a */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
+		C49BA7DB1B54C979001D9013 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49BA7D11B54C979001D9013 /* Info.plist */; };
+		C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C49BA7E51B54CEF7001D9013 /* UrlTest.m */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
@@ -137,6 +139,8 @@
 		75C31A5A26A50B79A54B9722 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		C49BA7D11B54C979001D9013 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C49BA7E51B54CEF7001D9013 /* UrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlTest.m; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCDD1B184E530067B762 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -349,10 +353,28 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C49BA7CD1B54C979001D9013 /* iSearchTests */ = {
+			isa = PBXGroup;
+			children = (
+				C49BA7E41B54CEF7001D9013 /* Models */,
+				C49BA7D11B54C979001D9013 /* Info.plist */,
+			);
+			path = iSearchTests;
+			sourceTree = "<group>";
+		};
+		C49BA7E41B54CEF7001D9013 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C49BA7E51B54CEF7001D9013 /* UrlTest.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C4E3CCCF1B184E520067B762 = {
 			isa = PBXGroup;
 			children = (
 				C4E3CCDA1B184E520067B762 /* iSearch */,
+				C49BA7CD1B54C979001D9013 /* iSearchTests */,
 				C4E3CCD91B184E520067B762 /* Products */,
 				19B1F5F157FE140057252CD3 /* Pods */,
 				14BCA1B123DD5CF6D6A679B0 /* Frameworks */,
@@ -1026,6 +1048,7 @@
 				C4E76A841B5356AE000D6A2B /* ViewSlidePage.xib in Resources */,
 				C4E76A8C1B5356AE000D6A2B /* TagListView.xib in Resources */,
 				C4E769AE1B5355F7000D6A2B /* HomeViewController.xib in Resources */,
+				C49BA7DB1B54C979001D9013 /* Info.plist in Resources */,
 				C4E769B61B5355F7000D6A2B /* LoginViewController.xib in Resources */,
 				C4E76A821B5356AE000D6A2B /* ReViewController.xib in Resources */,
 				C4E769D11B5355F7000D6A2B /* SettingViewController.xib in Resources */,
@@ -1177,6 +1200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1248,6 +1272,7 @@
 		};
 		C4E3CCFA1B184E530067B762 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1328,11 +1353,13 @@
 		};
 		C4E3CCFF1B184E530067B762 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CB226BD2DC5BFC7B479B425 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1347,11 +1374,13 @@
 		};
 		C4E3CD001B184E530067B762 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 				);
 				INFOPLIST_FILE = iSearchTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
