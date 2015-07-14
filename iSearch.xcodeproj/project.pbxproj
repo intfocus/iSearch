@@ -149,7 +149,6 @@
 		C4E3CCE81B184E530067B762 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C4E3CCEB1B184E530067B762 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		C4E3CCF11B184E530067B762 /* iSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4E768E61B5355F7000D6A2B /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		C4E768E71B5355F7000D6A2B /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = const.h; sourceTree = "<group>"; };
 		C4E768E81B5355F7000D6A2B /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
 		C4E768EA1B5355F7000D6A2B /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
@@ -429,7 +428,6 @@
 		C4E768E51B5355F7000D6A2B /* Const */ = {
 			isa = PBXGroup;
 			children = (
-				C4E768E61B5355F7000D6A2B /* common.h */,
 				C4E768E71B5355F7000D6A2B /* const.h */,
 				C4E768E81B5355F7000D6A2B /* message.h */,
 			);

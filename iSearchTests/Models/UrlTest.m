@@ -30,7 +30,10 @@
     Url *url = [[Url alloc] init];
     NSString *urlString;
     for(NSString *method in methods) {
-        urlString = [url performSelector:NSSelectorFromString(method)];
+        SuppressPerformSelectorLeakWarning(
+            urlString = [url performSelector:NSSelectorFromString(method)];
+        );
+
         XCTAssertNotNil(urlString);
         XCTAssertTrue([urlString containsString:BASE_URL]);
     }

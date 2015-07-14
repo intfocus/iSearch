@@ -274,4 +274,13 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTION_REMOVE            @"remove"
 #define ACTION_DISPLAY           @"display"
 #define ACTION_ADD_TO_FAVORITE   @"add_to_favorite"
+
+
+#define SuppressPerformSelectorLeakWarning(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff; \
+_Pragma("clang diagnostic pop") \
+} while (0)
 #endif
