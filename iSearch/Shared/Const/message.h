@@ -16,7 +16,7 @@
 #define LOGIN_ERROR_USER_NOT_MATCH      @"本次登陆用户与上次不同"
 #define LOGIN_ERROR_PWD_NOT_MATCH       @"本次登陆密码错误"
 #define LOGIN_ERROR_LAST_GT_CURRENT     @"上次登陆日期大于当前日期"
-#define LOGIN_ERROR_EXPIRED_OUT_N_HOURS @"距离上次登陆时间超出24小时"
+#define LOGIN_ERROR_EXPIRED_OUT_N_HOURS @"距离上次登陆时间(%@)间隔%i小时,超出%i小时"
 
 // ERROR
 #define ERROR_NO_NETWORK @"无网络环境"
