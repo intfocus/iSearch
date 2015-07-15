@@ -141,15 +141,15 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             __block MBProgressHUD *hud;
             dispatch_async(dispatch_get_main_queue(), ^{
-                hud = [self showPopupView:@"拷贝中..." Mode:MBProgressHUDModeDeterminate Delay:0.0];
+                hud = [self showPopupView:@"拷贝中..." Mode:MBProgressHUDModeIndeterminate Delay:0.0];
             });
                            
             BOOL isSuccessfully = [self.slide addToFavorite];
             [ActionLog recordSlide:self.slide Action:ACTION_ADD_TO_FAVORITE];
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                if(hud) { [hud removeFromSuperview]; }
-                [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
+                hud.labelText = [NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"];
+                [hud hide:YES afterDelay:0.5];
             });
         });
     } else {
