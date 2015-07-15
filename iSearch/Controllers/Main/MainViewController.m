@@ -22,6 +22,7 @@
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
 #import "DisplayViewController.h"
+#import "ActionLog.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -66,6 +67,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        [ActionLog syncRecords];
+    });
 }
 
 - (void)refreshRightViewController {

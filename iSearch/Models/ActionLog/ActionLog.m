@@ -62,7 +62,10 @@
 - (void)syncRecords {
     NSMutableArray *unSyncRecords = [self.databaseUtils unSyncRecords];
     NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];
+    [self.databaseUtils updateSyncedRecords:IDS];
+}
 
-    //[self.databaseUtils updateSyncedRecords:IDS];
++ (void)syncRecords {
+    [[[ActionLog alloc] init] syncRecords];
 }
 @end

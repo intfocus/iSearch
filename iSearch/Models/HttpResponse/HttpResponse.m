@@ -65,7 +65,6 @@
 }
 
 #pragma mark - assistant methods
-
 - (void)checkBaseRespose {
     if(![self.contentType isEqualToString:@"application/json"]) {
         NSLog(@"%@ contentType not application/json but %@", self.URL, self.contentType);
@@ -73,5 +72,10 @@
     if(![self.chartset isEqualToString:@"utf-8"]) {
         NSLog(@"%@ chartset not utf-8 but %@", self.URL, self.chartset);
     }
+}
+
+#pragma mark - suit for Url+Param.h
+- (BOOL)isSuccessfullyPostActionLog {
+    return (self.data && self.data[@"status"] && (int)self.data[@"status"] >= 0);
 }
 @end

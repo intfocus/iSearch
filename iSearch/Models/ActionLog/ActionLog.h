@@ -39,6 +39,7 @@
 
 // class methods
 + (void)recordSlide:(Slide*)slide Action:(NSString *)action;
++ (void)syncRecords;
 @end
 
 #endif
