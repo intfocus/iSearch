@@ -61,6 +61,7 @@
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 @property (nonatomic, nonatomic) ReViewController *reViewController;
 @property (nonatomic, strong) NSMutableArray *dataList;
+@property (nonatomic, strong) MBProgressHUD *hud;
 
 @end
 
@@ -168,6 +169,7 @@
      */
     self.useBlurForPopup = YES;
     
+    if(self.hud) { [self.hud removeFromSuperview]; }
     [self loadSlideInfo];
 }
 
@@ -197,6 +199,8 @@
     
     NSString *html = [NSString stringWithFormat:@"<html><body></body></html>"];
     [self.webView loadHTMLString:html baseURL:nil];
+    
+    if(self.hud) { [self.hud removeFromSuperview]; }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -265,16 +269,24 @@
     }
 }
 
-- (void) showPopupView: (NSString*) text {
+#pragma mark - MBProgressHUD methods
+- (MBProgressHUD *)showPopupView:(NSString *)text {
+    return [self showPopupView:text Delay:1.0];
+}
+- (MBProgressHUD *)showPopupView:(NSString *)text Delay:(NSTimeInterval)delay {
+    return [self showPopupView:text Mode:MBProgressHUDModeText Delay:delay];
+}
+- (MBProgressHUD *)showPopupView:(NSString *)text Mode:(NSInteger)mode Delay:(NSTimeInterval)delay {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText =text;
-    hud.margin = 10.f;
+    hud.mode                      = mode;
+    hud.labelText                 = text;
+    hud.margin                    = 10.f;
     hud.removeFromSuperViewOnHide = YES;
     
-    [hud hide:YES afterDelay:1];
+    if(delay > 0.0) { [hud hide:YES afterDelay:delay]; }
+    return hud;
 }
 
 /**
@@ -473,8 +485,14 @@
 - (IBAction)actionScanSlide:(id)sender {
     // 如果文档已经下载，可以查看文档内部详细信息，
     // 否则需要下载，该功能在FileSlide内部处理
-    if([FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES]) {
-        // 界面跳转需要传递fileID，通过写入配置文件来实现交互
+    if(![FileUtils checkSlideExist:self.slideID Dir:self.dirName Force:YES])
+        return;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.hud = [self showPopupView:@"加载中..." Mode:MBProgressHUDModeIndeterminate Delay:0];
+        });
+        
+        // 界面跳转需要传递slideID，通过写入配置文件来实现交互
         NSString *pathName = [FileUtils getPathName:CONFIG_DIRNAME FileName:EDITPAGES_CONFIG_FILENAME];
         NSMutableDictionary *config = [FileUtils readConfigFile:pathName];
         
@@ -494,20 +512,10 @@
             self.reViewController = [[ReViewController alloc] init];
             self.reViewController.masterViewController = self;
         }
+        [self presentViewController:self.reViewController animated:NO completion:nil];
         
-        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:hud];
-        hud.labelText = @"加载中...";
-        
-        [hud showAnimated:YES whileExecutingBlock:^{
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self presentViewController:self.reViewController animated:NO completion:^{
-                    [hud removeFromSuperview];
-                }];
-            });
-        } completionBlock:^{
-        }];
-    }
+        dispatch_async(dispatch_get_main_queue(), ^{        });
+    });
 }
 
 // 做笔记
@@ -614,22 +622,10 @@
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
     // Basic Key Check
-    if(!configDict[CONTENT_KEY_DISPLAYID]) {
-        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Not Set!");
-        abort();
-    }
-    if(!configDict[SLIDE_DISPLAY_TYPE]) {
-        NSLog(@"CONTENT_CONFIG_FILENAME#SLIDE_DISPLAY_TYPE Not Set!");
-        abort();
-    }
     self.isFavorite = ([configDict[SLIDE_DISPLAY_TYPE] intValue] == SlideTypeFavorite);
     self.slideID = configDict[CONTENT_KEY_DISPLAYID];
     self.dirName = self.isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;
     
-    if([self.slideID length] == 0) {
-        NSLog(@"CONTENT_CONFIG_FILENAME#CONTENT_KEY_DISPLAYID Is Empty!");
-        abort();
-    }
     self.displayFrom = configDict[SLIDE_DISPLAY_FROM];
     NSString *dictPath = [FileUtils slideDescPath:self.slideID Dir:self.dirName Klass:SLIDE_DICT_FILENAME];
     NSMutableDictionary *dict = [FileUtils readConfigFile:dictPath];

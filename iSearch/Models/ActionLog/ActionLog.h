@@ -36,6 +36,9 @@
  */
 - (void)recordSlide:(Slide*)slide Action:(NSString *)action;
 - (void)syncRecords;
+
+// class methods
++ (void)recordSlide:(Slide*)slide Action:(NSString *)action;
 @end
 
 #endif

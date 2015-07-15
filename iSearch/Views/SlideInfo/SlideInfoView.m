@@ -138,26 +138,42 @@
     if([self.slide isInFavorited]) {
         [self showPopupView:@"已在收藏"];
     } else if([self.slide isDownloaded]) {
-        BOOL isSuccessfully = [self.slide addToFavorite];
-        [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
-        ActionLog *actionLog = [[ActionLog alloc] init];
-        [actionLog recordSlide:self.slide Action:ACTION_ADD_TO_FAVORITE];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            __block MBProgressHUD *hud;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                hud = [self showPopupView:@"拷贝中..." Mode:MBProgressHUDModeDeterminate Delay:0.0];
+            });
+                           
+            BOOL isSuccessfully = [self.slide addToFavorite];
+            [ActionLog recordSlide:self.slide Action:ACTION_ADD_TO_FAVORITE];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(hud) { [hud removeFromSuperview]; }
+                [self showPopupView:[NSString stringWithFormat:@"收藏%@", isSuccessfully ? @"成功" : @"失败"]];
+            });
+        });
     } else {
-        [self showPopupView:@"未曾下载,何言收藏！"];
+        [self showPopupView:@"未曾下载,何言收藏"];
     }
     
 }
 #pragma mark - assistant methods
-
-- (void)showPopupView:(NSString*)text {
+- (MBProgressHUD *)showPopupView:(NSString *)text {
+    return [self showPopupView:text Delay:1.0];
+}
+- (MBProgressHUD *)showPopupView:(NSString *)text Delay:(NSTimeInterval)delay {
+    return [self showPopupView:text Mode:MBProgressHUDModeText Delay:delay];
+}
+- (MBProgressHUD *)showPopupView:(NSString *)text Mode:(NSInteger)mode Delay:(NSTimeInterval)delay {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.labelText =text;
-    hud.margin = 10.f;
+    hud.mode                      = mode;
+    hud.labelText                 = text;
+    hud.margin                    = 10.f;
     hud.removeFromSuperViewOnHide = YES;
     
-    [hud hide:YES afterDelay:1];
+    if(delay > 0.0) { [hud hide:YES afterDelay:delay]; }
+    return hud;
 }
 @end

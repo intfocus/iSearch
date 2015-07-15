@@ -27,7 +27,12 @@
 }
 
 - (void)testPostActionLog {
-    NSDictionary *params =  @{@"UserId":@"UserId001logapi",@"FunctionName":@"FunctionName002logapi",@"ActionName":@"ActionName002logapi",@"ActionTime":@"2015-06-1 18:18:18",@"ActionReturn":@"ActionReturn--092logapi",@"ActionObject":@"ActionObject--003logapi"};
+    NSDictionary *params =  @{@"UserId":@"UserId001logapi",
+                              @"FunctionName":@"FunctionName002logapi",
+                              @"ActionName":@"ActionName002logapi",
+                              @"ActionTime":@"2015-06-1 18:18:18",
+                              @"ActionReturn":@"ActionReturn--092logapi",
+                              @"ActionObject":@"ActionObject--003logapi"};
     
     HttpResponse *httpResonse = [ApiHelper actionLog:[NSMutableDictionary dictionaryWithDictionary:params]];
     XCTAssertEqual([httpResonse.statusCode intValue], 200);
