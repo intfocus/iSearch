@@ -54,6 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
 @property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
 @property (weak, nonatomic) IBOutlet UISlider *sliderAutoPlayInterval; // 浏览
+@property (strong, nonatomic)  NSTimer *timerAutoPlay;
 
 @property (nonatomic, nonatomic) BOOL  isFavorite; // 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL  isDrawing;  // 作笔记状态
@@ -164,6 +165,7 @@
     self.switchLoopPlay.enabled         = NO;
     self.sliderAutoPlayInterval.enabled = NO;
     [self.sliderAutoPlayInterval addTarget:self action:@selector(actionChangeSlideAutoPlayInterval:) forControlEvents:UIControlEventValueChanged];
+    self.timeIntervalAutoPlay           = self.sliderAutoPlayInterval.value;
     
     self.iconTriangleImageView.hidden = YES;
     self.viewColorChoice.hidden       = YES;
@@ -355,15 +357,29 @@
 - (void)actionChangeSwithAutoPlay:(UISwitch *)sender {
     self.switchLoopPlay.enabled         = [sender isOn];
     self.sliderAutoPlayInterval.enabled = [sender isOn];
+    self.isAutoPlay                     = [sender isOn];
     
     if([sender isOn]) {
+        if(!self.timerAutoPlay || ![self.timerAutoPlay isValid]) {
+            self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
+        }
+        [self.timerAutoPlay fire];
     } else {
+        if(self.timerAutoPlay) {
+            [self.timerAutoPlay invalidate];
+        }
     }
 }
 
 - (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
     self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
     self.timeIntervalAutoPlay       = sender.value;
+}
+
+- (void)actionAutoPlayer {
+    if(!self.isAutoPlay) { return; }
+    
+    [self performSelector:@selector(actionNextPage:) withObject:self.btnNextPage afterDelay:self.timeIntervalAutoPlay];
 }
 
 /**
