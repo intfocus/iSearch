@@ -50,5 +50,5 @@
  *
  *  @return 服务器响应信息
  */
-+ (HttpResponse *)actionLog:(NSString *)params;
++ (HttpResponse *)actionLog:(NSMutableDictionary *)params;
 @end

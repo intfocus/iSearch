@@ -33,7 +33,7 @@
  *
  *  @return Http#Post 响应内容
  */
-+ (HttpResponse *)httpPost:(NSString *)urlString Params:(NSString *)params;
++ (HttpResponse *)httpPost:(NSString *)urlString Params:(NSMutableDictionary *)params;
 
 /**
  *  检测当前app网络环境

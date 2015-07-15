@@ -41,24 +41,37 @@
     }
 }
 
-- (void)setResponse:(NSURLResponse *)response {
+- (void)setResponse:(NSHTTPURLResponse *)response {
     if(!response) { return; }
     
-    //_statusCode   = [NSNumber numberWithInteger:[response statusCode]];
-    _mimeType     = response.MIMEType;
-    _encodingName = response.textEncodingName;
-    
-    _response = response;
+    @try {
+        _URL         = [response.URL absoluteString];
+        _statusCode  = [NSNumber numberWithInteger:response.statusCode];
+        _contentType = [response.MIMEType lowercaseString];
+        _chartset    = [response.textEncodingName lowercaseString];
+        _contentLength = [NSNumber numberWithLongLong:response.expectedContentLength];
+        NSDictionary *dict = response.allHeaderFields;
+        _server     = dict[@"Server"];
+        _xPoweredBy = dict[@"X-Powered-By"];
+        _date       = dict[@"Date"];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@ for %@#%@", @"parse NSHTTPURLResponse failed", exception.name, exception.reason);
+    }
+    @finally {
+        _response = response;
+    }
+
 }
 
 #pragma mark - assistant methods
 
 - (void)checkBaseRespose {
-    if(![self.mimeType isEqualToString:@"application/json"]) {
-        NSLog(@"%@ mimeType not application/json but %@", self.response.URL, self.mimeType);
+    if(![self.contentType isEqualToString:@"application/json"]) {
+        NSLog(@"%@ contentType not application/json but %@", self.URL, self.contentType);
     }
-    if(![self.encodingName isEqualToString:@"utf-8"]) {
-        NSLog(@"%@ encodingName not utf-8 but %@", self.response.URL, self.encodingName);
+    if(![self.chartset isEqualToString:@"utf-8"]) {
+        NSLog(@"%@ chartset not utf-8 but %@", self.URL, self.chartset);
     }
 }
 @end

@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75C31A5A26A50B79A54B9722 /* libPods.a */; };
+		C40ECC091B55F6F70083A428 /* postLog.rb in Resources */ = {isa = PBXBuildFile; fileRef = C40ECC061B55F6F70083A428 /* postLog.rb */; };
+		C40ECC0A1B55F6F70083A428 /* postPGY.rb in Resources */ = {isa = PBXBuildFile; fileRef = C40ECC071B55F6F70083A428 /* postPGY.rb */; };
+		C40ECC0B1B55F6F70083A428 /* scp_isearch.sh in Resources */ = {isa = PBXBuildFile; fileRef = C40ECC081B55F6F70083A428 /* scp_isearch.sh */; };
+		C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
 		C49BA7DB1B54C979001D9013 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49BA7D11B54C979001D9013 /* Info.plist */; };
@@ -137,6 +141,11 @@
 		3CB226BD2DC5BFC7B479B425 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		69C51D4C3FBD72A25C0D44F2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		75C31A5A26A50B79A54B9722 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C40ECC061B55F6F70083A428 /* postLog.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = postLog.rb; sourceTree = "<group>"; };
+		C40ECC071B55F6F70083A428 /* postPGY.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = postPGY.rb; sourceTree = "<group>"; };
+		C40ECC081B55F6F70083A428 /* scp_isearch.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scp_isearch.sh; sourceTree = "<group>"; };
+		C40ECC0D1B55F7160083A428 /* curl.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = curl.sh; sourceTree = "<group>"; };
+		C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApiHelperTest.m; path = ../Models/ApiHelperTest.m; sourceTree = "<group>"; };
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		C49BA7D11B54C979001D9013 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -352,10 +361,31 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		C40ECC051B55F6F70083A428 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				C40ECC061B55F6F70083A428 /* postLog.rb */,
+				C40ECC071B55F6F70083A428 /* postPGY.rb */,
+				C40ECC081B55F6F70083A428 /* scp_isearch.sh */,
+				C40ECC0D1B55F7160083A428 /* curl.sh */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		C40ECC101B55F8E90083A428 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		C49BA7CD1B54C979001D9013 /* iSearchTests */ = {
 			isa = PBXGroup;
 			children = (
+				C40ECC101B55F8E90083A428 /* Utils */,
 				C49BA7E41B54CEF7001D9013 /* Models */,
+				C40ECC051B55F6F70083A428 /* Scripts */,
 				C49BA7D11B54C979001D9013 /* Info.plist */,
 			);
 			path = iSearchTests;
@@ -1088,6 +1118,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C40ECC0B1B55F6F70083A428 /* scp_isearch.sh in Resources */,
+				C40ECC0A1B55F6F70083A428 /* postPGY.rb in Resources */,
+				C40ECC091B55F6F70083A428 /* postLog.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1198,6 +1231,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */,
 				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

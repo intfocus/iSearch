@@ -51,27 +51,29 @@
 }
 /**
  *  Http#Post功能代码封装
+ *  application/x-www-form-urlencoded
  *
  *  @param urlString URL
  *  @param Params    参数，格式param1=value1&param2=value2
  *
  *  @return Http#Post 响应内容
  */
-+ (HttpResponse *)httpPost:(NSString *)urlString Params:(NSString *)params {
++ (HttpResponse *)httpPost:(NSString *)urlString Params:(NSMutableDictionary *)params {
     urlString  = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:urlString];
-    params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    //params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSError *error;
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
     [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    NSData *data = [params dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error: &error];
+    NSMutableData *tempJsonData = [NSMutableData dataWithData:jsonData];
+    [request setHTTPBody:tempJsonData];
     
-    NSError *error;
     NSURLResponse *response;
     HttpResponse *httpResponse = [[HttpResponse alloc] init];
     httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    httpResponse.response = response;
+    httpResponse.response = (NSHTTPURLResponse *)response;
     BOOL isOK   = NSErrorPrint(error, @"Http#post %@", urlString);
     if(!isOK) {
         [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];

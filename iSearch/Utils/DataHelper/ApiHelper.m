@@ -60,7 +60,7 @@
  *
  *  @return 服务器响应信息
  */
-+ (HttpResponse *)actionLog:(NSString *)params {
++ (HttpResponse *)actionLog:(NSMutableDictionary *)params {
     return [HttpUtils httpPost:[Url actionLog] Params:params];
 }
 
