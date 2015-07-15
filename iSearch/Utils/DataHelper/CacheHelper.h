@@ -24,14 +24,14 @@
  */
 + (void)writeNotifications:(NSMutableDictionary *)notificationDatas;
 /**
- *  目录信息缓存文件名称
+ *  目录信息缓存文件文件路径
  *
  *  @param type   category,slide
  *  @param ID     ID
  *
  *  @return cacheName
  */
-+ (NSString *)contentCacheName:(NSString *)type
++ (NSString *)contentCachePath:(NSString *)type
                             ID:(NSString *)ID;
 /**
  *  目录本地缓存数据

@@ -138,7 +138,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define CONTENT_URL_PATH          @"/uat/api/Categories_Api.php" // 请求目录的url路径
 #define CONTENT_FILE_URL_PATH     @"/uat/api/Files_Api.php" // 请求目录的url路径
 #define CONTENT_DOWNLOAD_URL_PATH @"/uat/api/Filedown_Api.php"
-#define CONTENT_DIRNAME           @"Contents" // [目录]成功取得后，写入本地缓存文件夹
+//#define CONTENT_DIRNAME           @"Contents" // [目录]成功取得后，写入缓存文件夹
 #define DOWNLOAD_DIRNAME          @"Downloads"// [目录]中[文件]压缩包下载文件夹
 #define SLIDE_DIRNAME             @"Files"   // [目录]中[文件]压缩包下载成功解压至该文件夹
 #define CONTENT_CONFIG_FILENAME   @"content.json" // 目录同步功能中，界面切换传递参数使用plist配置档
@@ -229,7 +229,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 // 公告通知
 #define NOTIFICATION_URL_PATH     @"/uat/api/News_api.php"
 #define NOTIFICATION_CACHE        @"notifications.cache"
-#define NOTIFICATION_DIRNAME      @"notifications"
+//#define NOTIFICATION_DIRNAME      @"notifications"
 #define NOTIFICATION_OCCUR_DATE   @"occur_date" // 通告与预告的区分字段
 #define NOTIFICATION_TITLE_FONT   14.0f // 公告标题字体大小
 #define NOTIFICATION_MSG_FONT     12.0f // 公告内容字体大小
@@ -278,9 +278,9 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 #define SuppressPerformSelectorLeakWarning(Stuff) \
 do { \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
-Stuff; \
-_Pragma("clang diagnostic pop") \
+    _Pragma("clang diagnostic push") \
+    _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+   Stuff; \
+    _Pragma("clang diagnostic pop") \
 } while (0)
 #endif

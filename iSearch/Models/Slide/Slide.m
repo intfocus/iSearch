@@ -181,11 +181,8 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 }
 #pragma mark - around write cache
 
-- (NSString *)cacheName {
-    return [CacheHelper contentCacheName:self.type ID:self.ID];
-}
 - (NSString *)cachePath {
-    return [FileUtils getPathName:CACHE_DIRNAME FileName:[self cacheName]];
+    return [CacheHelper contentCachePath:self.type ID:self.ID];
 }
 - (void)toCached {
     NSMutableDictionary *dict = [self refreshFields];

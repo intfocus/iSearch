@@ -34,12 +34,13 @@
 + (void)writeNotifications:(NSMutableDictionary *)notificationDatas {
     if(!notificationDatas) { return; }
     [FileUtils writeJSON:notificationDatas Into:[self notificationCachePath]];
+
 }
 
 + (NSString *)notificationCachePath {
-    return [FileUtils getPathName:NOTIFICATION_DIRNAME FileName:NOTIFICATION_CACHE];
+    NSString *cacheName = @"notifiction.cache";
+    return [FileUtils getPathName:CACHE_DIRNAME FileName:cacheName];
 }
-
 
 
 /**
@@ -51,8 +52,7 @@
  *  @return 缓存数据
  */
 + (NSMutableArray *)readContents:(NSString *)type ID:(NSString *)ID {
-    NSString *cacheName = [self contentCacheName:type ID:ID];
-    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
+    NSString *cachePath = [self contentCachePath:type ID:ID];
     
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     if([FileUtils checkFileExist:cachePath isDir:NO]) {
@@ -71,20 +71,21 @@
  */
 + (void)writeContents:(NSMutableDictionary *)contentDatas Type:(NSString *)type ID:(NSString *)ID {
     if(!contentDatas) { return; }
-    NSString *cacheName = [CacheHelper contentCacheName:type ID:ID];
-    NSString *cachePath = [FileUtils getPathName:CONTENT_DIRNAME FileName:cacheName];
+    NSString *cachePath = [self contentCachePath:type ID:ID];
     [FileUtils writeJSON:contentDatas Into:cachePath];
 }
 /**
- *  目录信息缓存文件名称
+ *  目录信息缓存文件文件路径;
+ *  同一个分类ID,下载它的子分类集与子文档集通过两个不同的api链接，所以会有两个缓存文件。
  *
  *  @param type   category,slide
  *  @param ID     ID
  *
  *  @return cacheName
  */
-+ (NSString *)contentCacheName:(NSString *)type
-                            ID:(NSString *)ID {
-    return [NSString stringWithFormat:@"%@-%@.cache",type, ID];
++ (NSString *)contentCachePath:(NSString *)type ID:(NSString *)ID {
+    NSString *cacheName = [NSString stringWithFormat:@"content-%@-%@.cache",type, ID];
+    NSString *cachePath = [FileUtils getPathName:CACHE_DIRNAME FileName:cacheName];
+    return cachePath;
 }
 @end
