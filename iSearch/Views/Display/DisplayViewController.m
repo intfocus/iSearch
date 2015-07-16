@@ -159,13 +159,19 @@
     self.paintView                     = nil;
     self.viewEditPanel.layer.zPosition = MAXFLOAT;
 
+    // 默认循环播放
+    self.isLoopPlay        = YES;
+    self.switchLoopPlay.on = YES;
+    [self.switchLoopPlay addTarget:self action:@selector(actionChangeSwithLoopPlay:) forControlEvents:UIControlEventValueChanged];
+    
+    self.isAutoPlay        = NO;
     self.switchAutoPlay.on = NO;
     [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwithAutoPlay:) forControlEvents:UIControlEventValueChanged];
-    self.switchLoopPlay.on              = NO;
-    self.switchLoopPlay.enabled         = NO;
+    
+    self.timeIntervalAutoPlay         = 10.0;
+    self.sliderAutoPlayInterval.value = 10.0;
     self.sliderAutoPlayInterval.enabled = NO;
     [self.sliderAutoPlayInterval addTarget:self action:@selector(actionChangeSlideAutoPlayInterval:) forControlEvents:UIControlEventValueChanged];
-    self.timeIntervalAutoPlay           = self.sliderAutoPlayInterval.value;
     
     self.iconTriangleImageView.hidden = YES;
     self.viewColorChoice.hidden       = YES;
@@ -226,16 +232,6 @@
     self.dataList  = nil;
     self.paintView = nil;
 }
-#pragma mark - webview 
-////开始加载数据
-//- (void)webViewDidStartLoad:(UIWebView *)webView {
-//    NSLog(@"start.");
-//}
-//
-////数据加载完
-//- (void)webViewDidFinishLoad:(UIWebView *)webView {
-//    NSLog(@"finish.");
-//}
 
 /**
  *  控件事件
@@ -342,7 +338,7 @@
     }
 }
 /**
- *  激光笔状态切换控件，回调函数。
+ *  激光笔状态控件
  *
  *  @param sender UISwitch
  */
@@ -354,14 +350,18 @@
         [self stopLaser];
     }
 }
+/**
+ *  自动播放状态控件
+ *
+ *  @param sender UISwitch
+ */
 - (void)actionChangeSwithAutoPlay:(UISwitch *)sender {
-    self.switchLoopPlay.enabled         = [sender isOn];
     self.sliderAutoPlayInterval.enabled = [sender isOn];
     self.isAutoPlay                     = [sender isOn];
     
     if([sender isOn]) {
         if(!self.timerAutoPlay || ![self.timerAutoPlay isValid]) {
-            self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
+            self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
         }
         [self.timerAutoPlay fire];
     } else {
@@ -370,16 +370,43 @@
         }
     }
 }
-
-- (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
-    self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
-    self.timeIntervalAutoPlay       = sender.value;
+/**
+ *  循环播放状态控件
+ *
+ *  @param sender UISwitch
+ */
+- (void)actionChangeSwithLoopPlay:(UISwitch *)sender {
+    self.isLoopPlay = [sender isOn];
+    [self checkLastNextPageBtnState];
 }
 
+/**
+ *  自动播放状态，设置间隔时间回调函数
+ *
+ *  @param sender UISlider
+ */
+- (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
+    self.timeIntervalAutoPlay       = sender.value;
+    self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
+    
+    // refire timer
+    if(self.timerAutoPlay) {
+        [self.timerAutoPlay invalidate];
+    }
+    self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
+    [self.timerAutoPlay fire];
+}
+
+/**
+ *  自动播放状态，定时器执行操作
+ */
 - (void)actionAutoPlayer {
     if(!self.isAutoPlay) { return; }
     
-    [self performSelector:@selector(actionNextPage:) withObject:self.btnNextPage afterDelay:self.timeIntervalAutoPlay];
+    if(self.isLoopPlay ||
+      (!self.isLoopPlay && [self.currentPageIndex intValue] < [self.dataList count]-1)) {
+        [self performSelector:@selector(actionNextPage:) withObject:self.btnNextPage afterDelay:self.timeIntervalAutoPlay];
+    }
 }
 
 /**
@@ -432,8 +459,26 @@
     self.btnClearNote.enabled = YES;
 }
 
-
-// 笔记颜色
+/**
+ *  控制颜色选择面板显示状态
+ *
+ *  @param sender UIButton
+ */
+- (IBAction)actionToggleShowViewColorChoice:(UIButton *)sender {
+    self.viewColorChoice.hidden       = !self.viewColorChoice.hidden;
+    self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
+    if(!self.viewColorChoice.hidden) {
+        [self.view bringSubviewToFront:self.iconTriangleImageView];
+        [self.view bringSubviewToFront:self.viewColorChoice];
+    }
+}
+/**
+ *  颜色选择面板，选择颜色，进入作笔记状态
+ *
+ *  @param IBAction UIButton
+ *
+ *  @return void
+ */
 -(IBAction)actionColorChoice:(UIButton*)sender{
     // 关闭switch控件，并触发自身函数
     [self.switchLaser setOn:NO];
@@ -444,7 +489,6 @@
     
     [self.view sendSubviewToBack:self.viewColorChoice];
     self.viewColorChoice.hidden = YES;
-    
 }
 
 /**
@@ -472,16 +516,21 @@
  *  @param sender UIButton
  */
 - (IBAction)actionNextPage: (id)sender {
-//    [self.switchLaser setOn:NO];
     [self stopNote];
     
     NSInteger pageCount = [self.dataList count];
-    if([self.currentPageIndex intValue] < pageCount -1) {
-        NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
-        self.currentPageIndex = [NSNumber numberWithInteger:index];
-        [self loadHtml];
-    } else {
-        [self showPopupView:@"最后一页"];
+    if(!self.isLoopPlay && [self.currentPageIndex intValue] == pageCount - 1) {
+        //[self showPopupView:@"最后一页了"];
+        [self checkLastNextPageBtnState];
+        return;
+    }
+    
+    NSInteger index = ([self.currentPageIndex intValue] + 1) % pageCount;
+    self.currentPageIndex = [NSNumber numberWithInteger:index];
+    [self loadHtml];
+    
+    if([self.currentPageIndex intValue] == 0) {
+        [self showPopupView:@"进入第一页了"];
     }
     [self checkLastNextPageBtnState];
 }
@@ -494,26 +543,23 @@
 - (IBAction)actionLastPage: (id)sender {
     [self stopNote];
     
-    NSInteger pageCount = [self.dataList count];
-    if([self.currentPageIndex intValue] != 0) {
-        NSInteger index =  ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
-        self.currentPageIndex = [NSNumber numberWithInteger:index];
-        [self loadHtml];
-    } else {
-        [self showPopupView:@"第一页了"];
+    NSInteger pageCount   = [self.dataList count];
+    if(!self.isLoopPlay && [self.currentPageIndex intValue] == 0) {
+        //[self showPopupView:@"第一页了"];
+        [self checkLastNextPageBtnState];
+        return;
+    }
+    
+    NSInteger index       = ([self.currentPageIndex intValue]- 1 + pageCount) % pageCount;
+    self.currentPageIndex = [NSNumber numberWithInteger:index];
+    [self loadHtml];
+    
+    if([self.currentPageIndex intValue] == pageCount - 1) {
+        [self showPopupView:@"进入最后一页了"];
     }
     [self checkLastNextPageBtnState];
 }
 
-- (IBAction)actionToggleShowViewColorChoice:(UIButton *)sender {
-    self.viewColorChoice.hidden       = !self.viewColorChoice.hidden;
-    self.iconTriangleImageView.hidden = !self.iconTriangleImageView.hidden;
-    if(!self.viewColorChoice.hidden) {
-        [self.view bringSubviewToFront:self.iconTriangleImageView];
-        [self.view bringSubviewToFront:self.viewColorChoice];
-    }
-    //[self toggleDrawing];
-}
 
 /**
  *  只有文档已经下载; 文档演示过程中，可以直接进入编辑文档页面界面；
@@ -634,12 +680,17 @@
 
 #pragma mark - assistant methods
 
-- (void) checkLastNextPageBtnState {
-    [self enabledLastNextPageBtn:self.btnLastPage Enabeld:([self.currentPageIndex intValue] != 0)];
-    [self enabledLastNextPageBtn:self.btnNextPage Enabeld:([self.currentPageIndex intValue] != [self.dataList count]-1)];
+- (void)checkLastNextPageBtnState {
+    if(self.isLoopPlay) {
+        [self enabledLastNextPageBtn:self.btnLastPage Enabeld:YES];
+        [self enabledLastNextPageBtn:self.btnNextPage Enabeld:YES];
+    } else {
+        [self enabledLastNextPageBtn:self.btnLastPage Enabeld:([self.currentPageIndex intValue] != 0)];
+        [self enabledLastNextPageBtn:self.btnNextPage Enabeld:([self.currentPageIndex intValue] != [self.dataList count]-1)];
+    }
 }
-- (void) enabledLastNextPageBtn:(UIButton *)sender
-                        Enabeld:(BOOL)enabled {
+- (void)enabledLastNextPageBtn:(UIButton *)sender
+                       Enabeld:(BOOL)enabled {
     if(enabled == sender.enabled) return;
     
     sender.enabled = enabled;
