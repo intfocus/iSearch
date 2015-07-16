@@ -105,7 +105,6 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 #define GRID_VIEW_DELETE_BTN_OFFSET_X -15 // GridView Delete按钮平移位置
 #define GRID_VIEW_DELETE_BTN_OFFSET_Y -15 // GridView Delete按钮平移位置
-#define GRID_VIEW_DELETE_BTN_IMAGE    @"close_x.png" // GridView Delete按钮背影图片
 
 // 登陆相关
 #define LOGIN_URL_PATH         @"/uat/api/users_api.php" // 用户身份验证的url路径
@@ -124,15 +123,15 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define LOGIN_FIELD_DEPTID     @"DeptId"
 #define LOGIN_FIELD_RESULT     @"result"
 // 通用字段
-#define USER_ID                @"UserID"
-#define USER_NAME              @"UserName"
-#define USER_EMAIL              @"UserEmail"
-#define USER_DEPTID            @"UserDeptID"
-#define USER_EMPLOYEEID        @"UserEmployeeID"
-#define USER_LOGIN_USERNAME    @"LoginUserName"
-#define USER_LOGIN_PASSWORD    @"LoginPassword"
+#define USER_ID                  @"UserID"
+#define USER_NAME                @"UserName"
+#define USER_EMAIL               @"UserEmail"
+#define USER_DEPTID              @"UserDeptID"
+#define USER_EMPLOYEEID          @"UserEmployeeID"
+#define USER_LOGIN_USERNAME      @"LoginUserName"
+#define USER_LOGIN_PASSWORD      @"LoginPassword"
 #define USER_LOGIN_REMEMBER_PWD  @"LoginRememberPWD"
-#define USER_LOGIN_LAST        @"LoginLastTime"
+#define USER_LOGIN_LAST          @"LoginLastTime"
 
 // 目录相关(_FILE与获取文件相关，默认获取分类)
 #define CONTENT_URL_PATH          @"/uat/api/Categories_Api.php" // 请求目录的url路径
@@ -152,10 +151,10 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define SCAN_SLIDE_PAGEID       @"ScanSLidePageID" // 演示档时，[编辑]进入文档页面界面
 #define SLIDE_DISPLAY_JUMPTO    @"DisplayJumpTo" // 编辑界面，双击进入演示
 // 目录中文件类型
-#define CONTENT_CATEGORY   @"0" // 分类，可以点击再进入
-#define CONTENT_SLIDE      @"1" // 文献 （待确认)
-#define CONTENT_PPT        @"2" // 幻灯片（待确认)
-#define CONTENT_SORT_KEY   @"SortKey" // CONTENT_FIELD_ID转化为数字
+#define CONTENT_CATEGORY         @"0" // 分类，可以点击再进入
+#define CONTENT_SLIDE            @"1" // 文献 （待确认)
+#define CONTENT_PPT              @"2" // 幻灯片（待确认)
+#define CONTENT_SORT_KEY         @"SortKey" // CONTENT_FIELD_ID转化为数字
 // 目录API参数
 #define CONTENT_PARAM_DEPTID    @"did" // 部门ID
 #define CONTENT_PARAM_PARENTID  @"pid" // 分类父ID
@@ -177,28 +176,27 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 
 // 离线搜索/批量下载
 #define OFFLINE_URL_PATH         @"/uat/api/filelist_api.php" // 在线时获取服务器端文件列表数据，以备离线时搜索使用
-#define OFFLINE_DIRNAME          @"Offlines"
 // API参数
 #define OFFLINE_PARAM_DEPTID     @"did"
 // API字段
 // shared with CONTENT_FIELD_*
 // 数据库表字段
-#define OFFLINE_TABLE_NAME       @"offline" // 离线搜索时数据存储的数据库名称
-#define OFFLINE_COLUMN_FILEID    @"file_id"
-#define OFFLINE_COLUMN_NAME      @"file_name"
-#define OFFLINE_COLUMN_TITLE     @"file_title"
-#define OFFLINE_COLUMN_TYPE      @"file_type"
-#define OFFLINE_COLUMN_DESC      @"desc"
-#define OFFLINE_COLUMN_TAGS      @"tags"
+#define OFFLINE_TABLE_NAME          @"slides" // 离线搜索时数据存储的数据库名称
+#define OFFLINE_COLUMN_FILEID       @"slide_id"
+#define OFFLINE_COLUMN_NAME         @"slide_name"
+#define OFFLINE_COLUMN_TITLE        @"slide_title"
+#define OFFLINE_COLUMN_TYPE         @"slide_type"
+#define OFFLINE_COLUMN_DESC         @"desc"
+#define OFFLINE_COLUMN_TAGS         @"tags"
 #define OFFLINE_COLUMN_CATEGORYID   @"category_id"
 #define OFFLINE_COLUMN_CATEGORYNAME @"category_name"
 #define OFFLINE_COLUMN_CREATEDATE   @"edit_time"
-#define OFFLINE_COLUMN_PAGENUM   @"page_num"
-#define OFFLINE_COLUMN_ZIPURL    @"zip_url"
-#define OFFLINE_COLUMN_ZIPSIZE   @"zip_size"
+#define OFFLINE_COLUMN_PAGENUM      @"page_num"
+#define OFFLINE_COLUMN_ZIPURL       @"zip_url"
+#define OFFLINE_COLUMN_ZIPSIZE      @"zip_size"
 
-#define DB_COLUMN_CREATED      @"created_at"
-#define DB_COLUMN_UPDATED      @"updated_at"
+#define DB_COLUMN_CREATED           @"created_at"
+#define DB_COLUMN_UPDATED           @"updated_at"
 
 
 // 内容重组
@@ -253,12 +251,15 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define VERSION_INSERTURL             @"insert_url"
 
 // actionLog
-#define ACTIONLOG_TABLE_NAME          @"action_log"
+#define ACTIONLOG_TABLE_NAME          @"action_logs"
 #define ACTIONLOG_COLUMN_UID          @"user_id"
 #define ACTIONLOG_COLUMN_FUNNAME      @"function_name"
 #define ACTIONLOG_COLUMN_ACTNAME      @"action_name"
 #define ACTIONLOG_COLUMN_ACTRET       @"action_return"
 #define ACTIONLOG_COLUMN_ACTOBJ       @"action_object"
+#define LOCAL_COLUMN_SLIDE_ID         @"local_slide_id"
+#define LOCAL_COLUMN_SLIDE_TYPE       @"local_slide_type"
+#define LOCAL_COLUMN_ACTION           @"local_action"
 #define ACTIONLOG_COLUMN_ISSYNC       @"is_synced"
 #define ACTIONLOG_COLUMN_DELETED      @"is_deleted"
 

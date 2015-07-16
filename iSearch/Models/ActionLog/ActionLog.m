@@ -46,7 +46,10 @@
     [self.databaseUtils insertActionLog:[NSString stringWithFormat:@"%@ slide#%@ in %@", action,slide.ID, slide.dirName]
                                 ActName:action
                                  ActObj:slide.ID
-                                 ActRet:slide.dirName];
+                                 ActRet:slide.dirName
+                                SlideID:slide.ID
+                              SlideType:slide.dirName
+                            SlideAction:action];
 }
 
 /**

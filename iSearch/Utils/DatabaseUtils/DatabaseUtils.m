@@ -8,14 +8,12 @@
 
 #import "DatabaseUtils.h"
 #import "FMDB.h"
+#import "User.h"
 #import "const.h"
 #import "FileUtils.h"
-#import "User.h"
 #import "ExtendNSLogFunctionality.h"
 
 @implementation DatabaseUtils
-
-#define myNSLog
 
 - (DatabaseUtils *)init {
     if (self = [super init]) {
@@ -77,6 +75,9 @@
             %@ varchar(300) NOT NULL,                                                \
             %@ varchar(300) NOT NULL,                                                \
             %@ varchar(300) NOT NULL,                                                \
+            %@ varchar(100) NOT NULL,                                                \
+            %@ varchar(100) NOT NULL,                                                \
+            %@ varchar(100) NOT NULL,                                                \
             %@ boolean NOT NULL default 0,                                           \
             %@ boolean NOT NULL default 0,                                           \
             %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),  \
@@ -90,12 +91,15 @@
             ACTIONLOG_COLUMN_ACTNAME,
             ACTIONLOG_COLUMN_ACTRET,
             ACTIONLOG_COLUMN_ACTOBJ,
+            LOCAL_COLUMN_SLIDE_ID,
+            LOCAL_COLUMN_SLIDE_TYPE,
+            LOCAL_COLUMN_ACTION,
             ACTIONLOG_COLUMN_ISSYNC,
             ACTIONLOG_COLUMN_DELETED,
             DB_COLUMN_CREATED,
             DB_COLUMN_UPDATED,
-            ACTIONLOG_TABLE_NAME,ACTIONLOG_COLUMN_FUNNAME,
-            OFFLINE_TABLE_NAME, DB_COLUMN_CREATED];
+            ACTIONLOG_TABLE_NAME, ACTIONLOG_COLUMN_FUNNAME,
+            ACTIONLOG_TABLE_NAME, DB_COLUMN_CREATED];
 }
 /**
  *  需要的取值方式未定义或过于复杂时，直接执行SQL语句

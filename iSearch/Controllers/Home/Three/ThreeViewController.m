@@ -21,7 +21,6 @@
 
 @interface ThreeViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gmGridView;
-    UIImageView          *changeBigImageView;
     NSMutableArray       *_dataList;
 }
 @property (strong, nonatomic) ActionLog *actionLog;
@@ -104,12 +103,12 @@
     ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
     
     NSMutableDictionary *currentDict = [_dataList objectAtIndex:index];
-    NSString *slideID = currentDict[ACTIONLOG_COLUMN_ACTOBJ];
-    BOOL isFavorite = [currentDict[ACTIONLOG_COLUMN_ACTRET] isEqualToString:FAVORITE_DIRNAME];
+    NSString *slideID                = currentDict[LOCAL_COLUMN_SLIDE_ID];
+    BOOL isFavorite                  = [currentDict[LOCAL_COLUMN_SLIDE_TYPE] isEqualToString:FAVORITE_DIRNAME];
     Slide *slide = [Slide findById:slideID isFavorite:isFavorite];
     
-    viewSlide.isFavorite = isFavorite;
-    viewSlide.dict = [slide refreshFields];
+    viewSlide.isFavorite           = isFavorite;
+    viewSlide.dict                 = [slide refreshFields];
     viewSlide.masterViewController = [[self masterViewController] masterViewController];
 
     [cell setContentView: viewSlide];
