@@ -10,6 +10,7 @@
 #import "Url+Param.h"
 
 @interface UrlTest : XCTestCase
+@property (nonatomic, strong) Url *url;
 
 @end
 
@@ -17,33 +18,26 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    self.url = [[Url alloc] init];
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    self.url = nil;
+    
     [super tearDown];
 }
 
-- (void)testUrlNotNil {
+- (void)testEveryUrlNotNil {
     NSArray *methods = @[@"base", @"login", @"slides", @"categories", @"slideDownload", @"notifications", @"actionLog", @"slideList"];
-    Url *url = [[Url alloc] init];
     NSString *urlString;
     for(NSString *method in methods) {
         SuppressPerformSelectorLeakWarning(
-            urlString = [url performSelector:NSSelectorFromString(method)];
+            urlString = [self.url performSelector:NSSelectorFromString(method)];
         );
 
         XCTAssertNotNil(urlString);
         XCTAssertTrue([urlString containsString:BASE_URL]);
     }
 }
-
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
-}
-
 @end

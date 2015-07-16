@@ -17,6 +17,7 @@
 		C49BA7DB1B54C979001D9013 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49BA7D11B54C979001D9013 /* Info.plist */; };
 		C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C49BA7E51B54CEF7001D9013 /* UrlTest.m */; };
 		C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB21B57A4B800136887 /* BaseModelTest.m */; };
+		C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB41B57AA5500136887 /* JayPlayTest.m */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
@@ -152,6 +153,7 @@
 		C49BA7D11B54C979001D9013 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C49BA7E51B54CEF7001D9013 /* UrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlTest.m; sourceTree = "<group>"; };
 		C4C18BB21B57A4B800136887 /* BaseModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModelTest.m; sourceTree = "<group>"; };
+		C4C18BB41B57AA5500136887 /* JayPlayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JayPlayTest.m; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCDD1B184E530067B762 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 				C40ECC071B55F6F70083A428 /* postPGY.rb */,
 				C40ECC081B55F6F70083A428 /* scp_isearch.sh */,
 				C40ECC0D1B55F7160083A428 /* curl.sh */,
+				C4C18BB41B57AA5500136887 /* JayPlayTest.m */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -1236,6 +1239,7 @@
 			files = (
 				C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */,
 				C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */,
+				C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */,
 				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
