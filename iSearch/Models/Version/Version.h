@@ -36,6 +36,8 @@
 
 // local fields
 @property (nonatomic, strong) NSString *dbVersion;
+@property (nonatomic, strong) NSString *fileSystemSize;
+@property (nonatomic, strong) NSString *fileSystemFreeSize;
 @property (nonatomic, strong) NSString *localCreatedDate;
 @property (nonatomic, strong) NSString *localUpdatedDate;
 

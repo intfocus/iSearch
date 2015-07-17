@@ -27,6 +27,11 @@
         _platform  = localVersionInfo[@"DTPlatformName"];
         _dbVersion = (NSString *)psd(localVersionInfo[@"Database Version"], @"NotSet");
         
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSDictionary *fattributes = [fm attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+        _fileSystemSize     = [fattributes objectForKey:NSFileSystemSize];
+        _fileSystemFreeSize = [fattributes objectForKey:NSFileSystemFreeSize];
+        
         [self reload];
         [self updateTimestamp];
     }

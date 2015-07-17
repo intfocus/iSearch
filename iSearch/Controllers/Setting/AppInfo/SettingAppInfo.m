@@ -12,6 +12,7 @@
 #import "SettingViewController.h"
 #import "SettingMainView.h"
 #import "Version.h"
+#import "FileUtils.h"
 
 
 @interface SettingAppInfo()<UITableViewDelegate, UITableViewDataSource>
@@ -44,6 +45,8 @@
     [self.dataList addObject:@[@"系统语言", version.lang]];
     [self.dataList addObject:@[@"支持最低IOS版本",version.suport]];
     [self.dataList addObject:@[@"当前IOS版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""]]];
+    [self.dataList addObject:@[@"系统空间", [FileUtils humanFileSize:version.fileSystemSize]]];
+    [self.dataList addObject:@[@"系统可用空间", [FileUtils humanFileSize:version.fileSystemFreeSize]]];
 }
 
 - (IBAction)actionBackToMain:(id)sender {

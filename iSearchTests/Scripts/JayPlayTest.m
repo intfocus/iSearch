@@ -67,6 +67,13 @@
     XCTAssertEqualObjects([self translation:@"127"], @"一百二十七");
     XCTAssertEqualObjects([self translation:@"1270"], @"一千二百七十");
     XCTAssertEqualObjects([self translation:@"12700"], @"一万二千七百");
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSDictionary *fattributes = [fm attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+    
+    
+    NSLog(@"%lldG",[[fattributes objectForKey:NSFileSystemSize] longLongValue]/1000000000);
+    NSLog(@"%lldG",[[fattributes objectForKey:NSFileSystemFreeSize] longLongValue]/1000000000);
+
 }
 
 
