@@ -281,7 +281,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="30" minValue="1" maxValue="60" translatesAutoresizingMaskIntoConstraints="NO" id="gaM-Wq-9H0">
+                        <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="1" maxValue="30" translatesAutoresizingMaskIntoConstraints="NO" id="gaM-Wq-9H0">
                             <rect key="frame" x="3" y="53" width="118" height="31"/>
                         </slider>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="间隔 10 秒" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cWL-A2-oxh">
@@ -295,7 +295,7 @@
                     <constraints>
                         <constraint firstItem="9I0-g4-a91" firstAttribute="top" secondItem="arW-Oj-6Nm" secondAttribute="top" constant="15" id="4tN-5I-h8w"/>
                         <constraint firstAttribute="height" constant="103" id="DPT-kG-Kxl"/>
-                        <constraint firstItem="cWL-A2-oxh" firstAttribute="top" secondItem="gaM-Wq-9H0" secondAttribute="bottom" constant="-1" id="ILT-pX-Hb3"/>
+                        <constraint firstItem="cWL-A2-oxh" firstAttribute="top" secondItem="gaM-Wq-9H0" secondAttribute="bottom" id="ILT-pX-Hb3"/>
                         <constraint firstAttribute="width" constant="130" id="NBG-xs-2cN"/>
                         <constraint firstItem="grA-MU-dfD" firstAttribute="top" secondItem="arW-Oj-6Nm" secondAttribute="top" constant="8" id="cEu-Ax-hG0"/>
                         <constraint firstItem="grA-MU-dfD" firstAttribute="leading" secondItem="9I0-g4-a91" secondAttribute="trailing" constant="5" id="rei-3C-8ws"/>

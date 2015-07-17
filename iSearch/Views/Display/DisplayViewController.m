@@ -171,6 +171,7 @@
     self.timeIntervalAutoPlay         = 10.0;
     self.sliderAutoPlayInterval.value = 10.0;
     self.sliderAutoPlayInterval.enabled = NO;
+    [self.sliderAutoPlayInterval addTarget:self action:@selector(actionEndChangeSlideAutoPlayInterval:) forControlEvents:UIControlEventTouchUpInside];
     [self.sliderAutoPlayInterval addTarget:self action:@selector(actionChangeSlideAutoPlayInterval:) forControlEvents:UIControlEventValueChanged];
     
     self.iconTriangleImageView.hidden = YES;
@@ -359,15 +360,16 @@
     self.sliderAutoPlayInterval.enabled = [sender isOn];
     self.isAutoPlay                     = [sender isOn];
     
+    if(self.timerAutoPlay) {
+        [self.timerAutoPlay invalidate];
+        _timerAutoPlay = nil;
+    }
+    
     if([sender isOn]) {
-        if(!self.timerAutoPlay || ![self.timerAutoPlay isValid]) {
-            self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
-        }
+        self.timerAutoPlay = [[NSTimer alloc] init];
+        self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
+
         [self.timerAutoPlay fire];
-    } else {
-        if(self.timerAutoPlay) {
-            [self.timerAutoPlay invalidate];
-        }
     }
 }
 /**
@@ -386,17 +388,33 @@
  *  @param sender UISlider
  */
 - (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
-    self.timeIntervalAutoPlay       = sender.value;
+    self.timeIntervalAutoPlay = INFINITY;
     self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
     
-    // refire timer
     if(self.timerAutoPlay) {
         [self.timerAutoPlay invalidate];
+        _timerAutoPlay = nil;
     }
-    self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
-    [self.timerAutoPlay fire];
 }
 
+/**
+ *  自动播放状态，设置间隔时间后，调整定时器
+ *
+ *  @param sender <#sender description#>
+ */
+- (void)actionEndChangeSlideAutoPlayInterval:(UISlider *)sender {
+    self.timeIntervalAutoPlay = INFINITY;
+    [self.timerAutoPlay invalidate];
+    _timerAutoPlay = nil;
+    self.timeIntervalAutoPlay = sender.value;
+    self.timerAutoPlay = [[NSTimer alloc] init];
+    self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
+    double delayInSeconds = sender.value / 2;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+        [self.timerAutoPlay fire];
+    });
+}
 /**
  *  自动播放状态，定时器执行操作
  */
