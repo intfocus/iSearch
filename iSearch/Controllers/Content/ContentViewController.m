@@ -154,18 +154,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-//    DataHelper *dataHelper = [[DataHelper alloc] init];
-//    [dataHelper traverseVisitContent:CONTENT_ROOT_ID Depth:1];
-//    [dataHelper traverseVisitReport];
-    
     [self refreshContent];
 }
-
-//- (void)viewDidLayoutSubviews {
-//    [super viewDidLayoutSubviews];
-//    
-//     [self configSpinner];
-//}
 
 - (void)viewDidUnload {
     [super viewDidUnload];
@@ -311,7 +301,7 @@
     } else {
         ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
         viewSlide.isFavorite = NO;
-        viewSlide.dict = currentDict;
+        viewSlide.dict       = currentDict;
         viewSlide.masterViewController = [self masterViewController];
     
         [cell setContentView: viewSlide];

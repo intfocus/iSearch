@@ -53,7 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnLastPage;  // 上一页
 @property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
 @property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
-@property (weak, nonatomic) IBOutlet UISlider *sliderAutoPlayInterval; // 浏览
+@property (weak, nonatomic) IBOutlet UISlider *sliderAutoPlayInterval; // 自动播放间隔时间设置
 @property (strong, nonatomic)  NSTimer *timerAutoPlay;
 
 @property (nonatomic, nonatomic) BOOL  isFavorite; // 收藏文件、正常下载文件
@@ -631,23 +631,6 @@
     }
 }
 
-//// 做笔记
-//- (void)toggleDrawing {
-//    if(!self.isDrawing) {
-//        self.paintView = [[PaintView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-//        self.paintView.backgroundColor = [UIColor whiteColor];
-//        self.paintView.alpha = 0.3;
-//        self.paintView.erase = false;
-//        self.paintView.laser = false;
-//        [self.view addSubview:self.paintView];
-//        self.isDrawing = true;
-//    } else {
-//        [self.paintView removeFromSuperview];
-//        self.isDrawing = false;
-//        
-//    }
-//}
-
 /**
  *  关闭演示界面；
  *  内存管理: 谁开启，谁负责；
@@ -749,7 +732,6 @@
         [self.slide enterDisplayOrScanState];
     }
     _dataList = [self.slide dictSwp][SLIDE_DESC_ORDER];
-    
     // 浏览页面调整页面顺序，播放实时更新
     NSString *jumpToPageName = configDict[SLIDE_DISPLAY_JUMPTO];
     NSInteger jumpToPageIndex = [self.dataList indexOfObject:jumpToPageName];

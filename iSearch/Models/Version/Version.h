@@ -45,5 +45,6 @@
 - (void)reload;
 - (void)updateTimestamp;
 - (void)save;
+- (NSString *)simpleDescription;
 @end
 #endif
