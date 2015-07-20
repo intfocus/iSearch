@@ -58,9 +58,9 @@
     NSInteger offset=20;
     
     {
-        self.head=(id)[ViewUtils loadNibClass:[UserHeadView class]];
-        self.head.frame=CGRectOffset(self.head.frame, 0, offset);
-        offset+=CGRectGetHeight(self.head.frame);
+        self.head       = (id)[ViewUtils loadNibClass:[UserHeadView class]];
+        self.head.frame = CGRectOffset(self.head.frame, 0, offset);
+        offset          += CGRectGetHeight(self.head.frame);
         [self.view addSubview:self.head];
         
         [self.head addTarget:self.masterViewController action:@selector(onUserHeadClick:) forControlEvents:UIControlEventTouchUpInside];

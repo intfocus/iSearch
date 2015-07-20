@@ -54,7 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNextPage;  // 下一页
 @property (weak, nonatomic) IBOutlet UIButton *btnDimiss;    // 关闭
 @property (weak, nonatomic) IBOutlet UISlider *sliderAutoPlayInterval; // 自动播放间隔时间设置
-@property (strong, nonatomic)  NSTimer *timerAutoPlay;
+@property (strong, nonatomic)  NSTimer *timerAutoPlay; // 与viewController周期一致
 
 @property (nonatomic, nonatomic) BOOL  isFavorite; // 收藏文件、正常下载文件
 @property (nonatomic, nonatomic) BOOL  isDrawing;  // 作笔记状态
@@ -62,6 +62,7 @@
 @property (nonatomic, nonatomic) BOOL  isAutoPlay; // 自动播放状态
 @property (nonatomic, nonatomic) BOOL  isLoopPlay; // 自动播放状态,无限循环播放
 @property (nonatomic, nonatomic) NSTimeInterval  timeIntervalAutoPlay;// 自动播放状态,间隔时间
+@property (nonatomic, nonatomic) NSNumber  *timerCountDown;// 自动播放状态,倒计时
 @property (nonatomic, strong) NSString *slideID;
 @property (nonatomic, strong) NSString *dirName;
 @property (nonatomic, strong) NSString *forbidCss;
@@ -169,7 +170,8 @@
     [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwithAutoPlay:) forControlEvents:UIControlEventValueChanged];
     
     self.timeIntervalAutoPlay         = 10.0;
-    self.sliderAutoPlayInterval.value = 10.0;
+    self.timerCountDown               = [NSNumber numberWithLong:self.timeIntervalAutoPlay];
+    self.sliderAutoPlayInterval.value = self.timeIntervalAutoPlay;
     self.sliderAutoPlayInterval.enabled = NO;
     [self.sliderAutoPlayInterval addTarget:self action:@selector(actionEndChangeSlideAutoPlayInterval:) forControlEvents:UIControlEventTouchUpInside];
     [self.sliderAutoPlayInterval addTarget:self action:@selector(actionChangeSlideAutoPlayInterval:) forControlEvents:UIControlEventValueChanged];
@@ -211,6 +213,11 @@
            </body>                      \
          </html>" baseURL:nil];
     }
+    
+    self.timerAutoPlay = [[NSTimer alloc] init];
+    self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionTimeTicker) userInfo:nil repeats:YES];
+    
+    [self.timerAutoPlay fire];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -220,6 +227,11 @@
     [self.webView loadHTMLString:html baseURL:nil];
     
     if(self.hud) { [self.hud removeFromSuperview]; }
+    
+    if(self.timerAutoPlay) {
+        [self.timerAutoPlay invalidate];
+        _timerAutoPlay = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -237,7 +249,7 @@
 /**
  *  控件事件
  */
-- (void) loadHtml {
+- (void)loadHtml {
     if([self.currentPageIndex integerValue] > [self.dataList count]-1) {
         self.currentPageIndex = [NSNumber numberWithInteger:0];
         NSLog(@"Bug: DisplayViewController set Jumpto %@", self.currentPageIndex);
@@ -359,18 +371,6 @@
 - (void)actionChangeSwithAutoPlay:(UISwitch *)sender {
     self.sliderAutoPlayInterval.enabled = [sender isOn];
     self.isAutoPlay                     = [sender isOn];
-    
-    if(self.timerAutoPlay) {
-        [self.timerAutoPlay invalidate];
-        _timerAutoPlay = nil;
-    }
-    
-    if([sender isOn]) {
-        self.timerAutoPlay = [[NSTimer alloc] init];
-        self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
-
-        [self.timerAutoPlay fire];
-    }
 }
 /**
  *  循环播放状态控件
@@ -388,13 +388,7 @@
  *  @param sender UISlider
  */
 - (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
-    self.timeIntervalAutoPlay = INFINITY;
     self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
-    
-    if(self.timerAutoPlay) {
-        [self.timerAutoPlay invalidate];
-        _timerAutoPlay = nil;
-    }
 }
 
 /**
@@ -403,17 +397,31 @@
  *  @param sender <#sender description#>
  */
 - (void)actionEndChangeSlideAutoPlayInterval:(UISlider *)sender {
-    self.timeIntervalAutoPlay = INFINITY;
-    [self.timerAutoPlay invalidate];
-    _timerAutoPlay = nil;
     self.timeIntervalAutoPlay = sender.value;
-    self.timerAutoPlay = [[NSTimer alloc] init];
-    self.timerAutoPlay = [NSTimer scheduledTimerWithTimeInterval:self.timeIntervalAutoPlay target:self selector:@selector(actionAutoPlayer) userInfo:nil repeats:YES];
-    double delayInSeconds = sender.value / 2;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
-        [self.timerAutoPlay fire];
-    });
+    self.timerCountDown       = [NSNumber numberWithLong:self.timeIntervalAutoPlay];
+    
+    NSString *title = [NSString stringWithFormat:@"播放设置(%i)", [self.timerCountDown intValue]];
+    [self.btnAutoPlaySwitch setTitle:title forState:UIControlStateNormal];
+}
+
+/**
+ *  定时器，一直在嘀嗒
+ */
+- (void)actionTimeTicker {
+    if(!self.isAutoPlay) { return; }
+    
+    NSInteger countDown = [self.timerCountDown intValue];
+    NSString *title = [NSString stringWithFormat:@"播放设置(%li)", (long)countDown];
+    [self.btnAutoPlaySwitch setTitle:title forState:UIControlStateNormal];
+    
+    
+    if(countDown == 0) {
+        [self actionAutoPlayer];
+    }
+    
+    NSInteger timeInterval = (NSInteger)self.timeIntervalAutoPlay;
+    NSInteger leftDown     = (timeInterval + countDown - 1) % timeInterval;
+    self.timerCountDown    = [NSNumber numberWithInteger:leftDown];
 }
 /**
  *  自动播放状态，定时器执行操作
@@ -423,7 +431,7 @@
     
     if(self.isLoopPlay ||
       (!self.isLoopPlay && [self.currentPageIndex intValue] < [self.dataList count]-1)) {
-        [self performSelector:@selector(actionNextPage:) withObject:self.btnNextPage afterDelay:self.timeIntervalAutoPlay];
+        [self performSelector:@selector(actionNextPage:) withObject:self.btnNextPage];
     }
 }
 
@@ -698,10 +706,13 @@
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
     NSRange strRange = {0,[str length]};
     if(enabled) {
-        [str removeAttribute:NSStrikethroughStyleAttributeName range:strRange];
+        [str removeAttribute:NSStrikethroughStyleAttributeName
+                       range:strRange];
         
     } else {
-        [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+        [str addAttribute:NSStrikethroughStyleAttributeName
+                    value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+                    range:strRange];
     }
     [sender setAttributedTitle:str forState:UIControlStateNormal];
 }

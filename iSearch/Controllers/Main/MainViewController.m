@@ -36,6 +36,9 @@
 @property(nonatomic,strong) DisplayViewController *displayViewController;
 //@property(nonatomic,strong) ReViewController *reViewController;
 
+#pragma mark - interactivePopGestureRecognizer
+@property (nonatomic, weak) id<UIGestureRecognizerDelegate> restoreInteractivePopGestureDelegate;
+@property (nonatomic) BOOL restoreInteractivePopGestureEnabled;
 
 // 头像设置
 @property (nonatomic) UIActionSheet *imagePickerActionSheet;
@@ -89,6 +92,7 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+    
 }
 
 -(BOOL)shouldAutorotate{
@@ -292,6 +296,8 @@
     self.slideInfoView.dict = dict;
     [self presentPopupViewController:self.slideInfoView animated:YES completion:^(void) {
         NSLog(@"popup view presented");
+        
+        [self disableInteractivePopGesture];
     }];
 }
 - (void)dismissPopupSlideInfo {
@@ -299,6 +305,8 @@
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _slideInfoView = nil;
             NSLog(@"dismiss SlideInfoView.");
+            
+            [self restoreInteractivePopGesture];
         }];
     }
 }
@@ -311,6 +319,8 @@
     }
     [self presentPopupViewController:self.settingViewController animated:YES completion:^(void) {
         NSLog(@"popup view settingViewController");
+        
+        [self disableInteractivePopGesture];
     }];
 }
 - (void)dimmissPopupSettingViewController {
@@ -318,6 +328,8 @@
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _settingViewController = nil;
             NSLog(@"dismiss SettingViewController.");
+            
+            [self restoreInteractivePopGesture];
         }];
     }
 }
@@ -328,13 +340,17 @@
         self.displayViewController = [[DisplayViewController alloc] init];
         self.displayViewController.masterViewController = self;
     }
-    [self presentViewController:self.displayViewController animated:NO completion:nil];
+    [self presentViewController:self.displayViewController animated:NO completion:^{
+        [self disableInteractivePopGesture];
+    }];
 }
 - (void)dismissViewDisplayViewController {
     if(self.displayViewController) {
         [self.displayViewController dismissViewControllerAnimated:NO completion:^{
             _displayViewController = nil;
             NSLog(@"dismiss DisplayViewController.");
+            
+            [self restoreInteractivePopGesture];
         }];
     }
 }
@@ -349,6 +365,44 @@
         NSLog(@"Download completed!");
 
     } enableBackgroundMode:YES];
+}
+
+#pragma mark - interactivePopGestureRecognizer
+
+- (void)disableInteractivePopGesture {
+    UINavigationController *navigationController;
+    
+    if([self isKindOfClass:[UINavigationController class]]) {
+        navigationController = ((UINavigationController*)self);
+    } else {
+        navigationController = self.navigationController;
+    }
+    
+    // Disable iOS 7 back gesture
+    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        _restoreInteractivePopGestureEnabled = navigationController.interactivePopGestureRecognizer.enabled;
+        _restoreInteractivePopGestureDelegate = navigationController.interactivePopGestureRecognizer.delegate;
+        navigationController.interactivePopGestureRecognizer.enabled = NO;
+        navigationController.interactivePopGestureRecognizer.delegate = self;
+    } else {
+        NSLog(@"%@ - not support interactivePopGestureRecognizer", [navigationController description]);
+    }
+}
+
+- (void)restoreInteractivePopGesture {
+    UINavigationController *navigationController;
+    
+    if([self isKindOfClass:[UINavigationController class]]) {
+        navigationController = ((UINavigationController*)self);
+    } else {
+        navigationController = self.navigationController;
+    }
+    
+    // Restore iOS 7 back gesture
+    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        navigationController.interactivePopGestureRecognizer.enabled = _restoreInteractivePopGestureEnabled;
+        navigationController.interactivePopGestureRecognizer.delegate = _restoreInteractivePopGestureDelegate;
+    }
 }
 
 @end
