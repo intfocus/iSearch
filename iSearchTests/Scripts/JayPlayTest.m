@@ -101,4 +101,14 @@
     //3.注意,一定要写nil,不然改函数无法跳出while循环.
 }
 
+#pragma mark - Block
+
+int(^plusOne)(int) = ^(int param) {
+    return param + 1;
+};
+
+- (void)testPlusOne {
+    XCTAssertEqual(plusOne(1), 2);
+}
+
 @end

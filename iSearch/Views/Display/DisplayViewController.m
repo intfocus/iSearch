@@ -320,6 +320,7 @@
             [self.btnEditPanelSwitch setBackgroundImage:[UIImage imageNamed:@"iconPen"] forState:UIControlStateNormal];
             self.viewEditPanelBg.hidden = YES;
             self.viewColorChoice.hidden = YES;
+            self.viewAutoPlay.hidden    = YES;
             self.btnEditPanelSwitch.layer.shadowOpacity = 0;
             [self stopLaser];
             [self stopNote];
@@ -331,7 +332,6 @@
             [self.btnEditPanelSwitch setBackgroundImage:[UIImage imageNamed:@"iconPenBack"] forState:UIControlStateNormal];
             self.viewEditPanelBg.hidden = NO;
             self.btnEditPanelSwitch.layer.shadowOpacity = 0.5;
-            
         }
             break;
         default:
