@@ -85,7 +85,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     // 作笔记的入口，可切换笔记颜色
     [self.btnRedNote setBackgroundColor:[UIColor redColor]];
     [self.btnGreenNote setBackgroundColor:[UIColor greenColor]];
@@ -133,13 +133,13 @@
     [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.forbidCss = @"<style type='text/css'>          \
-                        body { background: black; }     \
-                        * {                             \
-                        -webkit-touch-callout: none;    \
-                        -webkit-user-select: none;      \
-                        }                               \
-                        </style>                        \
-                        </head>";
+    body { background: black; }     \
+    * {                             \
+    -webkit-touch-callout: none;    \
+    -webkit-user-select: none;      \
+    }                               \
+    </style>                        \
+    </head>";
     
     /**
      * webView添加手势，向左即上一页，向右即下一页
@@ -161,7 +161,7 @@
     self.isLasering                    = NO;
     self.paintView                     = nil;
     self.viewEditPanel.layer.zPosition = MAXFLOAT;
-
+    
     // 默认循环播放
     self.isLoopPlay        = YES;
     self.switchLoopPlay.on = YES;
@@ -196,6 +196,7 @@
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
+    [self refreshCountDown];
     
     if(self.hud) { [self.hud removeFromSuperview]; }
     
@@ -214,11 +215,11 @@
     } else {
         [self.webView loadHTMLString:@" \
          <html>                         \
-           <body>                       \
-             <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-             文档内容为空.                \
-             </div>                     \
-           </body>                      \
+         <body>                       \
+         <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+         文档内容为空.                \
+         </div>                     \
+         </body>                      \
          </html>" baseURL:nil];
     }
     
@@ -281,11 +282,11 @@
         } else {
             htmlString = @" \
             <html>                         \
-              <body>                       \
-                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-                  该页面为空.                \
-                </div>                     \
-              </body>                      \
+            <body>                       \
+            <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+            该页面为空.                \
+            </div>                     \
+            </body>                      \
             </html>";
         }
         NSURL *baseURL = [NSURL fileURLWithPath:self.slide.path];
@@ -408,10 +409,18 @@
  */
 - (void)actionEndChangeSlideAutoPlayInterval:(UISlider *)sender {
     self.timeIntervalAutoPlay = sender.value;
+    [self refreshCountDown];
+}
+
+/**
+ *  重置倒计时器: 调整定时器间隔、上一页、下一页、浏览返回
+ */
+- (void)refreshCountDown {
+    if(!self.isAutoPlay) return;
+    
+    self.leftTimeView.hidden  = NO;
     self.timerCountDown       = [NSNumber numberWithLong:self.timeIntervalAutoPlay];
-    self.leftTimeView.hidden = NO;
-    NSInteger countDown = [self.timerCountDown intValue];
-    self.leftTimeLabel.text = [NSString stringWithFormat:@"%li", (long)countDown];
+    self.leftTimeLabel.text = [NSString stringWithFormat:@"%li", (long)[self.timerCountDown intValue]];
 }
 
 /**
@@ -420,9 +429,7 @@
 - (void)actionTimeTicker {
     if(!self.isAutoPlay) { return; }
     
-    NSInteger countDown = [self.timerCountDown intValue];
-    //NSString *title = [NSString stringWithFormat:@"播放设置(%li)", (long)countDown];
-    //[self.btnAutoPlaySwitch setTitle:title forState:UIControlStateNormal];
+    NSInteger countDown     = [self.timerCountDown intValue];
     self.leftTimeLabel.text = [NSString stringWithFormat:@"%li", (long)countDown];
     if(countDown == 0) {
         [self actionAutoPlayer];
@@ -439,7 +446,7 @@
     if(!self.isAutoPlay) { return; }
     
     if(self.isLoopPlay ||
-      (!self.isLoopPlay && [self.currentPageIndex intValue] < [self.dataList count]-1)) {
+       (!self.isLoopPlay && [self.currentPageIndex intValue] < [self.dataList count]-1)) {
         [self performSelector:@selector(actionNextPage:) withObject:self.btnNextPage];
     }
 }
@@ -552,10 +559,11 @@
  */
 - (IBAction)actionNextPage: (id)sender {
     [self stopNote];
+    [self refreshCountDown];
     
     NSInteger pageCount = [self.dataList count];
     if(!self.isLoopPlay && [self.currentPageIndex intValue] == pageCount - 1) {
-        //[self showPopupView:@"最后一页了"];
+        [self showPopupView:@"最后一页了"];
         [self checkLastNextPageBtnState];
         return;
     }
@@ -577,10 +585,11 @@
  */
 - (IBAction)actionLastPage: (id)sender {
     [self stopNote];
+    [self refreshCountDown];
     
     NSInteger pageCount   = [self.dataList count];
     if(!self.isLoopPlay && [self.currentPageIndex intValue] == 0) {
-        //[self showPopupView:@"第一页了"];
+        [self showPopupView:@"第一页了"];
         [self checkLastNextPageBtnState];
         return;
     }

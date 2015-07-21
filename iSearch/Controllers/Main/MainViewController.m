@@ -343,8 +343,8 @@
         [self.displayViewController dismissViewControllerAnimated:NO completion:^{
             _displayViewController = nil;
             self.coverView.hidden = YES;
-            NSLog(@"dismiss DisplayViewController.");
             
+            NSLog(@"dismiss DisplayViewController.");
         }];
     }
 }
