@@ -29,8 +29,6 @@
 		C4E7699C1B5355F7000D6A2B /* UIView+GMGridViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E768F81B5355F7000D6A2B /* UIView+GMGridViewAdditions.m */; };
 		C4E7699D1B5355F7000D6A2B /* coverSlideSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E768FA1B5355F7000D6A2B /* coverSlideSelected.png */; };
 		C4E7699E1B5355F7000D6A2B /* coverSlideSelecting.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E768FB1B5355F7000D6A2B /* coverSlideSelecting.png */; };
-		C4E7699F1B5355F7000D6A2B /* overlay_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E768FC1B5355F7000D6A2B /* overlay_selected@2x.png */; };
-		C4E769A01B5355F7000D6A2B /* overlay_selecting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E768FD1B5355F7000D6A2B /* overlay_selecting@2x.png */; };
 		C4E769A11B5355F7000D6A2B /* thumbnailPageSlide.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E768FE1B5355F7000D6A2B /* thumbnailPageSlide.png */; };
 		C4E769A21B5355F7000D6A2B /* thumbnailPageVideo.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E768FF1B5355F7000D6A2B /* thumbnailPageVideo.png */; };
 		C4E769A31B5355F7000D6A2B /* thumbnailSlideDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = C4E769001B5355F7000D6A2B /* thumbnailSlideDefault.png */; };
@@ -179,8 +177,6 @@
 		C4E768F81B5355F7000D6A2B /* UIView+GMGridViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+GMGridViewAdditions.m"; sourceTree = "<group>"; };
 		C4E768FA1B5355F7000D6A2B /* coverSlideSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverSlideSelected.png; sourceTree = "<group>"; };
 		C4E768FB1B5355F7000D6A2B /* coverSlideSelecting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverSlideSelecting.png; sourceTree = "<group>"; };
-		C4E768FC1B5355F7000D6A2B /* overlay_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay_selected@2x.png"; sourceTree = "<group>"; };
-		C4E768FD1B5355F7000D6A2B /* overlay_selecting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "overlay_selecting@2x.png"; sourceTree = "<group>"; };
 		C4E768FE1B5355F7000D6A2B /* thumbnailPageSlide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnailPageSlide.png; sourceTree = "<group>"; };
 		C4E768FF1B5355F7000D6A2B /* thumbnailPageVideo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnailPageVideo.png; sourceTree = "<group>"; };
 		C4E769001B5355F7000D6A2B /* thumbnailSlideDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnailSlideDefault.png; sourceTree = "<group>"; };
@@ -503,8 +499,6 @@
 			children = (
 				C4E768FA1B5355F7000D6A2B /* coverSlideSelected.png */,
 				C4E768FB1B5355F7000D6A2B /* coverSlideSelecting.png */,
-				C4E768FC1B5355F7000D6A2B /* overlay_selected@2x.png */,
-				C4E768FD1B5355F7000D6A2B /* overlay_selecting@2x.png */,
 				C4E768FE1B5355F7000D6A2B /* thumbnailPageSlide.png */,
 				C4E768FF1B5355F7000D6A2B /* thumbnailPageVideo.png */,
 				C4E769001B5355F7000D6A2B /* thumbnailSlideDefault.png */,
@@ -1089,7 +1083,6 @@
 				C4E769C51B5355F7000D6A2B /* NotificationCell.xib in Resources */,
 				C4E769CF1B5355F7000D6A2B /* SettingMainView.xib in Resources */,
 				C4E769A21B5355F7000D6A2B /* thumbnailPageVideo.png in Resources */,
-				C4E7699F1B5355F7000D6A2B /* overlay_selected@2x.png in Resources */,
 				C4E76A861B5356AE000D6A2B /* ViewUpgrade.xib in Resources */,
 				C4E769CB1B5355F7000D6A2B /* OfflineViewController.xib in Resources */,
 				C4E769A51B5355F7000D6A2B /* ToView.png in Resources */,
@@ -1111,7 +1104,6 @@
 				C4E769AC1B5355F7000D6A2B /* FavoriteViewController.xib in Resources */,
 				C4E7699D1B5355F7000D6A2B /* coverSlideSelected.png in Resources */,
 				C4E769C91B5355F7000D6A2B /* OfflineCell.xib in Resources */,
-				C4E769A01B5355F7000D6A2B /* overlay_selecting@2x.png in Resources */,
 				C4E76A8E1B5356AE000D6A2B /* SlideInfoView.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C4E76ABC1B53BF6A000D6A2B /* MainEntryButton.xib in Resources */,

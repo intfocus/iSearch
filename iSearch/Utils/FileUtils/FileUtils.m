@@ -318,14 +318,14 @@
 + (NSString*) slideThumbnail:(NSString *)slideID
                       PageID:(NSString *)pageID
                          Dir:(NSString *)dirName {
-    NSString *slidePath = [FileUtils getPathName:dirName FileName:slideID];
-    NSString *pagePath = [slidePath stringByAppendingPathComponent:pageID];
+    NSString *slidePath  = [FileUtils getPathName:dirName FileName:slideID];
+    NSString *pagePath   = [slidePath stringByAppendingPathComponent:pageID];
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     
-    //return [bundlePath stringByAppendingPathComponent:@"thumbnailPageSlide.png"];
+    //return [bundlePath stringByAppendingPathComponent:@"thumbnailPageVideo.png"];
     NSString *thumbnailPath, *format;
     BOOL isVideo = NO, isSlide = NO;
-    
+
     for(format in @[@"Gif",@"gif"]) { // never load pdf, @"pdf"
         thumbnailPath = [pagePath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", pageID, format]];
         if([FileUtils checkFileExist:thumbnailPath isDir:NO]) {
@@ -349,6 +349,25 @@
     return thumbnailPath;
 }
 
+/**
+ *  在线浏览目录时，根据文档属性显示对应缩略图
+ *
+ *  @param slideTyoe 文档类型
+ *
+ *  @return 缩略图地址
+ */
++ (NSString *)slideThumbnail:(NSString *)slideTyoe {
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *thumbnailName;
+    if([@[@"1",@"2",@"4"] containsObject:slideTyoe]) {
+        thumbnailName = @"thumbnailPageSlide.png";
+    } else if ([slideTyoe isEqualToString:@"3"]) {
+        thumbnailName = @"thumbnailPageVideo.png";
+    } else {
+        thumbnailName = @"thumbnailPageSlide.png";
+    }
+    return [bundlePath stringByAppendingPathComponent:thumbnailName];
+}
 
 #pragma mark - slide download cache
 + (NSString *)slideDownloadCachePath:(NSString *)slideID {

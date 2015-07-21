@@ -53,7 +53,7 @@ void UncaughtExceptionHandler(NSException * exception) {
     self.window.rootViewController=[[NSClassFromString(@"LoginViewController") alloc] initWithNibName:@"LoginViewController" bundle:nil];
     [self.window makeKeyAndVisible];
     
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 6;
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     return YES;
 }
 

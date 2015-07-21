@@ -172,6 +172,14 @@
                      PageID:(NSString *)PageID
                         Dir:(NSString *)dir;
 
+/**
+ *  在线浏览目录时，根据文档属性显示对应缩略图
+ *
+ *  @param slideTyoe 文档类型
+ *
+ *  @return 缩略图地址
+ */
++ (NSString *)slideThumbnail:(NSString *)slideTyoe;
 
 
 #pragma mark - slide download cache

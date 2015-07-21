@@ -167,8 +167,8 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     NSErrorPrint(error, @"slide#%@ %@ => %@", self.ID, self.path, [self favoritePath]);
     Slide *slide = [[Slide alloc] initSlide:[self refreshFields] isFavorite:YES];
     [slide updateTimestamp];
-    slide.type = @"-1";
-    slide.categoryName= @"收藏";
+    slide.type         = @"-1";
+    slide.categoryName = @"收藏";
     [slide save];
     return isNil(error);
 }
@@ -288,8 +288,12 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 }
 
 - (void)refreshThumbnailPath {
-    NSString *pageID = [self.pages count] > 0 ? self.pages[0] : @"null";
-    _thumbailPath = [FileUtils slideThumbnail:self.ID PageID:pageID Dir:self.dirName];
+    if([self isDownloaded:NO]) {
+        NSString *pageID = [self.pages count] > 0 ? self.pages[0] : @"null";
+        _thumbailPath = [FileUtils slideThumbnail:self.ID PageID:pageID Dir:self.dirName];
+    } else {
+        _thumbailPath = [FileUtils slideThumbnail:self.type];
+    }
     //[thumbailPath stringByReplacingOccurrencesOfString:[FileUtils getBasePath] withString:@""];
     
 //    NSMutableDictionary *tmpDict = [FileUtils readConfigFile:self.dictPath];
