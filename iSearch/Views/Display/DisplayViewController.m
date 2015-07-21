@@ -75,6 +75,8 @@
 @property (nonatomic, strong) NSMutableArray *dataList;
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
 @property (nonatomic, nonatomic) ReViewController *reViewController;
+@property (weak, nonatomic) IBOutlet UIView *leftTimeView;
+@property (weak, nonatomic) IBOutlet UILabel *leftTimeLabel;
 
 @end
 
@@ -179,6 +181,12 @@
     self.iconTriangleImageView.hidden = YES;
     self.viewColorChoice.hidden       = YES;
     self.viewAutoPlay.hidden          = YES;
+    
+    self.leftTimeView.layer.cornerRadius = 11;
+    self.leftTimeView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.leftTimeView.layer.borderWidth = 1;
+    self.leftTimeView.layer.masksToBounds = true;
+    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -371,6 +379,7 @@
 - (void)actionChangeSwithAutoPlay:(UISwitch *)sender {
     self.sliderAutoPlayInterval.enabled = [sender isOn];
     self.isAutoPlay                     = [sender isOn];
+    self.leftTimeView.hidden = ![sender isOn];
 }
 /**
  *  循环播放状态控件
@@ -389,6 +398,7 @@
  */
 - (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
     self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
+    self.leftTimeView.hidden = YES;
 }
 
 /**
@@ -399,9 +409,9 @@
 - (void)actionEndChangeSlideAutoPlayInterval:(UISlider *)sender {
     self.timeIntervalAutoPlay = sender.value;
     self.timerCountDown       = [NSNumber numberWithLong:self.timeIntervalAutoPlay];
-    
-    NSString *title = [NSString stringWithFormat:@"播放设置(%i)", [self.timerCountDown intValue]];
-    [self.btnAutoPlaySwitch setTitle:title forState:UIControlStateNormal];
+    self.leftTimeView.hidden = NO;
+    NSInteger countDown = [self.timerCountDown intValue];
+    self.leftTimeLabel.text = [NSString stringWithFormat:@"%li", (long)countDown];
 }
 
 /**
@@ -411,10 +421,9 @@
     if(!self.isAutoPlay) { return; }
     
     NSInteger countDown = [self.timerCountDown intValue];
-    NSString *title = [NSString stringWithFormat:@"播放设置(%li)", (long)countDown];
-    [self.btnAutoPlaySwitch setTitle:title forState:UIControlStateNormal];
-    
-    
+    //NSString *title = [NSString stringWithFormat:@"播放设置(%li)", (long)countDown];
+    //[self.btnAutoPlaySwitch setTitle:title forState:UIControlStateNormal];
+    self.leftTimeLabel.text = [NSString stringWithFormat:@"%li", (long)countDown];
     if(countDown == 0) {
         [self actionAutoPlayer];
     }

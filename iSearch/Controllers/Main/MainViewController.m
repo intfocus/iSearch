@@ -35,10 +35,7 @@
 @property(nonatomic,strong) SettingViewController *settingViewController;
 @property(nonatomic,strong) DisplayViewController *displayViewController;
 //@property(nonatomic,strong) ReViewController *reViewController;
-
-#pragma mark - interactivePopGestureRecognizer
-@property (nonatomic, weak) id<UIGestureRecognizerDelegate> restoreInteractivePopGestureDelegate;
-@property (nonatomic) BOOL restoreInteractivePopGestureEnabled;
+@property (weak, nonatomic) IBOutlet UIView *coverView;
 
 // 头像设置
 @property (nonatomic) UIActionSheet *imagePickerActionSheet;
@@ -57,7 +54,8 @@
     self.btnEntrySelectedTag = [NSNumber numberWithInteger:EntryButtonHomePage];
     
     // CWPopup 事件
-    self.useBlurForPopup = YES;
+    self.useBlurForPopup  = YES;
+    self.coverView.hidden = YES;
     
     SideViewController *left  = [[SideViewController alloc] initWithNibName:nil bundle:nil];
     left.masterViewController = self;
@@ -296,17 +294,15 @@
     self.slideInfoView.dict = dict;
     [self presentPopupViewController:self.slideInfoView animated:YES completion:^(void) {
         NSLog(@"popup view presented");
-        
-        [self disableInteractivePopGesture];
+        self.coverView.hidden = NO;
     }];
 }
 - (void)dismissPopupSlideInfo {
     if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _slideInfoView = nil;
+            self.coverView.hidden = YES;
             NSLog(@"dismiss SlideInfoView.");
-            
-            [self restoreInteractivePopGesture];
         }];
     }
 }
@@ -318,18 +314,16 @@
         self.settingViewController.masterViewController = self;
     }
     [self presentPopupViewController:self.settingViewController animated:YES completion:^(void) {
+        self.coverView.hidden = NO;
         NSLog(@"popup view settingViewController");
-        
-        [self disableInteractivePopGesture];
     }];
 }
 - (void)dimmissPopupSettingViewController {
     if (self.popupViewController) {
         [self dismissPopupViewControllerAnimated:YES completion:^{
             _settingViewController = nil;
+            self.coverView.hidden = YES;
             NSLog(@"dismiss SettingViewController.");
-            
-            [self restoreInteractivePopGesture];
         }];
     }
 }
@@ -341,16 +335,16 @@
         self.displayViewController.masterViewController = self;
     }
     [self presentViewController:self.displayViewController animated:NO completion:^{
-        [self disableInteractivePopGesture];
+        self.coverView.hidden = NO;
     }];
 }
 - (void)dismissViewDisplayViewController {
     if(self.displayViewController) {
         [self.displayViewController dismissViewControllerAnimated:NO completion:^{
             _displayViewController = nil;
+            self.coverView.hidden = YES;
             NSLog(@"dismiss DisplayViewController.");
             
-            [self restoreInteractivePopGesture];
         }];
     }
 }
@@ -365,44 +359,6 @@
         NSLog(@"Download completed!");
 
     } enableBackgroundMode:YES];
-}
-
-#pragma mark - interactivePopGestureRecognizer
-
-- (void)disableInteractivePopGesture {
-    UINavigationController *navigationController;
-    
-    if([self isKindOfClass:[UINavigationController class]]) {
-        navigationController = ((UINavigationController*)self);
-    } else {
-        navigationController = self.navigationController;
-    }
-    
-    // Disable iOS 7 back gesture
-    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-        _restoreInteractivePopGestureEnabled = navigationController.interactivePopGestureRecognizer.enabled;
-        _restoreInteractivePopGestureDelegate = navigationController.interactivePopGestureRecognizer.delegate;
-        navigationController.interactivePopGestureRecognizer.enabled = NO;
-        navigationController.interactivePopGestureRecognizer.delegate = self;
-    } else {
-        NSLog(@"%@ - not support interactivePopGestureRecognizer", [navigationController description]);
-    }
-}
-
-- (void)restoreInteractivePopGesture {
-    UINavigationController *navigationController;
-    
-    if([self isKindOfClass:[UINavigationController class]]) {
-        navigationController = ((UINavigationController*)self);
-    } else {
-        navigationController = self.navigationController;
-    }
-    
-    // Restore iOS 7 back gesture
-    if ([navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-        navigationController.interactivePopGestureRecognizer.enabled = _restoreInteractivePopGestureEnabled;
-        navigationController.interactivePopGestureRecognizer.delegate = _restoreInteractivePopGestureDelegate;
-    }
 }
 
 @end
