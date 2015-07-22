@@ -167,7 +167,6 @@
  */
 - (void)loadThumbnail {
     self.webViewThumbnail.hidden = NO;
-    NSLog(@"%@", self.slide.thumbailPath);
     NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;'>", [self.slide.thumbailPath lastPathComponent]];
     NSURL *baseURL = [NSURL fileURLWithPath:[self.slide.thumbailPath stringByDeletingLastPathComponent]];
     [self.webViewThumbnail loadHTMLString:html baseURL:baseURL];

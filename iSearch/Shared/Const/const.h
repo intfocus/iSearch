@@ -276,6 +276,8 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define ACTION_DISPLAY           @"display"
 #define ACTION_ADD_TO_FAVORITE   @"add_to_favorite"
 
+#define PGY_APP_ID @"7e997b06c64bc5532ed376f5c6edad46"
+
 
 #define SuppressPerformSelectorLeakWarning(Stuff) \
 do { \

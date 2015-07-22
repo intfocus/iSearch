@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <PgySDK/PgyManager.h>
 #import "Version.h"
 
 @interface AppDelegate ()
@@ -41,6 +42,8 @@ void UncaughtExceptionHandler(NSException * exception) {
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     @try {
+        [[PgyManager sharedPgyManager] setEnableFeedback:NO];
+        [[PgyManager sharedPgyManager] startManagerWithAppId:[Version pgy_app_id]];
         NSSetUncaughtExceptionHandler(&UncaughtExceptionHandler);
     }
     @catch (NSException *exception) {
