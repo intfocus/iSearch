@@ -25,6 +25,8 @@
  *  @return Http#Get HttpResponse
  */
 + (HttpResponse *)httpGet:(NSString *)urlString;
+
++ (NSDictionary *)httpGet2:(NSString *)urlString;
 /**
  *  Http#Post功能代码封装
  *

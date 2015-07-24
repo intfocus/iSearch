@@ -12,7 +12,6 @@
 #import "const.h"
 #import "Version+Self.h"
 #import "SettingViewController.h"
-#import "SettingMainView.h"
 #import "MBProgressHUD.h"
 #import "HttpUtils.h"
 
@@ -92,10 +91,7 @@
 }
 
 - (IBAction)actionBackToMain:(id)sender {
-    SettingMainView *view = [[SettingMainView alloc] init];
-    view.mainViewController = self.mainViewController;
-    view.settingViewController = self.settingViewController;
-    self.settingViewController.containerViewController = view;
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 #pragma mark - private methods

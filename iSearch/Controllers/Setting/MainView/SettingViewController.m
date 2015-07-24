@@ -7,11 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SettingMainView.h"
+#import "SettingViewController.h"
 
 #import "User.h"
-#import "MainViewController.h"
-#import "SettingViewController.h"
 #import "SettingUserInfo.h"
 #import "ViewUpgrade.h"
 
@@ -22,7 +20,7 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingRegularIndex  = 3
 };
 
-@interface SettingMainView()<UITableViewDelegate, UITableViewDataSource>
+@interface SettingViewController()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, nonatomic) IBOutlet UIButton *btnLogout;
 @property (nonatomic, strong) NSMutableArray *dataList;
@@ -30,7 +28,7 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 
 @end
 
-@implementation SettingMainView
+@implementation SettingViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -67,13 +65,10 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 
 #pragma mark - controls action
 - (IBAction)actionBtnClose:(UIBarButtonItem *)sender {
-    MainViewController *mainViewController = [self mainViewController];
-    [mainViewController dimmissPopupSettingViewController];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)actionLogout:(id)sender {
-    MainViewController *mainViewController = [self mainViewController];
-    [mainViewController backToLoginViewController];
 }
 
 
@@ -91,8 +86,8 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = self.dataList[row][0];
+    cell.accessoryType        = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text       = self.dataList[row][0];
     cell.detailTextLabel.text = self.dataList[row][1];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
@@ -100,15 +95,13 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     SettingUserInfo *viewController = [[SettingUserInfo alloc] init];
-    viewController.indexRow = indexPath.row;
+    viewController.indexRow         = indexPath.row;
     switch ([indexPath row]) {
         case SettingUserInfoIndex:{
-            
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
         case SettingAppInfoIndex:{
-            
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
@@ -120,5 +113,12 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
         default:
             break;
     }
+}
+
+- (void)dismissViewUpgrade {
+//    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
+//    viewController.settingViewController = self;
+//    viewController.mainViewController    = self.masterViewController;
+//    self.containerViewController         = viewController;
 }
 @end

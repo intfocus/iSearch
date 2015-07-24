@@ -10,7 +10,6 @@
 #import "SettingAppInfo.h"
 #import "MainViewController.h"
 #import "SettingViewController.h"
-#import "SettingMainView.h"
 #import "Version.h"
 #import "FileUtils.h"
 
@@ -50,10 +49,6 @@
 }
 
 - (IBAction)actionBackToMain:(id)sender {
-    SettingMainView *view = [[SettingMainView alloc] init];
-    view.mainViewController = self.mainViewController;
-    view.settingViewController = self.settingViewController;
-    self.settingViewController.containerViewController = view;
 }
 
 #pragma mark - <UITableViewDelegate, UITableViewDataSource>

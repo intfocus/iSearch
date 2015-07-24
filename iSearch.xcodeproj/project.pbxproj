@@ -24,6 +24,13 @@
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
 		C49BA7DB1B54C979001D9013 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49BA7D11B54C979001D9013 /* Info.plist */; };
 		C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C49BA7E51B54CEF7001D9013 /* UrlTest.m */; };
+		C4A579E81B61FBE70093C98A /* HttpUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */; };
+		C4A579FC1B62394D0093C98A /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579F31B62394D0093C98A /* SettingMainView.m */; };
+		C4A579FD1B62394D0093C98A /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579F41B62394D0093C98A /* SettingMainView.xib */; };
+		C4A579FE1B62394D0093C98A /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579F61B62394D0093C98A /* SettingViewController.m */; };
+		C4A579FF1B62394D0093C98A /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579F71B62394D0093C98A /* SettingViewController.xib */; };
+		C4A57A001B62394D0093C98A /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579FA1B62394D0093C98A /* SettingUserInfo.m */; };
+		C4A57A011B62394D0093C98A /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579FB1B62394D0093C98A /* SettingUserInfo.xib */; };
 		C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB21B57A4B800136887 /* BaseModelTest.m */; };
 		C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB41B57AA5500136887 /* JayPlayTest.m */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
@@ -63,14 +70,6 @@
 		C4E769C91B5355F7000D6A2B /* OfflineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769411B5355F7000D6A2B /* OfflineCell.xib */; };
 		C4E769CA1B5355F7000D6A2B /* OfflineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769431B5355F7000D6A2B /* OfflineViewController.m */; };
 		C4E769CB1B5355F7000D6A2B /* OfflineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769441B5355F7000D6A2B /* OfflineViewController.xib */; };
-		C4E769CC1B5355F7000D6A2B /* SettingAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769481B5355F7000D6A2B /* SettingAppInfo.m */; };
-		C4E769CD1B5355F7000D6A2B /* SettingAppInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769491B5355F7000D6A2B /* SettingAppInfo.xib */; };
-		C4E769CE1B5355F7000D6A2B /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7694C1B5355F7000D6A2B /* SettingMainView.m */; };
-		C4E769CF1B5355F7000D6A2B /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E7694D1B5355F7000D6A2B /* SettingMainView.xib */; };
-		C4E769D01B5355F7000D6A2B /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7694F1B5355F7000D6A2B /* SettingViewController.m */; };
-		C4E769D11B5355F7000D6A2B /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769501B5355F7000D6A2B /* SettingViewController.xib */; };
-		C4E769D21B5355F7000D6A2B /* SettingUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769531B5355F7000D6A2B /* SettingUserInfo.m */; };
-		C4E769D31B5355F7000D6A2B /* SettingUserInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769541B5355F7000D6A2B /* SettingUserInfo.xib */; };
 		C4E769D41B5355F7000D6A2B /* ActionLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769581B5355F7000D6A2B /* ActionLog.m */; };
 		C4E769D51B5355F7000D6A2B /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7695B1B5355F7000D6A2B /* BaseModel.m */; };
 		C4E769D61B5355F7000D6A2B /* Slide.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7695F1B5355F7000D6A2B /* Slide.m */; };
@@ -166,6 +165,16 @@
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		C49BA7D11B54C979001D9013 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C49BA7E51B54CEF7001D9013 /* UrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlTest.m; sourceTree = "<group>"; };
+		C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtilsTest.m; sourceTree = "<group>"; };
+		C4A579F21B62394D0093C98A /* SettingMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMainView.h; sourceTree = "<group>"; };
+		C4A579F31B62394D0093C98A /* SettingMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMainView.m; sourceTree = "<group>"; };
+		C4A579F41B62394D0093C98A /* SettingMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingMainView.xib; sourceTree = "<group>"; };
+		C4A579F51B62394D0093C98A /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingViewController.h; path = Setting/SettingViewController.h; sourceTree = "<group>"; };
+		C4A579F61B62394D0093C98A /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingViewController.m; path = Setting/SettingViewController.m; sourceTree = "<group>"; };
+		C4A579F71B62394D0093C98A /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingViewController.xib; path = Setting/SettingViewController.xib; sourceTree = "<group>"; };
+		C4A579F91B62394D0093C98A /* SettingUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
+		C4A579FA1B62394D0093C98A /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
+		C4A579FB1B62394D0093C98A /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
 		C4C18BB21B57A4B800136887 /* BaseModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModelTest.m; sourceTree = "<group>"; };
 		C4C18BB41B57AA5500136887 /* JayPlayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JayPlayTest.m; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -230,18 +239,6 @@
 		C4E769421B5355F7000D6A2B /* OfflineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineViewController.h; sourceTree = "<group>"; };
 		C4E769431B5355F7000D6A2B /* OfflineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineViewController.m; sourceTree = "<group>"; };
 		C4E769441B5355F7000D6A2B /* OfflineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineViewController.xib; sourceTree = "<group>"; };
-		C4E769471B5355F7000D6A2B /* SettingAppInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAppInfo.h; sourceTree = "<group>"; };
-		C4E769481B5355F7000D6A2B /* SettingAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAppInfo.m; sourceTree = "<group>"; };
-		C4E769491B5355F7000D6A2B /* SettingAppInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAppInfo.xib; sourceTree = "<group>"; };
-		C4E7694B1B5355F7000D6A2B /* SettingMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMainView.h; sourceTree = "<group>"; };
-		C4E7694C1B5355F7000D6A2B /* SettingMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMainView.m; sourceTree = "<group>"; };
-		C4E7694D1B5355F7000D6A2B /* SettingMainView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingMainView.xib; sourceTree = "<group>"; };
-		C4E7694E1B5355F7000D6A2B /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
-		C4E7694F1B5355F7000D6A2B /* SettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingViewController.m; sourceTree = "<group>"; };
-		C4E769501B5355F7000D6A2B /* SettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
-		C4E769521B5355F7000D6A2B /* SettingUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingUserInfo.h; sourceTree = "<group>"; };
-		C4E769531B5355F7000D6A2B /* SettingUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingUserInfo.m; sourceTree = "<group>"; };
-		C4E769541B5355F7000D6A2B /* SettingUserInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingUserInfo.xib; sourceTree = "<group>"; };
 		C4E769571B5355F7000D6A2B /* ActionLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionLog.h; sourceTree = "<group>"; };
 		C4E769581B5355F7000D6A2B /* ActionLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionLog.m; sourceTree = "<group>"; };
 		C4E7695A1B5355F7000D6A2B /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
@@ -409,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */,
+				C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -431,6 +429,28 @@
 				C49BA7E51B54CEF7001D9013 /* UrlTest.m */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		C4A579F11B62394D0093C98A /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				C4A579F21B62394D0093C98A /* SettingMainView.h */,
+				C4A579F31B62394D0093C98A /* SettingMainView.m */,
+				C4A579F41B62394D0093C98A /* SettingMainView.xib */,
+			);
+			name = MainView;
+			path = Setting/MainView;
+			sourceTree = "<group>";
+		};
+		C4A579F81B62394D0093C98A /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				C4A579F91B62394D0093C98A /* SettingUserInfo.h */,
+				C4A579FA1B62394D0093C98A /* SettingUserInfo.m */,
+				C4A579FB1B62394D0093C98A /* SettingUserInfo.xib */,
+			);
+			name = UserInfo;
+			path = Setting/UserInfo;
 			sourceTree = "<group>";
 		};
 		C4E3CCCF1B184E520067B762 = {
@@ -645,44 +665,13 @@
 		C4E769451B5355F7000D6A2B /* Setting */ = {
 			isa = PBXGroup;
 			children = (
-				C4E769461B5355F7000D6A2B /* AppInfo */,
-				C4E7694A1B5355F7000D6A2B /* MainView */,
-				C4E7694E1B5355F7000D6A2B /* SettingViewController.h */,
-				C4E7694F1B5355F7000D6A2B /* SettingViewController.m */,
-				C4E769501B5355F7000D6A2B /* SettingViewController.xib */,
-				C4E769511B5355F7000D6A2B /* UserInfo */,
+				C4A579F11B62394D0093C98A /* MainView */,
+				C4A579F51B62394D0093C98A /* SettingViewController.h */,
+				C4A579F61B62394D0093C98A /* SettingViewController.m */,
+				C4A579F71B62394D0093C98A /* SettingViewController.xib */,
+				C4A579F81B62394D0093C98A /* UserInfo */,
 			);
 			path = Setting;
-			sourceTree = "<group>";
-		};
-		C4E769461B5355F7000D6A2B /* AppInfo */ = {
-			isa = PBXGroup;
-			children = (
-				C4E769471B5355F7000D6A2B /* SettingAppInfo.h */,
-				C4E769481B5355F7000D6A2B /* SettingAppInfo.m */,
-				C4E769491B5355F7000D6A2B /* SettingAppInfo.xib */,
-			);
-			path = AppInfo;
-			sourceTree = "<group>";
-		};
-		C4E7694A1B5355F7000D6A2B /* MainView */ = {
-			isa = PBXGroup;
-			children = (
-				C4E7694B1B5355F7000D6A2B /* SettingMainView.h */,
-				C4E7694C1B5355F7000D6A2B /* SettingMainView.m */,
-				C4E7694D1B5355F7000D6A2B /* SettingMainView.xib */,
-			);
-			path = MainView;
-			sourceTree = "<group>";
-		};
-		C4E769511B5355F7000D6A2B /* UserInfo */ = {
-			isa = PBXGroup;
-			children = (
-				C4E769521B5355F7000D6A2B /* SettingUserInfo.h */,
-				C4E769531B5355F7000D6A2B /* SettingUserInfo.m */,
-				C4E769541B5355F7000D6A2B /* SettingUserInfo.xib */,
-			);
-			path = UserInfo;
 			sourceTree = "<group>";
 		};
 		C4E769551B5355F7000D6A2B /* Models */ = {
@@ -1101,9 +1090,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4E769A31B5355F7000D6A2B /* thumbnailSlideDefault.png in Resources */,
+				C4A579FF1B62394D0093C98A /* SettingViewController.xib in Resources */,
 				C4E769A11B5355F7000D6A2B /* thumbnailPageSlide.png in Resources */,
 				C4E769C11B5355F7000D6A2B /* SideViewController.xib in Resources */,
-				C4E769CD1B5355F7000D6A2B /* SettingAppInfo.xib in Resources */,
 				C4E76AA71B539BF0000D6A2B /* OneViewController.xib in Resources */,
 				C4E76A841B5356AE000D6A2B /* ViewSlidePage.xib in Resources */,
 				C4E76A8C1B5356AE000D6A2B /* TagListView.xib in Resources */,
@@ -1111,9 +1100,7 @@
 				C49BA7DB1B54C979001D9013 /* Info.plist in Resources */,
 				C4E769B61B5355F7000D6A2B /* LoginViewController.xib in Resources */,
 				C4E76A821B5356AE000D6A2B /* ReViewController.xib in Resources */,
-				C4E769D11B5355F7000D6A2B /* SettingViewController.xib in Resources */,
 				C4E769C51B5355F7000D6A2B /* NotificationCell.xib in Resources */,
-				C4E769CF1B5355F7000D6A2B /* SettingMainView.xib in Resources */,
 				C4E769A21B5355F7000D6A2B /* thumbnailPageVideo.png in Resources */,
 				C4E76A861B5356AE000D6A2B /* ViewUpgrade.xib in Resources */,
 				C4E769CB1B5355F7000D6A2B /* OfflineViewController.xib in Resources */,
@@ -1122,7 +1109,6 @@
 				C4E769A41B5355F7000D6A2B /* ToDownload.png in Resources */,
 				C4E76A7E1B5356AE000D6A2B /* ViewSlide.xib in Resources */,
 				C4E76A911B5356AE000D6A2B /* ViewCategory.xib in Resources */,
-				C4E769D31B5355F7000D6A2B /* SettingUserInfo.xib in Resources */,
 				C4E76AA31B539BF0000D6A2B /* TwoViewController.xib in Resources */,
 				C4E76AA51B539BF0000D6A2B /* ThreeViewController.xib in Resources */,
 				C4E769C71B5355F7000D6A2B /* NotificationViewController.xib in Resources */,
@@ -1134,8 +1120,10 @@
 				C4E76A8A1B5356AE000D6A2B /* MainAddNewTagView.xib in Resources */,
 				C4E769A81B5355F7000D6A2B /* ContentViewController.xib in Resources */,
 				C4E769AC1B5355F7000D6A2B /* FavoriteViewController.xib in Resources */,
+				C4A57A011B62394D0093C98A /* SettingUserInfo.xib in Resources */,
 				C4E7699D1B5355F7000D6A2B /* coverSlideSelected.png in Resources */,
 				C4E769C91B5355F7000D6A2B /* OfflineCell.xib in Resources */,
+				C4A579FD1B62394D0093C98A /* SettingMainView.xib in Resources */,
 				C4E76A8E1B5356AE000D6A2B /* SlideInfoView.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C4E76ABC1B53BF6A000D6A2B /* MainEntryButton.xib in Resources */,
@@ -1235,25 +1223,24 @@
 				C4E7699C1B5355F7000D6A2B /* UIView+GMGridViewAdditions.m in Sources */,
 				C4E76AA41B539BF0000D6A2B /* ThreeViewController.m in Sources */,
 				C4E76A151B535680000D6A2B /* DatabaseUtils.m in Sources */,
-				C4E769CC1B5355F7000D6A2B /* SettingAppInfo.m in Sources */,
 				C4E769DA1B5355F7000D6A2B /* Version+Self.m in Sources */,
 				C4E769D61B5355F7000D6A2B /* Slide.m in Sources */,
+				C4A579FC1B62394D0093C98A /* SettingMainView.m in Sources */,
 				C4E76A0F1B535680000D6A2B /* DateUtils.m in Sources */,
 				C4E76AC11B53BF6A000D6A2B /* UserHeadView.m in Sources */,
 				C4E76A871B5356AE000D6A2B /* AddNewTagView.m in Sources */,
-				C4E769D21B5355F7000D6A2B /* SettingUserInfo.m in Sources */,
 				C4E76A8B1B5356AE000D6A2B /* TagListView.m in Sources */,
 				C4E769BF1B5355F7000D6A2B /* RightSideViewController.m in Sources */,
 				C4E3CCDE1B184E530067B762 /* main.m in Sources */,
+				C4A57A001B62394D0093C98A /* SettingUserInfo.m in Sources */,
 				C4E76A171B535680000D6A2B /* CacheHelper.m in Sources */,
 				C4E76A141B535680000D6A2B /* DatabaseUtils+ActionLog.m in Sources */,
 				C4E76A8F1B5356AE000D6A2B /* PaintView.m in Sources */,
 				C4E769AD1B5355F7000D6A2B /* HomeViewController.m in Sources */,
 				C4E769DB1B5355F7000D6A2B /* Version.m in Sources */,
-				C4E769CE1B5355F7000D6A2B /* SettingMainView.m in Sources */,
-				C4E769D01B5355F7000D6A2B /* SettingViewController.m in Sources */,
 				C4E76A7F1B5356AE000D6A2B /* DisplayViewController.m in Sources */,
 				C4E76A901B5356AE000D6A2B /* ViewCategory.m in Sources */,
+				C4A579FE1B62394D0093C98A /* SettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1265,6 +1252,7 @@
 				C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */,
 				C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */,
 				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,
+				C4A579E81B61FBE70093C98A /* HttpUtilsTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1384,7 +1372,6 @@
 				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/lijunjie/Downloads/PgySDK/sdk,
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = iSearch/Info.plist;
@@ -1410,7 +1397,6 @@
 				CURRENT_PROJECT_VERSION = 3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/lijunjie/Downloads/PgySDK/sdk,
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = iSearch/Info.plist;

@@ -310,8 +310,13 @@
 #pragma mark - popup show settingViewController
 - (void)popupSettingViewController {
     if(!self.settingViewController) {
-        self.settingViewController = [[SettingViewController alloc] init];
-        self.settingViewController.masterViewController = self;
+        SettingViewController *settingVC = [[SettingViewController alloc] init];
+        settingVC.masterViewController   = self;
+        self.settingViewController = settingVC;
+//        UINavigationController *nav      = [[UINavigationController alloc] initWithRootViewController:settingVC];
+//        nav.navigationBar.translucent    = NO;
+//        nav.toolbar.translucent          = NO;
+//        self.settingViewController       = nav;
     }
     [self presentPopupViewController:self.settingViewController animated:YES completion:^(void) {
         self.coverView.hidden = NO;

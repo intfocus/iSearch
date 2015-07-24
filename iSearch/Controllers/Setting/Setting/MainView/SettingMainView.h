@@ -1,21 +1,19 @@
 //
-//  SettingUserInfo.h
+//  SettingViewController.h
 //  iSearch
 //
-//  Created by lijunjie on 15/7/5.
+//  Created by lijunjie on 15/6/25.
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#ifndef iSearch_SettingUserInfo_h
-#define iSearch_SettingUserInfo_h
+#ifndef iSearch_SettingMainView_h
+#define iSearch_SettingMainView_h
 #import <UIKit/UIKit.h>
 @class MainViewController;
 @class SettingViewController;
 
-@interface SettingUserInfo : UIViewController
-@property (nonatomic,assign) NSInteger indexRow;
+@interface SettingMainView : UIViewController
 @property (nonatomic,nonatomic) MainViewController *mainViewController;
 @property (nonatomic,nonatomic) SettingViewController *settingViewController;
 @end
-
 #endif

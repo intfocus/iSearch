@@ -13,6 +13,7 @@
 #import "HttpResponse.h"
 #import <UIKit/UIKit.h>
 #import "Reachability.h"
+#import "AFNetworking.h"
 #import "ExtendNSLogFunctionality.h"
 
 @interface HttpUtils()
@@ -48,6 +49,25 @@
     }
 
     return httpResponse;
+}
+
++ (NSDictionary *)httpGet2:(NSString *)urlString {
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    __block NSDictionary *result;
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    AFHTTPRequestOperation *operation = [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        result = responseObject;
+        dispatch_semaphore_signal(semaphore);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        result = @{@"error": [error localizedDescription]};
+        dispatch_semaphore_signal(semaphore);
+    }];
+    return result;
 }
 /**
  *  Http#Post功能代码封装
