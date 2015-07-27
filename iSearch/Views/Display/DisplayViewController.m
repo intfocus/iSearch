@@ -162,11 +162,12 @@
     self.paintView                     = nil;
     self.viewEditPanel.layer.zPosition = MAXFLOAT;
     
-    // 默认循环播放
-    self.isLoopPlay        = YES;
-    self.switchLoopPlay.on = YES;
+    // 默认循环播放关闭
+    self.isLoopPlay        = NO;
+    self.switchLoopPlay.on = NO;
     [self.switchLoopPlay addTarget:self action:@selector(actionChangeSwithLoopPlay:) forControlEvents:UIControlEventValueChanged];
     
+    // 默认自动播放关闭
     self.isAutoPlay        = NO;
     self.switchAutoPlay.on = NO;
     [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwithAutoPlay:) forControlEvents:UIControlEventValueChanged];
@@ -182,11 +183,10 @@
     self.viewColorChoice.hidden       = YES;
     self.viewAutoPlay.hidden          = YES;
     
-    self.leftTimeView.layer.cornerRadius = 11;
-    self.leftTimeView.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.leftTimeView.layer.borderWidth = 1;
+    self.leftTimeView.layer.cornerRadius  = 11;
+    self.leftTimeView.layer.borderColor   = [UIColor whiteColor].CGColor;
+    self.leftTimeView.layer.borderWidth   = 1;
     self.leftTimeView.layer.masksToBounds = true;
-    
 }
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

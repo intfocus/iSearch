@@ -11,6 +11,7 @@
 
 @property (nonatomic, strong) NSData *received;          // 服务器返回原始内容
 @property (nonatomic, strong) NSMutableDictionary *data; // response => json
+@property (nonatomic, strong) NSString *string;          // response => string
 @property (nonatomic, strong) NSMutableArray *errors;    // 服务器交互中出现错误
 @property (nonatomic, strong) NSHTTPURLResponse *response;   // 响应头部信息
 

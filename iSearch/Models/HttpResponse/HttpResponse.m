@@ -38,6 +38,7 @@
     BOOL isOK = NSErrorPrint(error, @"NSData convert to NSDictionary");
     if(!isOK) {
         [self.errors addObject:(NSString *)psd([error localizedDescription],@"服务器数据转化JSON失败")];
+        _string = [[NSString alloc] initWithData:received encoding:NSUTF8StringEncoding];
     }
 }
 

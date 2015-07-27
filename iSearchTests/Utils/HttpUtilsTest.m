@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "HttpUtils.h"
+#import "HttpResponse.h"
 
 @interface HttpUtilsTest : XCTestCase
 
@@ -26,12 +27,30 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    NSDictionary *result;
-    result = [HttpUtils httpGet2:@"www.baidu.com"];
-    XCTAssertNil(result[@"error"]);
-    result = [HttpUtils httpGet2:@"www.baidu2.com"];
-    XCTAssertNil(result[@"error"]);
+- (void)testHttpGets {
+    HttpResponse *result;
+    result = [HttpUtils httpGet:@"http://www.baidu.com"];
+    XCTAssertTrue([result.statusCode isEqual:@200]);
+    result = [HttpUtils httpGet:@"http://www.baidu1234567890.com"];
+    XCTAssertNil(result.statusCode);
+}
+
+- (void)testNetworkAvailable {
+    NSDate *now = [NSDate date];
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:@"http://google.com"];
+    NSTimeInterval interval = 0 - [now timeIntervalSinceNow];
+    
+    XCTAssertTrue(interval < 0.6);
+    XCTAssertFalse(isNetworkAvailable);
+    
+    
+    now = [NSDate date];
+    isNetworkAvailable = [HttpUtils isNetworkAvailable2];
+    interval = 0 - [now timeIntervalSinceNow];
+    
+    XCTAssertTrue(interval < 0.6);
+    XCTAssertTrue(isNetworkAvailable);
+    
 }
 
 @end

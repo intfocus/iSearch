@@ -24,9 +24,18 @@
  *
  *  @return Http#Get HttpResponse
  */
++ (HttpResponse *)httpGet:(NSString *)urlString timeoutInterval:(NSTimeInterval)timeoutInterval;
+
+
+/**
+ *  应用从服务器获取数据，设置超时时间为: 3.0秒
+ *
+ *  @param urlString 服务器链接
+ *
+ *  @return Http#Get HttpResponse
+ */
 + (HttpResponse *)httpGet:(NSString *)urlString;
 
-+ (NSDictionary *)httpGet2:(NSString *)urlString;
 /**
  *  Http#Post功能代码封装
  *
@@ -38,11 +47,20 @@
 + (HttpResponse *)httpPost:(NSString *)urlString Params:(NSMutableDictionary *)params;
 
 /**
+ *  动态设置
+ *
+ *  @return 有网络则为true
+ */
++ (BOOL)isNetworkAvailable:(NSString *)urlString;
++ (BOOL)isNetworkAvailable;
+
+
+/**
  *  检测当前app网络环境
  *
  *  @return 有网络则为true
  */
-+ (BOOL) isNetworkAvailable;
++ (BOOL)isNetworkAvailable2;
 + (NSString *) networkType;
 
 @end

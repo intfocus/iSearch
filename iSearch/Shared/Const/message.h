@@ -41,13 +41,13 @@
 #define SLIDE_BTN_DISPLAY      @"演示"
 #define SLIDE_BTN_DETAIL       @"详细"
 
-#define BTN_SUBMIT @"提交"
-#define BTN_CANCEL @"取消"
-#define BTN_EDIT   @"编辑"
-#define BTN_SAVE   @"保存"
-#define BTN_REMOVE @"移除"
-#define BTN_BACK   @"返回"
-#define BTN_SURE   @"确定"
+#define BTN_SUBMIT  @"提交"
+#define BTN_CANCEL  @"取消"
+#define BTN_EDIT    @"编辑"
+#define BTN_SAVE    @"保存"
+#define BTN_REMOVE  @"移除"
+#define BTN_BACK    @"返回"
+#define BTN_SURE    @"确定"
 #define BTN_RESTORE @"恢复"
 
 // 公告通知
@@ -57,4 +57,8 @@
 #define ALERT_TITLE_CONTENT_FAIL @"加载失败"
 #define ALERT_MSG_CONTENT_SERVER_ERROR @"加载服务器目录失败,请确认网络良好，服务运行正常"
 
+#define V_2_0_0_CHANGELOG @"更新日志: \
+                            1. iPad应用显示名称调整为:iSEARCH 2.0 \
+                            2. 播放页，改为默认循环播放关闭         \
+                           ";
 #endif

@@ -34,15 +34,15 @@
  *
  *  @return Http#Get HttpResponse
  */
-+ (HttpResponse *)httpGet:(NSString *)urlString {
-    HttpResponse *httpResponse = [[HttpResponse alloc] init];
++ (HttpResponse *)httpGet:(NSString *)urlString timeoutInterval:(NSTimeInterval)timeoutInterval {
     NSLog(@"%@", urlString);
-    NSURL *url            = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
+    NSURL *url = [NSURL URLWithString:urlString];
+    HttpResponse *httpResponse = [[HttpResponse alloc] init];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:timeoutInterval];
     NSError *error;
     NSURLResponse *response;
     httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    httpResponse.response = response;
+    httpResponse.response = (NSHTTPURLResponse*)response;
     BOOL isOK   = NSErrorPrint(error, @"Http#get %@", urlString);
     if(!isOK) {
         [httpResponse.errors addObject:(NSString *)psd([error localizedDescription], @"http get未知错误")];
@@ -51,24 +51,18 @@
     return httpResponse;
 }
 
-+ (NSDictionary *)httpGet2:(NSString *)urlString {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    __block NSDictionary *result;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    
-    AFHTTPRequestOperation *operation = [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        result = responseObject;
-        dispatch_semaphore_signal(semaphore);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        result = @{@"error": [error localizedDescription]};
-        dispatch_semaphore_signal(semaphore);
-    }];
-    return result;
+
+/**
+ *  应用从服务器获取数据，设置超时时间为: 3.0秒
+ *
+ *  @param urlString 服务器链接
+ *
+ *  @return Http#Get HttpResponse
+ */
++ (HttpResponse *)httpGet:(NSString *)urlString {
+    return [HttpUtils httpGet:urlString timeoutInterval:3.0];
 }
+
 /**
  *  Http#Post功能代码封装
  *  application/x-www-form-urlencoded
@@ -104,11 +98,26 @@
 }
 
 /**
+ *  动态设置
+ *
+ *  @return 有网络则为true
+ */
++ (BOOL)isNetworkAvailable:(NSString *)urlString {
+    HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:0.5];
+    
+    return (httpResponse.statusCode && [httpResponse.statusCode isEqual: @200]);
+}
+
++ (BOOL)isNetworkAvailable {
+    return [HttpUtils isNetworkAvailable:@"http://www.apple.com"];
+}
+
+/**
  *  检测当前app网络环境
  *
  *  @return 有网络则为true
  */
-+ (BOOL) isNetworkAvailable {
++ (BOOL) isNetworkAvailable2 {
     BOOL isExistenceNetwork = NO;
     Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
     switch ([reach currentReachabilityStatus]) {
@@ -127,7 +136,7 @@
  *
  *  @return 网络类型字符串
  */
-+ (NSString *) networkType {
++ (NSString *)networkType {
     NSString *_netWorkType = @"无";
     Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
     switch ([reach currentReachabilityStatus]) {
