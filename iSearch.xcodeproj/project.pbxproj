@@ -12,7 +12,6 @@
 		C40ECC0A1B55F6F70083A428 /* postPGY.rb in Resources */ = {isa = PBXBuildFile; fileRef = C40ECC071B55F6F70083A428 /* postPGY.rb */; };
 		C40ECC0B1B55F6F70083A428 /* scp_isearch.sh in Resources */ = {isa = PBXBuildFile; fileRef = C40ECC081B55F6F70083A428 /* scp_isearch.sh */; };
 		C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */; };
-		C419D28D1B5F700F008A2C66 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C419D28C1B5F700F008A2C66 /* PgySDK.framework */; };
 		C419D28F1B5F702A008A2C66 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C419D28E1B5F702A008A2C66 /* CoreTelephony.framework */; };
 		C419D2911B5F7036008A2C66 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C419D2901B5F7036008A2C66 /* OpenGLES.framework */; };
 		C419D2931B5F703F008A2C66 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C419D2921B5F703F008A2C66 /* SceneKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -24,6 +23,7 @@
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
 		C49BA7DB1B54C979001D9013 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49BA7D11B54C979001D9013 /* Info.plist */; };
 		C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C49BA7E51B54CEF7001D9013 /* UrlTest.m */; };
+		C4A4FD121B65C7F300741BF3 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A4FD111B65C7F300741BF3 /* PgySDK.framework */; };
 		C4A579E81B61FBE70093C98A /* HttpUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */; };
 		C4A579FC1B62394D0093C98A /* SettingMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579F31B62394D0093C98A /* SettingMainView.m */; };
 		C4A579FD1B62394D0093C98A /* SettingMainView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4A579F41B62394D0093C98A /* SettingMainView.xib */; };
@@ -153,7 +153,6 @@
 		C40ECC081B55F6F70083A428 /* scp_isearch.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = scp_isearch.sh; sourceTree = "<group>"; };
 		C40ECC0D1B55F7160083A428 /* curl.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = curl.sh; sourceTree = "<group>"; };
 		C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ApiHelperTest.m; path = ../Models/ApiHelperTest.m; sourceTree = "<group>"; };
-		C419D28C1B5F700F008A2C66 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PgySDK.framework; sourceTree = "<group>"; };
 		C419D28E1B5F702A008A2C66 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		C419D2901B5F7036008A2C66 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		C419D2921B5F703F008A2C66 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
@@ -165,6 +164,7 @@
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		C49BA7D11B54C979001D9013 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C49BA7E51B54CEF7001D9013 /* UrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlTest.m; sourceTree = "<group>"; };
+		C4A4FD111B65C7F300741BF3 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PgySDK.framework; path = Frameworks/PgySDK.framework; sourceTree = "<group>"; };
 		C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtilsTest.m; sourceTree = "<group>"; };
 		C4A579F21B62394D0093C98A /* SettingMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingMainView.h; sourceTree = "<group>"; };
 		C4A579F31B62394D0093C98A /* SettingMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingMainView.m; sourceTree = "<group>"; };
@@ -339,6 +339,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A4FD121B65C7F300741BF3 /* PgySDK.framework in Frameworks */,
 				C419D29B1B5F706C008A2C66 /* SystemConfiguration.framework in Frameworks */,
 				C419D2991B5F705B008A2C66 /* AVFoundation.framework in Frameworks */,
 				C419D2971B5F7053008A2C66 /* AudioToolbox.framework in Frameworks */,
@@ -348,7 +349,6 @@
 				C419D28F1B5F702A008A2C66 /* CoreTelephony.framework in Frameworks */,
 				C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */,
 				C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */,
-				C419D28D1B5F700F008A2C66 /* PgySDK.framework in Frameworks */,
 				5E0EF22CB0E3FCFF514C90B4 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,6 +366,7 @@
 		14BCA1B123DD5CF6D6A679B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4A4FD111B65C7F300741BF3 /* PgySDK.framework */,
 				C419D29A1B5F706C008A2C66 /* SystemConfiguration.framework */,
 				C419D2981B5F705B008A2C66 /* AVFoundation.framework */,
 				C419D2961B5F7053008A2C66 /* AudioToolbox.framework */,
@@ -373,7 +374,6 @@
 				C419D2921B5F703F008A2C66 /* SceneKit.framework */,
 				C419D2901B5F7036008A2C66 /* OpenGLES.framework */,
 				C419D28E1B5F702A008A2C66 /* CoreTelephony.framework */,
-				C419D28C1B5F700F008A2C66 /* PgySDK.framework */,
 				C42EC8951B289461000F84EF /* libsqlite3.dylib */,
 				C42EC86E1B2886CA000F84EF /* libz.dylib */,
 				75C31A5A26A50B79A54B9722 /* libPods.a */,
@@ -1373,6 +1373,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = iSearch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1398,6 +1399,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = iSearch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
