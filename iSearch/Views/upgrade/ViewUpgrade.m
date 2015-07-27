@@ -11,7 +11,6 @@
 #import "AFNetworking.h"
 #import "const.h"
 #import "Version+Self.h"
-#import "SettingViewController.h"
 #import "MBProgressHUD.h"
 #import "HttpUtils.h"
 
@@ -32,11 +31,6 @@
     [super viewDidLoad];
     
     if(self.navigationItem) {
-        UIBarButtonItem *navBtnBackToMain = [[UIBarButtonItem alloc] initWithTitle:@"返回"
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(actionBackToMain:)];
-        self.navigationItem.leftBarButtonItem = navBtnBackToMain;
         self.navigationItem.title = @"版本更新";
     }
 

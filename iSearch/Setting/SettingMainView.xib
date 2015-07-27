@@ -33,7 +33,7 @@
                     </connections>
                 </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="F3t-ie-I83">
-                    <rect key="frame" x="25" y="15" width="350" height="404"/>
+                    <rect key="frame" x="25" y="44" width="350" height="396"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="kr1-b5-WXH"/>
@@ -43,9 +43,9 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="pOl-48-sIE" firstAttribute="top" secondItem="F3t-ie-I83" secondAttribute="bottom" constant="29" id="5FE-K3-jgv"/>
+                <constraint firstItem="pOl-48-sIE" firstAttribute="top" secondItem="F3t-ie-I83" secondAttribute="bottom" constant="8" id="5FE-K3-jgv"/>
                 <constraint firstAttribute="centerX" secondItem="F3t-ie-I83" secondAttribute="centerX" id="vRq-TB-IVF"/>
-                <constraint firstItem="F3t-ie-I83" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="yRY-AW-eZr"/>
+                <constraint firstItem="F3t-ie-I83" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="44" id="yRY-AW-eZr"/>
                 <constraint firstAttribute="centerX" secondItem="pOl-48-sIE" secondAttribute="centerX" id="yX6-S8-Ugp"/>
                 <constraint firstAttribute="bottom" secondItem="pOl-48-sIE" secondAttribute="bottom" constant="8" id="yhD-Jt-3ep"/>
             </constraints>

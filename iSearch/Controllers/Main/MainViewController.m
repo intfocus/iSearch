@@ -32,7 +32,7 @@
 @property(nonatomic,strong) UIViewController *rightViewController;
 
 @property(nonatomic,strong) SlideInfoView *slideInfoView;
-@property(nonatomic,strong) SettingViewController *settingViewController;
+@property(nonatomic,strong) UINavigationController *settingViewController;
 @property(nonatomic,strong) DisplayViewController *displayViewController;
 //@property(nonatomic,strong) ReViewController *reViewController;
 @property (weak, nonatomic) IBOutlet UIView *coverView;
@@ -310,13 +310,11 @@
 #pragma mark - popup show settingViewController
 - (void)popupSettingViewController {
     if(!self.settingViewController) {
-        SettingViewController *settingVC = [[SettingViewController alloc] init];
-        settingVC.masterViewController   = self;
-        self.settingViewController = settingVC;
-//        UINavigationController *nav      = [[UINavigationController alloc] initWithRootViewController:settingVC];
-//        nav.navigationBar.translucent    = NO;
-//        nav.toolbar.translucent          = NO;
-//        self.settingViewController       = nav;
+        SettingViewController *settingVC   = [[SettingViewController alloc] init];
+        settingVC.mainViewController = self;
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
+        nav.view.frame = CGRectMake(0, 0, 400, 500);
+        self.settingViewController = nav;
     }
     [self presentPopupViewController:self.settingViewController animated:YES completion:^(void) {
         self.coverView.hidden = NO;

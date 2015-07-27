@@ -12,7 +12,7 @@
 @class MainViewController;
 @class SettingViewController;
 
-@interface SettingUserInfo : UIViewController
+@interface SettingDataInfo : UIViewController
 @property (nonatomic,assign) NSInteger indexRow;
 @property (nonatomic,nonatomic) MainViewController *mainViewController;
 @property (nonatomic,nonatomic) SettingViewController *settingViewController;

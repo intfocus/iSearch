@@ -13,7 +13,6 @@
 #import "OfflineViewController.h"
 #import "HomeViewController.h"
 #import "FavoriteViewController.h"
-#import "SettingViewController.h"
 
 
 #import "UserHeadView.h"

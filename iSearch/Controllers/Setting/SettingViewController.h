@@ -6,13 +6,12 @@
 //  Copyright (c) 2015年 Intfocus. All rights reserved.
 //
 
-#ifndef iSearch_SettingViewController_h
-#define iSearch_SettingViewController_h
+#ifndef iSearch_SettingMainView_h
+#define iSearch_SettingMainView_h
 #import <UIKit/UIKit.h>
 @class MainViewController;
 
 @interface SettingViewController : UIViewController
-@property (nonatomic,nonatomic) MainViewController *masterViewController;
-@property (nonatomic,nonatomic) UIViewController *containerViewController;
+@property (nonatomic,nonatomic) MainViewController *mainViewController;
 @end
 #endif

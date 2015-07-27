@@ -11,7 +11,6 @@
 
 #import "User.h"
 #import "MainViewController.h"
-#import "SettingViewController.h"
 #import "SettingUserInfo.h"
 #import "ViewUpgrade.h"
 
@@ -22,7 +21,7 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingRegularIndex  = 3
 };
 
-@interface SettingMainView()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol>
+@interface SettingMainView()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol, ViewUpgradeProtocol>
 
 @property (nonatomic, nonatomic) IBOutlet UIButton *btnLogout;
 @property (nonatomic, strong) NSMutableArray *dataList;
