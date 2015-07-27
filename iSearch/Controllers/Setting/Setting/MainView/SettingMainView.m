@@ -22,7 +22,7 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
     SettingRegularIndex  = 3
 };
 
-@interface SettingMainView()<UITableViewDelegate, UITableViewDataSource>
+@interface SettingMainView()<UITableViewDelegate, UITableViewDataSource, ViewUpgradeProtocol>
 
 @property (nonatomic, nonatomic) IBOutlet UIButton *btnLogout;
 @property (nonatomic, strong) NSMutableArray *dataList;
@@ -99,26 +99,29 @@ typedef NS_ENUM(NSInteger, SettingSectionIndex) {
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    SettingUserInfo *viewController = [[SettingUserInfo alloc] init];
-    viewController.indexRow = indexPath.row;
     switch ([indexPath row]) {
-        case SettingUserInfoIndex:{
-            
-            [self.navigationController pushViewController:viewController animated:YES];
-        }
-            break;
-        case SettingAppInfoIndex:{
-            
+        case SettingUserInfoIndex:
+        case SettingAppInfoIndex: {
+            SettingUserInfo *viewController = [[SettingUserInfo alloc] init];
+            viewController.indexRow = indexPath.row;
             [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
         case SettingUpgradeIndex:{
             ViewUpgrade *viewController = [[ViewUpgrade alloc] init];
-           [self.navigationController pushViewController:viewController animated:YES];
+            viewController.settingViewController = self.settingViewController;
+            viewController.delegate = (id)self;
+            [self.navigationController pushViewController:viewController animated:YES];
         }
             break;
         default:
             break;
     }
 }
+
+#pragma mark - ViewUpgradeProtocol
+- (void)dismissViewUpgrade {
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
 @end

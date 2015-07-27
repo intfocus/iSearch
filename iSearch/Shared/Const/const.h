@@ -90,6 +90,7 @@ typedef NS_ENUM(NSInteger, TextFieldTag){
 #define HTTP_ERRORS             @"http_errors"
 #define HTTP_RESPONSE           @"http_response"
 #define HTTP_RESPONSE_DATA      @"http_response_json"
+#define iOSVersion [[[UIDevice currentDevice] systemVersion] floatValue]
 
 // ActionLogger
 #define ACTION_LOGGER_URL_PATH @"/uat/api/logjson.php"

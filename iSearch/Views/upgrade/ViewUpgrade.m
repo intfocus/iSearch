@@ -81,6 +81,8 @@
 - (IBAction)actionDismiss:(id)sender {
     if ([self.delegate respondsToSelector:@selector(dismissViewUpgrade)]) {
         [self.delegate dismissViewUpgrade];
+    } else {
+        NSLog(@"not find dismissViewUpgrade!");
     }
 }
 
@@ -116,9 +118,10 @@
     NSRange strRange = {0,[str length]};
     if(enabled) {
         [str removeAttribute:NSStrikethroughStyleAttributeName range:strRange];
-        
+        sender.enabled = YES;
     } else {
         [str addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:strRange];
+        sender.enabled = NO;
     }
     [sender setAttributedTitle:str forState:UIControlStateNormal];
 }

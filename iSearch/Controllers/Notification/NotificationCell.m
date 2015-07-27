@@ -42,5 +42,11 @@
     [super setSelected:selected animated:animated];
     
 }
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if (iOSVersion < 8) {
+        self.labelMsg.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - 16 - 8;
+    }
+}
 
 @end

@@ -70,6 +70,8 @@
 @property (strong, nonatomic) NSNumber *widthTwo;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarHeightConstraint;
 
+//@property (nonatomic) NotificationCell *cell;
+
 @end
 
 @implementation NotificationViewController
@@ -99,7 +101,7 @@
     self.tableViewTwo.delegate   = self;
     self.tableViewTwo.dataSource = self;
     self.tableViewTwo.tag = NotificationTableViewTWO;
-
+    
     // 日历控件
     [self configCalendar];
     
@@ -125,11 +127,17 @@
     
     // 临时放置
     self.barItemTMP = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"<<"]
-                                                            style:UIBarButtonItemStylePlain
-                                                           target:self
-                                                           action:@selector(toggleShowLeftBar:)];
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(toggleShowLeftBar:)];
     self.barItemTMP.possibleTitles = [NSSet setWithObjects:@"<<", @">>", nil];
-//    self.navigationItem.rightBarButtonItem = self.barItemTMP;
+    //    self.navigationItem.rightBarButtonItem = self.barItemTMP;
+    
+    self.tableViewOne.rowHeight = UITableViewAutomaticDimension;
+    self.tableViewOne.estimatedRowHeight = 100;
+    self.tableViewTwo.rowHeight = UITableViewAutomaticDimension;
+    self.tableViewTwo.estimatedRowHeight = 100;
+    //self.cell = [self.tableViewOne dequeueReusableCellWithIdentifier:@"cellID"];
 }
 
 /**
@@ -144,8 +152,8 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    self.widthTwo = [NSNumber numberWithFloat:self.viewCalendar.bounds.size.width];
-    self.widthOne = [NSNumber numberWithFloat:(self.view.bounds.size.width-self.viewCalendar.bounds.size.width)];
+    self.widthTwo = [NSNumber numberWithFloat:self.viewCalendar.bounds.size.width - 16 - 8];
+    self.widthOne = [NSNumber numberWithFloat:(self.view.bounds.size.width-self.viewCalendar.bounds.size.width) - 16 - 8];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -249,25 +257,24 @@
 
 - (void)dealWithData {
     NSMutableDictionary *notificationDatas = [DataHelper notifications];
-
+    
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
     NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
     self.dataList    = notificationDatas;
     self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
     self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
-
-
+    
     // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     NSString *occurDate;
     for(dict in self.dataListTwo) {
         // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
         occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];
-        dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
+        //dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
         if(![self.dataListTwoDate containsObject:occurDate])
             [self.dataListTwoDate addObject:occurDate];
     }
-
+    
     // 公告通知按created_date升序
     NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
     [self.dataListOne sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
@@ -355,10 +362,10 @@
             count = [self.dataListOne count];
             break;
         case NotificationTableViewTWO:
-        //case NotificationTableViewTHREE:
+            //case NotificationTableViewTHREE:
             count = [self.dataListTwo count];
             break;
-
+            
         default:
             NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
             break;
@@ -383,7 +390,7 @@
         }
             break;
         case NotificationTableViewTWO:
-        //case NotificationTableViewTHREE:
+            //case NotificationTableViewTHREE:
         {
             currentDict = [self.dataListTwo objectAtIndex:cellIndex];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_OCCURDATE]];
@@ -399,7 +406,6 @@
     [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
     cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
     cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
-    
     return cell;
 }
 
@@ -414,25 +420,33 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
     CGFloat width;
+    //    if (iOSVersion >= 8) {
+    //        return UITableViewAutomaticDimension;
+    //    }
+    //    else {
     switch([tableView tag]) {
         case NotificationTableViewONE: {
             currentDict = [self.dataListOne objectAtIndex:indexPath.row];
-            width = [self.widthOne floatValue]-5.0f;
+            width = [self.widthOne floatValue];
         }
             break;
         case NotificationTableViewTWO: {
             currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
-            width = [self.widthTwo floatValue]-5.0f;
+            width = [self.widthTwo floatValue];
         }
             break;
-
+            
         default:
             NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
             break;
     }
     NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
     CGSize size = [ViewUtils sizeForTableViewCell:text Width:width FontSize:NOTIFICATION_MSG_FONT];
-    return size.height + 50.0f;
+    //[self.cell layoutSubviews];
+    //CGFloat calculateHeight = [self.cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    //return calculateHeight + 60.0;
+    return size.height + 60.0f;
+    //}
 }
 
 

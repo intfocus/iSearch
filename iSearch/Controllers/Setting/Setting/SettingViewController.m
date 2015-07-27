@@ -60,9 +60,6 @@
 }
 #pragma mark - ViewUpgradeProtocol
 - (void)dismissViewUpgrade {
-    SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
-    viewController.settingViewController = self;
-    viewController.mainViewController    = self.masterViewController;
-    self.containerViewController         = viewController;
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 @end

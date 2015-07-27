@@ -23,8 +23,6 @@
     /**
      *  控件事件
      */
-    
-
     SettingMainView *viewController      = [[SettingMainView alloc] initWithNibName:nil bundle:nil];
     viewController.settingViewController = self;
     viewController.mainViewController    = self.masterViewController;
