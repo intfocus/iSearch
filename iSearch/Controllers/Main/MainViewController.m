@@ -18,11 +18,12 @@
 #import "FileUtils.h"
 #import "ExtendNSLogFunctionality.h"
 #import <TWRDownloadManager/TWRDownloadManager.h>
+#import "ActionLog.h"
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
 #import "DisplayViewController.h"
-#import "ActionLog.h"
+#import "NotificationDetailView.h"
 
 @interface MainViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -34,6 +35,7 @@
 @property(nonatomic,strong) SlideInfoView *slideInfoView;
 @property(nonatomic,strong) UINavigationController *settingViewController;
 @property(nonatomic,strong) DisplayViewController *displayViewController;
+@property(nonatomic,strong) NotificationDetailView *notificationDetailView;
 //@property(nonatomic,strong) ReViewController *reViewController;
 @property (weak, nonatomic) IBOutlet UIView *coverView;
 
@@ -287,7 +289,7 @@
 #pragma mark - popup show settingViewController
 - (void)popupSettingViewController {
     if(!self.settingViewController) {
-        SettingViewController *settingVC   = [[SettingViewController alloc] init];
+        SettingViewController *settingVC = [[SettingViewController alloc] init];
         settingVC.mainViewController = self;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:settingVC];
         nav.view.frame = CGRectMake(0, 0, 400, 500);
@@ -325,6 +327,28 @@
             self.coverView.hidden = YES;
             
             NSLog(@"dismiss DisplayViewController.");
+        }];
+    }
+}
+
+#pragma mark - present view NotificationDetailView
+- (void)popupNotificationDetailView:(NSDictionary *)notification {
+    if(!self.notificationDetailView) {
+        self.notificationDetailView = [[NotificationDetailView alloc] init];
+        self.notificationDetailView.dict = notification;
+        self.notificationDetailView.masterViewController = self;
+    }
+    [self presentPopupViewController:self.notificationDetailView animated:YES completion:^{
+        self.coverView.hidden = NO;
+    }];
+}
+- (void)dimmissPopupNotificationDetailView {
+    if(self.notificationDetailView) {
+        [self dismissPopupViewControllerAnimated:YES completion:^{
+            _notificationDetailView = nil;
+            self.coverView.hidden = YES;
+            
+            NSLog(@"dismiss NotificationDetailView.");
         }];
     }
 }

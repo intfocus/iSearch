@@ -21,6 +21,12 @@
 		C419D29B1B5F706C008A2C66 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C419D29A1B5F706C008A2C66 /* SystemConfiguration.framework */; };
 		C42EC86F1B2886CA000F84EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC86E1B2886CA000F84EF /* libz.dylib */; };
 		C42EC8961B289461000F84EF /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C42EC8951B289461000F84EF /* libsqlite3.dylib */; };
+		C49731771B676E650014048B /* NotificationDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = C497316E1B676E650014048B /* NotificationDetailView.m */; };
+		C49731781B676E650014048B /* NotificationDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C497316F1B676E650014048B /* NotificationDetailView.xib */; };
+		C49731791B676E650014048B /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731721B676E650014048B /* NotificationCell.m */; };
+		C497317A1B676E650014048B /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C49731731B676E650014048B /* NotificationCell.xib */; };
+		C497317B1B676E650014048B /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C49731741B676E650014048B /* NotificationViewController.m */; };
+		C497317E1B676F820014048B /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C497317D1B676F820014048B /* NotificationViewController.xib */; };
 		C49BA7DB1B54C979001D9013 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C49BA7D11B54C979001D9013 /* Info.plist */; };
 		C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C49BA7E51B54CEF7001D9013 /* UrlTest.m */; };
 		C4A4FD121B65C7F300741BF3 /* PgySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4A4FD111B65C7F300741BF3 /* PgySDK.framework */; };
@@ -60,10 +66,6 @@
 		C4E769BF1B5355F7000D6A2B /* RightSideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769301B5355F7000D6A2B /* RightSideViewController.m */; };
 		C4E769C01B5355F7000D6A2B /* SideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769321B5355F7000D6A2B /* SideViewController.m */; };
 		C4E769C11B5355F7000D6A2B /* SideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769331B5355F7000D6A2B /* SideViewController.xib */; };
-		C4E769C41B5355F7000D6A2B /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769391B5355F7000D6A2B /* NotificationCell.m */; };
-		C4E769C51B5355F7000D6A2B /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E7693A1B5355F7000D6A2B /* NotificationCell.xib */; };
-		C4E769C61B5355F7000D6A2B /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E7693C1B5355F7000D6A2B /* NotificationViewController.m */; };
-		C4E769C71B5355F7000D6A2B /* NotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E7693D1B5355F7000D6A2B /* NotificationViewController.xib */; };
 		C4E769C81B5355F7000D6A2B /* OfflineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769401B5355F7000D6A2B /* OfflineCell.m */; };
 		C4E769C91B5355F7000D6A2B /* OfflineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E769411B5355F7000D6A2B /* OfflineCell.xib */; };
 		C4E769CA1B5355F7000D6A2B /* OfflineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E769431B5355F7000D6A2B /* OfflineViewController.m */; };
@@ -160,6 +162,15 @@
 		C419D29A1B5F706C008A2C66 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C42EC86E1B2886CA000F84EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C42EC8951B289461000F84EF /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		C497316D1B676E650014048B /* NotificationDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDetailView.h; sourceTree = "<group>"; };
+		C497316E1B676E650014048B /* NotificationDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDetailView.m; sourceTree = "<group>"; };
+		C497316F1B676E650014048B /* NotificationDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationDetailView.xib; sourceTree = "<group>"; };
+		C49731711B676E650014048B /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
+		C49731721B676E650014048B /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
+		C49731731B676E650014048B /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
+		C49731741B676E650014048B /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		C49731751B676E650014048B /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		C497317D1B676F820014048B /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
 		C49BA7D11B54C979001D9013 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C49BA7E51B54CEF7001D9013 /* UrlTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UrlTest.m; sourceTree = "<group>"; };
 		C4A4FD111B65C7F300741BF3 /* PgySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PgySDK.framework; path = Frameworks/PgySDK.framework; sourceTree = "<group>"; };
@@ -222,12 +233,6 @@
 		C4E769311B5355F7000D6A2B /* SideViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SideViewController.h; sourceTree = "<group>"; };
 		C4E769321B5355F7000D6A2B /* SideViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SideViewController.m; sourceTree = "<group>"; };
 		C4E769331B5355F7000D6A2B /* SideViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SideViewController.xib; sourceTree = "<group>"; };
-		C4E769381B5355F7000D6A2B /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
-		C4E769391B5355F7000D6A2B /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
-		C4E7693A1B5355F7000D6A2B /* NotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
-		C4E7693B1B5355F7000D6A2B /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
-		C4E7693C1B5355F7000D6A2B /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
-		C4E7693D1B5355F7000D6A2B /* NotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationViewController.xib; sourceTree = "<group>"; };
 		C4E7693F1B5355F7000D6A2B /* OfflineCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfflineCell.h; sourceTree = "<group>"; };
 		C4E769401B5355F7000D6A2B /* OfflineCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfflineCell.m; sourceTree = "<group>"; };
 		C4E769411B5355F7000D6A2B /* OfflineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfflineCell.xib; sourceTree = "<group>"; };
@@ -404,6 +409,26 @@
 				C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		C497316C1B676E650014048B /* NotificationDetail */ = {
+			isa = PBXGroup;
+			children = (
+				C497316D1B676E650014048B /* NotificationDetailView.h */,
+				C497316E1B676E650014048B /* NotificationDetailView.m */,
+				C497316F1B676E650014048B /* NotificationDetailView.xib */,
+			);
+			path = NotificationDetail;
+			sourceTree = "<group>";
+		};
+		C49731701B676E650014048B /* NotificationCell */ = {
+			isa = PBXGroup;
+			children = (
+				C49731711B676E650014048B /* NotificationCell.h */,
+				C49731721B676E650014048B /* NotificationCell.m */,
+				C49731731B676E650014048B /* NotificationCell.xib */,
+			);
+			path = NotificationCell;
 			sourceTree = "<group>";
 		};
 		C49BA7CD1B54C979001D9013 /* iSearchTests */ = {
@@ -634,12 +659,11 @@
 		C4E769371B5355F7000D6A2B /* Notification */ = {
 			isa = PBXGroup;
 			children = (
-				C4E769381B5355F7000D6A2B /* NotificationCell.h */,
-				C4E769391B5355F7000D6A2B /* NotificationCell.m */,
-				C4E7693A1B5355F7000D6A2B /* NotificationCell.xib */,
-				C4E7693B1B5355F7000D6A2B /* NotificationViewController.h */,
-				C4E7693C1B5355F7000D6A2B /* NotificationViewController.m */,
-				C4E7693D1B5355F7000D6A2B /* NotificationViewController.xib */,
+				C497316C1B676E650014048B /* NotificationDetail */,
+				C49731701B676E650014048B /* NotificationCell */,
+				C49731751B676E650014048B /* NotificationViewController.h */,
+				C49731741B676E650014048B /* NotificationViewController.m */,
+				C497317D1B676F820014048B /* NotificationViewController.xib */,
 			);
 			path = Notification;
 			sourceTree = "<group>";
@@ -1077,13 +1101,13 @@
 				C4E769C11B5355F7000D6A2B /* SideViewController.xib in Resources */,
 				C4A4FDB01B66228A00741BF3 /* SettingDataInfo.xib in Resources */,
 				C4E76AA71B539BF0000D6A2B /* OneViewController.xib in Resources */,
+				C497317E1B676F820014048B /* NotificationViewController.xib in Resources */,
 				C4E76A841B5356AE000D6A2B /* ViewSlidePage.xib in Resources */,
 				C4E76A8C1B5356AE000D6A2B /* TagListView.xib in Resources */,
 				C4E769AE1B5355F7000D6A2B /* HomeViewController.xib in Resources */,
 				C49BA7DB1B54C979001D9013 /* Info.plist in Resources */,
 				C4E769B61B5355F7000D6A2B /* LoginViewController.xib in Resources */,
 				C4E76A821B5356AE000D6A2B /* ReViewController.xib in Resources */,
-				C4E769C51B5355F7000D6A2B /* NotificationCell.xib in Resources */,
 				C4E769A21B5355F7000D6A2B /* thumbnailPageVideo.png in Resources */,
 				C4E76A861B5356AE000D6A2B /* ViewUpgrade.xib in Resources */,
 				C4E769CB1B5355F7000D6A2B /* OfflineViewController.xib in Resources */,
@@ -1094,7 +1118,6 @@
 				C4E76A911B5356AE000D6A2B /* ViewCategory.xib in Resources */,
 				C4E76AA31B539BF0000D6A2B /* TwoViewController.xib in Resources */,
 				C4E76AA51B539BF0000D6A2B /* ThreeViewController.xib in Resources */,
-				C4E769C71B5355F7000D6A2B /* NotificationViewController.xib in Resources */,
 				C4E76ABE1B53BF6A000D6A2B /* NewsListCell.xib in Resources */,
 				C4E76AC01B53BF6A000D6A2B /* NewsListTabView.xib in Resources */,
 				C4E7699E1B5355F7000D6A2B /* coverSlideSelecting.png in Resources */,
@@ -1106,6 +1129,8 @@
 				C4E7699D1B5355F7000D6A2B /* coverSlideSelected.png in Resources */,
 				C4E769C91B5355F7000D6A2B /* OfflineCell.xib in Resources */,
 				C4E76A8E1B5356AE000D6A2B /* SlideInfoView.xib in Resources */,
+				C497317A1B676E650014048B /* NotificationCell.xib in Resources */,
+				C49731781B676E650014048B /* NotificationDetailView.xib in Resources */,
 				C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */,
 				C4E76ABC1B53BF6A000D6A2B /* MainEntryButton.xib in Resources */,
 				C4E769BA1B5355F7000D6A2B /* MainViewController.xib in Resources */,
@@ -1166,6 +1191,7 @@
 			files = (
 				C4E76ABB1B53BF6A000D6A2B /* MainEntryButton.m in Sources */,
 				C4E76ABF1B53BF6A000D6A2B /* NewsListTabView.m in Sources */,
+				C49731791B676E650014048B /* NotificationCell.m in Sources */,
 				C4E769D91B5355F7000D6A2B /* User.m in Sources */,
 				C4E76A101B535680000D6A2B /* FileUtils+Slide.m in Sources */,
 				C4E769C81B5355F7000D6A2B /* OfflineCell.m in Sources */,
@@ -1173,7 +1199,6 @@
 				C4A4FDAD1B66228A00741BF3 /* SettingViewController.m in Sources */,
 				C4E769D51B5355F7000D6A2B /* BaseModel.m in Sources */,
 				C4E76A951B53583F000D6A2B /* HttpResponse.m in Sources */,
-				C4E769C41B5355F7000D6A2B /* NotificationCell.m in Sources */,
 				C4E769D41B5355F7000D6A2B /* ActionLog.m in Sources */,
 				C4E76A131B535680000D6A2B /* HttpUtils.m in Sources */,
 				C4E769D71B5355F7000D6A2B /* Url+Param.m in Sources */,
@@ -1202,8 +1227,8 @@
 				C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */,
 				C4E769AB1B5355F7000D6A2B /* FavoriteViewController.m in Sources */,
 				C4E76A851B5356AE000D6A2B /* ViewUpgrade.m in Sources */,
+				C49731771B676E650014048B /* NotificationDetailView.m in Sources */,
 				C4E769B91B5355F7000D6A2B /* MainViewController.m in Sources */,
-				C4E769C61B5355F7000D6A2B /* NotificationViewController.m in Sources */,
 				C4E7699C1B5355F7000D6A2B /* UIView+GMGridViewAdditions.m in Sources */,
 				C4E76AA41B539BF0000D6A2B /* ThreeViewController.m in Sources */,
 				C4E76A151B535680000D6A2B /* DatabaseUtils.m in Sources */,
@@ -1221,6 +1246,7 @@
 				C4E769AD1B5355F7000D6A2B /* HomeViewController.m in Sources */,
 				C4E769DB1B5355F7000D6A2B /* Version.m in Sources */,
 				C4E76A7F1B5356AE000D6A2B /* DisplayViewController.m in Sources */,
+				C497317B1B676E650014048B /* NotificationViewController.m in Sources */,
 				C4E76A901B5356AE000D6A2B /* ViewCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

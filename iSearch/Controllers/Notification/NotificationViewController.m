@@ -386,7 +386,7 @@
     NSInteger cellIndex = indexPath.row;
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
     NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if(cell == nil) {
+    if(!cell) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"NotificationCell" owner:self options:nil] lastObject];
     }
     
@@ -396,9 +396,7 @@
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_CREATEDATE]];
         }
             break;
-        case NotificationTableViewTWO:
-        //case NotificationTableViewTHREE:
-        {
+        case NotificationTableViewTWO: {
             currentDict = [self.dataListTwo objectAtIndex:cellIndex];
             [cell setCreatedDate:currentDict[NOTIFICATION_FIELD_OCCURDATE]];
         }
@@ -408,12 +406,31 @@
             [currentDict setObject:@"unkown Message" forKey:NOTIFICATION_FIELD_TITLE];
             break;
     }
-    [cell.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
-    [cell.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
-    [cell.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
-    cell.labelTitle.text = currentDict[NOTIFICATION_FIELD_TITLE];
-    cell.labelMsg.text = currentDict[NOTIFICATION_FIELD_MSG];
+
+    cell.dict = currentDict;
     return cell;
+}
+
+// 选择某行, 跳转至[首页][通知]
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger cellIndex = indexPath.row;
+    NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
+    switch ([tableView tag]) {
+        case NotificationTableViewONE: {
+            currentDict = [self.dataListOne objectAtIndex:cellIndex];
+        }
+            break;
+        case NotificationTableViewTWO: {
+            currentDict = [self.dataListTwo objectAtIndex:cellIndex];
+        }
+            break;
+        default:
+            [currentDict setObject:@"unkown Title" forKey:NOTIFICATION_FIELD_TITLE];
+            [currentDict setObject:@"unkown Message" forKey:NOTIFICATION_FIELD_TITLE];
+            break;
+    }
+    
+    [self.masterViewController popupNotificationDetailView:[NSDictionary dictionaryWithDictionary:currentDict]];
 }
 
 /**
@@ -427,33 +444,25 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSMutableDictionary *currentDict = [[NSMutableDictionary alloc] init];
     CGFloat width;
-//    if (iOSVersion >= 8) {
-//        return UITableViewAutomaticDimension;
-//    }
-//    else {
-        switch([tableView tag]) {
-            case NotificationTableViewONE: {
-                currentDict = [self.dataListOne objectAtIndex:indexPath.row];
-                width = [self.widthOne floatValue];
-            }
-                break;
-            case NotificationTableViewTWO: {
-                currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
-                width = [self.widthTwo floatValue];
-            }
-                break;
-
-            default:
-                NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
-                break;
+    switch([tableView tag]) {
+        case NotificationTableViewONE: {
+            currentDict = [self.dataListOne objectAtIndex:indexPath.row];
+            width = [self.widthOne floatValue];
         }
-        NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
-        CGSize size = [ViewUtils sizeForTableViewCell:text Width:width FontSize:NOTIFICATION_MSG_FONT];
-        //[self.cell layoutSubviews];
-        //CGFloat calculateHeight = [self.cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-        //return calculateHeight + 60.0;
-        return size.height + 60.0f;
-    //}
+            break;
+        case NotificationTableViewTWO: {
+            currentDict = [self.dataListTwo objectAtIndex:indexPath.row];
+            width = [self.widthTwo floatValue];
+        }
+            break;
+
+        default:
+            NSLog(@"Warning Cannot find tableView#tag=%ld", [tableView tag]);
+            break;
+    }
+    NSString *text = currentDict[NOTIFICATION_FIELD_MSG];
+    CGSize size = [ViewUtils sizeForTableViewCell:text Width:width FontSize:NOTIFICATION_MSG_FONT];
+    return size.height + 60.0f;
 }
 
 

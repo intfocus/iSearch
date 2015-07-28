@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelTitle;
 @property (weak, nonatomic) IBOutlet UILabel *labelMsg;
 @property (weak, nonatomic) IBOutlet UILabel *labelDate;
+@property (weak, nonatomic) NSDictionary *dict;
 
 /**
  *  设置公告创建日期，如果是今天的则显示[今天]，否则显示[yyyy/MM/dd]

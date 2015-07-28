@@ -41,6 +41,9 @@
 - (void)presentViewDisplayViewController;
 - (void)dismissViewDisplayViewController;
 
+- (void)popupNotificationDetailView:(NSDictionary *)notification;
+- (void)dimmissPopupNotificationDetailView;
+
 //- (void)presentViewReViewController;
 //- (void)dismissViewReViewController;
 

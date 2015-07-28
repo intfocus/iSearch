@@ -11,11 +11,23 @@
 #import "const.h"
 #import "DateUtils.h"
 #import "message.h"
+#import "ExtendNSLogFunctionality.h"
 
+@interface NotificationCell()
+@end
 @implementation NotificationCell
 @synthesize labelTitle;
 @synthesize labelMsg;
 @synthesize labelDate;
+
+/**
+ *  default setting
+ */
+- (void)awakeFromNib {
+    [self.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+    [self.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
+    [self.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
+}
 
 /**
  *  设置公告创建日期，如果是今天的则显示[今天]，否则显示[yyyy/MM/dd]
@@ -39,9 +51,19 @@
         self.labelDate.text = createdDate;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+/**
+ *  dict setter rewrite
+ *
+ *  @param dict NSDictionary
+ */
+- (void)setDict:(NSDictionary *)dict {
+    self.labelTitle.text = dict[NOTIFICATION_FIELD_TITLE];
+    self.labelMsg.text   = dict[NOTIFICATION_FIELD_MSG];
+    
+    _dict = dict;
 }
+
+#pragma mark - layoutSubviews
 
 - (void)layoutSubviews {
     [super layoutSubviews];
