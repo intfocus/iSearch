@@ -24,7 +24,7 @@
  *  default setting
  */
 - (void)awakeFromNib {
-    [self.labelTitle setFont:[UIFont systemFontOfSize:NOTIFICATION_TITLE_FONT]];
+    [self.labelTitle setFont:[UIFont fontWithName:@"Helvetica-Bold" size:NOTIFICATION_TITLE_FONT]];
     [self.labelMsg setFont:[UIFont systemFontOfSize:NOTIFICATION_MSG_FONT]];
     [self.labelDate setFont:[UIFont systemFontOfSize:NOTIFICATION_DATE_FONT]];
 }
