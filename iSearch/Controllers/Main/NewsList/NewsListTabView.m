@@ -70,6 +70,7 @@
     cell.textLabel.font = [UIFont systemFontOfSize:12.0];
     cell.textLabel.text = message;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    cell.backgroundColor = [UIColor clearColor];
 
     return cell;
 }
