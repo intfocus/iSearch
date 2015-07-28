@@ -38,10 +38,11 @@
     else
         self.labelDate.text = createdDate;
 }
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-    
 }
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     if (iOSVersion < 8) {

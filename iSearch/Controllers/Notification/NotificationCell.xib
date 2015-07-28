@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -13,13 +14,20 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Jq-v9-UYF" id="gzD-A6-wYf">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="公告标题" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCs-kO-H9X">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" highlighted="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCs-kO-H9X">
                         <rect key="frame" x="16" y="8" width="196" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="lWb-a2-4iC"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <attributedString key="attributedText">
+                            <fragment content="公告标题">
+                                <attributes>
+                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <font key="NSFont" size="17" name="STHeitiSC-Light"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="公告日期" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FP3-AM-5V8">
@@ -49,8 +57,8 @@
                 <constraints>
                     <constraint firstItem="Lpb-51-Hec" firstAttribute="leading" secondItem="Ja5-qy-KmA" secondAttribute="leading" id="2bc-w9-FjD"/>
                     <constraint firstAttribute="trailing" secondItem="Ja5-qy-KmA" secondAttribute="trailing" id="7jT-kg-298"/>
-                    <constraint firstItem="FP3-AM-5V8" firstAttribute="centerY" secondItem="aCs-kO-H9X" secondAttribute="centerY" id="Kag-6y-FA9"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Lpb-51-Hec" secondAttribute="trailing" id="N1t-gt-owz"/>
+                    <constraint firstItem="aCs-kO-H9X" firstAttribute="top" secondItem="gzD-A6-wYf" secondAttribute="topMargin" id="TfQ-Fr-NyA"/>
                     <constraint firstItem="Lpb-51-Hec" firstAttribute="top" secondItem="Ja5-qy-KmA" secondAttribute="bottom" constant="8" id="UkQ-j4-29N"/>
                     <constraint firstItem="FP3-AM-5V8" firstAttribute="top" secondItem="gzD-A6-wYf" secondAttribute="topMargin" id="bsR-Ze-nBN"/>
                     <constraint firstItem="Ja5-qy-KmA" firstAttribute="top" secondItem="aCs-kO-H9X" secondAttribute="bottom" constant="8" id="ce6-0V-Ofr"/>

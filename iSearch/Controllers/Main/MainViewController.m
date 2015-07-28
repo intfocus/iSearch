@@ -82,29 +82,6 @@
         [self.rightViewController viewDidAppear:YES];
     }
 }
-///////////////////////////////////////////////////////////
-/// 屏幕方向设置
-///////////////////////////////////////////////////////////
-
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    
-}
-
--(BOOL)shouldAutorotate{
-    return YES;
-}
-- (BOOL)prefersStatusBarHidden {
-    return NO;
-}
--(UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleDefault;
-}
--(NSUInteger)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskLandscape;
-}
 
 
 ///////////////////////////////////////////////////////////
@@ -364,4 +341,18 @@
     } enableBackgroundMode:YES];
 }
 
+
+#pragma mark - orientation
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (BOOL) shouldAutorotate {
+    return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
+}
 @end
