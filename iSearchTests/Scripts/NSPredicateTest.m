@@ -77,5 +77,26 @@
     XCTAssertEqual([result firstObject][@"name"], @"name6");
 }
 
+- (void)testIN {
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"name IN %@", @[@"name1", @"name2"]];
+    NSArray *result = [self.dataList filteredArrayUsingPredicate: filter];
+    XCTAssertEqual([result count], 2);
+    XCTAssertEqualObjects(result, [self.dataList subarrayWithRange:NSMakeRange(0, 2)]);
+}
 
+- (void)testCompare {
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"num == %@", @4];
+    NSArray *result = [self.dataList filteredArrayUsingPredicate: filter];
+    XCTAssertEqualObjects(result[0], self.dataList[2]);
+    
+    
+    filter = [NSPredicate predicateWithFormat:@"num > %@", @7];
+    result = [self.dataList filteredArrayUsingPredicate: filter];
+    XCTAssertEqualObjects(result[0], [self.dataList lastObject]);
+    
+    
+    filter = [NSPredicate predicateWithFormat:@"num < %@", @2];
+    result = [self.dataList filteredArrayUsingPredicate: filter];
+    XCTAssertEqualObjects(result[0], [self.dataList firstObject]);
+}
 @end
