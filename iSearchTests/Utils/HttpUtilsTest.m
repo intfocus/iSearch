@@ -40,7 +40,7 @@
     BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:@"http://google.com"];
     NSTimeInterval interval = 0 - [now timeIntervalSinceNow];
     
-    XCTAssertTrue(interval < 0.6);
+    XCTAssertTrue(interval < 1.1);
     XCTAssertFalse(isNetworkAvailable);
     
     
@@ -48,7 +48,7 @@
     isNetworkAvailable = [HttpUtils isNetworkAvailable2];
     interval = 0 - [now timeIntervalSinceNow];
     
-    XCTAssertTrue(interval < 0.6);
+    XCTAssertTrue(interval < 1.1);
     XCTAssertTrue(isNetworkAvailable);
     
 }

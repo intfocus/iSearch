@@ -228,6 +228,11 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
     return [FileUtils writeJSON:[self refreshFields] Into:[self dictSwpPath]];
 }
 
+- (NSMutableArray *)restoreDictSwp {
+    [FileUtils writeJSON:[self refreshFields] Into:[self dictSwpPath]];
+    return self.pages;
+}
+
 #pragma mark - class methods
 + (Slide *)findById:(NSString *)slideID isFavorite:(BOOL)isFavorite {
     NSString *dirName = isFavorite ? FAVORITE_DIRNAME : SLIDE_DIRNAME;

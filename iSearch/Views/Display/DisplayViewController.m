@@ -213,13 +213,13 @@
     if([self.dataList count] > 0) {
         [self loadHtml];
     } else {
-        [self.webView loadHTMLString:@" \
-         <html>                         \
-         <body>                       \
+        [self.webView loadHTMLString:@"   \
+         <html>                           \
+         <body>                           \
          <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-         文档内容为空.                \
-         </div>                     \
-         </body>                      \
+         文档内容为空.                      \
+         </div>                           \
+         </body>                          \
          </html>" baseURL:nil];
     }
     

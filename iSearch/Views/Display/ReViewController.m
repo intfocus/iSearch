@@ -244,11 +244,13 @@
 }
 
 - (IBAction)actionRestore:(UIButton *)sender {
-    if(self.selectState) { [self actionEdit:self.btnNavEdit]; }
+    if(self.selectState) {
+        [self actionEdit:self.btnNavEdit];
+    }
     
-    _dataList = [NSMutableArray arrayWithArray:self.slide.pages];
+    _dataList = [self.slide restoreDictSwp];
+    
     [_gmGridView reloadData];
-    
     
     [self actionEdit:self.btnNavEdit];
     [self actionEdit:self.btnNavEdit];
@@ -380,10 +382,10 @@
  */
 - (IBAction)actionJumpToDisplay:(UITapGestureRecognizer*)tapRecognizer {
     NSInteger pageIndex = [tapRecognizer.view tag];
-    NSMutableDictionary *slideDictSwp = [NSMutableDictionary dictionaryWithDictionary:[self.slide dictSwp]];
+    NSMutableDictionary *slideDictSwp = [self.slide dictSwp];
     
-    NSString *pName                 = slideDictSwp[SLIDE_DESC_ORDER][pageIndex];
-    NSString *configPath            = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
+    NSString *pName = slideDictSwp[SLIDE_DESC_ORDER][pageIndex];
+    NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     configDict[SLIDE_DISPLAY_JUMPTO] = pName;
     [FileUtils writeJSON:configDict Into:configPath];
