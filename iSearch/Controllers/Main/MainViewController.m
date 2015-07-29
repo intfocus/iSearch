@@ -364,19 +364,4 @@
 
     } enableBackgroundMode:YES];
 }
-
-
-#pragma mark - orientation
-
-- (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
-}
-
-- (BOOL) shouldAutorotate {
-    return YES;
-}
-
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight;
-}
 @end
