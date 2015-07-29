@@ -37,6 +37,7 @@
 		C4A579E81B61FBE70093C98A /* HttpUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */; };
 		C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB21B57A4B800136887 /* BaseModelTest.m */; };
 		C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB41B57AA5500136887 /* JayPlayTest.m */; };
+		C4D168671B686281002921C1 /* NSPredicateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D168661B686281002921C1 /* NSPredicateTest.m */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
 		C4E3CCE91B184E530067B762 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4E3CCE81B184E530067B762 /* Images.xcassets */; };
@@ -183,6 +184,7 @@
 		C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtilsTest.m; sourceTree = "<group>"; };
 		C4C18BB21B57A4B800136887 /* BaseModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModelTest.m; sourceTree = "<group>"; };
 		C4C18BB41B57AA5500136887 /* JayPlayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JayPlayTest.m; sourceTree = "<group>"; };
+		C4D168661B686281002921C1 /* NSPredicateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPredicateTest.m; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E3CCDD1B184E530067B762 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				C40ECC081B55F6F70083A428 /* scp_isearch.sh */,
 				C40ECC0D1B55F7160083A428 /* curl.sh */,
 				C4C18BB41B57AA5500136887 /* JayPlayTest.m */,
+				C4D168661B686281002921C1 /* NSPredicateTest.m */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -1257,6 +1260,7 @@
 			files = (
 				C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */,
 				C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */,
+				C4D168671B686281002921C1 /* NSPredicateTest.m in Sources */,
 				C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */,
 				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,
 				C4A579E81B61FBE70093C98A /* HttpUtilsTest.m in Sources */,

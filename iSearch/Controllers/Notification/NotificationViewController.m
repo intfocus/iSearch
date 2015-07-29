@@ -126,12 +126,12 @@
     self.navigationItem.leftBarButtonItem = leftTitleBI;
     
     // 临时放置
-    self.barItemTMP = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"<<"]
-                                                            style:UIBarButtonItemStylePlain
-                                                           target:self
-                                                           action:@selector(toggleShowLeftBar:)];
-    self.barItemTMP.possibleTitles = [NSSet setWithObjects:@"<<", @">>", nil];
-    self.navigationItem.rightBarButtonItem = self.barItemTMP;
+//    self.barItemTMP = [[UIBarButtonItem alloc]initWithTitle:[NSString stringWithFormat:@"<<"]
+//                                                            style:UIBarButtonItemStylePlain
+//                                                           target:self
+//                                                           action:@selector(toggleShowLeftBar:)];
+//    self.barItemTMP.possibleTitles = [NSSet setWithObjects:@"<<", @">>", nil];
+//    self.navigationItem.rightBarButtonItem = self.barItemTMP;
     
     self.tableViewOne.rowHeight = UITableViewAutomaticDimension;
     self.tableViewOne.estimatedRowHeight = 100;
@@ -171,10 +171,12 @@
 
 - (IBAction)toggleShowLeftBar:(id)sender {
     MainViewController *mainViewController = [self masterViewController];
+    
     if([self.barItemTMP.title isEqualToString:@"<<"]) {
         [mainViewController hideLeftView];
         [self.barItemTMP setTitle:@">>"];
-    } else {
+    }
+    else {
         [mainViewController showLeftView];
         [self.barItemTMP setTitle:@"<<"];
         
@@ -313,22 +315,25 @@
 
 /**
  *  JTCanlendar回调函数；点击日历表中某日期时，响应处理
+ *
  *  Question:
- *      [NSPredicate predicateWithFormat:@"(OccurTime == %@)", dateStr];
- *      => OccurTime == "2015/06/18"
- *      [NSPredicate predicateWithFormat:@"(%@ == %@)", @"OccurTime", dateStr];
- *      => "OccurTime" == "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(OccurTime BEGINSWITH %@)", dateStr];
+ *      => OccurTime BEGINSWITH "2015/06/18"
+ *      [NSPredicate predicateWithFormat:@"(%@ BEGINSWITH %@)", @"OccurTime", dateStr];
+ *      => "OccurTime" BEGINSWITH "2015/06/18"
  *   Solution:
  *      String format and not use predicateWithFormat!
+ *      NSPredicate#BEGINSWITH cat match "2015/06/18" and "2015/06/18 00:00:00" etc.
  *
  *  @param calendar 日历控件实例
  *  @param date     选择的日期
  */
 - (void)calendarDidDateSelected:(JTCalendar *)calendar date:(NSDate *)date {
-    NSString *dateStr = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
-    NSString *predicateStr = [NSString stringWithFormat:@"(%@ == \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
-    NSPredicate *filter = [NSPredicate predicateWithFormat:predicateStr];
-    NSMutableArray *array = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    NSString *dateStr      = [DateUtils dateToStr:date Format:DATE_SIMPLE_FORMAT];
+    NSString *predicateStr = [NSString stringWithFormat:@"(%@ BEGINSWITH \"%@\")", NOTIFICATION_FIELD_OCCURDATE, dateStr];
+    NSPredicate *filter    = [NSPredicate predicateWithFormat:predicateStr];
+    NSMutableArray *array  = self.dataList[NOTIFICATION_FIELD_HDDATA];
+    
     self.dataListTwo = [NSMutableArray arrayWithArray:[array filteredArrayUsingPredicate:filter]];
     [self.tableViewTwo reloadData];
 }
