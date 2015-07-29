@@ -77,7 +77,9 @@
     NSURL *url = [NSURL URLWithString:urlString];
     //params     = [params stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSError *error;
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url
+                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                           timeoutInterval:3.0];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:NSJSONWritingPrettyPrinted error: &error];
@@ -103,7 +105,7 @@
  *  @return 有网络则为true
  */
 + (BOOL)isNetworkAvailable:(NSString *)urlString {
-    HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:0.5];
+    HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:1.0];
     
     return (httpResponse.statusCode && [httpResponse.statusCode isEqual: @200]);
 }
