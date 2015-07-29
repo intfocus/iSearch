@@ -25,19 +25,21 @@
         NSString *error;
         NSPropertyListFormat format;
         NSDictionary* plist = [NSPropertyListSerialization propertyListFromData:plistData mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&error];
+        
+        self.insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", VERSION_URL];
+        self.changeLog = plist[@"items"][0][@"metadata"][@"changelog"];
+        self.changeLog = self.changeLog ?: @"未设置";
+        [self updateTimestamp];
+        // setLatest is trick
         self.latest = plist[@"items"][0][@"metadata"][@"version"];
         
-        if([self isUpgrade]) {
-            self.insertURL = [NSString stringWithFormat:@"itms-services://?action=download-manifest&url=%@", VERSION_URL];
-            self.changeLog = plist[@"items"][0][@"metadata"][@"changelog"];
-            if(!self.changeLog) { self.changeLog = @"未设置"; };
-            [self updateTimestamp];
-            [self save];
-            
+        if([self isUpgrade] && successBlock) {
             successBlock();
         } else {
             NSLog(@"lastestVersion: %@, current version: %@", self.latest, self.current);
-            failBlock();
+            if(failBlock) {
+                failBlock();
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

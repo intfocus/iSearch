@@ -68,6 +68,13 @@
     [FileUtils writeJSON:configDict Into:configPath];
 }
 
+- (void)setLatest:(NSString *)latest {
+    if(![self.latest isEqualToString:latest]) {
+        _latest = latest;
+        [self save];
+    }
+}
+
 - (NSString *)simpleDescription {
     return [NSString stringWithFormat:@"<#%@ version: %@, dbVersion:%@, platform:%@, sdkName: %@, lang: %@>", self.appName,self.current,self.dbVersion,self.platform,self.sdkName,self.lang];
 }
