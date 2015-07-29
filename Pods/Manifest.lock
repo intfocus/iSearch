@@ -33,18 +33,20 @@ PODS:
   - Reachability (3.2)
   - SCLAlertView-Objective-C (0.7.3)
   - SSZipArchive (0.3.2)
+  - TWRDownloadManager (1.1.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.5.4)
   - CWPopup (~> 1.2.4)
   - DLRadioButton (~> 1.1.1)
-  - FMDB
+  - FMDB (~> 2.5)
   - JTCalendar (~> 1.2.3)
   - MBProgressHUD (~> 0.9.1)
   - MMMaterialDesignSpinner (~> 0.2.0)
   - Reachability (~> 3.2)
   - SCLAlertView-Objective-C
   - SSZipArchive (~> 0.3.2)
+  - TWRDownloadManager
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
@@ -57,5 +59,6 @@ SPEC CHECKSUMS:
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SCLAlertView-Objective-C: 4bf9a07c8a8d1840e5174e643e16bc032239914d
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
+  TWRDownloadManager: 34193d7d1ab6e6b4243d74fa4f686cc2ed5ef40f
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.2

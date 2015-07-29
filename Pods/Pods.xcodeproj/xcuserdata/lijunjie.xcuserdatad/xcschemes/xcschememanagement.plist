@@ -4,57 +4,42 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-AFNetworking.xcscheme</key>
+		<key>AFNetworking.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-CWPopup.xcscheme</key>
+		<key>CWPopup.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-DLRadioButton.xcscheme</key>
+		<key>DLRadioButton.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-FMDB.xcscheme</key>
+		<key>FMDB.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-JTCalendar.xcscheme</key>
+		<key>JTCalendar.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MBProgressHUD.xcscheme</key>
+		<key>MBProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MMMaterialDesignSpinner-MaterialDesignSpinner.xcscheme</key>
+		<key>MMMaterialDesignSpinner-MaterialDesignSpinner.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-MMMaterialDesignSpinner.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-Reachability.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-SCLAlertView-Objective-C.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-SSZipArchive.xcscheme</key>
+		<key>MMMaterialDesignSpinner.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -64,65 +49,90 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Reachability.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SCLAlertView-Objective-C.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SSZipArchive.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>TWRDownloadManager.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>04F15241C2AB9882EF0386F1</key>
+		<key>377DF676B5F7F2A18EEDEC4B4622344A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0821262EE89460F24848D671</key>
+		<key>38749871D0C851C0FB9EAD84C296CFEE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>20CA2FB550C9A6E46E25591D</key>
+		<key>455008AA58F1037506206F24ECAC00A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>23F575FF246E3FADF3CFA570</key>
+		<key>5CC51C5629C9494A62F15562FDB0786E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>248286EFB61A26646DDD0A77</key>
+		<key>6EF1072B46867A3DB1E9D8D89AC7D331</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4334673AC5FA5DDD70346073</key>
+		<key>79CE8E3AC00B2127C49F7B7ADC6583CF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>608E362E293BF448FAC9F127</key>
+		<key>7A8757CBCFA7A2CB55A247E3ECF503B8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B3EEC228C43E9796748B18D</key>
+		<key>94F27BB0AAE9AAF38376AA60FC6AE19E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>91CA2CB73779C31D7DB4D65B</key>
+		<key>A9652F940D34F20D9F7BEFD3DE9961E6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A025B8A97A1370270111097B</key>
+		<key>BA47BAC64761824B5F1F3C6536EB128C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CAD1EBE381080FD522BDFFDF</key>
+		<key>EFB057C433D15C175A193F8F952AE032</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>FCCA5893ED43D1F68AD21C68</key>
+		<key>FB0D18B948CE15FC093803E3F36EB01D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FDDA581A940787466FDF35CC951BBAAD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

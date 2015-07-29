@@ -1,0 +1,197 @@
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:1, categoryID:1, slides: 0, categories: 5, duration: 71(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1000
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1000
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:2, categoryID:1000, slides: 0, categories: 6, duration: 81(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1100
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1100
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:1100, slides: 0, categories: 2, duration: 70(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1110
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1110
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1110, slides: 1, categories: 0, duration: 88(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1120
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1120
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1120, slides: 10, categories: 0, duration: 92(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1200
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1200
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:1200, slides: 0, categories: 2, duration: 68(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1210
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1210
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1210, slides: 1, categories: 0, duration: 61(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1220
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1220
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1220, slides: 1, categories: 0, duration: 65(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1300
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1300
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:1300, slides: 0, categories: 1, duration: 62(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1310
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1310
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1310, slides: 4, categories: 0, duration: 89(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1400
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1400
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:1400, slides: 0, categories: 1, duration: 64(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1420
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1420
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1420, slides: 1, categories: 0, duration: 59(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1500
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1500
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:1500, slides: 0, categories: 2, duration: 71(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1530
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1530
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1530, slides: 1, categories: 0, duration: 85(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1550
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1550
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1550, slides: 1, categories: 0, duration: 130(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1600
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1600
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:1600, slides: 0, categories: 2, duration: 86(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1610
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1610
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1610, slides: 14, categories: 0, duration: 135(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=1620
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=1620
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:1620, slides: 0, categories: 0, duration: 107(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6000
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6000
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:2, categoryID:6000, slides: 0, categories: 2, duration: 114(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6100
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6100
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:6100, slides: 0, categories: 7, duration: 109(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6110
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6110
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6110, slides: 14, categories: 0, duration: 165(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6120
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6120
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6120, slides: 9, categories: 0, duration: 139(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6130
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6130
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6130, slides: 3, categories: 0, duration: 140(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6140
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6140
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6140, slides: 4, categories: 0, duration: 137(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6150
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6150
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6150, slides: 5, categories: 0, duration: 124(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6160
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6160
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6160, slides: 1, categories: 0, duration: 137(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6170
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6170
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6170, slides: 15, categories: 0, duration: 94(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6200
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6200
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:6200, slides: 0, categories: 2, duration: 66(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6210
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6210
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6210, slides: 13, categories: 0, duration: 89(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=6220
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=6220
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:6220, slides: 15, categories: 0, duration: 524(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7000
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7000
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:2, categoryID:7000, slides: 0, categories: 2, duration: 101(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7100
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7100
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:7100, slides: 0, categories: 5, duration: 103(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7110
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7110
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7110, slides: 12, categories: 0, duration: 129(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7120
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7120
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7120, slides: 6, categories: 0, duration: 118(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7130
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7130
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7130, slides: 10, categories: 0, duration: 110(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7140
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7140
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7140, slides: 4, categories: 0, duration: 109(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7150
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7150
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7150, slides: 6, categories: 0, duration: 117(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7200
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7200
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:7200, slides: 0, categories: 2, duration: 103(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7210
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7210
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7210, slides: 5, categories: 0, duration: 72(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=7220
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=7220
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:7220, slides: 7, categories: 0, duration: 102(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8000
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8000
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:2, categoryID:8000, slides: 0, categories: 2, duration: 106(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8100
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8100
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:8100, slides: 0, categories: 7, duration: 115(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8110
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8110
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8110, slides: 17, categories: 0, duration: 180(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8120
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8120
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8120, slides: 31, categories: 0, duration: 144(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8130
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8130
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8130, slides: 10, categories: 0, duration: 124(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8140
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8140
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8140, slides: 5, categories: 0, duration: 114(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8150
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8150
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8150, slides: 3, categories: 0, duration: 105(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8160
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8160
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8160, slides: 5, categories: 0, duration: 97(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8170
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8170
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8170, slides: 6, categories: 0, duration: 110(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8200
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8200
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:8200, slides: 0, categories: 3, duration: 111(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8210
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8210
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8210, slides: 2, categories: 0, duration: 105(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8220
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8220
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8220, slides: 3, categories: 0, duration: 133(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=8230
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=8230
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:8230, slides: 4, categories: 0, duration: 126(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9000
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9000
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:2, categoryID:9000, slides: 0, categories: 2, duration: 123(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9100
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9100
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:9100, slides: 0, categories: 5, duration: 86(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9110
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9110
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9110, slides: 4, categories: 0, duration: 81(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9120
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9120
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9120, slides: 31, categories: 0, duration: 199(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9130
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9130
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9130, slides: 3, categories: 0, duration: 117(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9140
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9140
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9140, slides: 5, categories: 0, duration: 120(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9150
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9150
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9150, slides: 6, categories: 0, duration: 128(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9200
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9200
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:3, categoryID:9200, slides: 0, categories: 3, duration: 91(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9210
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9210
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9210, slides: 2, categories: 0, duration: 107(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9220
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9220
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9220, slides: 2, categories: 0, duration: 82(ms)
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Files_Api.php?lang=zh-CN&did=66&cid=9230
+(+[HttpUtils httpGet:]) (HttpUtils.m:38) http://tsa-china.takeda.com.cn/uat/api/Categories_Api.php?lang=zh-CN&did=66&pid=9230
+(-[DataHelper traverseVisitContent:Depth:]) (DataHelper.m:234) depth:4, categoryID:9230, slides: 3, categories: 0, duration: 113(ms)
+(-[DataHelper traverseVisitReport]) (DataHelper.m:261) name: GBUtst, deptID:66, employeeID: E99658600
+(-[DataHelper traverseVisitReport]) (DataHelper.m:262) maxDepth: 4, maxSlides: 31, maxCategories: 7
+(-[DataHelper traverseVisitReport]) (DataHelper.m:263) slideCount: 305, categoryCount: 63
+(-[DataHelper traverseVisitReport]) (DataHelper.m:264) averageVisit: 114 (max)
+(-[DataHelper traverseVisitReport]) (DataHelper.m:265) self:64, caculate: 63, isValid: b
