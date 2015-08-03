@@ -53,14 +53,14 @@
 
 
 /**
- *  应用从服务器获取数据，设置超时时间为: 3.0秒
+ *  应用从服务器获取数据，设置超时时间为: 15.0秒
  *
  *  @param urlString 服务器链接
  *
  *  @return Http#Get HttpResponse
  */
 + (HttpResponse *)httpGet:(NSString *)urlString {
-    return [HttpUtils httpGet:urlString timeoutInterval:3.0];
+    return [HttpUtils httpGet:urlString timeoutInterval:15.0];
 }
 
 /**
