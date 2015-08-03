@@ -187,25 +187,18 @@
     self.leftTimeView.layer.borderColor   = [UIColor whiteColor].CGColor;
     self.leftTimeView.layer.borderWidth   = 1;
     self.leftTimeView.layer.masksToBounds = true;
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    // Do any additional setup after loading the view, typically from a nib.
     
     /**
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
-    [self refreshCountDown];
-    
-    if(self.hud) { [self.hud removeFromSuperview]; }
-    
-    [self loadSlideInfo];
 }
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
+
+    [self refreshCountDown];
+    [self loadSlideInfo];
     [self stopNote];
     [self.switchLaser setOn:NO];
     

@@ -64,6 +64,7 @@
 #import "DataHelper.h"
 #import "FileUtils.h"
 #import "DateUtils.h"
+#import <MBProgressHUD.h>
 #import "ExtendNSLogFunctionality.h"
 #import "MMMaterialDesignSpinner.h"
 
@@ -101,6 +102,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *nameSortImageView;
 @property (weak, nonatomic) IBOutlet UILabel *nothingLabel;
 @property (strong, nonatomic) NSMutableArray *navActionStack;// 用户点击行为
+@property (strong, nonatomic) MBProgressHUD  *progressHUD;
 
 
 // 内存管理
@@ -176,16 +178,23 @@
 - (void) refreshContent {
     [self loading];
 
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHUD.labelText = @"加载中...";
+    
     //  1. 读取本地缓存，优先加载界面
     [self loadContentData:LOCAL_OR_SERVER_LOCAL];
     [_gridView reloadData];
     
+    _progressHUD.labelText = @"同步中...";
+    
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if([HttpUtils isNetworkAvailable]) {
-            [self loadContentData:LOCAL_OR_SERVER_SREVER];
+        if([HttpUtils isNetworkAvailable] &&
+           [self loadContentData:LOCAL_OR_SERVER_SREVER]) {
+            
             [_gridView reloadData];
         }
+        [self.progressHUD removeFromSuperview];
     });
     self.navBtnBack.enabled = YES;
     [self performSelector:@selector(loaded) withObject:self afterDelay:0.3f];
@@ -245,18 +254,34 @@
     
 }
 
-- (void)loadContentData:(NSString *)type {
+/**
+ *  默认先离线加载数据，然后再从服务器获取数据
+ *  离线加载数据已经为self.dataListOne/dataListTwo赋值，从服务器获取数据失败时，不可再赋值，否则目录为空。
+ *
+ *  @param type 加载数据类型: 离线、在线
+ *
+ *  @return 是否有数据
+ */
+- (BOOL)loadContentData:(NSString *)type {
     NSArray *array = [DataHelper loadContentData:self.view
                                       CategoryID:self.categoryDict[CONTENT_FIELD_ID]
                                             Type:type
                                              Key:CONTENT_FIELD_ID
                                            Order:YES];
+
+    if([type isEqualToString:LOCAL_OR_SERVER_SREVER] &&
+       [[array objectAtIndex:0] count] ==0 &&
+       [[array objectAtIndex:1] count] == 0) {
+        
+        return NO;
+    }
     
     self.dataListOne = [NSMutableArray arrayWithArray:[array objectAtIndex:0]];
     self.dataListTwo = [NSMutableArray arrayWithArray:[array objectAtIndex:1]];
-    
     array = [self.dataListOne arrayByAddingObjectsFromArray:self.dataListTwo];
     _dataList = [NSMutableArray arrayWithArray:array];
+    
+    return ([_dataList count] > 0);
 }
 
 //////////////////////////////////////////////////////////////

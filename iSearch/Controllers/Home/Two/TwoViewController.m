@@ -48,8 +48,9 @@
     // 耗时间的操作放在些block中
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
-            [self loadContentData:LOCAL_OR_SERVER_SREVER];
-            [_gridView reloadData];
+            if([self loadContentData:LOCAL_OR_SERVER_SREVER]) {
+                [_gridView reloadData];
+            }
         }
     });
 }
@@ -73,13 +74,21 @@
 #pragma mark - controls configuration
 
 
-- (void)loadContentData:(NSString *)type {
+- (BOOL)loadContentData:(NSString *)type {
     NSArray *array = [DataHelper loadContentData:self.masterViewController.view
                                       CategoryID:CONTENT_ROOT_ID
                                             Type:type
                                              Key:CONTENT_FIELD_ID
                                            Order:YES];
+    
+    if([type isEqualToString:LOCAL_OR_SERVER_SREVER] &&
+       [[array objectAtIndex:0] count] ==0) {
+        
+        return NO;
+    }
     _dataList = [array objectAtIndex:0];
+    
+    return ([_dataList count] > 0);
 }
 
 - (void) configGMGridView {

@@ -10,6 +10,8 @@
 	<string>iSearch</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>1D43B9DA9B2DB54F92E22A42136120AED72656C7</key>
+		<string>github.com:jay16/iLearn.git</string>
 		<key>1EFF478F642B74FA7CA36341397F18A42A7DADD7</key>
 		<string>github.com:jay16/iSearch.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>iSearch.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>1D43B9DA9B2DB54F92E22A42136120AED72656C7</key>
+		<string>../../iLearn</string>
 		<key>1EFF478F642B74FA7CA36341397F18A42A7DADD7</key>
 		<string>..</string>
 	</dict>
@@ -28,6 +32,14 @@
 	<string>1EFF478F642B74FA7CA36341397F18A42A7DADD7</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1D43B9DA9B2DB54F92E22A42136120AED72656C7</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iLearn</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

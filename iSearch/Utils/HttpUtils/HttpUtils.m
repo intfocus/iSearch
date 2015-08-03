@@ -38,7 +38,7 @@
     NSLog(@"%@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     HttpResponse *httpResponse = [[HttpResponse alloc] init];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:timeoutInterval];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:timeoutInterval];
     NSError *error;
     NSURLResponse *response;
     httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
@@ -107,7 +107,7 @@
 + (BOOL)isNetworkAvailable:(NSString *)urlString {
     HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:1.0];
     
-    return (httpResponse.statusCode && [httpResponse.statusCode isEqual: @200]);
+    return (httpResponse.statusCode && ([httpResponse.statusCode intValue] == 200));
 }
 
 + (BOOL)isNetworkAvailable {
