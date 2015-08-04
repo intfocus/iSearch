@@ -62,20 +62,6 @@
     [[[ActionLog alloc] init] recordSlide:slide Action:action];
 }
 
-- (void)recordLogin:(NSString *)result FunName:(NSString *)funName {
-    [self.databaseUtils insertActionLog:funName
-                                ActName:@"登录"
-                                 ActObj:@""
-                                 ActRet:result
-                                SlideID:@"0"
-                              SlideType:@""
-                            SlideAction:@""];
-}
-
-+ (void)recordLogin:(NSString *)result FunName:(NSString *)funName {
-    [[[ActionLog alloc] init] recordLogin:result FunName:funName];
-}
-
 - (void)syncRecords {
     NSMutableArray *unSyncRecords = [self.databaseUtils unSyncRecords];
     NSMutableArray *IDS = [DataHelper actionLog:unSyncRecords];

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ExtendNSLogFunctionality.h"
-#import "ActionLog.h"
+#import "DatabaseUtils+ActionLog.h"
 
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...) {
     @try {
@@ -134,8 +134,14 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
  * ActionReturn  操作结果（包括错误）
  * ActionObject  操作对象（具体到文件）
  */
-void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionResult) {
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet) {
     NSString *funInfo = [NSString stringWithFormat:@"%@, %s, %i", [[NSString stringWithUTF8String:sourceFile] lastPathComponent], functionName, lineNumber];
-    [ActionLog recordLogin:actionResult FunName:funInfo];
+    [[[DatabaseUtils alloc] init] insertActionLog:funInfo
+                                          ActName:actName
+                                           ActObj:actObj
+                                           ActRet:actRet
+                                          SlideID:@"0"
+                                        SlideType:@""
+                                      SlideAction:@""];
 }
 

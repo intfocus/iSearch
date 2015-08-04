@@ -44,6 +44,7 @@ NSString* GenFormat(NSInteger num);
 BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
 
 #pragma mark - ActionLog
-void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionResult) ;
-#define ActionLogRecordLogin(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, actionResult);
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet);
+#define ActionLogRecordLogin(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"登录", @"", actionResult);
+#define ActionLogRecordNavigate(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, @"主界面左侧导航栏按钮点击", @"", actionResult);
 #endif

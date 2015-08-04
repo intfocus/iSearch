@@ -16,9 +16,10 @@
 
 #import "const.h"
 #import "FileUtils.h"
+#import "ActionLog.h"
+#import "MainEntryButton.h"
 #import "ExtendNSLogFunctionality.h"
 #import <TWRDownloadManager/TWRDownloadManager.h>
-#import "ActionLog.h"
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
@@ -175,6 +176,15 @@
         [self popupSettingViewController];
     } else {
         [self changeView:sender];
+    }
+    
+    @try {
+        MainEntryButton *entry = (MainEntryButton *)sender;
+        ActionLogRecordNavigate(entry.titleView.text);
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
     }
 }
 /**

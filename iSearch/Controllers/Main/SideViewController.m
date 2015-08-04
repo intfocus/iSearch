@@ -77,8 +77,8 @@
         offset+=CGRectGetHeight(entry.frame);
         [self.view addSubview:entry];
 
-        entry.tag=[array indexOfObject:title];
-        entry.titleView.text=title;
+        entry.tag = [array indexOfObject:title];
+        entry.titleView.text = title;
         entry.iconView.image = [UIImage imageNamed:images[entry.tag]];
         [entry addTarget:self.masterViewController action:@selector(onEntryClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.buttons addObject:entry];
