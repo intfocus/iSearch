@@ -135,13 +135,19 @@ BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionNam
  * ActionObject  操作对象（具体到文件）
  */
 void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actName, NSString *actObj, NSString *actRet) {
-    NSString *funInfo = [NSString stringWithFormat:@"%@, %s, %i", [[NSString stringWithUTF8String:sourceFile] lastPathComponent], functionName, lineNumber];
-    [[[DatabaseUtils alloc] init] insertActionLog:funInfo
-                                          ActName:actName
-                                           ActObj:actObj
-                                           ActRet:actRet
-                                          SlideID:@"0"
-                                        SlideType:@""
-                                      SlideAction:@""];
+    @try {
+        NSString *funInfo = [NSString stringWithFormat:@"%@, %s, %i", [[NSString stringWithUTF8String:sourceFile] lastPathComponent], functionName, lineNumber];
+        [[[DatabaseUtils alloc] init] insertActionLog:funInfo
+                                              ActName:actName
+                                               ActObj:actObj
+                                               ActRet:actRet
+                                              SlideID:@"0"
+                                            SlideType:@""
+                                          SlideAction:@""];
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
+    }
 }
 

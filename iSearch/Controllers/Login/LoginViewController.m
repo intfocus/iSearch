@@ -263,6 +263,7 @@
             [self.user writeInToPersonal];
             
             // 跳至主界面
+            ActionLogRecordLogin(@"successfully, online");
             [self enterMainViewController];
             return;
         } else {
@@ -287,6 +288,7 @@
     
     if(![errors count]) {
         // 跳至主界面
+        ActionLogRecordLogin(@"successfully, offline");
         [self enterMainViewController];
     // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
     } else {
@@ -304,7 +306,7 @@
  *
  *  @return 不符合离线登陆条件错误信息数组
  */
-- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user {
+- (NSMutableArray *)checkEnableLoginWithoutNetwork:(User *) user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
     
     // 上次登陆日期字符串转换成NSDate
@@ -346,7 +348,6 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController {
-    ActionLogRecordLogin(@"successfully");
     
     for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
                             @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],

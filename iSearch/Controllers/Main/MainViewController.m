@@ -73,7 +73,9 @@
     [super viewDidAppear:animated];
     
     dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [ActionLog syncRecords];
+        if([HttpUtils isNetworkAvailable]) {
+            [ActionLog syncRecords];
+        }
     });
 }
 
