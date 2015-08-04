@@ -75,9 +75,9 @@
             %@ varchar(300) NOT NULL,                                                \
             %@ varchar(300) NOT NULL,                                                \
             %@ varchar(300) NOT NULL,                                                \
-            %@ varchar(100) NOT NULL,                                                \
-            %@ varchar(100) NOT NULL,                                                \
-            %@ varchar(100) NOT NULL,                                                \
+            %@ varchar(100) NOT NULL default '0',                                    \
+            %@ varchar(100) NOT NULL default '',                                     \
+            %@ varchar(100) NOT NULL default '',                                     \
             %@ boolean NOT NULL default 0,                                           \
             %@ boolean NOT NULL default 0,                                           \
             %@ datetime NOT NULL DEFAULT (datetime(CURRENT_TIMESTAMP,'localtime')),  \

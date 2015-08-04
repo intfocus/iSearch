@@ -29,7 +29,6 @@
 #endif
 
 
-#define NSActionLogger(actionName, actionResult) actionLogPost(__FILE__,__LINE__,__PRETTY_FUNCTION__, actionName, actionResult);
 #define psd(pValue, dValue) propertyDefault(pValue, dValue)
 
 void ExtendNSLog(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
@@ -39,9 +38,12 @@ NSObject* propertyDefault(NSObject *propertyValue, NSObject *defaultVlaue);
 BOOL isNil(NSObject *propertyValue);
 
 #pragma mark - Url+Param.h
-
 #define UrlParamSparater @"$=$"
 #define CheckParams(format,args...) ExtendCheckParams(__FILE__,__LINE__,__PRETTY_FUNCTION__, format, args);
 NSString* GenFormat(NSInteger num);
 BOOL ExtendCheckParams(const char *file, int lineNumber, const char *functionName, NSString *format, ...);
+
+#pragma mark - ActionLog
+void RecordLoginWithFunInfo(const char *sourceFile, int lineNumber, const char *functionName, NSString *actionResult) ;
+#define ActionLogRecordLogin(actionResult) RecordLoginWithFunInfo(__FILE__, __LINE__, __PRETTY_FUNCTION__, actionResult);
 #endif
