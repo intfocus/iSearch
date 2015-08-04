@@ -306,4 +306,29 @@ typedef NS_ENUM(NSInteger, SlideFieldDefaultType) {
 //    [FileUtils writeJSON:tmpDict Into:self.dictPath];
 }
 
+- (void)markSureNotNestAfterDownloaded {
+    if([self isDownloaded]) {
+        return;
+    }
+    else {
+        NSString *slidePath = [self.path stringByAppendingPathComponent:self.ID];
+        if([FileUtils checkFileExist:slidePath isDir:YES]) {
+            NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", self.path];
+            NSError *error;
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager moveItemAtPath:slidePath toPath:tmpPath error:&error];
+            NSErrorPrint(error, @"move file# %@ => %@", slidePath, tmpPath);
+            [fileManager removeItemAtPath:self.path error:&error];
+            NSErrorPrint(error, @"remove file %@", self.path);
+            [fileManager moveItemAtPath:tmpPath toPath:self.path error:&error];
+            NSErrorPrint(error, @"move file %@ => %@", tmpPath, self.path);
+            
+            [self markSureNotNestAfterDownloaded];
+        }
+        else {
+            return;
+        }
+    }
+}
+
 @end

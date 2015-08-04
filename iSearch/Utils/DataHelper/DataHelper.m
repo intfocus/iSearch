@@ -187,7 +187,9 @@
         ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
         @try {
             httpResponse = [ApiHelper actionLog:dict];
-            if([httpResponse isSuccessfullyPostActionLog]) { [IDS addObject:ID]; }
+            if([httpResponse isSuccessfullyPostActionLog]) {
+                [IDS addObject:ID];
+            }
         } @catch (NSException *exception) {
             NSLog(@"sync action log(%@) faild for %@#%@\n %@", dict, exception.name, exception.reason);
         } @finally {

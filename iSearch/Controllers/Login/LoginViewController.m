@@ -152,9 +152,9 @@
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         
-//        self.cookieValue = @"E99658600";//@"E9998";//@"E99658603";
-//        [self actionOutsideLoginSuccessfully];
-//        return;
+        self.cookieValue = @"E99658600";//@"E9998";//@"E99658603";
+        [self actionOutsideLoginSuccessfully];
+        return;
         
         [self actionClearCookies];
         [self actionOutsideLogin];
@@ -365,7 +365,9 @@
     NSString *dirPath = [FileUtils getPathName:dirName];
     NSString *zipName = [downloadUrl lastPathComponent];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    if([FileUtils checkFileExist:zipPath isDir:NO]) return;
+    if([FileUtils checkFileExist:zipPath isDir:NO]) {
+        return;
+    }
     
     NSURL *url = [NSURL URLWithString:downloadUrl];
     NSData *zipData = [NSData dataWithContentsOfURL:url];
@@ -380,14 +382,20 @@
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         dict = [FileUtils readConfigFile:dictPath];
-        dict[CONTENT_FIELD_ID]      = slideID;
-        dict[CONTENT_FIELD_TYPE]    = @"10000";
-        dict[CONTENT_FIELD_DESC]    = dict[SLIDE_DESC_NAME];
-        dict[CONTENT_FIELD_TITLE]   = dict[SLIDE_DESC_NAME];
-        dict[CONTENT_FIELD_NAME]    = dict[SLIDE_DESC_NAME];
-        dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
-        Slide *slide = [[Slide alloc] initSlide:dict isFavorite:YES];
-        [slide save];
+        @try {
+            dict[CONTENT_FIELD_ID]      = slideID;
+            dict[CONTENT_FIELD_TYPE]    = @"10000";
+            dict[CONTENT_FIELD_DESC]    = dict[SLIDE_DESC_NAME];
+            dict[CONTENT_FIELD_TITLE]   = dict[SLIDE_DESC_NAME];
+            dict[CONTENT_FIELD_NAME]    = dict[SLIDE_DESC_NAME];
+            dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
+            Slide *slide = [[Slide alloc] initSlide:dict isFavorite:YES];
+            [slide save];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
     }
 }
 @end

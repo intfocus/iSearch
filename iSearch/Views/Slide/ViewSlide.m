@@ -269,23 +269,10 @@
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:self.slide.path];
     NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slide.ID, state ? @"成功" : @"失败"]);
-    // make sure not nest
-    if(![self.slide isDownloaded]) {
-        NSString *slidePath = [self.slide.path stringByAppendingPathComponent:self.slide.ID];
-        if([FileUtils checkFileExist:slidePath isDir:YES]) {
-            NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", self.slide.path];
-            NSError *error;
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            [fileManager moveItemAtPath:slidePath toPath:tmpPath error:&error];
-            NSErrorPrint(error, @"move file# %@ => %@", slidePath, tmpPath);
-            [fileManager removeItemAtPath:self.slide.path error:&error];
-            NSErrorPrint(error, @"remove file %@", self.slide.path);
-            [fileManager moveItemAtPath:tmpPath toPath:self.slide.path error:&error];
-            NSErrorPrint(error, @"move file %@ => %@", tmpPath, self.slide.path);
-        }
-    }
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:zipPath error:NULL];
+
+    [self.slide markSureNotNestAfterDownloaded];
+    
+    [FileUtils removeFile:zipPath];
 }
 
 /**
