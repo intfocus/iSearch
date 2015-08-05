@@ -16,6 +16,7 @@
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
 #import "MBProgressHUD.h"
+#import "ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "MainViewController.h"
@@ -273,6 +274,7 @@
     [self.slide markSureNotNestAfterDownloaded];
     
     [FileUtils removeFile:zipPath];
+    [ActionLog recordSlide:self.slide Action:ACTION_DOWNLOAD];
 }
 
 /**

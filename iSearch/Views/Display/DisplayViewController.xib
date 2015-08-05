@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -335,15 +335,31 @@
                         <constraint firstItem="4lQ-kR-cgQ" firstAttribute="centerY" secondItem="lgi-Mf-Flu" secondAttribute="centerY" id="zR5-F3-a4J"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ife-fq-90r">
+                    <rect key="frame" x="0.0" y="240" width="50" height="120"/>
+                    <state key="normal" title="上一页">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jHz-hC-Phm">
+                    <rect key="frame" x="800" y="240" width="50" height="120"/>
+                    <state key="normal" title="下一页">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="jHz-hC-Phm" secondAttribute="trailing" id="6oK-8g-Gyi"/>
                 <constraint firstItem="arW-Oj-6Nm" firstAttribute="leading" secondItem="ua5-IS-2jN" secondAttribute="leading" id="7ha-E5-Ogv"/>
+                <constraint firstAttribute="centerY" secondItem="ife-fq-90r" secondAttribute="centerY" id="CBS-qg-M9z"/>
                 <constraint firstItem="DZc-9J-BMH" firstAttribute="top" secondItem="AL4-Nl-Cic" secondAttribute="bottom" constant="5" id="EGu-lP-CRr"/>
                 <constraint firstAttribute="trailing" secondItem="q28-6c-Np6" secondAttribute="trailing" constant="-12" id="GPh-bW-5ue"/>
                 <constraint firstItem="DZc-9J-BMH" firstAttribute="top" secondItem="arW-Oj-6Nm" secondAttribute="bottom" constant="8" id="J9K-Je-V5A"/>
+                <constraint firstAttribute="centerY" secondItem="jHz-hC-Phm" secondAttribute="centerY" id="ReU-Hr-UO5"/>
                 <constraint firstAttribute="bottom" secondItem="HXi-gu-FYx" secondAttribute="bottom" constant="48" id="Rks-Bk-g6u"/>
                 <constraint firstItem="q28-6c-Np6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-12" id="iJP-pK-ME1"/>
+                <constraint firstItem="ife-fq-90r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="j42-YU-9kv"/>
                 <constraint firstItem="HXi-gu-FYx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="jOJ-br-Acj"/>
                 <constraint firstItem="DZc-9J-BMH" firstAttribute="leading" secondItem="HXi-gu-FYx" secondAttribute="trailing" constant="8" symbolic="YES" id="p6m-iJ-xdc"/>
                 <constraint firstItem="HXi-gu-FYx" firstAttribute="centerY" secondItem="DZc-9J-BMH" secondAttribute="centerY" constant="1" id="pbc-f3-I9m"/>
