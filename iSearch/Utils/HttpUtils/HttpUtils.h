@@ -51,7 +51,7 @@
  *
  *  @return 有网络则为true
  */
-+ (BOOL)isNetworkAvailable:(NSString *)urlString;
++ (BOOL)isNetworkAvailable:(NSTimeInterval)timeoutInterval;
 + (BOOL)isNetworkAvailable;
 
 

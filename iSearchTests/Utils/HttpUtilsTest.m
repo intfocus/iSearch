@@ -37,7 +37,7 @@
 
 - (void)testNetworkAvailable {
     NSDate *now = [NSDate date];
-    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:@"http://google.com"];
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:1.0];
     NSTimeInterval interval = 0 - [now timeIntervalSinceNow];
     
     XCTAssertTrue(interval < 1.1);

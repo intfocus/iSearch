@@ -148,7 +148,7 @@
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
 
-    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         
@@ -306,8 +306,14 @@
  *
  *  @return 不符合离线登陆条件错误信息数组
  */
-- (NSMutableArray *)checkEnableLoginWithoutNetwork:(User *) user {
+- (NSMutableArray *)checkEnableLoginWithoutNetwork:(User *)user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
+    
+    if(!user.isEverLogin) {
+        [errors addObject:@"无网络，不登录"];
+        
+        return errors;
+    }
     
     // 上次登陆日期字符串转换成NSDate
     NSDate *lastDate    = [DateUtils strToDate:user.loginLast Format:LOGIN_DATE_FORMAT];

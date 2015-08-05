@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnBlueNote;  // 笔记 - 蓝色
 @property (weak, nonatomic) IBOutlet UIButton *btnClearNote; // 消除笔记
 
+@property (weak, nonatomic) IBOutlet UISwitch *switchLastNextPage;  // 上一页、下一页显示
 @property (weak, nonatomic) IBOutlet UISwitch *switchLaser;  // 激光笔状态切换
 @property (weak, nonatomic) IBOutlet UISwitch *switchAutoPlay; // 自动播放状态
 @property (weak, nonatomic) IBOutlet UISwitch *switchLoopPlay; // 循环播放状态
@@ -123,11 +124,13 @@
     self.btnGreenNote.layer.cornerRadius    = 4;
     [self.viewEditPanel setHidden: true];
     
+    
     /**
      *  控件事件
      */
     [self.btnEditPanelSwitch setTag:SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
     [self.btnEditPanelSwitch addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view bringSubviewToFront:self.btnEditPanelSwitch];
     
     [self.switchLaser setOn: false];
     [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
@@ -165,12 +168,12 @@
     // 默认循环播放关闭
     self.isLoopPlay        = NO;
     self.switchLoopPlay.on = NO;
-    [self.switchLoopPlay addTarget:self action:@selector(actionChangeSwithLoopPlay:) forControlEvents:UIControlEventValueChanged];
+    [self.switchLoopPlay addTarget:self action:@selector(actionChangeSwitchLoopPlay:) forControlEvents:UIControlEventValueChanged];
     
     // 默认自动播放关闭
     self.isAutoPlay        = NO;
     self.switchAutoPlay.on = NO;
-    [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwithAutoPlay:) forControlEvents:UIControlEventValueChanged];
+    [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwitchAutoPlay:) forControlEvents:UIControlEventValueChanged];
     
     self.timeIntervalAutoPlay         = 10.0;
     self.timerCountDown               = [NSNumber numberWithLong:self.timeIntervalAutoPlay];
@@ -187,6 +190,10 @@
     self.leftTimeView.layer.borderColor   = [UIColor whiteColor].CGColor;
     self.leftTimeView.layer.borderWidth   = 1;
     self.leftTimeView.layer.masksToBounds = true;
+    
+    // 上一页、下一页默认显示
+    self.switchLastNextPage.on = YES;
+    [self.switchLastNextPage addTarget:self action:@selector(actionChangeSwitchLastNextPage:) forControlEvents:UIControlEventValueChanged];
     
     /**
      *  CWPopup 事件
@@ -275,11 +282,11 @@
         } else {
             htmlString = @" \
             <html>                         \
-            <body>                       \
-            <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-            该页面为空.                \
-            </div>                     \
-            </body>                      \
+              <body>                       \
+                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+                  该页面为空.                \
+                </div>                     \
+              </body>                      \
             </html>";
         }
         NSURL *baseURL = [NSURL fileURLWithPath:self.slide.path];
@@ -370,7 +377,7 @@
  *
  *  @param sender UISwitch
  */
-- (void)actionChangeSwithAutoPlay:(UISwitch *)sender {
+- (void)actionChangeSwitchAutoPlay:(UISwitch *)sender {
     self.sliderAutoPlayInterval.enabled = [sender isOn];
     self.isAutoPlay                     = [sender isOn];
     self.leftTimeView.hidden = ![sender isOn];
@@ -380,7 +387,7 @@
  *
  *  @param sender UISwitch
  */
-- (void)actionChangeSwithLoopPlay:(UISwitch *)sender {
+- (void)actionChangeSwitchLoopPlay:(UISwitch *)sender {
     self.isLoopPlay = [sender isOn];
     [self checkLastNextPageBtnState];
 }
@@ -393,6 +400,16 @@
 - (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
     self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
     self.leftTimeView.hidden = YES;
+}
+
+/**
+ *  上一页、下一页显示状态
+ *
+ *  @param sender UISwitch
+ */
+- (void)actionChangeSwitchLastNextPage:(UISwitch *)sender {
+    self.btnLastPage.hidden = ![sender isOn];
+    self.btnNextPage.hidden = ![sender isOn];
 }
 
 /**
@@ -711,27 +728,27 @@
 }
 - (void)enabledLastNextPageBtn:(UIButton *)sender
                        Enabeld:(BOOL)enabled {
-    if(enabled == sender.enabled) return;
-    
-    sender.enabled = enabled;
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
-    NSRange strRange = {0,[str length]};
-    if(enabled) {
-        [str removeAttribute:NSStrikethroughStyleAttributeName
-                       range:strRange];
-        
-    } else {
-        [str addAttribute:NSStrikethroughStyleAttributeName
-                    value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
-                    range:strRange];
-    }
-    [sender setAttributedTitle:str forState:UIControlStateNormal];
+//    if(enabled == sender.enabled) return;
+//    
+//    sender.enabled = enabled;
+//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
+//    NSRange strRange = {0,[str length]};
+//    if(enabled) {
+//        [str removeAttribute:NSStrikethroughStyleAttributeName
+//                       range:strRange];
+//        
+//    } else {
+//        [str addAttribute:NSStrikethroughStyleAttributeName
+//                    value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+//                    range:strRange];
+//    }
+//    [sender setAttributedTitle:str forState:UIControlStateNormal];
 }
 
 /**
  *  core method
  */
-- (void) loadSlideInfo {
+- (void)loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     

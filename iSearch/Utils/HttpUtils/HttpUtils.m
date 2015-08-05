@@ -104,14 +104,14 @@
  *
  *  @return 有网络则为true
  */
-+ (BOOL)isNetworkAvailable:(NSString *)urlString {
-    HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:1.0];
-    
-    return (httpResponse.statusCode && ([httpResponse.statusCode intValue] == 200));
++ (BOOL)isNetworkAvailable {
+    return [self isNetworkAvailable:1.0];
 }
 
-+ (BOOL)isNetworkAvailable {
-    return [HttpUtils isNetworkAvailable:@"http://www.apple.com"];
++ (BOOL)isNetworkAvailable:(NSTimeInterval)timeoutInterval {
+    HttpResponse *httpResponse = [HttpUtils httpGet:@"http://www.apple.com" timeoutInterval:timeoutInterval];
+    
+    return (httpResponse.statusCode && ([httpResponse.statusCode intValue] == 200));
 }
 
 /**
