@@ -142,6 +142,7 @@
     [self actionClearCookies];
     if(self.timerReadCookie) {
         [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
     }
 }
 
@@ -157,6 +158,8 @@
 //        return;
         
         [self actionClearCookies];
+        [self actionOutsideLoginRefresh];
+        [self hideOutsideLoginControl:NO];
         [self actionOutsideLogin];
     } else {
         [self actionLoginWithoutNetwork];
@@ -168,8 +171,6 @@
 
 #pragma mark - within network
 - (void)actionOutsideLogin {
-    [self actionOutsideLoginRefresh];
-    [self hideOutsideLoginControl:NO];
     if(!self.timerReadCookie || ![self.timerReadCookie isValid]) {
         self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer) userInfo:nil repeats:YES];
     }
@@ -177,6 +178,15 @@
     [self.timerReadCookie fire];
 }
 
+
+- (void) actionClearCookies {
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    
+    for (cookie in [cookieJar cookies]) {
+        [cookieJar deleteCookie:cookie];
+    }
+}
 - (void)actionOutsideLoginRefresh {
     NSString *urlString = @"https://tsa-china.takeda.com.cn/uat/saml/sp/index.php?sso";
     NSURL *url = [NSURL URLWithString:urlString];
@@ -204,7 +214,9 @@
             [self actionOutsideLoginSuccessfully];
         }
         [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
         [self actionClearCookies];
+        [self actionOutsideLoginRefresh];
     }
     self.timerCount++;
 }
@@ -222,14 +234,6 @@
     self.webViewLogin.hidden = isHidden;
     self.labelLoginTitle.hidden = isHidden;
     self.btnNavBack.hidden = isHidden;
-}
-- (void) actionClearCookies {
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-
-    for (cookie in [cookieJar cookies]) {
-        [cookieJar deleteCookie:cookie];
-    }
 }
 
 - (void)actionOutsideLoginSuccessfully {
