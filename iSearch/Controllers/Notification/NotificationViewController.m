@@ -86,10 +86,10 @@
     /**
      * 实例变量初始化/赋值
      */
-    self.dataList        = [[NSMutableDictionary alloc] init];
-    self.dataListOne     = [[NSMutableArray alloc] init];
-    self.dataListTwo     = [[NSMutableArray alloc] init];
-    self.dataListTwoDate = [[NSMutableArray alloc] init];
+    self.dataList        = [NSMutableDictionary dictionary];
+    self.dataListOne     = [NSMutableArray array];
+    self.dataListTwo     = [NSMutableArray array];
+    self.dataListTwoDate = [NSMutableArray array];
     self.widthOne = [[NSNumber alloc] init];
     self.widthTwo = [[NSNumber alloc] init];
     // 服务器取数据
@@ -137,7 +137,6 @@
     self.tableViewOne.estimatedRowHeight = 100;
     self.tableViewTwo.rowHeight = UITableViewAutomaticDimension;
     self.tableViewTwo.estimatedRowHeight = 100;
-    //self.cell = [self.tableViewOne dequeueReusableCellWithIdentifier:@"cellID"];
 }
 
 /**
@@ -268,28 +267,24 @@
     NSMutableDictionary *notificationDatas = [DataHelper notifications];
 
     // 通告、预告的判断区别在于occur_date字段是否为空, 或NSNULL
-    NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
     self.dataList    = notificationDatas;
     self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
     self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
     
     // 初始化时需要遍历日历控件所有日期，此操作会减少比较次数
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-    NSString *occurDate;
-    for(dict in self.dataListTwo) {
+    NSInteger toIndex = [DATE_SIMPLE_FORMAT length];
+    [self.dataListTwo each:^(NSMutableDictionary *dict) {
         // 日历精确至天，如果服务器提示occur_date精确到秒时需要截取
-        occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];
-        //dict[NOTIFICATION_FIELD_OCCURDATE] = occurDate;
+        NSString *occurDate = [dict[NOTIFICATION_FIELD_OCCURDATE] substringToIndex:toIndex];
+        
         if(![self.dataListTwoDate containsObject:occurDate])
             [self.dataListTwoDate addObject:occurDate];
-    }
+    }];
 
     // 公告通知按created_date升序
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:YES];
-    [self.dataListOne sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    self.dataListOne = [NSMutableArray arrayWithArray:[self.dataListOne sortBy:NOTIFICATION_FIELD_CREATEDATE]];
     // 预告通知按occur_date升序
-    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
-    [self.dataListTwo sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
+    self.dataListTwo = [NSMutableArray arrayWithArray:[self.dataListTwo sortBy:NOTIFICATION_FIELD_OCCURDATE]];
 }
 #pragma mark - JTCalendarDataSource
 /**

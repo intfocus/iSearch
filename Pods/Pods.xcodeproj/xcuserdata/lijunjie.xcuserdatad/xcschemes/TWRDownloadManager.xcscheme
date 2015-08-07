@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4BEBB8AB38B6B971EA606ACC"
+               BlueprintIdentifier = "83EE0F70E7C438B800BA3D1D"
                BuildableName = "libTWRDownloadManager.a"
                BlueprintName = "TWRDownloadManager"
                ReferencedContainer = "container:Pods.xcodeproj">

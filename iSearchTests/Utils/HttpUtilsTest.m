@@ -37,11 +37,11 @@
 
 - (void)testNetworkAvailable {
     NSDate *now = [NSDate date];
-    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:1.0];
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSTimeInterval interval = 0 - [now timeIntervalSinceNow];
     
     XCTAssertTrue(interval < 1.1);
-    XCTAssertFalse(isNetworkAvailable);
+    XCTAssertTrue(isNetworkAvailable);
     
     
     now = [NSDate date];

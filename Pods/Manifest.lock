@@ -30,6 +30,7 @@ PODS:
   - JTCalendar (1.2.3)
   - MBProgressHUD (0.9.1)
   - MMMaterialDesignSpinner (0.2.0)
+  - ObjectiveSugar (1.1.0)
   - Reachability (3.2)
   - SCLAlertView-Objective-C (0.7.3)
   - SSZipArchive (0.3.2)
@@ -43,10 +44,11 @@ DEPENDENCIES:
   - JTCalendar (~> 1.2.3)
   - MBProgressHUD (~> 0.9.1)
   - MMMaterialDesignSpinner (~> 0.2.0)
+  - ObjectiveSugar
   - Reachability (~> 3.2)
   - SCLAlertView-Objective-C
   - SSZipArchive (~> 0.3.2)
-  - TWRDownloadManager
+  - TWRDownloadManager (~> 1.1.1)
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
@@ -56,6 +58,7 @@ SPEC CHECKSUMS:
   JTCalendar: 246ea3e338fb97624846ec77cdcde448242c4d5c
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MMMaterialDesignSpinner: 8f1a50270b789c76ec500957e518fc3e05e55b9d
+  ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   SCLAlertView-Objective-C: 4bf9a07c8a8d1840e5174e643e16bc032239914d
   SSZipArchive: 11801759495fa4efb7512ef652eb0042d68305d7
