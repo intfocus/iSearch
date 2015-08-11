@@ -280,7 +280,7 @@
         if(![self.dataListTwoDate containsObject:occurDate])
             [self.dataListTwoDate addObject:occurDate];
     }];
-
+    
     // 公告通知按created_date升序
     self.dataListOne = [NSMutableArray arrayWithArray:[self.dataListOne sortBy:NOTIFICATION_FIELD_CREATEDATE]];
     // 预告通知按occur_date升序

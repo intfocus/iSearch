@@ -132,7 +132,7 @@
     [self.btnEditPanelSwitch addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
     [self.view bringSubviewToFront:self.btnEditPanelSwitch];
     
-    [self.switchLaser setOn: false];
+    [self.switchLaser setOn: NO];
     [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.forbidCss = @"<style type='text/css'>          \
@@ -208,6 +208,7 @@
     [self loadSlideInfo];
     [self stopNote];
     [self.switchLaser setOn:NO];
+    [self actionChangeLaserSwitch:self.switchLaser];
     
     [self checkLastNextPageBtnState];
     if([self.dataList count] > 0) {
@@ -315,7 +316,9 @@
     hud.margin                    = 10.f;
     hud.removeFromSuperViewOnHide = YES;
     
-    if(delay > 0.0) { [hud hide:YES afterDelay:delay]; }
+    if(delay > 0.0) {
+        [hud hide:YES afterDelay:delay];
+    }
     return hud;
 }
 
@@ -343,8 +346,8 @@
             self.viewColorChoice.hidden = YES;
             self.viewAutoPlay.hidden    = YES;
             self.btnEditPanelSwitch.layer.shadowOpacity = 0;
-            [self stopLaser];
-            [self stopNote];
+//            [self stopLaser];
+//            [self stopNote];
         }
             break;
             
@@ -366,7 +369,11 @@
  */
 - (void)actionChangeLaserSwitch:(UISwitch *)sender{
     if([sender isOn]){
+        // [涂鸦][上下页][激光笔]互斥
         [self stopNote];
+        [self.switchLastNextPage setOn:NO];
+        [self actionChangeSwitchLastNextPage:self.switchLastNextPage];
+        
         [self startLaser];
     } else {
         [self stopLaser];
@@ -410,6 +417,13 @@
 - (void)actionChangeSwitchLastNextPage:(UISwitch *)sender {
     self.btnLastPage.hidden = ![sender isOn];
     self.btnNextPage.hidden = ![sender isOn];
+    
+    // [涂鸦][上下页][激光笔]互斥
+    if([sender isOn]) {
+        [self stopNote];
+        [self.switchLaser setOn:NO];
+        [self actionChangeLaserSwitch:self.switchLaser];
+    }
 }
 
 /**
@@ -453,7 +467,7 @@
  *  自动播放状态，定时器执行操作
  */
 - (void)actionAutoPlayer {
-    if(!self.isAutoPlay) { return; }
+    if(!self.isAutoPlay) return;
     
     if(self.isLoopPlay ||
        (!self.isLoopPlay && [self.currentPageIndex intValue] < [self.dataList count]-1)) {
@@ -532,9 +546,12 @@
  *  @return void
  */
 -(IBAction)actionColorChoice:(UIButton*)sender{
-    // 关闭switch控件，并触发自身函数
+    // [涂鸦][上下页][激光笔]互斥
     [self.switchLaser setOn:NO];
-    [self stopLaser];
+    [self actionChangeLaserSwitch:self.switchLaser];
+    [self.switchLastNextPage setOn:NO];
+    [self actionChangeSwitchLastNextPage:self.switchLastNextPage];
+    
     [self startNote];
     self.paintView.paintColor           = sender.backgroundColor;
     self.btnColorSwitch.backgroundColor = sender.backgroundColor;
@@ -549,8 +566,8 @@
 - (void)stopNote {
     if(self.isDrawing) {
         [self.paintView removeFromSuperview];
-        self.isDrawing = !self.isDrawing;
         self.btnColorSwitch.backgroundColor = [UIColor whiteColor];
+        self.isDrawing = !self.isDrawing;
     }
     self.btnClearNote.enabled = NO;
 }
@@ -567,7 +584,7 @@
  *
  *  @param sender UIButton
  */
-- (IBAction)actionNextPage: (id)sender {
+- (IBAction)actionNextPage:(id)sender {
     [self stopNote];
     [self refreshCountDown];
     
@@ -593,7 +610,7 @@
  *
  *  @param sender UIButton
  */
-- (IBAction)actionLastPage: (id)sender {
+- (IBAction)actionLastPage:(id)sender {
     [self stopNote];
     [self refreshCountDown];
     

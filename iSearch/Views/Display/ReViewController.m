@@ -485,7 +485,6 @@
     NSString *pName = [_dataList objectAtIndex:oldIndex];
     [_dataList removeObjectAtIndex:oldIndex];
     [_dataList insertObject:pName atIndex:newIndex];
-    NSLog(@"----------%ld => %ld------------",(long)oldIndex, (long)newIndex);
     [self checkDescSwpContent];
 }
 - (void)GMGridView:(GMGridView *)gridView exchangeItemAtIndex:(NSInteger)index1 withItemAtIndex:(NSInteger)index2 {
@@ -511,6 +510,12 @@
     
     self.btnNavRestore.enabled = ![_dataList isEqualToArray:[self.slide dictSwp][SLIDE_DESC_ORDER]];
 }
-
+#pragma mark - supportedInterfaceOrientationsForWindow
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
+}
 @end
 

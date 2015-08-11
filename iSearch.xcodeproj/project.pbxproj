@@ -126,6 +126,7 @@
 		C4E76AC01B53BF6A000D6A2B /* NewsListTabView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76AB61B53BF6A000D6A2B /* NewsListTabView.xib */; };
 		C4E76AC11B53BF6A000D6A2B /* UserHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76AB91B53BF6A000D6A2B /* UserHeadView.m */; };
 		C4E76AC21B53BF6A000D6A2B /* UserHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76ABA1B53BF6A000D6A2B /* UserHeadView.xib */; };
+		C4FB01B01B74FBB00059364E /* DSLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FB01AF1B74FBB00059364E /* DSLTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -326,6 +327,7 @@
 		C4E76AB81B53BF6A000D6A2B /* UserHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHeadView.h; sourceTree = "<group>"; };
 		C4E76AB91B53BF6A000D6A2B /* UserHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHeadView.m; sourceTree = "<group>"; };
 		C4E76ABA1B53BF6A000D6A2B /* UserHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeadView.xib; sourceTree = "<group>"; };
+		C4FB01AF1B74FBB00059364E /* DSLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSLTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -402,6 +404,7 @@
 			children = (
 				C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */,
 				C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */,
+				C4FB01AF1B74FBB00059364E /* DSLTest.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1227,6 +1230,7 @@
 			files = (
 				C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */,
 				C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */,
+				C4FB01B01B74FBB00059364E /* DSLTest.m in Sources */,
 				C4D168671B686281002921C1 /* NSPredicateTest.m in Sources */,
 				C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */,
 				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,

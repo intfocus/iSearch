@@ -20,8 +20,7 @@
 @synthesize erase;
 @synthesize laser;
 - (id)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
+    if (self = [super initWithFrame:frame]) {
         self.layer.shadowColor = [UIColor blackColor].CGColor;
         self.layer.shadowOpacity = 0.8;              // 图层透明度
         self.layer.shadowOffset = CGSizeMake(1, 1);  // 画笔阴影宽度
@@ -29,7 +28,11 @@
         self.paintColor      = [UIColor blackColor]; // 画笔颜色
         // Initialization code
         linesArray = [[NSMutableArray alloc]init];   // 画笔轨迹点记录数组
-        // 手指在屏幕划动姿势函数绑定
+        
+        self.penIV = [[UIImageView alloc] initWithFrame:CGRectMake(-22, -22, 22, 22)];
+        self.penIV.image = [UIImage imageNamed:@"pen"];
+        [self addSubview:self.penIV];
+        
         UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(panGesture:)];
         panGesture.maximumNumberOfTouches = 1;
         panGesture.minimumNumberOfTouches = 1;
@@ -38,10 +41,6 @@
         UILongPressGestureRecognizer *gestureLongPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
         gestureLongPress.minimumPressDuration = 0.1f; //seconds
         [self addGestureRecognizer:gestureLongPress];
-        
-        self.penIV = [[UIImageView alloc] initWithFrame:CGRectMake(-22, -22, 22, 22)];
-        self.penIV.image = [UIImage imageNamed:@"pen"];
-        [self addSubview:self.penIV];
     }
     return self;
 }
@@ -54,8 +53,7 @@
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     // Drawing code
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 10);
@@ -105,80 +103,53 @@
 
 -(void)panGesture:(UIPanGestureRecognizer*)thePan {
     CGPoint touchPoint = [thePan locationInView:self];
-    // 橡皮擦状态
-    if (self.erase) {
-        if (thePan.state==UIGestureRecognizerStateChanged) {
-            for (NSMutableDictionary *lineDic in linesArray) {
-                NSMutableArray *linePointArray = [lineDic objectForKey:@"line"];
-                for (NSInteger i=0; i<linePointArray.count; i++) {
-                    CGPoint point = [[linePointArray objectAtIndex:i]CGPointValue];
-                    CGFloat distance = powf(point.x-touchPoint.x,point.y-touchPoint.y);
-                    if (distance<20) {
-                        NSMutableArray *eraseArray;
-                        if ([lineDic objectForKey:@"eraseArray"]) {
-                            eraseArray = [lineDic objectForKey:@"eraseArray"];
-                        }else {
-                            eraseArray = [NSMutableArray array];
-                        }
-                        [eraseArray addObject:[NSValue valueWithCGPoint:touchPoint]];
-                        [lineDic setObject:eraseArray forKey:@"eraseArray"];
-                        // Marks the specified rectangle of the receiver as needing to be redrawn.
-                        CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
-                        [self setNeedsDisplayInRect:paintRect];
-                        //[self setNeedsDisplay];
-                        continue;
-                    }
-                }
-            }
+
+    if(self.laser) {
+        CGPoint point = [thePan locationInView:self];
+        if (thePan.state == UIGestureRecognizerStateBegan) {
+            self.penIV.hidden = NO;
+            self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
+            [self bringSubviewToFront:self.penIV];
+            [self setNeedsDisplay];
+            NSLog(@"begin");
         }
-        //[self eraseLine:currentLineDic erase:[thePan locationInView:self]];
-    // 绘图/激光笔
+        else if (thePan.state == UIGestureRecognizerStateChanged) {
+            self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
+        }
+        else if (thePan.state == UIGestureRecognizerStateEnded) {
+            self.penIV.hidden = YES;
+        }
     } else {
-        if(self.laser) {
-            CGPoint point = [thePan locationInView:self];
-            if (thePan.state == UIGestureRecognizerStateBegan) {
-                self.penIV.hidden = NO;
-                self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
-                [self bringSubviewToFront:self.penIV];
-                [self setNeedsDisplay];
-                NSLog(@"begin");
-            }
-            else if (thePan.state == UIGestureRecognizerStateChanged) {
-                self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
-            }
-            else if (thePan.state == UIGestureRecognizerStateEnded) {
-                self.penIV.hidden = YES;
-            }
-        } else {
-            if (thePan.state==UIGestureRecognizerStateBegan) {
-                NSMutableArray *currentLineArray = [NSMutableArray arrayWithObject:[NSValue valueWithCGPoint:touchPoint]];
-                NSMutableDictionary *lineDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentLineArray,@"line",_paintColor,@"color", nil];
-                NSLog(@"panGesture: <x=%f, y=%f>", touchPoint.x, touchPoint.y);
-                [linesArray addObject:lineDic];
-            } else if(thePan.state==UIGestureRecognizerStateChanged){
-                NSMutableDictionary *lineDic = [linesArray lastObject];
-                NSMutableArray *currentLineArray = [lineDic objectForKey:@"line"];
-                [currentLineArray addObject:[NSValue valueWithCGPoint:touchPoint]];
-                CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
-                [self setNeedsDisplayInRect:paintRect];
-            } else if(thePan.state==UIGestureRecognizerStateEnded){
-            }
+        if (thePan.state==UIGestureRecognizerStateBegan) {
+            NSMutableArray *currentLineArray = [NSMutableArray arrayWithObject:[NSValue valueWithCGPoint:touchPoint]];
+            NSMutableDictionary *lineDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentLineArray,@"line",_paintColor,@"color", nil];
+            NSLog(@"panGesture: <x=%f, y=%f>", touchPoint.x, touchPoint.y);
+            [linesArray addObject:lineDic];
+        }
+        else if(thePan.state==UIGestureRecognizerStateChanged){
+            NSMutableDictionary *lineDic = [linesArray lastObject];
+            NSMutableArray *currentLineArray = [lineDic objectForKey:@"line"];
+            [currentLineArray addObject:[NSValue valueWithCGPoint:touchPoint]];
+            CGRect paintRect = CGRectMake(touchPoint.x-50, touchPoint.y-50, 100, 100);
+            [self setNeedsDisplayInRect:paintRect];
+        }
+        else if(thePan.state==UIGestureRecognizerStateEnded){
         }
     }
 }
 
 -(void)tapGesture:(UITapGestureRecognizer*)theTap {
-    if(!self.laser) return;
-    
-    CGPoint point = [theTap locationInView:self];
-    
-    if (theTap.state == UIGestureRecognizerStateBegan) {
-        self.penIV.hidden = NO;
-    } else if(theTap.state==UIGestureRecognizerStateEnded){
-        self.penIV.hidden = YES;
+    if(self.laser) {
+        CGPoint point = [theTap locationInView:self];
+        
+        if (theTap.state == UIGestureRecognizerStateBegan) {
+            self.penIV.hidden = NO;
+        }
+        else if(theTap.state==UIGestureRecognizerStateEnded){
+            self.penIV.hidden = YES;
+        }
+        self.penIV.frame = CGRectMake(point.x - 11, point.y - 51, 22, 22);
     }
-    self.penIV.frame = CGRectMake(point.x - 11, point.y - 61, 22, 22);
-    
 }
 - (void)clearDrawRect {
     [linesArray removeAllObjects];

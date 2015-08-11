@@ -40,13 +40,13 @@
     [self.dataList addObject:@[@"名称", user.name]];
     [self.dataList addObject:@[@"邮箱", user.email]];
     [self.dataList addObject:@[@"员工编号", user.employeeID]];
-    //[self.dataList addObject:@[@"所属部门", user.deptID]];
     [self.dataList addObject:@[@"上次登录时间", user.loginLast]];
     
     Version *version = [[Version alloc] init];
-    
     [self.dataListTwo addObject:@[@"应用名称", version.appName]];
     [self.dataListTwo addObject:@[@"应用版本", version.current]];
+    [self.dataListTwo addObject:@[@"设备名称", [[UIDevice currentDevice] name]]];
+    [self.dataListTwo addObject:@[@"设备型号", [[UIDevice currentDevice] model]]];
     [self.dataListTwo addObject:@[@"系统语言", version.lang]];
     [self.dataListTwo addObject:@[@"支持最低IOS版本",version.suport]];
     [self.dataListTwo addObject:@[@"当前IOS版本",  [version.sdkName stringByReplacingOccurrencesOfString:version.platform withString:@""]]];
@@ -72,9 +72,8 @@
     if(!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    NSArray *array = (self.indexRow == 0 ? self.dataList : self.dataListTwo);
     
-
+    NSArray *array = (self.indexRow == 0 ? self.dataList : self.dataListTwo);
     cell.textLabel.text = array[row][0];
     cell.detailTextLabel.text = array[row][1];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];

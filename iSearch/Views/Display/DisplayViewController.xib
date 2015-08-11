@@ -320,7 +320,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ife-fq-90r">
-                    <rect key="frame" x="0.0" y="218" width="101" height="164"/>
+                    <rect key="frame" x="0.0" y="246" width="80" height="108"/>
                     <state key="normal" image="iconLastPage">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -329,7 +329,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jHz-hC-Phm">
-                    <rect key="frame" x="749" y="218" width="101" height="164"/>
+                    <rect key="frame" x="770" y="246" width="80" height="108"/>
                     <state key="normal" image="iconNextPage">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -362,8 +362,8 @@
         </view>
     </objects>
     <resources>
-        <image name="iconLastPage" width="101" height="164"/>
-        <image name="iconNextPage" width="101" height="164"/>
+        <image name="iconLastPage" width="80" height="108"/>
+        <image name="iconNextPage" width="80" height="108"/>
         <image name="iconPen" width="52" height="52"/>
         <image name="iconTriangle" width="10" height="10"/>
     </resources>
