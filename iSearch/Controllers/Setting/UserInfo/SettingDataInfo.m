@@ -34,8 +34,6 @@
     NSString *title = (self.indexRow == 0 ? @"用户信息" : @"应用信息");
     self.navigationItem.title = title;
     
-    
-    
     User *user = [[User alloc] init];
     [self.dataList addObject:@[@"名称", user.name]];
     [self.dataList addObject:@[@"邮箱", user.email]];

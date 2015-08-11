@@ -84,10 +84,11 @@
     NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, max(%@) from %@ \
                      where %@ = '%@' and %@ = '%@' and %@ = 0    \
                      group by %@, %@                             \
+                     order by max(%@) desc                       \
                      limit 15;",
                      LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE, DB_COLUMN_CREATED, ACTIONLOG_TABLE_NAME,
                      LOCAL_COLUMN_ACTION, ACTION_DISPLAY, ACTIONLOG_COLUMN_UID, self.userID, ACTIONLOG_COLUMN_DELETED,
-                     LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE];
+                     LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE, DB_COLUMN_CREATED];
     NSString *slideID, *slideType, *createdAt;
     
     FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
