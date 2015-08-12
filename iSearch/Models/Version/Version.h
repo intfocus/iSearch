@@ -48,6 +48,8 @@
 - (void)updateTimestamp;
 - (void)save;
 - (NSString *)simpleDescription;
+- (NSString *)machine;
+- (NSString *)machineHuman;
 
 // class methods
 + (NSString *)pgy_app_id;

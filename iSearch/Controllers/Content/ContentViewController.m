@@ -78,7 +78,7 @@
 
 @interface ContentViewController ()  <GMGridViewDataSource>
 {
-    __gm_weak GMGridView     *_gridView;
+    __gm_weak GMGridView *_gridView;
     NSMutableArray *_dataList;
 }
 
