@@ -10,7 +10,7 @@
 @class Slide;
 @class DisplayViewController;
 
-@interface ReViewController : UIViewController <UIGestureRecognizerDelegate>
+@interface ScanViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @property (nonatomic , nonatomic) DisplayViewController *masterViewController;
 

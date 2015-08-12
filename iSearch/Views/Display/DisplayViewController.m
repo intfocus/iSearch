@@ -16,7 +16,7 @@
 #import "ViewSlide.h"
 #import "MainViewController.h"
 #import "MainAddNewTagView.h"
-#import "ReViewController.h"
+#import "ScanViewController.h"
 
 #import "const.h"
 #import "Slide.h"
@@ -75,7 +75,7 @@
 @property (nonatomic, strong) MBProgressHUD *hud;
 @property (nonatomic, strong) NSMutableArray *dataList;
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
-@property (nonatomic, nonatomic) ReViewController *reViewController;
+@property (nonatomic, nonatomic) ScanViewController *reViewController;
 @property (weak, nonatomic) IBOutlet UIView *leftTimeView;
 @property (weak, nonatomic) IBOutlet UILabel *leftTimeLabel;
 
@@ -669,7 +669,7 @@
         
         // 界面跳转至文档页面编辑界面
         if(!self.reViewController) {
-            self.reViewController = [[ReViewController alloc] init];
+            self.reViewController = [[ScanViewController alloc] init];
             self.reViewController.masterViewController = self;
         }
         [self presentViewController:self.reViewController animated:NO completion:nil];

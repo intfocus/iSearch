@@ -11,21 +11,25 @@
 
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
-@class ReViewController;
+#import "GMGridViewCell.h"
+@class ScanViewController;
 
-@interface ViewSlidePage : UIView
+@interface ViewSlidePage : UIView<GMGridViewCellProtocol>
 
-@property (weak, nonatomic) IBOutlet ReViewController *reViewController;
+@property (weak, nonatomic) IBOutlet ScanViewController *scanViewController;
 
-@property (weak, nonatomic) IBOutlet UIWebView *webViewThumbnail; // 缩略图
 @property (weak, nonatomic) IBOutlet UILabel *labelPageNum; // 第几页
 @property (weak, nonatomic) IBOutlet UILabel *labelFrom; // 来自那个文件
 @property (weak, nonatomic) IBOutlet UIButton *btnMask; // 来自那个文件
 
 @property (strong, nonatomic) NSString *slidePageName;
+@property (strong, nonatomic) NSString *thumbnailPath;
 
-- (void)loadThumbnail:(NSString *)thumbnailPath;
 - (void)hightLight;
+
+- (void)activate;
+- (void)deactivate;
+- (void)coverUserInterface:(NSNumber *)selectState;
 @end
 
 #endif

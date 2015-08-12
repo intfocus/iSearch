@@ -29,6 +29,15 @@
 #import <UIKit/UIKit.h>
 #import "GMGridView-Constants.h"
 
+@protocol GMGridViewCellProtocol <NSObject>
+
+@optional
+- (void)activate;
+- (void)deactivate;
+- (void)coverUserInterface:(NSNumber *)selectState;
+
+@end
+
 @interface GMGridViewCell : UIView
 
 @property (nonatomic, strong) UIView *contentView;         // The contentView - default is nil
@@ -41,9 +50,14 @@
 @property (nonatomic, strong) UIImage *selectedButtonIcon; // 编辑状态下，已选择状态
 @property (nonatomic) CGPoint selectingButtonOffset;       // 把整个Cell撑满
 @property (nonatomic) CGPoint selectedButtonOffset;        // 把整个Cell撑满
+@property (nonatomic, weak) id<GMGridViewCellProtocol> delegate;
 
 /// Override to release custom data before cell is reused.
 - (void)prepareForReuse;
 - (void)setSelected:(BOOL)selected;
+
+- (void)activate;
+- (void)deactivate;
+- (void)coverUserInterface:(NSNumber *)selectState;
 
 @end

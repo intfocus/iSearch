@@ -147,17 +147,18 @@
  *      演示过: slideToDisplay.png
  */
 - (void) updateBtnDownloadOrDisplayIcon {
-    UIImage *image = [UIImage imageNamed:@"coverSlideToDownload"];
+    NSString *imageName = @"coverSlideToDownload";
     if([self.slide isDownloaded]) {
         if(self.slide.isDisplay) {
-            image = [UIImage imageNamed:@"coverSlideToDisplay"];
+            imageName = @"coverSlideToDisplay";
         } else {
-            image = [UIImage imageNamed:@"coverSlideUnDisplay"];
+            imageName = @"coverSlideUnDisplay";
         }
     } else if([self.slide isDownloading]) {
-        image = [UIImage imageNamed:@"coverSlideDownloading"];
+        imageName = @"coverSlideDownloading";
     }
-    [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
+    
+    [self.btnDownloadOrDisplay setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
 /**

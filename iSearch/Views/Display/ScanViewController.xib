@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ScanViewController">
             <connections>
                 <outlet property="btnNavDismiss" destination="mst-UN-TaP" id="wLX-XK-zjW"/>
                 <outlet property="btnNavEdit" destination="QuE-w2-dXh" id="WHb-GF-YVW"/>

@@ -137,8 +137,8 @@
     //        NSString *name = [NSString stringWithFormat:@"%ld-%@-%@", (long)index, currentDict[CONTENT_FIELD_ID], currentDict[CONTENT_FIELD_NAME]];
     viewCategory.labelTitle.text = currentDict[CONTENT_FIELD_NAME];
     
-    
-    [viewCategory setImageWith:categoryType CategoryID:currentDict[CONTENT_FIELD_ID]];
+    viewCategory.typeID = categoryType;
+    viewCategory.categoryID = currentDict[CONTENT_FIELD_ID];
     viewCategory.btnImageCover.tag = index;
     [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
     

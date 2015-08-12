@@ -10,27 +10,35 @@
 #import "const.h"
 #import "message.h"
 #import "FileUtils.h"
-#import "ReViewController.h"
+#import "ScanViewController.h"
 
+@interface ViewSlidePage()
+
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnail; // 缩略图
+
+@end
 @implementation ViewSlidePage
-@synthesize webViewThumbnail;
 @synthesize labelFrom;
 @synthesize labelPageNum;
 
-/**
- *  UIWebView浏览PDF或GIF文档
- *
- *  @param documentName PDF文档路径
- *  @param webView      UIWebView
- */
-- (void)loadThumbnail:(NSString *)thumbnailPath {
-    NSString *html = [NSString stringWithFormat:@"<img src ='%@' style='width:100%%;max-height:100%%;'>", [thumbnailPath lastPathComponent]];
-    NSURL *url = [NSURL fileURLWithPath:[thumbnailPath stringByDeletingLastPathComponent]];
-    [self.webViewThumbnail loadHTMLString:html baseURL:url];
-}
 
 - (void)hightLight {
-    self.webViewThumbnail.layer.borderWidth = 2.0f;
-    self.webViewThumbnail.layer.borderColor = [UIColor colorWithRed:229/255.0 green:118/255.0 blue:127/255.0 alpha:1].CGColor;
+    self.thumbnail.layer.borderWidth = 2.0f;
+    self.thumbnail.layer.borderColor = [UIColor colorWithRed:229/255.0 green:118/255.0 blue:127/255.0 alpha:1].CGColor;
+}
+
+- (void)activate {
+    NSLog(@"activate: %@", labelPageNum.text);
+    [self.thumbnail setImage:[UIImage imageWithContentsOfFile:self.thumbnailPath]];
+}
+
+- (void)deactivate {
+    NSLog(@"deactivate: %@", labelPageNum.text);
+    
+    [self.thumbnail setImage:nil];
+}
+
+- (void)coverUserInterface:(NSNumber *)selectState {
+    self.btnMask.enabled = ![selectState boolValue];
 }
 @end

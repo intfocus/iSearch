@@ -96,7 +96,6 @@
 // GridViewCell界面 - 目录界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
-    
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
     }

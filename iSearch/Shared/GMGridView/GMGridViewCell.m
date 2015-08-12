@@ -141,6 +141,24 @@
     self.highlighted = NO;
 }
 
+#pragma mark - GMGridViewCellProtocol
+- (void)activate {
+    if([self.contentView respondsToSelector:@selector(activate)]) {
+        [self.contentView performSelector:@selector(activate)];
+    }
+}
+
+- (void)deactivate {
+    if([self.contentView respondsToSelector:@selector(deactivate)]) {
+        [self.contentView performSelector:@selector(deactivate)];
+    }
+}
+
+- (void)coverUserInterface:(NSNumber *)selectState {
+    if([self.contentView respondsToSelector:@selector(coverUserInterface:)]) {
+        [self.contentView performSelector:@selector(coverUserInterface:) withObject:selectState];
+    }
+}
 //////////////////////////////////////////////////////////////
 #pragma mark Setters / getters
 //////////////////////////////////////////////////////////////
@@ -293,6 +311,8 @@
         [self setSelected: false];
     }
     _selectState = selectState;
+    
+    [self coverUserInterface:[NSNumber numberWithBool:selectState]];
     
     self.selectButton.alpha = selectState ? 1 : 0;
     [self.selectButton setImage:(selectState ? _selectingButtonIcon : nil) forState:UIControlStateNormal];

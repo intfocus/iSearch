@@ -17,7 +17,7 @@
 #import "MBProgressHUD.h"
 #import "MainAddNewTagView.h"
 #import "AddNewTagView.h"
-#import "ReViewController.h"
+#import "ScanViewController.h"
 #import "DisplayViewController.h"
 
 @interface TagListView()
@@ -99,7 +99,7 @@
  */
 - (IBAction)actionDismissPopup:(UIBarButtonItem *)sender {
     MainAddNewTagView *masterView1 = [self masterViewController];
-    ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+    ScanViewController *masterView2 = (ScanViewController*)[masterView1 masterViewController];
     [masterView2 dismissPopupAddToTag];
 }
 
@@ -126,7 +126,7 @@
         
         MainAddNewTagView *masterView1 = [self masterViewController];
         if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
-            ReViewController *masterView2 = (ReViewController*)[masterView1 masterViewController];
+            ScanViewController *masterView2 = (ScanViewController*)[masterView1 masterViewController];
             [masterView2 actionSavePagesAndMoveFiles:slide];
             if(masterView1.closeMainViewAfterDone) {
                 [masterView2 dismissReViewController];

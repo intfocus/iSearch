@@ -317,18 +317,19 @@
         ViewCategory *viewCategory = [[[NSBundle mainBundle] loadNibNamed:@"ViewCategory" owner:self options:nil] lastObject];
         viewCategory.labelTitle.text =  currentDict[CONTENT_FIELD_NAME];
         
-        [viewCategory setImageWith:CONTENT_CATEGORY CategoryID:currentDict[CONTENT_FIELD_ID]];
+        viewCategory.typeID = CONTENT_CATEGORY;
+        viewCategory.categoryID = currentDict[CONTENT_FIELD_ID];
         viewCategory.btnImageCover.tag = [currentDict[CONTENT_FIELD_ID] intValue];
         [viewCategory.btnImageCover addTarget:self action:@selector(actionCategoryClick:) forControlEvents:UIControlEventTouchUpInside];
         
-        // NSLog(@"category - %@,%@", currentDict[CONTENT_FIELD_ID],currentDict[CONTENT_FIELD_NAME]);
+        cell.delegate = viewCategory;
         [cell setContentView: viewCategory];
     } else {
         ViewSlide *viewSlide = [[[NSBundle mainBundle] loadNibNamed:@"ViewSlide" owner:self options:nil] objectAtIndex: 0];
         viewSlide.isFavorite = NO;
         viewSlide.dict       = currentDict;
         viewSlide.masterViewController = [self masterViewController];
-    
+        
         [cell setContentView: viewSlide];
     }
     return cell;

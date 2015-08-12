@@ -93,9 +93,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    if([HttpUtils isNetworkAvailable]) {
-        [self checkAppVersionUpgrade];
-    }
+//    if([HttpUtils isNetworkAvailable]) {
+//        [self checkAppVersionUpgrade];
+//    }
 }
 
 #pragma mark memory management
@@ -145,6 +145,7 @@
 - (IBAction)actionOutsideLoginClose:(id)sender {
     [self hideOutsideLoginControl:YES];
     [self actionClearCookies];
+    
     if(self.timerReadCookie) {
         [self.timerReadCookie invalidate];
         _timerReadCookie = nil;
@@ -158,15 +159,16 @@
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         
-//        self.cookieValue = @"nm6586tst";//@"E9998";//@"E99658603";
-//        [self actionOutsideLoginSuccessfully];
-//        return;
+        self.cookieValue = @"nm6586tst";//@"E9998";//@"E99658603";
+        [self actionOutsideLoginSuccessfully];
+        return;
         
         [self actionClearCookies];
         [self actionOutsideLoginRefresh];
         [self hideOutsideLoginControl:NO];
         [self actionOutsideLogin];
-    } else {
+    }
+    else {
         [self actionLoginWithoutNetwork];
     }
     
@@ -218,7 +220,8 @@
         if([cookieValue isEqualToString:@"error000"]) {
             [self hideOutsideLoginControl:YES];
             [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
-        } else {
+        }
+        else {
             self.cookieValue = cookieValue;
             [self actionOutsideLoginSuccessfully];
         }
@@ -231,7 +234,8 @@
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
         [self.view sendSubviewToBack:self.btnNavBack];
-    } else {
+    }
+    else {
         [self.view bringSubviewToFront:self.labelLoginTitle];
         [self.view bringSubviewToFront:self.webViewLogin];
         [self.view bringSubviewToFront:self.btnNavBack];
@@ -250,7 +254,8 @@
     HttpResponse *httpResponse = [ApiHelper login:self.cookieValue];
     if(![httpResponse isValid]) {
         [loginErrors addObjectsFromArray:httpResponse.errors];
-    } else {
+    }
+    else {
         NSMutableDictionary *responseDict = httpResponse.data;
         // 服务器交互成功
         NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
@@ -275,13 +280,15 @@
             ActionLogRecordLogin(@"successfully, online");
             [self enterMainViewController];
             return;
-        } else {
+        }
+        else {
             [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
         }
     }
 
-    if([loginErrors count])
+    if([loginErrors count]) {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
+    }
     [self hideOutsideLoginControl:YES];
 }
 
@@ -300,11 +307,11 @@
         ActionLogRecordLogin(@"successfully, offline");
         [self enterMainViewController];
     // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
-    } else {
+    }
+    else {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[errors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
     }
 }
-
 
 /**
  *  无网络环境时，检测是否符合离线登陆条件
@@ -346,13 +353,13 @@
 }
 
 #pragma mark - status bar settings
-
 -(BOOL)prefersStatusBarHidden{
     return NO;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
+#pragma mark - supportedInterfaceOrientationsForWindow
 -(BOOL)shouldAutorotate{
     return YES;
 }

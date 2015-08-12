@@ -1417,36 +1417,6 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 - (void)loadRequiredItems
 {
 // 下面为修改后的代码，显示所有cell，容易内存crash
-    NSRange rangeOfPositions = [self.layoutStrategy rangeOfPositionsInBoundsFromOffset: self.contentOffset];
-    NSRange loadedPositionsRange = NSMakeRange(self.firstPositionLoaded, self.lastPositionLoaded - self.firstPositionLoaded);
-    
-    // calculate new position range
-    self.firstPositionLoaded = self.firstPositionLoaded == GMGV_INVALID_POSITION ? rangeOfPositions.location : MIN(self.firstPositionLoaded, (NSInteger)rangeOfPositions.location);
-    self.lastPositionLoaded  = self.lastPositionLoaded == GMGV_INVALID_POSITION ? NSMaxRange(rangeOfPositions) : MAX(self.lastPositionLoaded, (NSInteger)(rangeOfPositions.length + rangeOfPositions.location));
-    
-    // remove now invisible items
-    [self setSubviewsCacheAsInvalid];
-    //[self cleanupUnseenItems];
-    
-    // add new cells
-    BOOL forceLoad = self.firstPositionLoaded == GMGV_INVALID_POSITION || self.lastPositionLoaded == GMGV_INVALID_POSITION;
-    NSInteger positionToLoad;
-    for (NSUInteger i = 0; i < _numberTotalItems; i++)
-    {
-        //positionToLoad = i + rangeOfPositions.location;
-        positionToLoad = i;
-        
-        if ((forceLoad || !NSLocationInRange(positionToLoad, loadedPositionsRange)) && positionToLoad < _numberTotalItems)
-        {
-            if (![self cellForItemAtIndex:positionToLoad])
-            {
-                GMGridViewCell *cell = [self newItemSubViewForPosition:positionToLoad];
-                [self addSubview:cell];
-            }
-        }
-    }
-// 
-//    // 至结尾是源代码， 会释放unseen的cell，但cell顺序与状态与被调整
 //    NSRange rangeOfPositions = [self.layoutStrategy rangeOfPositionsInBoundsFromOffset: self.contentOffset];
 //    NSRange loadedPositionsRange = NSMakeRange(self.firstPositionLoaded, self.lastPositionLoaded - self.firstPositionLoaded);
 //    
@@ -1461,19 +1431,53 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
 //    // add new cells
 //    BOOL forceLoad = self.firstPositionLoaded == GMGV_INVALID_POSITION || self.lastPositionLoaded == GMGV_INVALID_POSITION;
 //    NSInteger positionToLoad;
-//    for (NSUInteger i = 0; i < rangeOfPositions.length; i++)
+//    for (NSUInteger i = 0; i < _numberTotalItems; i++)
 //    {
-//        positionToLoad = i + rangeOfPositions.location;
+//        //positionToLoad = i + rangeOfPositions.location;
+//        positionToLoad = i;
 //        
 //        if ((forceLoad || !NSLocationInRange(positionToLoad, loadedPositionsRange)) && positionToLoad < _numberTotalItems)
 //        {
 //            if (![self cellForItemAtIndex:positionToLoad])
 //            {
 //                GMGridViewCell *cell = [self newItemSubViewForPosition:positionToLoad];
+//                [cell activate];
+//
 //                [self addSubview:cell];
 //            }
 //        }
 //    }
+//
+// 至结尾是源代码， 会释放unseen的cell，但cell顺序与状态与被调整
+    NSRange rangeOfPositions = [self.layoutStrategy rangeOfPositionsInBoundsFromOffset: self.contentOffset];
+    NSRange loadedPositionsRange = NSMakeRange(self.firstPositionLoaded, self.lastPositionLoaded - self.firstPositionLoaded);
+    
+    // calculate new position range
+    self.firstPositionLoaded = self.firstPositionLoaded == GMGV_INVALID_POSITION ? rangeOfPositions.location : MIN(self.firstPositionLoaded, (NSInteger)rangeOfPositions.location);
+    self.lastPositionLoaded  = self.lastPositionLoaded == GMGV_INVALID_POSITION ? NSMaxRange(rangeOfPositions) : MAX(self.lastPositionLoaded, (NSInteger)(rangeOfPositions.length + rangeOfPositions.location));
+    
+    // remove now invisible items
+    [self setSubviewsCacheAsInvalid];
+    [self cleanupUnseenItems];
+    
+    // add new cells
+    BOOL forceLoad = self.firstPositionLoaded == GMGV_INVALID_POSITION || self.lastPositionLoaded == GMGV_INVALID_POSITION;
+    NSInteger positionToLoad;
+    for (NSUInteger i = 0; i < rangeOfPositions.length; i++)
+    {
+        positionToLoad = i + rangeOfPositions.location;
+        
+        if ((forceLoad || !NSLocationInRange(positionToLoad, loadedPositionsRange)) && positionToLoad < _numberTotalItems)
+        {
+            GMGridViewCell *cell = [self cellForItemAtIndex:positionToLoad];
+            if (!cell) {
+                cell = [self newItemSubViewForPosition:positionToLoad];
+            }
+            [cell activate];
+            [cell setSelectState:self.selectState];
+            [self addSubview:cell];
+        }
+    }
 }
 
 
@@ -1489,8 +1493,9 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
             cell = [self cellForItemAtIndex:i];
             if(cell)
             {
-                [self queueReusableCell:cell];
-                [cell removeFromSuperview];
+                //[self queueReusableCell:cell];
+                //[cell removeFromSuperview];
+                [cell deactivate];
             }
         }
         
@@ -1505,8 +1510,9 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
             cell = [self cellForItemAtIndex:i];
             if(cell)
             {
-                [self queueReusableCell:cell];
-                [cell removeFromSuperview];
+                //[self queueReusableCell:cell];
+                //[cell removeFromSuperview];
+                [cell deactivate];
             }
         }
         

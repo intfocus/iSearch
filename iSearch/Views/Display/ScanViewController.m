@@ -44,7 +44,7 @@
 //  w:2048 h:1536
 //  w:1024 h:768
 
-#import "ReViewController.h"
+#import "ScanViewController.h"
 #import "ViewSlidePage.h"
 #import "GMGridView.h"
 
@@ -57,11 +57,11 @@
 #import "ExtendNSLogFunctionality.h"
 
 #import "DisplayViewController.h"
-#import "ReViewController.h"
+#import "ScanViewController.h"
 #import "MainAddNewTagView.h"
 #import "UIViewController+CWPopup.h"
 
-@interface ReViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewActionDelegate> {
+@interface ScanViewController () <GMGridViewDataSource, GMGridViewSortingDelegate, GMGridViewActionDelegate, UIScrollViewDelegate> {
     __gm_weak GMGridView *_gmGridView;
     NSMutableArray       *_dataList;     // 文件的页面信息
     NSMutableArray       *_selectedList; // 内容重组选择的页面序号
@@ -88,7 +88,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnNavDismiss;
 @end
 
-@implementation ReViewController
+@implementation ScanViewController
 @synthesize slideID;
 @synthesize pageName;
 @synthesize pageInfoTmp;
@@ -103,6 +103,7 @@
     self.pageInfoTmp = [[NSMutableDictionary alloc] init];
     _dataList        = [[NSMutableArray alloc] init];
     _selectedList    = [[NSMutableArray alloc] init];
+    self.scrollView.delegate = self;
     
     /**
      *  CWPopup 事件
@@ -221,7 +222,7 @@
         self.mainAddNewTagView.masterViewController = self;
     }
     self.mainAddNewTagView.closeMainViewAfterDone = NO;
-    self.mainAddNewTagView.fromViewControllerName = @"ReViewController";
+    self.mainAddNewTagView.fromViewControllerName = @"ScanViewController";
     [self presentPopupViewController:self.mainAddNewTagView animated:YES completion:^(void) {
         NSLog(@"mainAddNewTagView popup view presented");
     }];
@@ -349,12 +350,10 @@
     viewSlidePage.labelPageNum.text = [NSString stringWithFormat:@"第%ld页", (long)(index + 1)];
     
     viewSlidePage.slidePageName = currentPageName;
-    viewSlidePage.reViewController = self;
+    viewSlidePage.scanViewController = self;
     
-    NSString *thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:self.slide.dirName];
-    [viewSlidePage loadThumbnail: thumbnailPath];
-    // NSLog(@"%ld, %@", (long)index, thumbnailPath);
-    
+    viewSlidePage.thumbnailPath = [FileUtils slideThumbnail:self.slideID PageID:currentPageName Dir:self.slide.dirName];
+
     // enter display view when double click
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionJumpToDisplay:)];
     tapGesture.numberOfTapsRequired = 2;
@@ -364,10 +363,12 @@
     [viewSlidePage.btnMask setTag:index];
     [viewSlidePage.btnMask addGestureRecognizer:tapGesture];
     
+    cell.delegate = viewSlidePage;
     [cell setContentView:viewSlidePage];
-    if(self.selectState) { [cell setSelected:NO]; }
     
-    
+    if(self.selectState) {
+        [cell setSelected:NO];
+    }
     
     return cell;
 }
@@ -517,5 +518,11 @@
 -(NSUInteger)supportedInterfaceOrientations{
     return UIInterfaceOrientationMaskLandscape;
 }
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    //scrollView.contentOffset.y;
+}
+
 @end
 
