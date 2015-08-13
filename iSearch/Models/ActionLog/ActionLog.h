@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSString *localUpdatedDate;
 
 // instance methods
-- (NSMutableArray *)records;
+- (NSArray *)records;
 /**
  *  操作记录
  *

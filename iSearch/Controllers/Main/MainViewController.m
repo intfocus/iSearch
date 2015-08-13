@@ -37,7 +37,6 @@
 @property(nonatomic,strong) UINavigationController *settingViewController;
 @property(nonatomic,strong) DisplayViewController *displayViewController;
 @property(nonatomic,strong) NotificationDetailView *notificationDetailView;
-//@property(nonatomic,strong) ReViewController *reViewController;
 @property (weak, nonatomic) IBOutlet UIView *coverView;
 
 // 头像设置
@@ -72,7 +71,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if([HttpUtils isNetworkAvailable]) {
             [ActionLog syncRecords];
         }

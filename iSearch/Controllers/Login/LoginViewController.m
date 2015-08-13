@@ -77,7 +77,6 @@
     self.user = [[User alloc] init];
     self.labelPropmt.text = @"";
     self.webViewLogin.delegate = self;
-    self.popupText = @"跳转至SSO";
     [self hideOutsideLoginControl:YES];
     
     // CWPopup 事件
@@ -92,10 +91,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // 跳转SSO界面，返回后，再登录
+    self.popupText = @"跳转至SSO";
     
-//    if([HttpUtils isNetworkAvailable]) {
-//        [self checkAppVersionUpgrade];
-//    }
+    if([HttpUtils isNetworkAvailable]) {
+        [self checkAppVersionUpgrade];
+    }
 }
 
 #pragma mark memory management
@@ -159,9 +160,9 @@
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         
-        self.cookieValue = @"nm6586tst";//@"E9998";//@"E99658603";
-        [self actionOutsideLoginSuccessfully];
-        return;
+//        self.cookieValue = @"nm6586tst";//@"E9998";//@"E99658603";
+//        [self actionOutsideLoginSuccessfully];
+//        return;
         
         [self actionClearCookies];
         [self actionOutsideLoginRefresh];

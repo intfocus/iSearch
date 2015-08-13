@@ -32,7 +32,7 @@
  *
  *  @return <#return value description#>
  */
-- (NSMutableArray *)records {
+- (NSArray *)records {
     return [self.databaseUtils actionLogs];
 }
 

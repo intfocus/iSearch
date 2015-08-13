@@ -75,7 +75,7 @@
 @property (nonatomic, strong) MBProgressHUD *hud;
 @property (nonatomic, strong) NSMutableArray *dataList;
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
-@property (nonatomic, nonatomic) ScanViewController *reViewController;
+@property (nonatomic, nonatomic) ScanViewController *scanViewController;
 @property (weak, nonatomic) IBOutlet UIView *leftTimeView;
 @property (weak, nonatomic) IBOutlet UILabel *leftTimeLabel;
 
@@ -668,11 +668,11 @@
         [FileUtils writeJSON:configDict Into:configPath];
         
         // 界面跳转至文档页面编辑界面
-        if(!self.reViewController) {
-            self.reViewController = [[ScanViewController alloc] init];
-            self.reViewController.masterViewController = self;
+        if(!self.scanViewController) {
+            self.scanViewController = [[ScanViewController alloc] init];
+            self.scanViewController.masterViewController = self;
         }
-        [self presentViewController:self.reViewController animated:NO completion:nil];
+        [self presentViewController:self.scanViewController animated:NO completion:nil];
         
     });
 }
@@ -842,29 +842,13 @@
         }];
     }
 }
--(void)dismissReViewController {
-    if(self.reViewController) {
-        [self.reViewController dismissViewControllerAnimated:NO completion:^{
-            _reViewController = nil;
-            NSLog(@"dismiss present view ReViewController.");
+-(void)dismissScanViewController {
+    if(self.scanViewController) {
+        [self.scanViewController dismissViewControllerAnimated:NO completion:^{
+            _scanViewController = nil;
+            NSLog(@"dismiss present view ScanViewController.");
         }];
     }
 }
 
-#pragma mark - present view ReViewController
-//- (void)presentViewReViewController {
-//    if(!self.reViewController) {
-//        self.reViewController = [[ReViewController alloc] init];
-//        self.reViewController.masterViewController = self;
-//    }
-//    [self presentViewController:self.reViewController animated:NO completion:nil];
-//}
-//- (void)dismissViewReViewController {
-//    if(self.reViewController) {
-//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
-//            _reViewController = nil;
-//            NSLog(@"dismiss ReViewController.");
-//        }];
-//    }
-//}
 @end

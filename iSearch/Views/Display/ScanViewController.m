@@ -119,7 +119,7 @@
     [self.btnNavRefresh addTarget:self action:@selector(actionRefresh:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavRestore addTarget:self action:@selector(actionRestore:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavSaveTo addTarget:self action:@selector(actionSaveTo:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnNavDismiss addTarget:self action:@selector(actionDismissReViewController:) forControlEvents:UIControlEventTouchUpInside];
+    [self.btnNavDismiss addTarget:self action:@selector(actionDismissScanViewController:) forControlEvents:UIControlEventTouchUpInside];
     [self.btnNavRemove addTarget:self action:@selector(actionRemovePages:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -205,14 +205,14 @@
  *  bad方法: copy then remove or move; 各种问题
  *  @param gesture UIGestureRecognizer
  */
-- (IBAction)actionDismissReViewController:(UIButton *)sender {
+- (IBAction)actionDismissScanViewController:(UIButton *)sender {
     NSMutableDictionary *slideDictSwp = [NSMutableDictionary dictionaryWithDictionary:[self.slide dictSwp]];
     if(![slideDictSwp[SLIDE_DESC_ORDER] isEqualToArray:_dataList]) {
         slideDictSwp[SLIDE_DESC_ORDER] = _dataList;
         [self writeJSON:slideDictSwp Into:[self.slide dictSwpPath]];
     }
 
-    [self performSelector:@selector(dismissReViewController)];
+    [self performSelector:@selector(dismissScanViewController)];
 }
 
 
@@ -297,9 +297,9 @@
 }
 
 
--(void)dismissReViewController {
+-(void)dismissScanViewController {
     [self performSelector:@selector(dismissPopupAddToTag)];
-    [self.masterViewController dismissReViewController];
+    [self.masterViewController dismissScanViewController];
 }
 - (void) dismissPopupAddToTag {
     if (self.popupViewController) {

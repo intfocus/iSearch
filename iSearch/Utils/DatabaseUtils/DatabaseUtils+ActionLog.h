@@ -17,7 +17,7 @@
  *
  *  @returnNSMutableArray
  */
-- (NSMutableArray *)actionLogs;
+- (NSArray *)actionLogs;
 
 /**
  *  update #deleted when remove slide
@@ -52,6 +52,13 @@
  */
 - (NSMutableArray *)unSyncRecords;
 - (void)updateSyncedRecords:(NSMutableArray *)IDS;
+
+/**
+ *  设置界面中用户信息显示，用以调试
+ *
+ *  @return 最近播放的文档数量/未同步的记录数量/当前个人记录数量/所有记录数量
+ */
+- (NSString *)localInfo;
 @end
 
 #endif

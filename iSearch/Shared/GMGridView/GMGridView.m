@@ -1472,10 +1472,10 @@ static const UIViewAnimationOptions kDefaultAnimationOptions = UIViewAnimationOp
             GMGridViewCell *cell = [self cellForItemAtIndex:positionToLoad];
             if (!cell) {
                 cell = [self newItemSubViewForPosition:positionToLoad];
+                [self addSubview:cell];
             }
             [cell activate];
             [cell setSelectState:self.selectState];
-            [self addSubview:cell];
         }
     }
 }

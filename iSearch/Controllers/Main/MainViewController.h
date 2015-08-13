@@ -44,9 +44,6 @@
 - (void)popupNotificationDetailView:(NSDictionary *)notification;
 - (void)dimmissPopupNotificationDetailView;
 
-//- (void)presentViewReViewController;
-//- (void)dismissViewReViewController;
-
 - (void)refreshRightViewController;
 
 - (void)setRightViewController:(UIViewController *)right withNav:(BOOL)hasNavigation;

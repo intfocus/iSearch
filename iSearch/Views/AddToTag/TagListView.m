@@ -105,7 +105,7 @@
 
 /**
  *  导航栏[完成]按钮；选中标签后，处理于激活状态.
- *  真正的物理操作逻辑在ReViewController中，so masterViewController is necessary!
+ *  真正的物理操作逻辑在ScanViewController中，so masterViewController is necessary!
  *
  *  @param sender UIBarButtonItem
  */
@@ -125,11 +125,11 @@
         Slide *slide = [Slide findByTitleInFavorited:slideTitle];
         
         MainAddNewTagView *masterView1 = [self masterViewController];
-        if([masterView1.fromViewControllerName isEqualToString:@"ReViewController"]) {
+        if([masterView1.fromViewControllerName isEqualToString:@"ScanViewController"]) {
             ScanViewController *masterView2 = (ScanViewController*)[masterView1 masterViewController];
             [masterView2 actionSavePagesAndMoveFiles:slide];
             if(masterView1.closeMainViewAfterDone) {
-                [masterView2 dismissReViewController];
+                [masterView2 dismissScanViewController];
             } else {
                 [masterView2 dismissPopupAddToTag];
             }
