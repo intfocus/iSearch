@@ -47,10 +47,10 @@
 }
 
 -(void)placeNewsTab{
-    NewsListTabView *tab=(id)[ViewUtils loadNibClass:[NewsListTabView class]];
+    NewsListTabView *tab= (id)[ViewUtils loadNibClass:[NewsListTabView class]];
     tab.sideViewController = self;
     [self.view addSubview:tab];
-    self.newsTabView=tab;
+    self.newsTabView = tab;
 }
 
 -(void)placeEntryButton{
@@ -115,6 +115,7 @@
             
         case EntryButtonNotification:
             vc=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
+            [self.newsTabView reloadTableView];
             break;
             
         case EntryButtonDownload:

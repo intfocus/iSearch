@@ -63,8 +63,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewCalendar;                // 全部显示时，会隐藏掉日历控件
 @property (nonatomic, nonatomic) IBOutlet UIBarButtonItem *barItemTMP;
 @property (strong, nonatomic) NSMutableDictionary *dataList; // 通告预告混合数据
-@property (strong, nonatomic) NSMutableArray *dataListOne;   // 通告数据列表
-@property (strong, nonatomic) NSMutableArray *dataListTwo;   // 预告数据列表
+@property (strong, nonatomic) NSArray *dataListOne;   // 通告数据列表
+@property (strong, nonatomic) NSArray *dataListTwo;   // 预告数据列表
 @property (strong, nonatomic) NSMutableArray *dataListTwoDate; // 预告列表日期去重，为日历控件加效果时使用
 @property (strong, nonatomic) NSNumber *widthOne;
 @property (strong, nonatomic) NSNumber *widthTwo;
@@ -159,7 +159,6 @@
         self.widthTwo = [NSNumber numberWithFloat:self.viewCalendar.bounds.size.width - 16 - 8 - 5];
         self.widthOne = [NSNumber numberWithFloat:(self.view.bounds.size.width-self.viewCalendar.bounds.size.width) - 16 - 8 - 5];
     }
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -178,9 +177,7 @@
     else {
         [mainViewController showLeftView];
         [self.barItemTMP setTitle:@"<<"];
-        
     }
-    
 }
 
 - (void)configCalendar {
@@ -281,10 +278,13 @@
             [self.dataListTwoDate addObject:occurDate];
     }];
     
+    NSSortDescriptor *descriptor;
     // 公告通知按created_date升序
-    self.dataListOne = [NSMutableArray arrayWithArray:[self.dataListOne sortBy:NOTIFICATION_FIELD_CREATEDATE]];
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:NO];
+    self.dataListOne = [self.dataListOne sortedArrayUsingDescriptors:@[descriptor]];
     // 预告通知按occur_date升序
-    self.dataListTwo = [NSMutableArray arrayWithArray:[self.dataListTwo sortBy:NOTIFICATION_FIELD_OCCURDATE]];
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
+    self.dataListTwo = [self.dataListTwo sortedArrayUsingDescriptors:@[descriptor]];
 }
 #pragma mark - JTCalendarDataSource
 /**
