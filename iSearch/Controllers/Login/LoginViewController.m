@@ -39,6 +39,7 @@
 #import "DateUtils.h"
 #import "FileUtils.h"
 #import "ApiHelper.h"
+#import "ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 
@@ -160,9 +161,9 @@
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         
-//        self.cookieValue = @"nm6586tst";//@"E9998";//@"E99658603";
-//        [self actionOutsideLoginSuccessfully];
-//        return;
+        self.cookieValue = @"nm6586tst";//@"E9998";//@"E99658603";
+        [self actionOutsideLoginSuccessfully];
+        return;
         
         [self actionClearCookies];
         [self actionOutsideLoginRefresh];
@@ -380,6 +381,11 @@
         [self downloadCategoryThumbnail:array[0] dir:array[1] SlideID:array[3]];
          [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     }
+    
+    self.labelPropmt.text = @"上传本地记录...";
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [ActionLog syncRecords];
+
     
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
