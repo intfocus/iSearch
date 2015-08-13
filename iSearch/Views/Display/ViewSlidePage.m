@@ -29,7 +29,9 @@
 
 - (void)activate {
     NSLog(@"activate: %@", labelPageNum.text);
-    [self.thumbnail setImage:[UIImage imageWithContentsOfFile:self.thumbnailPath]];
+    UIImage *image = [UIImage imageWithContentsOfFile:self.thumbnailPath];
+    image = [self imageWithImage:image scaledToSize:CGSizeMake(213,187)];
+    [self.thumbnail setImage:image];
 }
 
 - (void)deactivate {
@@ -40,5 +42,17 @@
 
 - (void)coverUserInterface:(NSNumber *)selectState {
     self.btnMask.enabled = ![selectState boolValue];
+}
+
+#pragma mark - asisstant methods
+- (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize {
+    //UIGraphicsBeginImageContext(newSize);
+    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+    // Pass 1.0 to force exact pixel size.
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 @end

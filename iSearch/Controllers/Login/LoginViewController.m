@@ -373,9 +373,10 @@
 
 -(void)enterMainViewController {
     
-    for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
-                            @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],
-                            @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", FAVORITE_DIRNAME,@"使用手册2", @"999155"]]) {
+    for(NSArray *array in @[
+      @[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
+      @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],
+      @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", FAVORITE_DIRNAME,@"使用手册2", @"999155"]]) {
         
         self.labelPropmt.text = [NSString stringWithFormat:@"下载<%@>...", array[2]];
         [self downloadCategoryThumbnail:array[0] dir:array[1] SlideID:array[3]];

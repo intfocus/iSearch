@@ -101,7 +101,6 @@
 
 
 - (void)actionDisplaySlide{
-    //  this slide display or not;
     if(!self.slide.isDisplay) {
         self.slide.isDisplay = YES;
         [self.slide save];
@@ -185,7 +184,7 @@
  *
  *  @param urlString 下载zip链接
  */
-- (void) downloadZip:(NSURL *)url {
+- (void)downloadZip:(NSURL *)url {
     [self.slide toDownloaded];
     
     NSURLRequest *request       = [NSURLRequest requestWithURL:url];
