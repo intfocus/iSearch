@@ -161,9 +161,9 @@
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
         
-        self.cookieValue = @"nm6586tst-03";//@"E9998";//@"E99658603";
-        [self actionOutsideLoginSuccessfully];
-        return;
+//        self.cookieValue = @"nm6586tst-03";//@"E9998";//@"E99658603";
+//        [self actionOutsideLoginSuccessfully];
+//        return;
         
         [self actionClearCookies];
         [self actionOutsideLoginRefresh];

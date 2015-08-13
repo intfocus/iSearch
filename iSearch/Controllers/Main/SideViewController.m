@@ -115,7 +115,7 @@
             
         case EntryButtonNotification:
             vc=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
-            [self.newsTabView reloadTableView];
+            [self.newsTabView refreshData];
             break;
             
         case EntryButtonDownload:

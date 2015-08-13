@@ -11,5 +11,7 @@
 
 @interface NewsListTabView : UIView
 @property(nonatomic,weak)SideViewController *sideViewController;
-- (void)reloadTableView;
+
+
+- (void)refreshData;
 @end

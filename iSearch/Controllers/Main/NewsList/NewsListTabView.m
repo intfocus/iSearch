@@ -36,8 +36,6 @@
     [self.listView registerNib:nib forCellReuseIdentifier:@"news"];
     
     [self refreshData];
-
-    [self onTabClick:self.tabView];
 }
 
 
@@ -53,12 +51,10 @@
     // 预告通知按occur_date升序
     descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
     self.dataListTwo = [self.dataListTwo sortedArrayUsingDescriptors:@[descriptor]];
+    
+    [self onTabClick:self.tabView];
 }
 
-- (void)reloadTableView {
-    [self refreshData];
-    [self.listView reloadData];
-}
 //#warning 点击之后刷新新闻
 -(IBAction)onTabClick:(id)sender{
 //    NSString *oneItem = @"第二季度PBL产品知识培训将于4/25日开始，欢迎各区代码参加。";
