@@ -120,9 +120,6 @@
                                   CategoryID:(NSString *)categoryID
                                         View:(UIView *)view {
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
-    
-    // 无网络直接返回空值
-    if(![HttpUtils isNetworkAvailable]) { return mutableArray; }
 
     HttpResponse *httpResponse = [[HttpResponse alloc] init];
     if([type isEqualToString:CONTENT_CATEGORY]) {
@@ -130,9 +127,8 @@
     } else if([type isEqualToString:CONTENT_SLIDE]) {
         httpResponse = [ApiHelper slides:categoryID DeptID:deptID];
     }
-    if(![httpResponse isValid]) {
-        [ViewUtils showPopupView:view Info:[httpResponse.errors componentsJoinedByString:@"\n"]];
-    } else {
+    
+    if([httpResponse isValid]) {
         NSMutableDictionary *responseJSON = httpResponse.data;
         
         if(responseJSON[CONTENT_FIELD_DATA]) {
@@ -150,6 +146,8 @@
         }
         // local cache
         [CacheHelper writeContents:responseJSON Type:type ID:categoryID];
+    } else {
+        [ViewUtils showPopupView:view Info:[httpResponse.errors componentsJoinedByString:@"\n"]];
     }
 
     return mutableArray;
@@ -181,7 +179,9 @@
  */
 + (NSMutableArray *)actionLog:(NSMutableArray *)unSyncRecords {
     NSMutableArray *IDS = [[NSMutableArray alloc] init];
-    if([unSyncRecords count] == 0) { return IDS; }
+    if([unSyncRecords count] == 0) {
+        return IDS;
+    }
 
     NSString *ID;
     HttpResponse *httpResponse;
@@ -189,11 +189,12 @@
         ID = dict[@"id"]; [dict removeObjectForKey:@"id"];
         @try {
             httpResponse = [ApiHelper actionLog:dict];
-            if([httpResponse isSuccessfullyPostActionLog]) { [IDS addObject:ID]; }
+            if([httpResponse isSuccessfullyPostActionLog]) {
+                [IDS addObject:ID];
+            }
         } @catch (NSException *exception) {
             NSLog(@"sync action log(%@) faild for %@#%@\n %@", dict, exception.name, exception.reason);
         } @finally {
-            [IDS addObject:ID];
         }
     }
     

@@ -61,6 +61,7 @@
  *  @return 服务器响应信息
  */
 + (HttpResponse *)actionLog:(NSMutableDictionary *)params {
+    params[@"AppName"] = @"iSearch";
     return [HttpUtils httpPost:[Url actionLog] Params:params];
 }
 

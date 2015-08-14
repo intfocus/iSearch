@@ -21,7 +21,7 @@
 
 @interface ThreeViewController ()<GMGridViewDataSource> {
     __gm_weak GMGridView *_gmGridView;
-    NSMutableArray       *_dataList;
+    NSArray       *_dataList;
 }
 @property (strong, nonatomic) ActionLog *actionLog;
 @end
@@ -33,7 +33,7 @@
     /**
      * 实例变量初始化
      */
-    _dataList  = [[NSMutableArray alloc] init];
+    _dataList  = [[NSArray alloc] init];
     _actionLog = [[ActionLog alloc] init];
     [self configGMGridView];
 }
@@ -41,8 +41,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [_dataList removeAllObjects];
-
     _dataList = [self.actionLog records];
     [_gmGridView reloadData];
 }
@@ -96,7 +94,6 @@
 // GridViewCell界面 - 目录界面
 - (GMGridViewCell *)GMGridView:(GMGridView *)gridView cellForItemAtIndex:(NSInteger)index {
     GMGridViewCell *cell = [gridView dequeueReusableCell];
-    
     if (!cell) {
         cell = [[GMGridViewCell alloc] init];
     }

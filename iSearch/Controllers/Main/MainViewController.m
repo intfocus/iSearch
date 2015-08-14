@@ -16,9 +16,10 @@
 
 #import "const.h"
 #import "FileUtils.h"
+#import "ActionLog.h"
+#import "MainEntryButton.h"
 #import "ExtendNSLogFunctionality.h"
 #import <TWRDownloadManager/TWRDownloadManager.h>
-#import "ActionLog.h"
 
 #import "SlideInfoView.h"
 #import "UIViewController+CWPopup.h"
@@ -36,7 +37,6 @@
 @property(nonatomic,strong) UINavigationController *settingViewController;
 @property(nonatomic,strong) DisplayViewController *displayViewController;
 @property(nonatomic,strong) NotificationDetailView *notificationDetailView;
-//@property(nonatomic,strong) ReViewController *reViewController;
 @property (weak, nonatomic) IBOutlet UIView *coverView;
 
 // 头像设置
@@ -66,14 +66,6 @@
     SideViewController *side     = (id)self.leftViewController;
     UIViewController *controller = [side viewControllerForTag:[self.btnEntrySelectedTag integerValue]];
     [self setRightViewController:controller withNav:YES];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    dispatch_sync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [ActionLog syncRecords];
-    });
 }
 
 - (void)refreshRightViewController {
@@ -175,6 +167,15 @@
         [self popupSettingViewController];
     } else {
         [self changeView:sender];
+    }
+    
+    @try {
+        MainEntryButton *entry = (MainEntryButton *)sender;
+        ActionLogRecordNavigate(entry.titleView.text);
+    }
+    @catch (NSException *exception) {
+    }
+    @finally {
     }
 }
 /**
@@ -363,5 +364,13 @@
         NSLog(@"Download completed!");
 
     } enableBackgroundMode:YES];
+}
+
+#pragma mark - supportedInterfaceOrientationsForWindow
+-(BOOL)shouldAutorotate{
+    return YES;
+}
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskLandscape;
 }
 @end

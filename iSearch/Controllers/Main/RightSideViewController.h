@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <ObjectiveSugar/ObjectiveSugar.h>
 
 @class MainViewController;
 

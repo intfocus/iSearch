@@ -47,10 +47,10 @@
 }
 
 -(void)placeNewsTab{
-    NewsListTabView *tab=(id)[ViewUtils loadNibClass:[NewsListTabView class]];
+    NewsListTabView *tab= (id)[ViewUtils loadNibClass:[NewsListTabView class]];
     tab.sideViewController = self;
     [self.view addSubview:tab];
-    self.newsTabView=tab;
+    self.newsTabView = tab;
 }
 
 -(void)placeEntryButton{
@@ -77,8 +77,8 @@
         offset+=CGRectGetHeight(entry.frame);
         [self.view addSubview:entry];
 
-        entry.tag=[array indexOfObject:title];
-        entry.titleView.text=title;
+        entry.tag = [array indexOfObject:title];
+        entry.titleView.text = title;
         entry.iconView.image = [UIImage imageNamed:images[entry.tag]];
         [entry addTarget:self.masterViewController action:@selector(onEntryClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.buttons addObject:entry];
@@ -115,6 +115,7 @@
             
         case EntryButtonNotification:
             vc=[[NotificationViewController alloc] initWithNibName:nil bundle:nil];
+            [self.newsTabView refreshData];
             break;
             
         case EntryButtonDownload:

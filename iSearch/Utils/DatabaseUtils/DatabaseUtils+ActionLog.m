@@ -74,54 +74,57 @@
     [self executeSQL:sql];
 }
 /**
- *  我的记录，需要使用的数据
+ *  我的记录，需要使用的数据, (最近15笔)
  *
  *  @returnNSMutableArray
  */
-- (NSMutableArray *)actionLogs {
+- (NSArray *)actionLogs {
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     
-    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, max(%@) from %@ \
+    NSString *sql = [NSString stringWithFormat:@"select distinct %@, %@, max(%@), max(id) from %@ \
                      where %@ = '%@' and %@ = '%@' and %@ = 0    \
                      group by %@, %@                             \
+                     order by max(%@) desc                       \
                      limit 15;",
                      LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE, DB_COLUMN_CREATED, ACTIONLOG_TABLE_NAME,
                      LOCAL_COLUMN_ACTION, ACTION_DISPLAY, ACTIONLOG_COLUMN_UID, self.userID, ACTIONLOG_COLUMN_DELETED,
-                     LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE];
-    NSString *slideID, *slideType, *createdAt;
+                     LOCAL_COLUMN_SLIDE_ID, LOCAL_COLUMN_SLIDE_TYPE, DB_COLUMN_CREATED];
     
-    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
+    int ID;
+    NSString *slideID, *slideType, *createdAt;
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];\
+    
     if ([db open]) {
         FMResultSet *s = [db executeQuery:sql];
         while([s next]) {
             slideID   = [s stringForColumnIndex:0];
             slideType = [s stringForColumnIndex:1];
             createdAt = [s stringForColumnIndex:2];
+            ID        = [s intForColumnIndex:3];
             
             NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionaryWithCapacity:0];
             mutableDictionary[LOCAL_COLUMN_SLIDE_ID]   = slideID;
             mutableDictionary[LOCAL_COLUMN_SLIDE_TYPE] = slideType;
             mutableDictionary[DB_COLUMN_CREATED]       = createdAt;
+            mutableDictionary[@"id"]                   = [NSNumber numberWithInt:ID];
             
-            if([FileUtils checkSlideExist:slideID Dir:slideType Force:NO]) {
-                [mutableArray addObject: mutableDictionary];
-            } else {
-                NSLog(@"bug# should update deleted=1");
-            }
+            [mutableArray addObject: mutableDictionary];
+            //            if([FileUtils checkSlideExist:slideID Dir:slideType Force:NO]) {
+            //                [mutableArray addObject: mutableDictionary];
+            //            } else {
+            //                NSLog(@"bug# should update deleted=1");
+            //            }
         }
         [db close];
     } else {
         NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
     }
     
-    if([mutableArray count] > 0) {
-        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:DB_COLUMN_CREATED ascending:NO];
-        mutableArray = [NSMutableArray arrayWithArray:[mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]]];
-    }
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:DB_COLUMN_CREATED ascending:NO];
+    NSArray *array = [mutableArray sortedArrayUsingDescriptors:[NSArray arrayWithObjects:descriptor,nil]];
     
-    return mutableArray;
+    return array;
 }
-
 /**
  *  未同步数据到服务器的数据列表
  *
@@ -186,6 +189,60 @@
                            ACTIONLOG_COLUMN_ISSYNC,
                            [IDS componentsJoinedByString:@","]];
     [self executeSQL:updateSQL];
+    
+    [self clearSyncedRecords];
+}
+/**
+ *  删除已上传数据只留播放文档的最近15方记录
+ */
+- (void)clearSyncedRecords {
+    NSMutableArray *IDS = [NSMutableArray array];
+    for(NSMutableDictionary *dict in [self actionLogs]) {
+        [IDS addObject:dict[@"id"]];
+    }
+    
+    if ([IDS count] > 0) {
+        NSString *deleteSQL = [NSString stringWithFormat:@"delete from action_logs where is_synced = 1 and id not in (%@)", [IDS componentsJoinedByString:@","]];
+        
+        [self executeSQL:deleteSQL];
+    }
 }
 
+- (int)recordCount:(BOOL)isAll {
+    NSString *sql = [NSString stringWithFormat:@"select count(id) from %@ ",ACTIONLOG_TABLE_NAME];
+    
+    if(isAll) {
+        sql = [NSString stringWithFormat:@"%@ ;", sql];
+    }
+    else {
+        sql = [NSString stringWithFormat:@"%@ where %@ = '%@' ;", sql, ACTIONLOG_COLUMN_UID, self.userID];
+    }
+    
+    int count = -1;
+    FMDatabase *db = [FMDatabase databaseWithPath:self.dbPath];
+    if ([db open]) {
+        FMResultSet *s = [db executeQuery:sql];
+        while([s next]) {
+            count = [s intForColumnIndex:0];
+        }
+        [db close];
+    } else {
+        NSLog(@"%@", [NSString stringWithFormat:@"DatabaseUtils#executeSQL \n%@", sql]);
+    }
+    return count;
+}
+
+/**
+ *  设置界面中用户信息显示，用以调试
+ *
+ *  @return 最近播放的文档数量/未同步的记录数量/当前个人记录数量/所有记录数量
+ */
+- (NSString *)localInfo {
+    NSInteger count1 = [[self actionLogs] count];
+    NSInteger count2 = [[self unSyncRecords] count];
+    int count3 = [self recordCount:NO];
+    int count4 = [self recordCount:YES];
+    
+    return [NSString stringWithFormat:@"%li/%li/%i/%i", (long)count1, (long)count2, count3, count4];
+}
 @end

@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSString *localUpdatedDate;
 
 // instance methods
-- (NSMutableArray *)records;
+- (NSArray *)records;
 /**
  *  操作记录
  *
@@ -36,6 +36,7 @@
  */
 - (void)recordSlide:(Slide*)slide Action:(NSString *)action;
 - (void)syncRecords;
+
 
 // class methods
 + (void)recordSlide:(Slide*)slide Action:(NSString *)action;

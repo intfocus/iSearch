@@ -111,4 +111,14 @@ int(^plusOne)(int) = ^(int param) {
     XCTAssertEqual(plusOne(1), 2);
 }
 
+#pragma mark - NSMutableSet
+
+- (void)testSetAnyObject {
+    NSMutableSet *set = [NSMutableSet set];
+    [set addObject:@1];
+    [set addObject:@2];
+    [set addObject:@3];
+    [set addObject:@4];
+}
+
 @end

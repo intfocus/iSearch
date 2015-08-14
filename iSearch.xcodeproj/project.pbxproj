@@ -37,6 +37,7 @@
 		C4A579E81B61FBE70093C98A /* HttpUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */; };
 		C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB21B57A4B800136887 /* BaseModelTest.m */; };
 		C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C18BB41B57AA5500136887 /* JayPlayTest.m */; };
+		C4C403491B7B3F7300A331F6 /* DSL.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C403481B7B3F7300A331F6 /* DSL.m */; };
 		C4D168671B686281002921C1 /* NSPredicateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D168661B686281002921C1 /* NSPredicateTest.m */; };
 		C4E3CCDE1B184E530067B762 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCDD1B184E530067B762 /* main.m */; };
 		C4E3CCE11B184E530067B762 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E3CCE01B184E530067B762 /* AppDelegate.m */; };
@@ -94,8 +95,8 @@
 		C4E76A7E1B5356AE000D6A2B /* ViewSlide.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76A591B5356AE000D6A2B /* ViewSlide.xib */; };
 		C4E76A7F1B5356AE000D6A2B /* DisplayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76A5C1B5356AE000D6A2B /* DisplayViewController.m */; };
 		C4E76A801B5356AE000D6A2B /* DisplayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76A5D1B5356AE000D6A2B /* DisplayViewController.xib */; };
-		C4E76A811B5356AE000D6A2B /* ReViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76A5F1B5356AE000D6A2B /* ReViewController.m */; };
-		C4E76A821B5356AE000D6A2B /* ReViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76A601B5356AE000D6A2B /* ReViewController.xib */; };
+		C4E76A811B5356AE000D6A2B /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76A5F1B5356AE000D6A2B /* ScanViewController.m */; };
+		C4E76A821B5356AE000D6A2B /* ScanViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76A601B5356AE000D6A2B /* ScanViewController.xib */; };
 		C4E76A831B5356AE000D6A2B /* ViewSlidePage.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76A621B5356AE000D6A2B /* ViewSlidePage.m */; };
 		C4E76A841B5356AE000D6A2B /* ViewSlidePage.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76A631B5356AE000D6A2B /* ViewSlidePage.xib */; };
 		C4E76A851B5356AE000D6A2B /* ViewUpgrade.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76A661B5356AE000D6A2B /* ViewUpgrade.m */; };
@@ -126,6 +127,7 @@
 		C4E76AC01B53BF6A000D6A2B /* NewsListTabView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76AB61B53BF6A000D6A2B /* NewsListTabView.xib */; };
 		C4E76AC11B53BF6A000D6A2B /* UserHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4E76AB91B53BF6A000D6A2B /* UserHeadView.m */; };
 		C4E76AC21B53BF6A000D6A2B /* UserHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C4E76ABA1B53BF6A000D6A2B /* UserHeadView.xib */; };
+		C4FB01B01B74FBB00059364E /* DSLTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FB01AF1B74FBB00059364E /* DSLTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,13 +137,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = C4E3CCD71B184E520067B762;
 			remoteInfo = iSearch;
-		};
-		C4E769F11B5355F7000D6A2B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4E768ED1B5355F7000D6A2B /* GMGridView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 78509312149FAC2E000787E4;
-			remoteInfo = GMGridView;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -184,6 +179,8 @@
 		C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpUtilsTest.m; sourceTree = "<group>"; };
 		C4C18BB21B57A4B800136887 /* BaseModelTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseModelTest.m; sourceTree = "<group>"; };
 		C4C18BB41B57AA5500136887 /* JayPlayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JayPlayTest.m; sourceTree = "<group>"; };
+		C4C403471B7B3F7300A331F6 /* DSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSL.h; sourceTree = "<group>"; };
+		C4C403481B7B3F7300A331F6 /* DSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSL.m; sourceTree = "<group>"; };
 		C4D168661B686281002921C1 /* NSPredicateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPredicateTest.m; sourceTree = "<group>"; };
 		C4E3CCD81B184E520067B762 /* iSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4E3CCDC1B184E520067B762 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -198,7 +195,6 @@
 		C4E768EA1B5355F7000D6A2B /* GMGridView-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridView-Constants.h"; sourceTree = "<group>"; };
 		C4E768EB1B5355F7000D6A2B /* GMGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridView.h; sourceTree = "<group>"; };
 		C4E768EC1B5355F7000D6A2B /* GMGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridView.m; sourceTree = "<group>"; };
-		C4E768ED1B5355F7000D6A2B /* GMGridView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = GMGridView.xcodeproj; sourceTree = "<group>"; };
 		C4E768F01B5355F7000D6A2B /* GMGridViewCell+Extended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GMGridViewCell+Extended.h"; sourceTree = "<group>"; };
 		C4E768F11B5355F7000D6A2B /* GMGridViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GMGridViewCell.h; sourceTree = "<group>"; };
 		C4E768F21B5355F7000D6A2B /* GMGridViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GMGridViewCell.m; sourceTree = "<group>"; };
@@ -285,9 +281,9 @@
 		C4E76A5B1B5356AE000D6A2B /* DisplayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayViewController.h; sourceTree = "<group>"; };
 		C4E76A5C1B5356AE000D6A2B /* DisplayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayViewController.m; sourceTree = "<group>"; };
 		C4E76A5D1B5356AE000D6A2B /* DisplayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayViewController.xib; sourceTree = "<group>"; };
-		C4E76A5E1B5356AE000D6A2B /* ReViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReViewController.h; sourceTree = "<group>"; };
-		C4E76A5F1B5356AE000D6A2B /* ReViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReViewController.m; sourceTree = "<group>"; };
-		C4E76A601B5356AE000D6A2B /* ReViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReViewController.xib; sourceTree = "<group>"; };
+		C4E76A5E1B5356AE000D6A2B /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
+		C4E76A5F1B5356AE000D6A2B /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
+		C4E76A601B5356AE000D6A2B /* ScanViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScanViewController.xib; sourceTree = "<group>"; };
 		C4E76A611B5356AE000D6A2B /* ViewSlidePage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewSlidePage.h; sourceTree = "<group>"; };
 		C4E76A621B5356AE000D6A2B /* ViewSlidePage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewSlidePage.m; sourceTree = "<group>"; };
 		C4E76A631B5356AE000D6A2B /* ViewSlidePage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewSlidePage.xib; sourceTree = "<group>"; };
@@ -334,6 +330,7 @@
 		C4E76AB81B53BF6A000D6A2B /* UserHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserHeadView.h; sourceTree = "<group>"; };
 		C4E76AB91B53BF6A000D6A2B /* UserHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserHeadView.m; sourceTree = "<group>"; };
 		C4E76ABA1B53BF6A000D6A2B /* UserHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeadView.xib; sourceTree = "<group>"; };
+		C4FB01AF1B74FBB00059364E /* DSLTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSLTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -410,6 +407,9 @@
 			children = (
 				C40ECC0E1B55F8BF0083A428 /* ApiHelperTest.m */,
 				C4A579E71B61FBE70093C98A /* HttpUtilsTest.m */,
+				C4FB01AF1B74FBB00059364E /* DSLTest.m */,
+				C4C403471B7B3F7300A331F6 /* DSL.h */,
+				C4C403481B7B3F7300A331F6 /* DSL.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -547,7 +547,6 @@
 				C4E768EA1B5355F7000D6A2B /* GMGridView-Constants.h */,
 				C4E768EB1B5355F7000D6A2B /* GMGridView.h */,
 				C4E768EC1B5355F7000D6A2B /* GMGridView.m */,
-				C4E768ED1B5355F7000D6A2B /* GMGridView.xcodeproj */,
 				C4E768F01B5355F7000D6A2B /* GMGridViewCell+Extended.h */,
 				C4E768F11B5355F7000D6A2B /* GMGridViewCell.h */,
 				C4E768F21B5355F7000D6A2B /* GMGridViewCell.m */,
@@ -559,14 +558,6 @@
 				C4E768F81B5355F7000D6A2B /* UIView+GMGridViewAdditions.m */,
 			);
 			path = GMGridView;
-			sourceTree = "<group>";
-		};
-		C4E768EE1B5355F7000D6A2B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C4E769F21B5355F7000D6A2B /* libGMGridView.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C4E768F91B5355F7000D6A2B /* Images */ = {
@@ -863,9 +854,9 @@
 				C4E76A5B1B5356AE000D6A2B /* DisplayViewController.h */,
 				C4E76A5C1B5356AE000D6A2B /* DisplayViewController.m */,
 				C4E76A5D1B5356AE000D6A2B /* DisplayViewController.xib */,
-				C4E76A5E1B5356AE000D6A2B /* ReViewController.h */,
-				C4E76A5F1B5356AE000D6A2B /* ReViewController.m */,
-				C4E76A601B5356AE000D6A2B /* ReViewController.xib */,
+				C4E76A5E1B5356AE000D6A2B /* ScanViewController.h */,
+				C4E76A5F1B5356AE000D6A2B /* ScanViewController.m */,
+				C4E76A601B5356AE000D6A2B /* ScanViewController.xib */,
 				C4E76A611B5356AE000D6A2B /* ViewSlidePage.h */,
 				C4E76A621B5356AE000D6A2B /* ViewSlidePage.m */,
 				C4E76A631B5356AE000D6A2B /* ViewSlidePage.xib */,
@@ -1070,12 +1061,6 @@
 			mainGroup = C4E3CCCF1B184E520067B762;
 			productRefGroup = C4E3CCD91B184E520067B762 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = C4E768EE1B5355F7000D6A2B /* Products */;
-					ProjectRef = C4E768ED1B5355F7000D6A2B /* GMGridView.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C4E3CCD71B184E520067B762 /* iSearch */,
@@ -1083,16 +1068,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		C4E769F21B5355F7000D6A2B /* libGMGridView.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libGMGridView.a;
-			remoteRef = C4E769F11B5355F7000D6A2B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C4E3CCD61B184E520067B762 /* Resources */ = {
@@ -1110,7 +1085,7 @@
 				C4E769AE1B5355F7000D6A2B /* HomeViewController.xib in Resources */,
 				C49BA7DB1B54C979001D9013 /* Info.plist in Resources */,
 				C4E769B61B5355F7000D6A2B /* LoginViewController.xib in Resources */,
-				C4E76A821B5356AE000D6A2B /* ReViewController.xib in Resources */,
+				C4E76A821B5356AE000D6A2B /* ScanViewController.xib in Resources */,
 				C4E769A21B5355F7000D6A2B /* thumbnailPageVideo.png in Resources */,
 				C4E76A861B5356AE000D6A2B /* ViewUpgrade.xib in Resources */,
 				C4E769CB1B5355F7000D6A2B /* OfflineViewController.xib in Resources */,
@@ -1208,7 +1183,7 @@
 				C4A4FDAF1B66228A00741BF3 /* SettingDataInfo.m in Sources */,
 				C4E76A191B535680000D6A2B /* ExtendNSLogFunctionality.m in Sources */,
 				C4E7699A1B5355F7000D6A2B /* GMGridViewLayoutStrategies.m in Sources */,
-				C4E76A811B5356AE000D6A2B /* ReViewController.m in Sources */,
+				C4E76A811B5356AE000D6A2B /* ScanViewController.m in Sources */,
 				C4E769A71B5355F7000D6A2B /* ContentViewController.m in Sources */,
 				C4E769C01B5355F7000D6A2B /* SideViewController.m in Sources */,
 				C4E769991B5355F7000D6A2B /* GMGridViewCell.m in Sources */,
@@ -1260,6 +1235,8 @@
 			files = (
 				C4C18BB31B57A4B800136887 /* BaseModelTest.m in Sources */,
 				C40ECC0F1B55F8BF0083A428 /* ApiHelperTest.m in Sources */,
+				C4FB01B01B74FBB00059364E /* DSLTest.m in Sources */,
+				C4C403491B7B3F7300A331F6 /* DSL.m in Sources */,
 				C4D168671B686281002921C1 /* NSPredicateTest.m in Sources */,
 				C4C18BB51B57AA5500136887 /* JayPlayTest.m in Sources */,
 				C49BA7E61B54CEF7001D9013 /* UrlTest.m in Sources */,

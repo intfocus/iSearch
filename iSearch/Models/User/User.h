@@ -33,6 +33,7 @@
 // instance methods
 - (void)save;
 - (void)writeInToPersonal;
+- (BOOL)isEverLogin;
 
 // class methods
 /**

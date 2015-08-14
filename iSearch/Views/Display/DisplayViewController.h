@@ -16,13 +16,13 @@
 }
 
 @property (nonatomic, nonatomic) MainViewController *masterViewController;
-@property (nonatomic, nonatomic) BOOL   presentReViewController; // 调出者
+@property (nonatomic, nonatomic) BOOL   presentScanViewController; // 调出者
 
 
 - (void)actionSavePagesAndMoveFiles:(Slide *)targetSlide;
 - (void)dismissDisplayViewController;
 - (void)dismissPopupAddToTag;
-- (void)dismissReViewController;
+- (void)dismissScanViewController;
 
 @end
 

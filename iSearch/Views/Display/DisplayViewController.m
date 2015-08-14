@@ -16,7 +16,7 @@
 #import "ViewSlide.h"
 #import "MainViewController.h"
 #import "MainAddNewTagView.h"
-#import "ReViewController.h"
+#import "ScanViewController.h"
 
 #import "const.h"
 #import "Slide.h"
@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnBlueNote;  // 笔记 - 蓝色
 @property (weak, nonatomic) IBOutlet UIButton *btnClearNote; // 消除笔记
 
+@property (weak, nonatomic) IBOutlet UISwitch *switchLastNextPage;  // 上一页、下一页显示
 @property (weak, nonatomic) IBOutlet UISwitch *switchLaser;  // 激光笔状态切换
 @property (weak, nonatomic) IBOutlet UISwitch *switchAutoPlay; // 自动播放状态
 @property (weak, nonatomic) IBOutlet UISwitch *switchLoopPlay; // 循环播放状态
@@ -74,7 +75,7 @@
 @property (nonatomic, strong) MBProgressHUD *hud;
 @property (nonatomic, strong) NSMutableArray *dataList;
 @property (nonatomic, nonatomic) MainAddNewTagView *mainAddNewTagView;
-@property (nonatomic, nonatomic) ReViewController *reViewController;
+@property (nonatomic, nonatomic) ScanViewController *scanViewController;
 @property (weak, nonatomic) IBOutlet UIView *leftTimeView;
 @property (weak, nonatomic) IBOutlet UILabel *leftTimeLabel;
 
@@ -123,13 +124,15 @@
     self.btnGreenNote.layer.cornerRadius    = 4;
     [self.viewEditPanel setHidden: true];
     
+    
     /**
      *  控件事件
      */
     [self.btnEditPanelSwitch setTag:SlideEditPanelShow]; // 当前状态是hidden，再点击就是Show操作
     [self.btnEditPanelSwitch addTarget:self action:@selector(actionToggleShowEditPanel:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view bringSubviewToFront:self.btnEditPanelSwitch];
     
-    [self.switchLaser setOn: false];
+    [self.switchLaser setOn: NO];
     [self.switchLaser addTarget:self action:@selector(actionChangeLaserSwitch:) forControlEvents:UIControlEventValueChanged];
     
     self.forbidCss = @"<style type='text/css'>          \
@@ -165,12 +168,12 @@
     // 默认循环播放关闭
     self.isLoopPlay        = NO;
     self.switchLoopPlay.on = NO;
-    [self.switchLoopPlay addTarget:self action:@selector(actionChangeSwithLoopPlay:) forControlEvents:UIControlEventValueChanged];
+    [self.switchLoopPlay addTarget:self action:@selector(actionChangeSwitchLoopPlay:) forControlEvents:UIControlEventValueChanged];
     
     // 默认自动播放关闭
     self.isAutoPlay        = NO;
     self.switchAutoPlay.on = NO;
-    [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwithAutoPlay:) forControlEvents:UIControlEventValueChanged];
+    [self.switchAutoPlay addTarget:self action:@selector(actionChangeSwitchAutoPlay:) forControlEvents:UIControlEventValueChanged];
     
     self.timeIntervalAutoPlay         = 10.0;
     self.timerCountDown               = [NSNumber numberWithLong:self.timeIntervalAutoPlay];
@@ -187,27 +190,25 @@
     self.leftTimeView.layer.borderColor   = [UIColor whiteColor].CGColor;
     self.leftTimeView.layer.borderWidth   = 1;
     self.leftTimeView.layer.masksToBounds = true;
-}
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    // 上一页、下一页默认显示
+    self.switchLastNextPage.on = YES;
+    [self.switchLastNextPage addTarget:self action:@selector(actionChangeSwitchLastNextPage:) forControlEvents:UIControlEventValueChanged];
     
     /**
      *  CWPopup 事件
      */
     self.useBlurForPopup = YES;
-    [self refreshCountDown];
-    
-    if(self.hud) { [self.hud removeFromSuperview]; }
-    
-    [self loadSlideInfo];
 }
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
+
+    [self refreshCountDown];
+    [self loadSlideInfo];
     [self stopNote];
     [self.switchLaser setOn:NO];
+    [self actionChangeLaserSwitch:self.switchLaser];
     
     [self checkLastNextPageBtnState];
     if([self.dataList count] > 0) {
@@ -282,11 +283,11 @@
         } else {
             htmlString = @" \
             <html>                         \
-            <body>                       \
-            <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
-            该页面为空.                \
-            </div>                     \
-            </body>                      \
+              <body>                       \
+                <div style = 'position:fixed;left:40%;top:40%;font-size:20px;'> \
+                  该页面为空.                \
+                </div>                     \
+              </body>                      \
             </html>";
         }
         NSURL *baseURL = [NSURL fileURLWithPath:self.slide.path];
@@ -315,7 +316,9 @@
     hud.margin                    = 10.f;
     hud.removeFromSuperViewOnHide = YES;
     
-    if(delay > 0.0) { [hud hide:YES afterDelay:delay]; }
+    if(delay > 0.0) {
+        [hud hide:YES afterDelay:delay];
+    }
     return hud;
 }
 
@@ -343,8 +346,8 @@
             self.viewColorChoice.hidden = YES;
             self.viewAutoPlay.hidden    = YES;
             self.btnEditPanelSwitch.layer.shadowOpacity = 0;
-            [self stopLaser];
-            [self stopNote];
+//            [self stopLaser];
+//            [self stopNote];
         }
             break;
             
@@ -366,7 +369,11 @@
  */
 - (void)actionChangeLaserSwitch:(UISwitch *)sender{
     if([sender isOn]){
+        // [涂鸦][上下页][激光笔]互斥
         [self stopNote];
+        [self.switchLastNextPage setOn:NO];
+        [self actionChangeSwitchLastNextPage:self.switchLastNextPage];
+        
         [self startLaser];
     } else {
         [self stopLaser];
@@ -377,7 +384,7 @@
  *
  *  @param sender UISwitch
  */
-- (void)actionChangeSwithAutoPlay:(UISwitch *)sender {
+- (void)actionChangeSwitchAutoPlay:(UISwitch *)sender {
     self.sliderAutoPlayInterval.enabled = [sender isOn];
     self.isAutoPlay                     = [sender isOn];
     self.leftTimeView.hidden = ![sender isOn];
@@ -387,7 +394,7 @@
  *
  *  @param sender UISwitch
  */
-- (void)actionChangeSwithLoopPlay:(UISwitch *)sender {
+- (void)actionChangeSwitchLoopPlay:(UISwitch *)sender {
     self.isLoopPlay = [sender isOn];
     [self checkLastNextPageBtnState];
 }
@@ -400,6 +407,23 @@
 - (void)actionChangeSlideAutoPlayInterval:(UISlider *)sender {
     self.labelAutoPlayInterval.text = [NSString stringWithFormat:@"间隔 %i 秒", (int)sender.value];
     self.leftTimeView.hidden = YES;
+}
+
+/**
+ *  上一页、下一页显示状态
+ *
+ *  @param sender UISwitch
+ */
+- (void)actionChangeSwitchLastNextPage:(UISwitch *)sender {
+    self.btnLastPage.hidden = ![sender isOn];
+    self.btnNextPage.hidden = ![sender isOn];
+    
+    // [涂鸦][上下页][激光笔]互斥
+    if([sender isOn]) {
+        [self stopNote];
+        [self.switchLaser setOn:NO];
+        [self actionChangeLaserSwitch:self.switchLaser];
+    }
 }
 
 /**
@@ -443,7 +467,7 @@
  *  自动播放状态，定时器执行操作
  */
 - (void)actionAutoPlayer {
-    if(!self.isAutoPlay) { return; }
+    if(!self.isAutoPlay) return;
     
     if(self.isLoopPlay ||
        (!self.isLoopPlay && [self.currentPageIndex intValue] < [self.dataList count]-1)) {
@@ -522,9 +546,12 @@
  *  @return void
  */
 -(IBAction)actionColorChoice:(UIButton*)sender{
-    // 关闭switch控件，并触发自身函数
+    // [涂鸦][上下页][激光笔]互斥
     [self.switchLaser setOn:NO];
-    [self stopLaser];
+    [self actionChangeLaserSwitch:self.switchLaser];
+    [self.switchLastNextPage setOn:NO];
+    [self actionChangeSwitchLastNextPage:self.switchLastNextPage];
+    
     [self startNote];
     self.paintView.paintColor           = sender.backgroundColor;
     self.btnColorSwitch.backgroundColor = sender.backgroundColor;
@@ -539,8 +566,8 @@
 - (void)stopNote {
     if(self.isDrawing) {
         [self.paintView removeFromSuperview];
-        self.isDrawing = !self.isDrawing;
         self.btnColorSwitch.backgroundColor = [UIColor whiteColor];
+        self.isDrawing = !self.isDrawing;
     }
     self.btnClearNote.enabled = NO;
 }
@@ -557,7 +584,7 @@
  *
  *  @param sender UIButton
  */
-- (IBAction)actionNextPage: (id)sender {
+- (IBAction)actionNextPage:(id)sender {
     [self stopNote];
     [self refreshCountDown];
     
@@ -583,7 +610,7 @@
  *
  *  @param sender UIButton
  */
-- (IBAction)actionLastPage: (id)sender {
+- (IBAction)actionLastPage:(id)sender {
     [self stopNote];
     [self refreshCountDown];
     
@@ -641,11 +668,11 @@
         [FileUtils writeJSON:configDict Into:configPath];
         
         // 界面跳转至文档页面编辑界面
-        if(!self.reViewController) {
-            self.reViewController = [[ReViewController alloc] init];
-            self.reViewController.masterViewController = self;
+        if(!self.scanViewController) {
+            self.scanViewController = [[ScanViewController alloc] init];
+            self.scanViewController.masterViewController = self;
         }
-        [self presentViewController:self.reViewController animated:NO completion:nil];
+        [self presentViewController:self.scanViewController animated:NO completion:nil];
         
     });
 }
@@ -718,27 +745,27 @@
 }
 - (void)enabledLastNextPageBtn:(UIButton *)sender
                        Enabeld:(BOOL)enabled {
-    if(enabled == sender.enabled) return;
-    
-    sender.enabled = enabled;
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
-    NSRange strRange = {0,[str length]};
-    if(enabled) {
-        [str removeAttribute:NSStrikethroughStyleAttributeName
-                       range:strRange];
-        
-    } else {
-        [str addAttribute:NSStrikethroughStyleAttributeName
-                    value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
-                    range:strRange];
-    }
-    [sender setAttributedTitle:str forState:UIControlStateNormal];
+//    if(enabled == sender.enabled) return;
+//    
+//    sender.enabled = enabled;
+//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:sender.titleLabel.text];
+//    NSRange strRange = {0,[str length]};
+//    if(enabled) {
+//        [str removeAttribute:NSStrikethroughStyleAttributeName
+//                       range:strRange];
+//        
+//    } else {
+//        [str addAttribute:NSStrikethroughStyleAttributeName
+//                    value:[NSNumber numberWithInteger:NSUnderlineStyleSingle]
+//                    range:strRange];
+//    }
+//    [sender setAttributedTitle:str forState:UIControlStateNormal];
 }
 
 /**
  *  core method
  */
-- (void) loadSlideInfo {
+- (void)loadSlideInfo {
     NSString *configPath = [FileUtils getPathName:CONFIG_DIRNAME FileName:CONTENT_CONFIG_FILENAME];
     NSMutableDictionary *configDict = [FileUtils readConfigFile:configPath];
     
@@ -815,29 +842,13 @@
         }];
     }
 }
--(void)dismissReViewController {
-    if(self.reViewController) {
-        [self.reViewController dismissViewControllerAnimated:NO completion:^{
-            _reViewController = nil;
-            NSLog(@"dismiss present view ReViewController.");
+-(void)dismissScanViewController {
+    if(self.scanViewController) {
+        [self.scanViewController dismissViewControllerAnimated:NO completion:^{
+            _scanViewController = nil;
+            NSLog(@"dismiss present view ScanViewController.");
         }];
     }
 }
 
-#pragma mark - present view ReViewController
-//- (void)presentViewReViewController {
-//    if(!self.reViewController) {
-//        self.reViewController = [[ReViewController alloc] init];
-//        self.reViewController.masterViewController = self;
-//    }
-//    [self presentViewController:self.reViewController animated:NO completion:nil];
-//}
-//- (void)dismissViewReViewController {
-//    if(self.reViewController) {
-//        [self.reViewController dismissViewControllerAnimated:NO completion:^{
-//            _reViewController = nil;
-//            NSLog(@"dismiss ReViewController.");
-//        }];
-//    }
-//}
 @end

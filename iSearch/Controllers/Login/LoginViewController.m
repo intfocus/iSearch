@@ -39,16 +39,17 @@
 #import "DateUtils.h"
 #import "FileUtils.h"
 #import "ApiHelper.h"
+#import "ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 #import "MainViewController.h"
 
 #import "SSZipArchive.h"
-#import "SCLAlertView.h"
 #import "AFNetworking.h"
 #import "UIViewController+CWPopup.h"
+#import <MBProgressHUD.h>
 #import "ViewUpgrade.h"
 
-@interface LoginViewController () <ViewUpgradeProtocol>
+@interface LoginViewController () <ViewUpgradeProtocol, UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnSubmit;
 @property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet UIWebView *webViewLogin;
@@ -62,6 +63,9 @@
 
 @property (strong, nonatomic) User *user;
 @property (nonatomic, nonatomic) NSInteger timerCount;
+
+@property (strong, nonatomic) MBProgressHUD  *progressHUD;
+@property (strong, nonatomic) NSString *popupText;
 @end
 
 @implementation LoginViewController
@@ -73,6 +77,7 @@
      */
     self.user = [[User alloc] init];
     self.labelPropmt.text = @"";
+    self.webViewLogin.delegate = self;
     [self hideOutsideLoginControl:YES];
     
     // CWPopup 事件
@@ -87,6 +92,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // 跳转SSO界面，返回后，再登录
+    self.popupText = @"跳转至SSO";
     
     if([HttpUtils isNetworkAvailable]) {
         [self checkAppVersionUpgrade];
@@ -140,35 +147,38 @@
 - (IBAction)actionOutsideLoginClose:(id)sender {
     [self hideOutsideLoginControl:YES];
     [self actionClearCookies];
+    
     if(self.timerReadCookie) {
         [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
     }
 }
 
 - (IBAction)actionSubmit:(id)sender {
     self.labelPropmt.text = @"";
-    
-//    self.cookieValue = @"nm6586tst";//@"E99658603";
-//    [self actionOutsideLoginSuccessfully];
-//    return;
-    
-    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable];
+
+    BOOL isNetworkAvailable = [HttpUtils isNetworkAvailable:10.0];
     NSLog(@"network is available: %@", isNetworkAvailable ? @"true" : @"false");
     if(isNetworkAvailable) {
+        
+//        self.cookieValue = @"nm6586tst-03";//@"E9998";//@"E99658603";
+//        [self actionOutsideLoginSuccessfully];
+//        return;
+        
         [self actionClearCookies];
+        [self actionOutsideLoginRefresh];
+        [self hideOutsideLoginControl:NO];
         [self actionOutsideLogin];
-    } else {
+    }
+    else {
         [self actionLoginWithoutNetwork];
     }
-    
 }
 
 #pragma mark - assistant methods
 
 #pragma mark - within network
 - (void)actionOutsideLogin {
-    [self actionOutsideLoginRefresh];
-    [self hideOutsideLoginControl:NO];
     if(!self.timerReadCookie || ![self.timerReadCookie isValid]) {
         self.timerReadCookie = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(actionReadCookieTimer) userInfo:nil repeats:YES];
     }
@@ -176,6 +186,14 @@
     [self.timerReadCookie fire];
 }
 
+
+- (void) actionClearCookies {
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    
+    for(NSHTTPCookie *cookie in [cookieJar cookies]) {
+        [cookieJar deleteCookie:cookie];
+    }
+}
 - (void)actionOutsideLoginRefresh {
     NSString *urlString = @"https://tsa-china.takeda.com.cn/uat/saml/sp/index.php?sso";
     NSURL *url = [NSURL URLWithString:urlString];
@@ -195,25 +213,30 @@
         }
     }
     if([cookieValue length] > 0) {
+        [self.timerReadCookie invalidate];
+        _timerReadCookie = nil;
+        [self actionClearCookies];
+        [self hideOutsideLoginControl:YES];
+        
         if([cookieValue isEqualToString:@"error000"]) {
             [self hideOutsideLoginControl:YES];
             [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:@"服务器登录失败" ButtonTitle:BTN_CONFIRM];
-        } else {
+        }
+        else {
             self.cookieValue = cookieValue;
             [self actionOutsideLoginSuccessfully];
         }
-        [self.timerReadCookie invalidate];
-        [self actionClearCookies];
     }
     self.timerCount++;
 }
 
-- (void) hideOutsideLoginControl:(BOOL)isHidden {
+- (void)hideOutsideLoginControl:(BOOL)isHidden {
     if(isHidden) {
         [self.view sendSubviewToBack:self.labelLoginTitle];
         [self.view sendSubviewToBack:self.webViewLogin];
         [self.view sendSubviewToBack:self.btnNavBack];
-    } else {
+    }
+    else {
         [self.view bringSubviewToFront:self.labelLoginTitle];
         [self.view bringSubviewToFront:self.webViewLogin];
         [self.view bringSubviewToFront:self.btnNavBack];
@@ -221,14 +244,6 @@
     self.webViewLogin.hidden = isHidden;
     self.labelLoginTitle.hidden = isHidden;
     self.btnNavBack.hidden = isHidden;
-}
-- (void) actionClearCookies {
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-
-    for (cookie in [cookieJar cookies]) {
-        [cookieJar deleteCookie:cookie];
-    }
 }
 
 - (void)actionOutsideLoginSuccessfully {
@@ -240,7 +255,8 @@
     HttpResponse *httpResponse = [ApiHelper login:self.cookieValue];
     if(![httpResponse isValid]) {
         [loginErrors addObjectsFromArray:httpResponse.errors];
-    } else {
+    }
+    else {
         NSMutableDictionary *responseDict = httpResponse.data;
         // 服务器交互成功
         NSString *responseResult = responseDict[LOGIN_FIELD_RESULT];
@@ -262,15 +278,18 @@
             [self.user writeInToPersonal];
             
             // 跳至主界面
+            ActionLogRecordLogin(@"successfully, online");
             [self enterMainViewController];
             return;
-        } else {
+        }
+        else {
             [loginErrors addObject:[NSString stringWithFormat:@"服务器提示:%@", psd(responseResult,@"")]];
         }
     }
 
-    if([loginErrors count])
+    if([loginErrors count]) {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[loginErrors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
+    }
     [self hideOutsideLoginControl:YES];
 }
 
@@ -286,13 +305,14 @@
     
     if(![errors count]) {
         // 跳至主界面
+        ActionLogRecordLogin(@"successfully, offline");
         [self enterMainViewController];
     // D.2 如果步骤D.1不符合，则弹出对话框显示错误信息
-    } else {
+    }
+    else {
         [ViewUtils simpleAlertView:self Title:ALERT_TITLE_LOGIN_FAIL Message:[errors componentsJoinedByString:@"\n"] ButtonTitle:BTN_CONFIRM];
     }
 }
-
 
 /**
  *  无网络环境时，检测是否符合离线登陆条件
@@ -303,8 +323,14 @@
  *
  *  @return 不符合离线登陆条件错误信息数组
  */
-- (NSMutableArray *) checkEnableLoginWithoutNetwork:(User *) user {
+- (NSMutableArray *)checkEnableLoginWithoutNetwork:(User *)user {
     NSMutableArray *errors = [[NSMutableArray alloc] init];
+    
+    if(!user.isEverLogin) {
+        [errors addObject:@"无网络，不登录"];
+        
+        return errors;
+    }
     
     // 上次登陆日期字符串转换成NSDate
     NSDate *lastDate    = [DateUtils strToDate:user.loginLast Format:LOGIN_DATE_FORMAT];
@@ -328,13 +354,13 @@
 }
 
 #pragma mark - status bar settings
-
 -(BOOL)prefersStatusBarHidden{
     return NO;
 }
 -(UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
+#pragma mark - supportedInterfaceOrientationsForWindow
 -(BOOL)shouldAutorotate{
     return YES;
 }
@@ -345,14 +371,21 @@
 #pragma mark - assistant methods
 
 -(void)enterMainViewController {
-    for(NSArray *array in @[@[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
-                            @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],
-                            @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", FAVORITE_DIRNAME,@"使用手册2", @"999155"]]) {
+    
+    for(NSArray *array in @[
+      @[@"https://tsa-china.takeda.com.cn/uat/images/pic_category.zip", THUMBNAIL_DIRNAME, @"分类缩略图", @""],
+      @[@"http://tsa-china.takeda.com.cn/uat/public/999154.zip", FAVORITE_DIRNAME,@"使用手册1", @"999154"],
+      @[@"http://tsa-china.takeda.com.cn/uat/public/999155.zip", FAVORITE_DIRNAME,@"使用手册2", @"999155"]]) {
         
         self.labelPropmt.text = [NSString stringWithFormat:@"下载<%@>...", array[2]];
         [self downloadCategoryThumbnail:array[0] dir:array[1] SlideID:array[3]];
          [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
     }
+    
+    self.labelPropmt.text = @"上传本地记录...";
+    [[NSRunLoop currentRunLoop] runUntilDate:[NSDate date]];
+    [ActionLog syncRecords];
+
     
     MainViewController *mainView = [[MainViewController alloc] initWithNibName:nil bundle:nil];
     UIWindow *window = self.view.window;
@@ -364,7 +397,9 @@
     NSString *dirPath = [FileUtils getPathName:dirName];
     NSString *zipName = [downloadUrl lastPathComponent];
     NSString *zipPath = [FileUtils getPathName:DOWNLOAD_DIRNAME FileName:zipName];
-    if([FileUtils checkFileExist:zipPath isDir:NO]) return;
+    if([FileUtils checkFileExist:zipPath isDir:NO]) {
+        return;
+    }
     
     NSURL *url = [NSURL URLWithString:downloadUrl];
     NSData *zipData = [NSData dataWithContentsOfURL:url];
@@ -379,14 +414,35 @@
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         dict = [FileUtils readConfigFile:dictPath];
-        dict[CONTENT_FIELD_ID]      = slideID;
-        dict[CONTENT_FIELD_TYPE]    = @"10000";
-        dict[CONTENT_FIELD_DESC]    = dict[SLIDE_DESC_NAME];
-        dict[CONTENT_FIELD_TITLE]   = dict[SLIDE_DESC_NAME];
-        dict[CONTENT_FIELD_NAME]    = dict[SLIDE_DESC_NAME];
-        dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
-        Slide *slide = [[Slide alloc] initSlide:dict isFavorite:YES];
-        [slide save];
+        @try {
+            dict[CONTENT_FIELD_ID]      = slideID;
+            dict[CONTENT_FIELD_TYPE]    = @"10000";
+            dict[CONTENT_FIELD_DESC]    = dict[SLIDE_DESC_NAME];
+            dict[CONTENT_FIELD_TITLE]   = dict[SLIDE_DESC_NAME];
+            dict[CONTENT_FIELD_NAME]    = dict[SLIDE_DESC_NAME];
+            dict[CONTENT_FIELD_PAGENUM] = [NSString stringWithFormat:@"%ld", (long)[dict[SLIDE_DESC_ORDER] count]];
+            Slide *slide = [[Slide alloc] initSlide:dict isFavorite:YES];
+            [slide save];
+        }
+        @catch (NSException *exception) {
+        }
+        @finally {
+        }
     }
+}
+
+#pragma mark - UIWebview Delegate
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _progressHUD.labelText = [NSString stringWithFormat:@"%@...",self.popupText];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [_progressHUD hide:YES];
+    self.popupText = @"获取用户信息";
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [_progressHUD hide:YES];
+    
+    [ViewUtils simpleAlertView:self Title:[NSString stringWithFormat:@"%@失败",self.popupText] Message:[error localizedDescription] ButtonTitle:BTN_CONFIRM];
 }
 @end

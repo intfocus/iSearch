@@ -28,7 +28,7 @@
 
 
 /**
- *  应用从服务器获取数据，设置超时时间为: 3.0秒
+ *  应用从服务器获取数据，设置超时时间为: 15.0秒
  *
  *  @param urlString 服务器链接
  *
@@ -51,7 +51,7 @@
  *
  *  @return 有网络则为true
  */
-+ (BOOL)isNetworkAvailable:(NSString *)urlString;
++ (BOOL)isNetworkAvailable:(NSTimeInterval)timeoutInterval;
 + (BOOL)isNetworkAvailable;
 
 

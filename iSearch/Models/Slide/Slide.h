@@ -86,6 +86,7 @@
 - (void)removeDictSwp;
 - (NSMutableArray *)restoreDictSwp;
 - (NSMutableDictionary *)dictSwp;
+- (void)markSureNotNestAfterDownloaded;
 
 @end
 #endif

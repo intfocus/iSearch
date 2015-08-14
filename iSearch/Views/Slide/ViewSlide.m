@@ -16,6 +16,7 @@
 #import "HttpUtils.h"
 #import "SSZipArchive.h"
 #import "MBProgressHUD.h"
+#import "ActionLog.h"
 #import "ExtendNSLogFunctionality.h"
 
 #import "MainViewController.h"
@@ -100,7 +101,6 @@
 
 
 - (void)actionDisplaySlide{
-    //  this slide display or not;
     if(!self.slide.isDisplay) {
         self.slide.isDisplay = YES;
         [self.slide save];
@@ -146,17 +146,18 @@
  *      演示过: slideToDisplay.png
  */
 - (void) updateBtnDownloadOrDisplayIcon {
-    UIImage *image = [UIImage imageNamed:@"coverSlideToDownload"];
+    NSString *imageName = @"coverSlideToDownload";
     if([self.slide isDownloaded]) {
         if(self.slide.isDisplay) {
-            image = [UIImage imageNamed:@"coverSlideToDisplay"];
+            imageName = @"coverSlideToDisplay";
         } else {
-            image = [UIImage imageNamed:@"coverSlideUnDisplay"];
+            imageName = @"coverSlideUnDisplay";
         }
     } else if([self.slide isDownloading]) {
-        image = [UIImage imageNamed:@"coverSlideDownloading"];
+        imageName = @"coverSlideDownloading";
     }
-    [self.btnDownloadOrDisplay setImage:image forState:UIControlStateNormal];
+    
+    [self.btnDownloadOrDisplay setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
 }
 
 /**
@@ -183,7 +184,7 @@
  *
  *  @param urlString 下载zip链接
  */
-- (void) downloadZip:(NSURL *)url {
+- (void)downloadZip:(NSURL *)url {
     [self.slide toDownloaded];
     
     NSURLRequest *request       = [NSURLRequest requestWithURL:url];
@@ -269,23 +270,11 @@
     // 解压
     BOOL state = [SSZipArchive unzipFileAtPath:zipPath toDestination:self.slide.path];
     NSLog(@"%@", [NSString stringWithFormat:@"解压<#id:%@.zip> %@", self.slide.ID, state ? @"成功" : @"失败"]);
-    // make sure not nest
-    if(![self.slide isDownloaded]) {
-        NSString *slidePath = [self.slide.path stringByAppendingPathComponent:self.slide.ID];
-        if([FileUtils checkFileExist:slidePath isDir:YES]) {
-            NSString *tmpPath = [NSString stringWithFormat:@"%@-tmp", self.slide.path];
-            NSError *error;
-            NSFileManager *fileManager = [NSFileManager defaultManager];
-            [fileManager moveItemAtPath:slidePath toPath:tmpPath error:&error];
-            NSErrorPrint(error, @"move file# %@ => %@", slidePath, tmpPath);
-            [fileManager removeItemAtPath:self.slide.path error:&error];
-            NSErrorPrint(error, @"remove file %@", self.slide.path);
-            [fileManager moveItemAtPath:tmpPath toPath:self.slide.path error:&error];
-            NSErrorPrint(error, @"move file %@ => %@", tmpPath, self.slide.path);
-        }
-    }
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:zipPath error:NULL];
+
+    [self.slide markSureNotNestAfterDownloaded];
+    
+    [FileUtils removeFile:zipPath];
+    [ActionLog recordSlide:self.slide Action:ACTION_DOWNLOAD];
 }
 
 /**

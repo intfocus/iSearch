@@ -35,9 +35,23 @@
     UINib *nib=[UINib nibWithNibName:NSStringFromClass([NewsListCell class]) bundle:nil];
     [self.listView registerNib:nib forCellReuseIdentifier:@"news"];
     
+    [self refreshData];
+}
+
+
+- (void)refreshData {
     NSMutableDictionary *notificationDatas = [DataHelper notifications];
     self.dataListOne = notificationDatas[NOTIFICATION_FIELD_GGDATA]; // 公告数据
     self.dataListTwo = notificationDatas[NOTIFICATION_FIELD_HDDATA]; // 预告数据
+    
+    NSSortDescriptor *descriptor;
+    // 公告通知按created_date升序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_CREATEDATE ascending:NO];
+    self.dataListOne = [self.dataListOne sortedArrayUsingDescriptors:@[descriptor]];
+    // 预告通知按occur_date升序
+    descriptor = [[NSSortDescriptor alloc] initWithKey:NOTIFICATION_FIELD_OCCURDATE ascending:YES];
+    self.dataListTwo = [self.dataListTwo sortedArrayUsingDescriptors:@[descriptor]];
+    
     [self onTabClick:self.tabView];
 }
 

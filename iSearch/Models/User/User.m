@@ -30,7 +30,7 @@
         _loginUserName    = configDict[USER_LOGIN_USERNAME];
         _loginPassword    = configDict[USER_LOGIN_PASSWORD];
         _loginRememberPWD = [configDict[USER_LOGIN_REMEMBER_PWD] isEqualToString:@"1"];
-        _loginLast   = configDict[USER_LOGIN_LAST];
+        _loginLast        = configDict[USER_LOGIN_LAST];
         
         // skip login debug
         if(!self.ID) {
@@ -94,5 +94,9 @@
 + (NSMutableDictionary *)configData {
     NSString *configPath = [[FileUtils getBasePath] stringByAppendingPathComponent:LOGIN_CONFIG_FILENAME];
     return [FileUtils readConfigFile:configPath];
+}
+
+- (BOOL)isEverLogin {
+    return self.loginLast;
 }
 @end

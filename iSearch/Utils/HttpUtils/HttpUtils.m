@@ -38,7 +38,7 @@
     NSLog(@"%@", urlString);
     NSURL *url = [NSURL URLWithString:urlString];
     HttpResponse *httpResponse = [[HttpResponse alloc] init];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:timeoutInterval];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:timeoutInterval];
     NSError *error;
     NSURLResponse *response;
     httpResponse.received = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
@@ -53,14 +53,14 @@
 
 
 /**
- *  应用从服务器获取数据，设置超时时间为: 3.0秒
+ *  应用从服务器获取数据，设置超时时间为: 15.0秒
  *
  *  @param urlString 服务器链接
  *
  *  @return Http#Get HttpResponse
  */
 + (HttpResponse *)httpGet:(NSString *)urlString {
-    return [HttpUtils httpGet:urlString timeoutInterval:3.0];
+    return [HttpUtils httpGet:urlString timeoutInterval:15.0];
 }
 
 /**
@@ -104,14 +104,14 @@
  *
  *  @return 有网络则为true
  */
-+ (BOOL)isNetworkAvailable:(NSString *)urlString {
-    HttpResponse *httpResponse = [HttpUtils httpGet:urlString timeoutInterval:1.0];
-    
-    return (httpResponse.statusCode && [httpResponse.statusCode isEqual: @200]);
++ (BOOL)isNetworkAvailable {
+    return [self isNetworkAvailable:1.0];
 }
 
-+ (BOOL)isNetworkAvailable {
-    return [HttpUtils isNetworkAvailable:@"http://www.apple.com"];
++ (BOOL)isNetworkAvailable:(NSTimeInterval)timeoutInterval {
+    HttpResponse *httpResponse = [HttpUtils httpGet:@"http://www.apple.com" timeoutInterval:timeoutInterval];
+    
+    return (httpResponse.statusCode && ([httpResponse.statusCode intValue] == 200));
 }
 
 /**
